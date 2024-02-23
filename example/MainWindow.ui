@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>MainWindow</class>
+    <widget class="QMainWindow" name="MainWindow">
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>800</width>
+                <height>600</height>
+            </rect>
+        </property>
+        <property name="windowTitle">
+            <string>MainWindow</string>
+        </property>
+        <widget class="QWidget" name="centralwidget">
+            <layout class="QVBoxLayout" name="verticalLayout">
+                <item>
+                    <widget class="QLabel" name="label">
+                        <property name="text">
+                            <string>Example application style with QStyle-derived class</string>
+                        </property>
+                    </widget>
+                </item>
+                <item>
+                    <widget class="QWidget" name="widget" native="true">
+                        <layout class="QHBoxLayout" name="horizontalLayout">
+                            <item>
+                                <widget class="QCheckBox" name="darkModeCheckBox">
+                                    <property name="text">
+                                        <string>Dark mode</string>
+                                    </property>
+                                    <property name="checked">
+                                        <bool>true</bool>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item>
+                                <widget class="QCheckBox" name="checkBox">
+                                    <property name="text">
+                                        <string>Another checkbox</string>
+                                    </property>
+                                </widget>
+                            </item>
+                        </layout>
+                    </widget>
+                </item>
+                <item>
+                    <widget class="QWidget" name="widget_2" native="true">
+                        <layout class="QHBoxLayout" name="horizontalLayout_2">
+                            <item>
+                                <widget class="QPushButton" name="startButton">
+                                    <property name="text">
+                                        <string>Start</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item>
+                                <widget class="QPushButton" name="stopButton">
+                                    <property name="enabled">
+                                        <bool>false</bool>
+                                    </property>
+                                    <property name="text">
+                                        <string>Stop</string>
+                                    </property>
+                                </widget>
+                            </item>
+                        </layout>
+                    </widget>
+                </item>
+                <item>
+                    <widget class="QProgressBar" name="progressBar">
+                        <property name="value">
+                            <number>0</number>
+                        </property>
+                    </widget>
+                </item>
+                <item>
+                    <widget class="QWidget" name="widget_3" native="true">
+                        <layout class="QHBoxLayout" name="horizontalLayout_3" />
+                    </widget>
+                </item>
+                <item>
+                    <widget class="QWidget" name="widget_4" native="true">
+                        <layout class="QHBoxLayout" name="horizontalLayout_4">
+                            <item>
+                                <widget class="QPushButton" name="openColorDialog">
+                                    <property name="text">
+                                        <string>Open ColorDialog</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item>
+                                <widget class="QPushButton" name="changeBg">
+                                    <property name="text">
+                                        <string>Change Background</string>
+                                    </property>
+                                </widget>
+                            </item>
+                        </layout>
+                    </widget>
+                </item>
+                <item>
+                    <widget class="QWidget" name="widget_5" native="true">
+                        <layout class="QHBoxLayout" name="horizontalLayout_5">
+                            <item>
+                                <widget class="QLineEdit" name="lineEdit" />
+                            </item>
+                        </layout>
+                    </widget>
+                </item>
+                <item>
+                    <widget class="QWidget" name="widget_6" native="true">
+                        <layout class="QHBoxLayout" name="horizontalLayout_6">
+                            <item>
+                                <widget class="QSpinBox" name="spinBox" />
+                            </item>
+                            <item>
+                                <widget class="QComboBox" name="comboBox" />
+                            </item>
+                        </layout>
+                    </widget>
+                </item>
+                <item>
+                    <spacer name="verticalSpacer">
+                        <property name="orientation">
+                            <enum>Qt::Vertical</enum>
+                        </property>
+                        <property name="sizeHint" stdset="0">
+                            <size>
+                                <width>20</width>
+                                <height>219</height>
+                            </size>
+                        </property>
+                    </spacer>
+                </item>
+            </layout>
+        </widget>
+    </widget>
+    <resources />
+    <connections />
+</ui>

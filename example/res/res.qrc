@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>grid.svg</file>
+        <file>list.svg</file>
+        <file>detail.svg</file>
+        <file>download.svg</file>
+        <file>close.svg</file>
+    </qresource>
+</RCC>
