@@ -15,7 +15,7 @@ CustomStyle::CustomStyle()
     , mCheckBoxStyle(new CheckBoxStyle)
     , mLineEditStyle(new LineEditStyle)
     , mSpinBoxStyle(new SpinBoxStyle)
-// , mSwitchButtonStyle(new SwitchButtonStyle)
+    , mComboBoxStyle(new ComboBoxStyle)
 {
 }
 void CustomStyle::drawPrimitive(QStyle::PrimitiveElement pe, const QStyleOption* option, QPainter* painter, const QWidget* widget) const
@@ -31,16 +31,6 @@ void CustomStyle::drawPrimitive(QStyle::PrimitiveElement pe, const QStyleOption*
         return;
     }
     case PE_FrameFocusRect:
-        // {
-        //     if (const auto *fropt = qstyleoption_cast<const QStyleOptionFocusRect
-        //     *>(option)) {
-        //         qDebug() << "PE_FrameFocusRect" << widget->objectName();
-        //         const QRect focusRect = fropt->rect.adjusted(1, 1, -1, -1);
-        //         painter->setPen(QColor(183, 132, 183));
-        //         painter->drawRoundedRect(focusRect, 5, 5);
-        //     }
-        //     break;
-        // }
         break;
     case PE_PanelLineEdit:
     {
@@ -50,13 +40,19 @@ void CustomStyle::drawPrimitive(QStyle::PrimitiveElement pe, const QStyleOption*
         }
         break;
     }
-    // case PE_IndicatorSpinUp:
-    // case PE_IndicatorSpinDown:
-    // {
-    //     mSpinBoxStyle->drawIndicator(pe, option, painter, widget);
-    //     break;
-    // }
+    case PE_PanelItemViewItem:
+    {
+        painter->save();
 
+        QPoint topLeft = option->rect.topLeft();
+        QPoint bottomRight = option->rect.topRight();
+        QLinearGradient backgroundGradient(topLeft, bottomRight);
+        backgroundGradient.setColorAt(0.0, QColor(Qt::yellow).lighter(190));
+        backgroundGradient.setColorAt(1.0, Qt::white);
+        painter->fillRect(option->rect, QBrush(backgroundGradient));
+
+        painter->restore();
+    }
     default:
         QCommonStyle::drawPrimitive(pe, option, painter, widget);
 
@@ -77,12 +73,6 @@ int CustomStyle::pixelMetric(QStyle::PixelMetric pm, const QStyleOption* option,
     case PM_ButtonShiftHorizontal:
     case PM_ButtonShiftVertical:
         return 0;  // no shift
-
-        // case (SwitchButtonStyle::PM_SwitchButtonHandleWidth):
-        // case (SwitchButtonStyle::PM_SwithcButtonHandleHeight):
-        // {
-        //     return mSwitchButtonStyle->indicatorSize(pm);
-        // }
 
     default:
         return QCommonStyle::pixelMetric(pm, option, widget);
@@ -170,20 +160,28 @@ void CustomStyle::drawComplexControl(ComplexControl complexControl, const QStyle
     {
     case CC_SpinBox:
     {
-        if (const auto* spinBoxOption = qstyleoption_cast<const QStyleOptionSpinBox*>(opt))
+        if (const auto* sb = qstyleoption_cast<const QStyleOptionSpinBox*>(opt))
         {
-            QRect rect = subControlRect(CC_SpinBox, spinBoxOption, SC_SpinBoxFrame, widget);
-            painter->save();
-            painter->setRenderHint(QPainter::Antialiasing);
-            // QPainterPath path;
-            // path.addRoundedRect(rect.toRectF().adjusted(0.5, 0.5, -0.5, -0.5), 5, 5);
-            // painter->fillPath(path, QColor(172, 195, 166));
-            painter->setPen(QColor(172, 195, 166));
-            painter->drawRoundedRect(QRectF(rect).adjusted(1, 1, -1, -1), 5, 5);
-            painter->restore();
-            // mSpinBoxStyle->draw(spinBoxOption, painter, widget);
+            QStyleOptionSpinBox copy = *sb;
+            copy.rect = subControlRect(CC_SpinBox, sb, SC_SpinBoxFrame, widget);
+            mSpinBoxStyle->draw(&copy, painter, widget);
+            copy.rect = subControlRect(CC_SpinBox, sb, SC_SpinBoxDown, widget);
+            mSpinBoxStyle->drawIndicator(PE_IndicatorSpinDown, &copy, painter, widget);
+            copy.rect = subControlRect(CC_SpinBox, sb, SC_SpinBoxUp, widget);
+            mSpinBoxStyle->drawIndicator(PE_IndicatorSpinUp, &copy, painter, widget);
         }
         break;
+    }
+    case CC_ComboBox:
+    {
+        if (const auto* cb = qstyleoption_cast<const QStyleOptionComboBox*>(opt))
+        {
+            QStyleOptionComboBox copy = *cb;
+            copy.rect = subControlRect(CC_ComboBox, cb, SC_ComboBoxFrame, widget);
+            mSpinBoxStyle->draw(&copy, painter, widget);
+            copy.rect = subControlRect(CC_ComboBox, cb, SC_ComboBoxArrow, widget);
+            mCheckBoxStyle->drawIndicator(&copy, painter);
+        }
     }
     default:
         QCommonStyle::drawComplexControl(complexControl, opt, painter, widget);
@@ -214,14 +212,6 @@ QSize CustomStyle::sizeFromContents(ContentsType type, const QStyleOption* optio
     case CT_CheckBox:
         return QCommonStyle::sizeFromContents(type, option, contentsSize, widget);
 
-    // case CT_LineEdit:
-    //     if (const auto* lineEditOption = qstyleoption_cast<const
-    //     QStyleOptionFrame*>(option))
-    //     {
-    //         return mLineEditStyle->sizeFromContents(lineEditOption,
-    //         contentsSize, widget);
-    //     }
-    //     break;
     default:
         break;
     }
@@ -263,6 +253,7 @@ void CustomStyle::polish(QWidget* w)
     // {
     //     scrollBar->setAttribute(Qt::WA_OpaquePaintEvent, false);
     // }
+    w->setAttribute(Qt::WA_TranslucentBackground);
     QCommonStyle::polish(w);
 }
 bool CustomStyle::eventFilter(QObject* obj, QEvent* event)

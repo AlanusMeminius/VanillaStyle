@@ -19,15 +19,11 @@ class MainWindow : public QMainWindow {
 Q_OBJECT
 
 public:
-    enum Theme
-    {
-        Dark,
-        Light,
-    };
-    Q_ENUM(Theme)
 
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow() override;
+
+    void setTheme(bool theme);
 
     void start();
     void stop();

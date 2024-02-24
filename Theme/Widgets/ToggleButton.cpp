@@ -87,54 +87,7 @@ void ToggleButton::paintEvent(QPaintEvent* event)
     Q_UNUSED(event)
     Q_D(ToggleButton);
     QPainter painter(this);
-    painter.save();
-    painter.setRenderHint(QPainter::Antialiasing);
-
-    if (!useIcon())
-    {
-        painter.setPen(Qt::NoPen);
-        QPainterPath background;
-        const QRectF backgroundRect(0, 0, width(), d->rowHeight);
-        background.addRoundedRect(backgroundRect, d->radius, d->radius);
-        painter.fillPath(background, QBrush(Theme::Color::toogleButtonBackground()));
-    }
-
-    QPainterPath handlePath;
-    const QRectF handleRect(d->offset + d->handlePadding, d->handlePadding, d->columnWidth - 2 * d->handlePadding, d->handleSize);
-    handlePath.addRoundedRect(handleRect, d->radius, d->radius);
-    painter.fillPath(handlePath, QBrush(Theme::Color::toogleButtonHandleColor()));
-
-    if (d->itemList.empty())
-    {
-        return;
-    }
-    for (int count = 0; count < itemList().length(); ++count)
-    {
-        if (useIcon())
-        {
-            QSvgRenderer grid;
-            const int x = (d->columnWidth - d->iconSize) / 2 + count * d->columnWidth;
-            QRectF iconRectF(x, d->padding, d->iconSize, d->iconSize);
-            grid.load(itemList().at(count));
-            grid.render(&painter, iconRectF);
-        }
-        else
-        {
-            // 画按钮分割线
-            if (itemList().length() > 1 && count > 0)
-            {
-                painter.setPen(QPen(QColor(105, 109, 120), 1, Qt::SolidLine, Qt::SquareCap));
-                if (d->offset < d->columnWidth * (count - 1) || d->offset > d->columnWidth * (count))
-                {
-                    painter.drawLine(d->columnWidth * count, 8, d->columnWidth * count, d->rowHeight - 8);
-                }
-            }
-            painter.setPen(QColor(105, 109, 120));
-            QRect textRect(count * columnWidth(), 0, columnWidth(), height());
-            painter.drawText(textRect, Qt::AlignVCenter | Qt::AlignHCenter, itemList().at(count));
-        }
-    }
-    painter.restore();
+    d->paint(&painter);
 }
 void ToggleButton::mousePressEvent(QMouseEvent* event)
 {
@@ -194,4 +147,49 @@ void ToggleButtonPrivate::setCurrentIndex(const int index)
 QSize ToggleButtonPrivate::sizeHint() const
 {
     return {columnWidth * static_cast<int>(itemList.size()), rowHeight};
+}
+void ToggleButtonPrivate::paint(QPainter* painter) const
+{
+    painter->save();
+    painter->setRenderHint(QPainter::Antialiasing);
+    if (!m_useIcon)
+    {
+        painter->setPen(Qt::NoPen);
+        QPainterPath background;
+        const QRectF backgroundRect(0, 0, sizeHint().width(), rowHeight);
+        background.addRoundedRect(backgroundRect, radius, radius);
+        painter->fillPath(background, QBrush(Theme::Color::toogleButtonBackground()));
+    }
+
+    QPainterPath handlePath;
+    const QRectF handleRect(offset + handlePadding, handlePadding, columnWidth - 2 * handlePadding, handleSize);
+    handlePath.addRoundedRect(handleRect, radius, radius);
+    painter->fillPath(handlePath, QBrush(Theme::Color::toogleButtonHandleColor()));
+
+    if (itemList.empty())
+    {
+        return;
+    }
+    if (m_useIcon)
+    {
+        QRect iconRectF((columnWidth - iconSize) / 2, padding, iconSize, iconSize);
+        QSvgRenderer grid;
+        for (const auto& item : itemList)
+        {
+            grid.load(item);
+            grid.render(painter, iconRectF.toRectF());
+            iconRectF.translate(columnWidth,0);
+        }
+    }
+    else
+    {
+        QRectF textRect(0, 0, columnWidth, rowHeight);
+        for (const auto& item : itemList)
+        {
+            painter->setPen(QColor(105, 109, 120));
+            painter->drawText(textRect, Qt::AlignVCenter | Qt::AlignHCenter, item);
+            textRect.translate(columnWidth, 0);
+        }
+    }
+    painter->restore();
 }

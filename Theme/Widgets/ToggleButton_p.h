@@ -31,6 +31,7 @@ public:
     [[nodiscard]] QSize sizeHint() const;
 
 private:
+    void paint(QPainter* painter) const;
     ToggleButton* const q_ptr;
     std::shared_ptr<Theme::Animation> mAnimation;
     Q_DECLARE_PUBLIC(ToggleButton);

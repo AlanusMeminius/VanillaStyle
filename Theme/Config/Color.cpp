@@ -97,11 +97,11 @@ QColor Color::swichButtonCheckedBackground()
 }
 QColor Color::toogleButtonBackground()
 {
-    return isDarkMode ? QColor(0x21, 0x1f, 0x22, 0xa7) : QColor(229, 230, 235);
+    return isDarkMode ? QColor(0x21, 0x1f, 0x22, 0xa7) : QColor(229, 230, 235, 100);
 }
 QColor Color::toogleButtonHandleColor()
 {
-    return isDarkMode ? QColor(0x53, 0x94, 0x9f) : QColor(247, 222, 208);
+    return isDarkMode ? QColor(0x53, 0x94, 0x9f) : QColor(246, 245, 245,100); //rgba(246, 245, 245, 1)
 }
 QColor Color::progressBarTextColor(bool enabled)
 {

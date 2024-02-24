@@ -2,44 +2,34 @@
 #include <QPainter>
 #include <QStyleOption>
 
-SpinBoxStyle::SpinBoxStyle() = default;
+SpinBoxStyle::SpinBoxStyle()
+    : commonStyle(std::make_shared<Theme::CommonStyle>()){};
 void SpinBoxStyle::draw(const QStyleOptionComplex* opt, QPainter* painter, const QWidget* widget) const
 {
-
+    commonStyle->drawFrame(opt, painter);
 }
 
 void SpinBoxStyle::drawIndicator(QStyle::PrimitiveElement element, const QStyleOption* option, QPainter* painter, const QWidget* widget) const
 {
-    QPolygon points(3);
-    int x = option->rect.x();
-    int y = option->rect.y();
-    int w = option->rect.width() / 2;
-    int h = option->rect.height() / 2;
-    x += (option->rect.width() - w) / 2;
-    y += (option->rect.height() - h) / 2;
-
-    if (element == QStyle::PE_IndicatorSpinUp)
-    {
-        points[0] = QPoint(x, y + h);
-        points[1] = QPoint(x + w, y + h);
-        points[2] = QPoint(x + w / 2, y);
-    }
-    else
-    {  // PE_SpinBoxDown
-        points[0] = QPoint(x, y);
-        points[1] = QPoint(x + w, y);
-        points[2] = QPoint(x + w / 2, y + h);
-    }
-
+    painter->setRenderHint(QPainter::Antialiasing);
     if (option->state & QStyle::State_Enabled)
     {
-        painter->setPen(option->palette.mid().color());
-        painter->setBrush(option->palette.buttonText());
+        painter->setPen(QPen(Qt::darkGray, 2));
+        painter->setBrush(QBrush(Qt::darkGray));
     }
     else
     {
-        painter->setPen(option->palette.buttonText().color());
-        painter->setBrush(option->palette.mid());
+        painter->setPen(QPen(Qt::gray, 2));
+        painter->setBrush(QBrush(Qt::gray));
     }
-    painter->drawPolygon(points);
+    const QRect rect = option->rect;
+    const QRectF copy = rect.adjusted(2, 0, -2, 0);
+    if (element == QStyle::PE_IndicatorSpinDown)
+    {
+        commonStyle->drawDownArrow(copy, painter);
+    }
+    else
+    {
+        commonStyle->drawUpArrow(copy, painter);
+    }
 }

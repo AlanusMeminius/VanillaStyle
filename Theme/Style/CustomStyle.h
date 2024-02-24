@@ -2,10 +2,10 @@
 #include "StyleHelper/CheckBoxStyle.h"
 #include "StyleHelper/ProgressbarStyle.h"
 #include "StyleHelper/PushButtonStyle.h"
-// #include "StyleHelper/SwitchButtonStyle.h"
 #include "StyleHelper/LineEditStyle.h"
 #include "StyleHelper/SpinBoxStyle.h"
 #include <QCommonStyle>
+#include <StyleHelper/ComboBoxStyle.h>
 
 namespace Theme {
 
@@ -32,7 +32,7 @@ private:
     std::unique_ptr<CheckBoxStyle> mCheckBoxStyle;
     std::unique_ptr<LineEditStyle> mLineEditStyle;
     std::unique_ptr<SpinBoxStyle> mSpinBoxStyle;
-    // std::unique_ptr<SwitchButtonStyle> mSwitchButtonStyle;
+    std::unique_ptr<ComboBoxStyle> mComboBoxStyle;
 };
 
 } // Theme
