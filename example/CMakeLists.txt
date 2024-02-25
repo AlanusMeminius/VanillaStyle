@@ -6,10 +6,9 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-add_subdirectory(lib/qwindowkit EXCLUDE_FROM_ALL)
-add_subdirectory(${CMAKE_SOURCE_DIR}/Theme theme)
-include_directories(${CMAKE_SOURCE_DIR}/Theme)
-#add_subdirectory(../src theme)
+add_subdirectory(extern/qwindowkit EXCLUDE_FROM_ALL)
+
+
 find_package(Qt6 COMPONENTS Core Gui Widgets Svg REQUIRED)
 
 add_executable(Example main.cpp
@@ -18,8 +17,11 @@ add_executable(Example main.cpp
         MainWindow.ui
         res/res.qrc
 )
+#include_directories(../lib/include/)
+#link_directories(${PROJECT_SOURCE_DIR}/lib)
+#link_libraries(VanillaStyle)
 target_link_libraries(Example
-        theme
+        VanillaStyle
         Qt::Core Qt::Gui Qt::Widgets Qt::Svg
         QWindowKit::Widgets
 )

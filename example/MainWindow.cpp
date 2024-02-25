@@ -1,8 +1,8 @@
 #include "MainWindow.h"
 // #include "Theme.h"
 #include "ui_MainWindow.h"
-#include "Widgets/ToggleButton.h"
-#include "Widgets/SwitchButton.h"
+// #include "Widgets/ToggleButton.h"
+// #include "Widgets/SwitchButton.h"
 #include <QWKCore/styleagent.h>
 
 #include <QWKWidgets/widgetwindowagent.h>
@@ -10,7 +10,8 @@
 #include <QButtonGroup>
 #include <QColorDialog>
 #include <QShortcut>
-#include <Theme.h>
+#include <QtGui/QPainter>
+// #include <Theme.h>
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
@@ -21,29 +22,28 @@ MainWindow::MainWindow(QWidget* parent)
     installWindowAgent();
     ui->setupUi(this);
     m_timer->setInterval(50);
-    // this->setAttribute(Qt::WA_TranslucentBackground);
     // ui->lineEdit->setDisabled(true);
 
-    ui->horizontalLayout_7->insertWidget(0, new SwitchButton(this));
+    // ui->horizontalLayout_7->insertWidget(0, new SwitchButton(this));
 
-    QStringList list;
-    list << ":grid.svg"
-         << ":list.svg"
-         << ":download.svg";
-
-    const auto iconToggleButton = new ToggleButton(list, this);
-    iconToggleButton->setUseIcon(true);
-    iconToggleButton->setColumnWidth(50);
-    ui->horizontalLayout_3->addWidget(iconToggleButton);
-
-    QStringList textList;
-    textList << "Default"
-             << "Account"
-             << "Advance";
-    const auto textToggleButton = new ToggleButton(textList, this);
-    textToggleButton->setUseIcon(false);
-    textToggleButton->setColumnWidth(100);
-    ui->horizontalLayout_3->addWidget(textToggleButton);
+    // QStringList list;
+    // list << ":grid.svg"
+    //      << ":list.svg"
+    //      << ":download.svg";
+    //
+    // const auto iconToggleButton = new ToggleButton(list, this);
+    // iconToggleButton->setUseIcon(true);
+    // iconToggleButton->setColumnWidth(50);
+    // ui->horizontalLayout_3->addWidget(iconToggleButton);
+    //
+    // QStringList textList;
+    // textList << "Default"
+    //          << "Account"
+    //          << "Advance";
+    // const auto textToggleButton = new ToggleButton(textList, this);
+    // textToggleButton->setUseIcon(false);
+    // textToggleButton->setColumnWidth(100);
+    // ui->horizontalLayout_3->addWidget(textToggleButton);
 
     ui->radioButton->setChecked(true);
     setTheme(true);
@@ -55,7 +55,7 @@ MainWindow::MainWindow(QWidget* parent)
     });
 
     auto styleAgent = new QWK::StyleAgent(this);
-    connect(styleAgent, &QWK::StyleAgent::systemThemeChanged, this, [this,styleAgent]() {
+    connect(styleAgent, &QWK::StyleAgent::systemThemeChanged, this, [this, styleAgent]() {
         if (const auto theme = styleAgent->systemTheme(); theme == QWK::StyleAgent::SystemTheme::Dark)
         {
             setTheme(false);
@@ -82,7 +82,7 @@ MainWindow::~MainWindow()
 }
 void MainWindow::setTheme(const bool theme)
 {
-    CustomTheme::setDarkMode(!theme);
+    // CustomTheme::setDarkMode(!theme);
     windowAgent->setWindowAttribute(QStringLiteral("blur-effect"), theme ? "light" : "dark");
     style()->polish(this);
 }
@@ -115,4 +115,11 @@ void MainWindow::installWindowAgent()
     bar->setMinimumHeight(30);
     windowAgent->setTitleBar(bar);
     setMenuWidget(bar);
+}
+void MainWindow::paintEvent(QPaintEvent* event)
+{
+    QMainWindow::paintEvent(event);
+    QPainter painter(this);
+    painter.setCompositionMode(QPainter::CompositionMode_Clear);
+    painter.fillRect(event->rect(), Qt::transparent);
 }

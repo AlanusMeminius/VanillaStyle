@@ -1,3 +1,6 @@
-[submodule "example/lib/qwindowkit"]
-	path = example/lib/qwindowkit
+[submodule "example/extern/qwindowkit"]
+	path = example/extern/qwindowkit
 	url = https://github.com/stdware/qwindowkit.git
+[submodule "lib/extern/json"]
+	path = lib/extern/json
+	url = https://github.com/nlohmann/json.git

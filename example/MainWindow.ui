@@ -44,21 +44,21 @@
        <item>
         <widget class="QRadioButton" name="radioButton">
          <property name="text">
-          <string>Light Theme</string>
+          <string>Light readConfig</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QRadioButton" name="radioButton_2">
          <property name="text">
-          <string>Dark Theme</string>
+          <string>Dark readConfig</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QRadioButton" name="radioButton_3">
          <property name="text">
-          <string>Auto Theme</string>
+          <string>Auto readConfig</string>
          </property>
         </widget>
        </item>
