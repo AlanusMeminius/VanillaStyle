@@ -1,19 +1,19 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QCheckBox>
-#include <QStyleOptionProgressBar>
-#include "VanillaStyle/Style/CustomStyle.h"
-#include "../private/CustomStyle_p.h"
+#include "VanillaStyle/Style/VanillaStyle.h"
+#include "VanillaStyle_p.h"
+#include "VanillaStyle/Theme/Theme.h"
 
 namespace VanillaStyle
 {
-CustomStyle::CustomStyle()
-    : d_ptr(new CustomStylePrivate(this))
+VanillaStyle::VanillaStyle()
+    : d_ptr(new VanillaStylePrivate(this))
 {
 }
 
-void CustomStyle::drawPrimitive(PrimitiveElement pe, const QStyleOption* option, QPainter* painter, const QWidget* widget) const
+void VanillaStyle::drawPrimitive(PrimitiveElement pe, const QStyleOption* option, QPainter* painter, const QWidget* widget) const
 {
-    Q_D(const CustomStyle);
+    Q_D(const VanillaStyle);
     switch (pe)
     {
     case PE_FrameLineEdit:
@@ -35,7 +35,7 @@ void CustomStyle::drawPrimitive(PrimitiveElement pe, const QStyleOption* option,
     }
 }
 
-void CustomStyle::drawControl(ControlElement element, const QStyleOption* option, QPainter* painter, const QWidget* widget) const
+void VanillaStyle::drawControl(ControlElement element, const QStyleOption* option, QPainter* painter, const QWidget* widget) const
 {
     switch (element)
     {
@@ -53,7 +53,7 @@ void CustomStyle::drawControl(ControlElement element, const QStyleOption* option
     }
 }
 
-void CustomStyle::drawComplexControl(ComplexControl complexControl, const QStyleOptionComplex* opt, QPainter* painter, const QWidget* widget) const
+void VanillaStyle::drawComplexControl(ComplexControl complexControl, const QStyleOptionComplex* opt, QPainter* painter, const QWidget* widget) const
 {
     switch (complexControl)
     {
@@ -62,7 +62,7 @@ void CustomStyle::drawComplexControl(ComplexControl complexControl, const QStyle
     }
 }
 
-int CustomStyle::pixelMetric(PixelMetric pm, const QStyleOption* option, const QWidget* widget) const
+int VanillaStyle::pixelMetric(PixelMetric pm, const QStyleOption* option, const QWidget* widget) const
 {
     switch (pm)
     {
@@ -82,7 +82,7 @@ int CustomStyle::pixelMetric(PixelMetric pm, const QStyleOption* option, const Q
     }
 }
 
-QSize CustomStyle::sizeFromContents(ContentsType type, const QStyleOption* option, const QSize& contentsSize, const QWidget* widget) const
+QSize VanillaStyle::sizeFromContents(ContentsType type, const QStyleOption* option, const QSize& contentsSize, const QWidget* widget) const
 {
     switch (type)
     {
@@ -101,7 +101,7 @@ QSize CustomStyle::sizeFromContents(ContentsType type, const QStyleOption* optio
     }
     return QCommonStyle::sizeFromContents(type, option, contentsSize, widget);
 }
-QRect CustomStyle::subElementRect(SubElement subElement, const QStyleOption* option, const QWidget* widget) const
+QRect VanillaStyle::subElementRect(SubElement subElement, const QStyleOption* option, const QWidget* widget) const
 {
     switch (subElement)
     {
@@ -125,7 +125,7 @@ QRect CustomStyle::subElementRect(SubElement subElement, const QStyleOption* opt
     }
     return QCommonStyle::subElementRect(subElement, option, widget);
 }
-void CustomStyle::polish(QWidget* w)
+void VanillaStyle::polish(QWidget* w)
 {
     if (qobject_cast<QPushButton*>(w) || qobject_cast<QCheckBox*>(w))
     {
@@ -142,11 +142,48 @@ void CustomStyle::polish(QWidget* w)
     // w->setAttribute(Qt::WA_TranslucentBackground);
     QCommonStyle::polish(w);
 }
-bool CustomStyle::eventFilter(QObject* obj, QEvent* event)
+bool VanillaStyle::eventFilter(QObject* obj, QEvent* event)
 {
     return QCommonStyle::eventFilter(obj, event);
 }
-int CustomStyle::styleHint(QStyle::StyleHint stylehint, const QStyleOption* option, const QWidget* widget, QStyleHintReturn* returnData) const
+void VanillaStyle::polish(QPalette& palette)
+{
+    QCommonStyle::polish(palette);
+}
+void VanillaStyle::polish(QApplication* app)
+{
+    QCommonStyle::polish(app);
+}
+void VanillaStyle::unpolish(QWidget* w)
+{
+    QCommonStyle::unpolish(w);
+}
+void VanillaStyle::unpolish(QApplication* app)
+{
+    QCommonStyle::unpolish(app);
+}
+QIcon VanillaStyle::standardIcon(StandardPixmap standardIcon, const QStyleOption* opt, const QWidget* widget) const
+{
+    return QCommonStyle::standardIcon(standardIcon, opt, widget);
+}
+QPixmap VanillaStyle::standardPixmap(StandardPixmap sp, const QStyleOption* opt, const QWidget* widget) const
+{
+    return QCommonStyle::standardPixmap(sp, opt, widget);
+}
+QPixmap VanillaStyle::generatedIconPixmap(QIcon::Mode iconMode, const QPixmap& pixmap, const QStyleOption* opt) const
+{
+    return QCommonStyle::generatedIconPixmap(iconMode, pixmap, opt);
+}
+int VanillaStyle::layoutSpacing(QSizePolicy::ControlType control1, QSizePolicy::ControlType control2, Qt::Orientation orientation, const QStyleOption* option,
+                               const QWidget* widget) const
+{
+    return QCommonStyle::layoutSpacing(control1, control2, orientation, option, widget);
+}
+QStyle::SubControl VanillaStyle::hitTestComplexControl(ComplexControl cc, const QStyleOptionComplex* opt, const QPoint& pt, const QWidget* w) const
+{
+    return QCommonStyle::hitTestComplexControl(cc, opt, pt, w);
+}
+int VanillaStyle::styleHint(QStyle::StyleHint stylehint, const QStyleOption* option, const QWidget* widget, QStyleHintReturn* returnData) const
 {
     switch (stylehint)
     {
@@ -157,17 +194,17 @@ int CustomStyle::styleHint(QStyle::StyleHint stylehint, const QStyleOption* opti
     }
     return QCommonStyle::styleHint(stylehint, option, widget, returnData);
 }
-void CustomStyle::setConfigPath(const std::string& path)
+void VanillaStyle::setConfigPath(const std::string& path)
 {
-    Q_D(CustomStyle);
-    d->m_config->setConfigPath(path);
+    Q_D(VanillaStyle);
+    d->m_theme->setConfig(path);
 }
 
-CustomStylePrivate::CustomStylePrivate(CustomStyle* q)
+VanillaStylePrivate::VanillaStylePrivate(VanillaStyle* q)
     : q_ptr(q)
-    , m_config(std::make_shared<Config>())
+    , m_theme(std::make_shared<Theme>())
     , m_checkBoxStyle(std::make_shared<CheckBoxStyle>())
 {
-    auto error = m_config->readConfig(m_styleConfig);
+//    auto error = m_config->readConfig(m_styleConfig);
 }
 }  // namespace VanillaStyle

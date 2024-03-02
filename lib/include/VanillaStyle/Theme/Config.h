@@ -77,7 +77,7 @@ public:
     NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Size, fontSize, borderWidth, iconSize);
 };
 
-class Theme : public Basic
+class ThemeConfig : public Basic
 {
 public:
     std::string mode;
@@ -90,7 +90,7 @@ public:
         to_json(json, *this);
         return json.dump(4);
     }
-    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Theme, mode, color, size);
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(ThemeConfig, mode, color, size);
 };
 
 class StyleConfig : public Basic
@@ -98,7 +98,7 @@ class StyleConfig : public Basic
 public:
     std::string name;
     std::string author;
-    std::vector<Theme> themes;
+    std::vector<ThemeConfig> themes;
 
     std::string toString()
     {
@@ -120,7 +120,7 @@ public:
     };
     explicit Config();
     void setConfigPath(const std::string& path);
-    StyleConfig defaultConfig() const;
+    static StyleConfig defaultConfig();
     ErrorCode readConfig(StyleConfig& config) const;
 private:
     std::string m_configPath;

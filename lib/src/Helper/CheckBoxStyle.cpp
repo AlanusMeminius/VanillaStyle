@@ -1,4 +1,4 @@
-#include "VanillaStyle/StyleHelper/CheckBoxStyle.h"
+#include "VanillaStyle/Helper/CheckBoxStyle.h"
 #include <QPainter>
 namespace VanillaStyle
 {

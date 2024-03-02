@@ -1,30 +1,30 @@
 
 find_package(Qt6 COMPONENTS Core Widgets Svg REQUIRED)
 
-set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 add_subdirectory(extern/json EXCLUDE_FROM_ALL)
 
 file(GLOB_RECURSE SRC
         "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h"
 )
 file(GLOB_RECURSE HEADER
         "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h"
 )
+add_library(VanillaStyle STATIC)
 
-add_library(${PROJECT_NAME} STATIC)
 target_include_directories(
         ${PROJECT_NAME}
         PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/src>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
 )
 
 target_sources(
         ${PROJECT_NAME}
         PUBLIC
-        ${HEADER}
         ${SRC}
+        ${HEADER}
 )
 
 target_link_libraries(${PROJECT_NAME} PUBLIC
@@ -33,5 +33,4 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
         Qt::Widgets
         Qt::Svg
 )
-
 

@@ -1,12 +1,11 @@
-#include "VanillaStyle/Config/Config.h"
+#include "VanillaStyle/Theme/Config.h"
 #include "fstream"
 
 void VanillaStyle::Config::setConfigPath(const std::string& path)
 {
     m_configPath = path;
 }
-VanillaStyle::Config::Config()
-= default;
+VanillaStyle::Config::Config() = default;
 
 VanillaStyle::Config::ErrorCode VanillaStyle::Config::readConfig(VanillaStyle::StyleConfig& config) const
 {
@@ -14,24 +13,24 @@ VanillaStyle::Config::ErrorCode VanillaStyle::Config::readConfig(VanillaStyle::S
     if (!file.is_open())
     {
         config = defaultConfig();
-        return VanillaStyle::Config::FileNotFound;
+        return FileNotFound;
     }
     nlohmann::json json;
     file >> json;
     try
     {
         config = json.get<StyleConfig>();
-        return VanillaStyle::Config::NoError;
+        return NoError;
     }
     catch (nlohmann::json::parse_error& e)
     {
         config = defaultConfig();
-        return VanillaStyle::Config::ParseError;
+        return ParseError;
     }
 }
-VanillaStyle::StyleConfig VanillaStyle::Config::defaultConfig() const
+VanillaStyle::StyleConfig VanillaStyle::Config::defaultConfig()
 {
-    auto config = R"(
+    const auto config = R"(
 {
     "name": "Crescent",
     "author": "Alanus",
