@@ -3,11 +3,10 @@
 
 namespace VanillaStyle
 {
-class ButtonStyle
+class RadioButtonStyle
 {
 public:
     void draw(const QStyleOption* option, QPainter* painter, const QWidget* widget, const Theme* theme);
-
+    void drawIndicator(const QStyleOption* option, const QRectF rect, QPainter* painter, const Theme* theme) const;
 };
-
 }

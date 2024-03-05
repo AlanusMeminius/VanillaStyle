@@ -1,7 +1,6 @@
 
 find_package(Qt6 COMPONENTS Core Widgets Svg REQUIRED)
 
-add_subdirectory(extern/json EXCLUDE_FROM_ALL)
 
 file(GLOB_RECURSE SRC
         "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
@@ -26,9 +25,19 @@ target_sources(
         ${SRC}
         ${HEADER}
 )
+target_include_directories(
+        ${PROJECT_NAME}
+        PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/extern/FastGaussianBlur
+)
+if (NOT TARGET nlohmann_json)
+    add_subdirectory(extern/json EXCLUDE_FROM_ALL)
+    target_link_libraries(${PROJECT_NAME} PUBLIC nlohmann_json)
+else ()
+    target_link_libraries(${PROJECT_NAME} PUBLIC nlohmann_json)
+endif ()
 
 target_link_libraries(${PROJECT_NAME} PUBLIC
-        nlohmann_json::nlohmann_json
         Qt::Core
         Qt::Widgets
         Qt::Svg

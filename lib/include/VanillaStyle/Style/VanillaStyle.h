@@ -1,5 +1,9 @@
 #pragma once
 #include <QCommonStyle>
+#include <QPainter>
+#include "VanillaStyle/Theme/Theme.h"
+#include "VanillaStyle/Helper/CheckBoxStyle.h"
+#include "VanillaStyle/Theme/Config.h"
 
 namespace VanillaStyle
 {
@@ -14,33 +18,18 @@ public:
     int pixelMetric(PixelMetric pm, const QStyleOption* option = nullptr, const QWidget* widget = nullptr) const override;
     void drawControl(ControlElement element, const QStyleOption* option, QPainter* painter, const QWidget* widget = nullptr) const override;
     void drawComplexControl(ComplexControl complexControl, const QStyleOptionComplex* opt, QPainter* painter, const QWidget* widget = nullptr) const override;
-    int styleHint(StyleHint stylehint, const QStyleOption* option, const QWidget* widget, QStyleHintReturn* returnData) const override;
+    int styleHint(StyleHint stylehint, const QStyleOption* option, const QWidget* widget, QStyleHintReturn* returnData = nullptr) const override;
     QSize sizeFromContents(ContentsType type, const QStyleOption* option, const QSize& contentsSize, const QWidget* widget) const override;
     QRect subElementRect(SubElement subElement, const QStyleOption* option, const QWidget* widget) const override;
+    QRect subControlRect(ComplexControl control, const QStyleOptionComplex* option, SubControl subControl, const QWidget* widget) const override;
     void polish(QWidget* w) override;
     bool eventFilter(QObject* obj, QEvent* event) override;
-    void polish(QPalette& palette) override;
-    void polish(QApplication* app) override;
-    void unpolish(QWidget* w) override;
-    void unpolish(QApplication* app) override;
-    QIcon standardIcon(StandardPixmap standardIcon, const QStyleOption *opt = nullptr,
-                   const QWidget *widget = nullptr) const override;
-    QPixmap standardPixmap(StandardPixmap sp, const QStyleOption *opt = nullptr,
-                           const QWidget *widget = nullptr) const override;
-
-    QPixmap generatedIconPixmap(QIcon::Mode iconMode, const QPixmap &pixmap,
-                                const QStyleOption *opt) const override;
-    int layoutSpacing(QSizePolicy::ControlType control1, QSizePolicy::ControlType control2,
-                      Qt::Orientation orientation, const QStyleOption *option = nullptr,
-                      const QWidget *widget = nullptr) const override;
-    SubControl hitTestComplexControl(ComplexControl cc, const QStyleOptionComplex *opt,
-                                     const QPoint &pt, const QWidget *w = nullptr) const override;
 
     void setConfigPath(const std::string& path);
 
 private:
     Q_DECLARE_PRIVATE(VanillaStyle);
-//    Q_DISABLE_COPY(CustomStyle);
+    Q_DISABLE_COPY(VanillaStyle);
     VanillaStylePrivate* const d_ptr;
 };
 

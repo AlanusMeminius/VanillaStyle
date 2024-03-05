@@ -4,3 +4,6 @@
 [submodule "lib/extern/json"]
 	path = lib/extern/json
 	url = https://github.com/nlohmann/json.git
+[submodule "lib/extern/FastGaussianBlur"]
+	path = lib/extern/FastGaussianBlur
+	url = https://github.com/bfraboni/FastGaussianBlur.git

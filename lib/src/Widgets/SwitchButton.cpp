@@ -1,39 +1,87 @@
 #include "VanillaStyle/Widgets/SwitchButton.h"
 #include "SwitchButton_p.h"
+#include <QPainter>
+#include <QPainterPath>
+#include <QMouseEvent>
 
-namespace VanillaStyle {
+namespace VanillaStyle
+{
 
 SwitchButton::SwitchButton(QWidget* parent)
+    : QWidget(parent)
+    , d_ptr(new SwitchButtonPrivate(this))
 {
+    Q_D(SwitchButton);
+    d->init();
 }
 QSize SwitchButton::sizeHint() const
 {
-    return QWidget::sizeHint();
+    Q_D(const SwitchButton);
+    return d->sizeHint();
 }
-int SwitchButton::handlePosition() const
-{
-}
-void SwitchButton::setHandlePosition(int pos)
-{
-}
+// int SwitchButton::handlePosition() const
+//{
+// }
+// void SwitchButton::setHandlePosition(int pos)
+//{
+// }
 void SwitchButton::paintEvent(QPaintEvent* event)
 {
-    QWidget::paintEvent(event);
+    Q_UNUSED(event)
+    Q_D(SwitchButton);
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.setPen(QColor(0, 0, 0));
+    const auto radius = height() / 2;
+    painter.drawRoundedRect(QRectF(rect()).adjusted(1, 1, -1, -1), radius, radius);
+
+    const auto handlePosition = d->handleAnimation.currentValue().toDouble();
+    QPainterPath handle;
+    handle.addEllipse(d->margin + d->handleSize * handlePosition, d->margin, d->handleSize, d->handleSize);
+    painter.fillPath(handle, QBrush(QColor(200, 255, 255)));
 }
 void SwitchButton::mousePressEvent(QMouseEvent* event)
 {
-    QWidget::mousePressEvent(event);
+    Q_D(SwitchButton);
+    if (event->button() == Qt::LeftButton)
+    {
+        d->m_mouseDown = true;
+    }
+    else
+    {
+        event->ignore();
+    }
 }
 void SwitchButton::mouseReleaseEvent(QMouseEvent* event)
 {
-    QWidget::mouseReleaseEvent(event);
+    Q_D(SwitchButton);
+    if (event->button() == Qt::LeftButton && d->m_mouseDown)
+    {
+        d->m_mouseDown = false;
+        d->toggle();
+        emit checked(d->m_checked);
+    }
+    else
+    {
+        event->ignore();
+    }
 }
 void SwitchButton::keyPressEvent(QKeyEvent* event)
 {
-    QWidget::keyPressEvent(event);
+    Q_D(SwitchButton);
+    if (event->key() == Qt::Key_Space)
+    {
+        d->toggle();
+        emit checked(d->m_checked);
+    }
+    else
+    {
+        event->ignore();
+    }
 }
 
-SwitchButtonPrivate::SwitchButtonPrivate(SwitchButton* q): q_ptr(q)
+SwitchButtonPrivate::SwitchButtonPrivate(SwitchButton* q)
+    : q_ptr(q)
 {
 }
 void SwitchButtonPrivate::init()
@@ -45,6 +93,7 @@ void SwitchButtonPrivate::init()
     q->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     q->setFocusPolicy(Qt::TabFocus);
     q->setAttribute(Qt::WA_Hover);
+    setupAnimation();
 }
 void SwitchButtonPrivate::setChecked(const bool checked)
 {
@@ -55,6 +104,7 @@ void SwitchButtonPrivate::setChecked(const bool checked)
         return;
     }
     m_checked = checked;
+    startAnimation();
     emit q->toggled(checked);
 }
 bool SwitchButtonPrivate::isChecked() const
@@ -70,4 +120,25 @@ QSize SwitchButtonPrivate::sizeHint() const
 {
     return {width, height};
 }
-} // VanillaStyle
+void SwitchButtonPrivate::setupAnimation()
+{
+    Q_Q(SwitchButton);
+    constexpr auto animationDuration = 0;
+    handleAnimation.setDuration(animationDuration);
+    handleAnimation.setEasingCurve(QEasingCurve::Type::OutCubic);
+    handleAnimation.setStartValue(0.);
+    handleAnimation.setEndValue(0.);
+    QObject::connect(&handleAnimation, &QVariantAnimation::valueChanged, q, [this, q](const QVariant& value) {
+        q->update();
+    });
+}
+void SwitchButtonPrivate::startAnimation()
+{
+    const auto currentPosition = handleAnimation.currentValue();
+    handleAnimation.stop();
+    handleAnimation.setDuration(500);
+    handleAnimation.setStartValue(currentPosition);
+    handleAnimation.setEndValue(isChecked() ? 1. : 0.);
+    handleAnimation.start();
+}
+}  // namespace VanillaStyle

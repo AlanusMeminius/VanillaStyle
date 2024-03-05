@@ -1,5 +1,8 @@
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QCheckBox>
+#include <QPushButton>
+#include <QCheckBox>
+#include <QMenu>
+#include <QPainter>
+#include <QPainterPath>
 #include "VanillaStyle/Style/VanillaStyle.h"
 #include "VanillaStyle_p.h"
 #include "VanillaStyle/Theme/Theme.h"
@@ -16,27 +19,59 @@ void VanillaStyle::drawPrimitive(PrimitiveElement pe, const QStyleOption* option
     Q_D(const VanillaStyle);
     switch (pe)
     {
+    case PE_Frame:
+        return;
+    case PE_FrameDefaultButton:
+        break;
+    case PE_FrameDockWidget:
+        break;
+    case PE_FrameFocusRect:
+        break;
+    case PE_FrameGroupBox:
+        break;
     case PE_FrameLineEdit:
         break;
     case PE_FrameMenu:
-        return;
-    case PE_FrameButtonBevel:
-    {
-    }
-    case PE_IndicatorCheckBox:
+        return;  // Nothing to draw.
+    case PE_FrameStatusBarItem:
+        break;
+    case PE_FrameTabWidget:
+        break;
+    case PE_FrameWindow:
+        break;
+    case PE_Widget:
+        break;
+    case PE_PanelMenuBar:
+        break;
+    case PE_IndicatorColumnViewArrow:
+        break;
+    case PE_IndicatorItemViewItemDrop:
+        break;
     case PE_IndicatorRadioButton:
     {
-        d->m_checkBoxStyle->draw(option, painter, widget);
+        d->m_radioButtonStyle->draw(option, painter, widget, d->m_theme);
+        return;
+    }
+    case PE_IndicatorCheckBox:
+    {
+        d->m_checkBoxStyle->draw(option, painter, widget, d->m_theme);
+        return;
+    }
+    case PE_PanelMenu:
+    {
+        d->m_menuStyle->drawPrimitive(option, painter, d->m_theme, widget);
         return;
     }
     default:
-        QCommonStyle::drawPrimitive(pe, option, painter, widget);
         break;
     }
+    QCommonStyle::drawPrimitive(pe, option, painter, widget);
 }
 
 void VanillaStyle::drawControl(ControlElement element, const QStyleOption* option, QPainter* painter, const QWidget* widget) const
 {
+    Q_D(const VanillaStyle);
+
     switch (element)
     {
         /* PushButton */
@@ -47,55 +82,107 @@ void VanillaStyle::drawControl(ControlElement element, const QStyleOption* optio
     }
     case CE_PushButtonBevel:
     {
+        d->m_buttonStyle->draw(option, painter, widget, d->m_theme);
+        return;
     }
-    default:
+    case CE_PushButtonLabel:
+    {
+        if (const auto* optionButton = qstyleoption_cast<const QStyleOptionButton*>(option))
+        {
+            QStyleOptionButton copy = *optionButton;
+            //            mPushButtonStyle->adjustTextPalette(&copy);
+            QCommonStyle::drawControl(element, &copy, painter, widget);
+        }
+        return;
+    }
+
+        /* ProgressBar */
+    case CE_ProgressBar:
+    {
         QCommonStyle::drawControl(element, option, painter, widget);
+        return;
     }
+    case CE_ProgressBarGroove:
+    {
+        d->m_progressBarStyle->drawGroove(option, painter, widget, d->m_theme);
+        return;
+    }
+    case CE_ProgressBarContents:
+    {
+        d->m_progressBarStyle->drawContents(option, painter, widget);
+        return;
+    }
+    case CE_ProgressBarLabel:
+    {
+        d->m_progressBarStyle->drawText(option, painter, widget);
+        return;
+    }
+    case CE_FocusFrame:
+        return;
+    case CE_MenuItem:
+        d->m_menuStyle->drawMenuItem(option, painter, d->m_theme, widget);
+        return;
+    case CE_MenuVMargin:
+        // Nothing to draw.
+        return;
+    case CE_MenuHMargin:
+        // Nothing to draw.
+        return;
+    case CE_MenuEmptyArea:
+        // Nothing to draw.
+        return;
+    case CE_MenuTearoff:
+        return;
+    case CE_MenuBarItem:
+        d->m_menuStyle->drawMenuBarItem(option, painter, d->m_theme, widget);
+        return;
+    case CE_MenuBarEmptyArea:
+    {
+        //        painter->fillRect(option->rect, QColor(255, 255, 255));
+        return;
+    }
+    case CE_ToolBoxTabShape:
+        break;
+    case CE_ToolBoxTabLabel:
+        break;
+    case CE_ColumnViewGrip:
+        break;
+    case CE_ShapedFrame:
+        return;
+    default:
+        break;
+    }
+    QCommonStyle::drawControl(element, option, painter, widget);
 }
 
 void VanillaStyle::drawComplexControl(ComplexControl complexControl, const QStyleOptionComplex* opt, QPainter* painter, const QWidget* widget) const
 {
+    Q_D(const VanillaStyle);
+
     switch (complexControl)
     {
-    default:
-        QCommonStyle::drawComplexControl(complexControl, opt, painter, widget);
+    case CC_SpinBox:
+    {
+        d->m_spinBoxStyle->draw(opt, painter, widget, d->m_theme);
+        return;
     }
+    default:
+        break;
+    }
+    QCommonStyle::drawComplexControl(complexControl, opt, painter, widget);
 }
 
 int VanillaStyle::pixelMetric(PixelMetric pm, const QStyleOption* option, const QWidget* widget) const
 {
-    switch (pm)
-    {
-    case PM_IndicatorHeight:  // checkboxes
-    case PM_IndicatorWidth:
-    {
-        // checkboxes
-        //        return mCheckBoxStyle->indicatorSize();
-    }
-
-    case PM_ButtonShiftHorizontal:
-    case PM_ButtonShiftVertical:
-        return 0;  // no shift
-
-    default:
-        return QCommonStyle::pixelMetric(pm, option, widget);
-    }
+    return QCommonStyle::pixelMetric(pm, option, widget);
 }
 
 QSize VanillaStyle::sizeFromContents(ContentsType type, const QStyleOption* option, const QSize& contentsSize, const QWidget* widget) const
 {
     switch (type)
     {
-    case CT_PushButton:
-        //        if (const auto* buttonOption = qstyleoption_cast<const QStyleOptionButton*>(option))
-        //        {
-        //            return mPushButtonStyle->sizeFromContents(buttonOption, contentsSize, widget);
-        //        }
-        break;
-    case CT_RadioButton:
-    case CT_CheckBox:
-        return QCommonStyle::sizeFromContents(type, option, contentsSize, widget);
-
+    case CT_MenuBar:
+        return contentsSize;
     default:
         break;
     }
@@ -103,22 +190,14 @@ QSize VanillaStyle::sizeFromContents(ContentsType type, const QStyleOption* opti
 }
 QRect VanillaStyle::subElementRect(SubElement subElement, const QStyleOption* option, const QWidget* widget) const
 {
+    Q_D(const VanillaStyle);
     switch (subElement)
     {
     case SE_ProgressBarGroove:
     case SE_ProgressBarContents:
     case SE_ProgressBarLabel:
-        if (const auto* progressBarOption = qstyleoption_cast<const QStyleOptionProgressBar*>(option))
-        {
-            if (subElement == QStyle::SE_ProgressBarLabel)
-                return option->rect.adjusted(0, 0, -6, 0);  // right-align before the round rect
-            // The area for both groove and content is the whole rect. The drawing will take care of actual contents rect.
-            return option->rect;
-        }
-        break;
-
-    case SE_PushButtonBevel:
     {
+        return d->m_progressBarStyle->subElementRect(subElement, option, widget);
     }
     default:
         break;
@@ -127,84 +206,119 @@ QRect VanillaStyle::subElementRect(SubElement subElement, const QStyleOption* op
 }
 void VanillaStyle::polish(QWidget* w)
 {
+    Q_D(VanillaStyle);
+
+    QCommonStyle::polish(w);
     if (qobject_cast<QPushButton*>(w) || qobject_cast<QCheckBox*>(w))
     {
         w->setAttribute(Qt::WA_Hover);
     }
-    // if (qobject_cast<QScrollBar*>(w))
-    // {
-    //     w->setAttribute(Qt::WA_Hover, false);
-    // }
-    // if (const auto scrollBar = qobject_cast<QScrollBar*>(w))
-    // {
-    //     scrollBar->setAttribute(Qt::WA_OpaquePaintEvent, false);
-    // }
-    // w->setAttribute(Qt::WA_TranslucentBackground);
-    QCommonStyle::polish(w);
+
+    if (auto* menu = qobject_cast<QMenu*>(w))
+    {
+        d->m_menuStyle->eventFilter(menu);
+    }
 }
 bool VanillaStyle::eventFilter(QObject* obj, QEvent* event)
 {
     return QCommonStyle::eventFilter(obj, event);
 }
-void VanillaStyle::polish(QPalette& palette)
+
+void VanillaStyle::setConfigPath(const std::string& path)
 {
-    QCommonStyle::polish(palette);
-}
-void VanillaStyle::polish(QApplication* app)
-{
-    QCommonStyle::polish(app);
-}
-void VanillaStyle::unpolish(QWidget* w)
-{
-    QCommonStyle::unpolish(w);
-}
-void VanillaStyle::unpolish(QApplication* app)
-{
-    QCommonStyle::unpolish(app);
-}
-QIcon VanillaStyle::standardIcon(StandardPixmap standardIcon, const QStyleOption* opt, const QWidget* widget) const
-{
-    return QCommonStyle::standardIcon(standardIcon, opt, widget);
-}
-QPixmap VanillaStyle::standardPixmap(StandardPixmap sp, const QStyleOption* opt, const QWidget* widget) const
-{
-    return QCommonStyle::standardPixmap(sp, opt, widget);
-}
-QPixmap VanillaStyle::generatedIconPixmap(QIcon::Mode iconMode, const QPixmap& pixmap, const QStyleOption* opt) const
-{
-    return QCommonStyle::generatedIconPixmap(iconMode, pixmap, opt);
-}
-int VanillaStyle::layoutSpacing(QSizePolicy::ControlType control1, QSizePolicy::ControlType control2, Qt::Orientation orientation, const QStyleOption* option,
-                               const QWidget* widget) const
-{
-    return QCommonStyle::layoutSpacing(control1, control2, orientation, option, widget);
-}
-QStyle::SubControl VanillaStyle::hitTestComplexControl(ComplexControl cc, const QStyleOptionComplex* opt, const QPoint& pt, const QWidget* w) const
-{
-    return QCommonStyle::hitTestComplexControl(cc, opt, pt, w);
 }
 int VanillaStyle::styleHint(QStyle::StyleHint stylehint, const QStyleOption* option, const QWidget* widget, QStyleHintReturn* returnData) const
 {
     switch (stylehint)
     {
-    case SH_DialogButtonBox_ButtonsHaveIcons:
-        return 0;
+        // Menu
+    case SH_Menu_AllowActiveAndDisabled:
+        return false;
+    case SH_Menu_SpaceActivatesItem:
+        return true;
+    case SH_Menu_SubMenuPopupDelay:
+        return 300;
+    case SH_Menu_MouseTracking:
+        return true;
+    case SH_Menu_Scrollable:
+        return true;
+    case SH_Menu_SloppySubMenus:
+        break;
+    case SH_Menu_FillScreenWithScroll:
+        return true;
+    case SH_Menu_KeyboardSearch:
+        return true;
+    case SH_Menu_SelectionWrap:
+        return true;
+    case SH_Menu_Mask:
+        break;
+    case SH_Menu_FlashTriggeredItem:
+        return true;
+    case SH_Menu_FadeOutOnHide:
+        return true;
+    case SH_Menu_SupportsSections:
+        return false;
+    case SH_Menu_SubMenuUniDirection:
+        break;
+    case SH_Menu_SubMenuUniDirectionFailCount:
+        break;
+    case SH_Menu_SubMenuSloppySelectOtherActions:
+        break;
+    case SH_Menu_SubMenuSloppyCloseTimeout:
+        break;
+    case SH_Menu_SubMenuResetWhenReenteringParent:
+        break;
+    case SH_Menu_SubMenuDontStartSloppyOnLeave:
+        break;
+    case SH_UnderlineShortcut:
+        break;
     default:
         break;
     }
     return QCommonStyle::styleHint(stylehint, option, widget, returnData);
 }
-void VanillaStyle::setConfigPath(const std::string& path)
+QRect VanillaStyle::subControlRect(QStyle::ComplexControl control, const QStyleOptionComplex* option, QStyle::SubControl subControl,
+                                   const QWidget* widget) const
 {
-    Q_D(VanillaStyle);
-    d->m_theme->setConfig(path);
+    Q_D(const VanillaStyle);
+
+    switch (control)
+    {
+    case CC_SpinBox:
+    {
+        return d->m_spinBoxStyle->subControlRect(control, option, subControl, widget);
+    }
+    case CC_ComboBox:
+        break;
+    case CC_ScrollBar:
+        break;
+    case CC_Slider:
+        break;
+    case CC_ToolButton:
+        break;
+    case CC_TitleBar:
+        break;
+    case CC_Dial:
+        break;
+    case CC_GroupBox:
+        break;
+    case CC_MdiControls:
+        break;
+    case CC_CustomBase:
+        break;
+    }
+    return QCommonStyle::subControlRect(control, option, subControl, widget);
 }
 
 VanillaStylePrivate::VanillaStylePrivate(VanillaStyle* q)
     : q_ptr(q)
-    , m_theme(std::make_shared<Theme>())
-    , m_checkBoxStyle(std::make_shared<CheckBoxStyle>())
+    , m_theme(new Theme())
+    , m_checkBoxStyle(new CheckBoxStyle())
+    , m_radioButtonStyle(new RadioButtonStyle())
+    , m_buttonStyle(new ButtonStyle())
+    , m_progressBarStyle(new ProgressBarStyle())
+    , m_menuStyle(new MenuStyle())
+    , m_spinBoxStyle(new SpinBoxStyle())
 {
-//    auto error = m_config->readConfig(m_styleConfig);
 }
 }  // namespace VanillaStyle

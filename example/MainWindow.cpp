@@ -1,16 +1,13 @@
 #include "MainWindow.h"
-// #include "Theme.h"
 #include "ui_MainWindow.h"
-// #include "Widgets/ToggleButton.h"
-// #include "Widgets/SwitchButton.h"
 #include <QWKCore/styleagent.h>
-
 #include <QWKWidgets/widgetwindowagent.h>
 #include <QTimer>
 #include <QButtonGroup>
 #include <QColorDialog>
 #include <QShortcut>
 #include <QtGui/QPainter>
+#include "VanillaStyle/Widgets/SwitchButton.h"
 // #include <Theme.h>
 
 MainWindow::MainWindow(QWidget* parent)
@@ -24,7 +21,7 @@ MainWindow::MainWindow(QWidget* parent)
     m_timer->setInterval(50);
     // ui->lineEdit->setDisabled(true);
 
-    // ui->horizontalLayout_7->insertWidget(0, new SwitchButton(this));
+    ui->horizontalLayout_7->insertWidget(0, new VanillaStyle::SwitchButton(this));
 
     // QStringList list;
     // list << ":grid.svg"
@@ -118,7 +115,7 @@ void MainWindow::installWindowAgent()
 }
 void MainWindow::paintEvent(QPaintEvent* event)
 {
-    QMainWindow::paintEvent(event);
+//    QMainWindow::paintEvent(event);
     QPainter painter(this);
     painter.setCompositionMode(QPainter::CompositionMode_Clear);
     painter.fillRect(event->rect(), Qt::transparent);

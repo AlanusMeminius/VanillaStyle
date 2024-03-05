@@ -51,35 +51,38 @@ class Color : public Basic
 public:
     QColor backgroundColor;
     QColor textColor;
-    QColor primaryColor;
+    QColor primaryColorHovered;
+    QColor buttonHoveredColor;
     std::string toString()
     {
         nlohmann::json json;
         to_json(json, *this);
         return json.dump(4);
     }
-    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Color, backgroundColor, textColor, primaryColor);
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Color, backgroundColor, textColor, primaryColorHovered, buttonHoveredColor);
 };
 
 class Size : public Basic
 {
 public:
-    int fontSize;
-    int borderWidth;
-    int iconSize;
-
+    int fontSize{};
+    int borderWidth{};
+    int iconSize{};
+    int buttonRadius{};
     std::string toString()
     {
         nlohmann::json json;
         to_json(json, *this);
         return json.dump(4);
     }
-    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Size, fontSize, borderWidth, iconSize);
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Size, fontSize, borderWidth, iconSize, buttonRadius);
 };
 
-class ThemeConfig : public Basic
+class StyleConfig : public Basic
 {
 public:
+    std::string name;
+    std::string author;
     std::string mode;
     Color color;
     Size size;
@@ -90,38 +93,24 @@ public:
         to_json(json, *this);
         return json.dump(4);
     }
-    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(ThemeConfig, mode, color, size);
+
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(StyleConfig, name, author, mode, color, size);
 };
 
-class StyleConfig : public Basic
+class ConfigManager
 {
 public:
-    std::string name;
-    std::string author;
-    std::vector<ThemeConfig> themes;
-
-    std::string toString()
+    enum ErrorCode
     {
-        nlohmann::json json;
-        to_json(json, *this);
-        return json.dump(4);
-    }
-
-    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(StyleConfig, name, author, themes);
-};
-
-class Config
-{
-public:
-    enum ErrorCode {
         NoError,
         FileNotFound,
         ParseError
     };
-    explicit Config();
+    explicit ConfigManager();
     void setConfigPath(const std::string& path);
     static StyleConfig defaultConfig();
     ErrorCode readConfig(StyleConfig& config) const;
+
 private:
     std::string m_configPath;
 };
