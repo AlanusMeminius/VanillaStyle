@@ -16,21 +16,12 @@ void SpinBoxStyle::draw(const QStyleOptionComplex* option, QPainter* painter, co
             const auto upButtonRect = subControlRect(QStyle::CC_SpinBox, option, QStyle::SC_SpinBoxUp, widget);
             if (upButtonRect.isValid())
             {
+                // 画按钮
                 painter->setPen(Qt::NoPen);
                 painter->setBrush(QColor(255, 12, 23));
-                painter->drawRoundedRect(upButtonRect, radius, radius);
-
-                painter->setPen(QPen(QColor(123, 23, 34), 8, Qt::SolidLine, Qt::FlatCap));
-                painter->setBrush(Qt::NoBrush);
-                auto rect = upButtonRect.adjusted(4, 4, -4, -4);
-                const auto p1 = QPointF{(1. / 8.) * rect.width() + rect.x(), (5. / 8.) * rect.width() + rect.y()};
-                const auto p2 = QPointF{(4. / 8.) * rect.width() + rect.x(), (2. / 8.) * rect.width() + rect.y()};
-                const auto p3 = QPointF{(7. / 8.) * rect.width() + rect.x(), (5. / 8.) * rect.width() + rect.y()};
-                QPainterPath path;
-                path.moveTo(p1);
-                path.lineTo(p2);
-                path.lineTo(p3);
-                painter->drawPath(path);
+                // painter->drawRoundedRect(upButtonRect, radius, radius);
+                // 画按钮上的箭头
+                drawUpArrow(painter, upButtonRect, QColor(255, 255, 255));
             }
 
             const auto downButtonRect = subControlRect(QStyle::CC_SpinBox, option, QStyle::SC_SpinBoxDown, widget);
@@ -39,19 +30,9 @@ void SpinBoxStyle::draw(const QStyleOptionComplex* option, QPainter* painter, co
             {
                 painter->setPen(Qt::NoPen);
                 painter->setBrush(QColor(255, 12, 23));
-                painter->drawRoundedRect(downButtonRect, radius, radius);
+                // painter->drawRoundedRect(downButtonRect, radius, radius);
 
-                painter->setPen(QPen(QColor(123, 23, 34), 8, Qt::SolidLine, Qt::FlatCap));
-                painter->setBrush(Qt::NoBrush);
-                auto rect = downButtonRect.adjusted(4, 4, -4, -4);
-                const auto p1 = QPointF{(1. / 8.) * rect.width() + rect.x(), (3. / 8.) * rect.width() + rect.y()};
-                const auto p2 = QPointF{(4. / 8.) * rect.width() + rect.x(), (6. / 8.) * rect.width() + rect.y()};
-                const auto p3 = QPointF{(7. / 8.) * rect.width() + rect.x(), (3. / 8.) * rect.width() + rect.y()};
-                QPainterPath path;
-                path.moveTo(p1);
-                path.lineTo(p2);
-                path.lineTo(p3);
-                painter->drawPath(path);
+                drawDownArrow(painter, downButtonRect, QColor(255, 255, 255));
             }
         }
     }
@@ -76,11 +57,8 @@ QRect SpinBoxStyle::subControlRect(QStyle::ComplexControl control, const QStyleO
                     const auto buttonY = totalRect.top();
                     return QRect{buttonX, buttonY, buttonW, buttonH};
                 }
-                else
-                {
-                    return {};
-                }
-                break;
+                return {};
+
             case QStyle::SC_SpinBoxDown:
                 if (spinboxOpt->buttonSymbols != QAbstractSpinBox::NoButtons)
                 {
@@ -92,11 +70,9 @@ QRect SpinBoxStyle::subControlRect(QStyle::ComplexControl control, const QStyleO
                     const auto buttonY = totalRect.bottom() + 1 - buttonH;  // cf. Qt documentation.
                     return QRect{buttonX, buttonY, buttonW, buttonH};
                 }
-                else
-                {
-                    return {};
-                }
-                break;
+
+                return {};
+
             case QStyle::SC_SpinBoxEditField:
                 if (spinboxOpt->buttonSymbols != QAbstractSpinBox::NoButtons)
                 {
@@ -105,14 +81,10 @@ QRect SpinBoxStyle::subControlRect(QStyle::ComplexControl control, const QStyleO
                     const auto& totalRect = spinboxOpt->rect;
                     return QRect{totalRect.x(), totalRect.y(), totalRect.width() - buttonW, totalRect.height()};
                 }
-                else
-                {
-                    return spinboxOpt->rect;
-                }
-                break;
+                return spinboxOpt->rect;
+
             case QStyle::SC_SpinBoxFrame:
                 return option->rect;
-                break;
             default:
                 break;
             }
@@ -122,7 +94,7 @@ QRect SpinBoxStyle::subControlRect(QStyle::ComplexControl control, const QStyleO
 }
 int SpinBoxStyle::pixelMetric(QStyle::PixelMetric pm, const QStyleOption* option, const QWidget* widget) const
 {
-    return 18;
+    return 12;
 }
 
 }  // namespace VanillaStyle

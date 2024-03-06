@@ -42,6 +42,8 @@ public:
     void setConfig(const std::string& configPath);
 
     QPalette palette;
+    void initPalette();
+    QPalette standardPalette() const;
     [[nodiscard]] int getRadius(RadiusRole radiusRole) const;
     [[nodiscard]] int getBorder(BorderRole borderRole) const;
     QBrush getBrush(const QStyleOption* option, const QBrush& brush, QPalette::ColorGroup group, QPalette::ColorRole role) const;

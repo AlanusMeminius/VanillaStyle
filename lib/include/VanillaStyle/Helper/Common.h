@@ -12,6 +12,8 @@ QPixmap switchPixColor(const QPixmap& original, const QColor& color);
 QPixmap renderSvgToPixmap(const QString& path, int size, int ratio);
 QIcon createIcon(const QString& path, int size);
 
+void renderSvgFromString(const std::string& svg, QPainter* painter, const QRect& rect);
+
 QPixmap roundedPixmap(QPixmap const& input, double radius);
 
 QImage blurImage(const QImage& original, double sigma);
@@ -22,4 +24,7 @@ QImage extendedImage(const T& input, int padding);
 
 QPixmap shadowPixmap(QPixmap const& original, double blurRadius, QColor const& color);
 QPixmap shadowPixmap(QSize const& size, double borderRadius, double blurRadius, QColor const& color);
+
+void drawUpArrow(QPainter* painter, const QRect& rect, const QColor& color);
+void drawDownArrow(QPainter* painter, const QRect& rect, const QColor& color);
 }  // namespace VanillaStyle

@@ -10,12 +10,12 @@ void CheckBoxStyle::draw(const QStyleOption* option, QPainter* painter, const QW
     if (const auto* optionButton = qstyleoption_cast<const QStyleOptionButton*>(option))
     {
         // 计算rect
-        auto rect = QRectF(optionButton->rect);
+        const auto rect = QRectF(optionButton->rect);
         // 获取颜色
-        auto bgColor = theme->checkBtnBgColor(option);
+        const auto bgColor = theme->checkBtnBgColor(option);
         //        auto bgColor = QColor(10, 255, 255);
-        auto border = theme->getBorder(Theme::ButtonBorder);
-        auto radius = theme->getRadius(Theme::ButtonRadius);
+        const auto border = theme->getBorder(Theme::ButtonBorder);
+        const auto radius = theme->getRadius(Theme::ButtonRadius);
         painter->setRenderHints(QPainter::Antialiasing);
         if (radius < 1)
         {
@@ -25,8 +25,8 @@ void CheckBoxStyle::draw(const QStyleOption* option, QPainter* painter, const QW
         {
             painter->setPen(Qt::NoPen);
             painter->setBrush(QColor(10, 255, 255));
-            auto margins = QMarginsF(border / 2., border / 2., border / 2., border / 2.);
-            auto buttonRect = border > 0.1 ? rect.marginsRemoved(margins) : rect;
+            const auto margins = QMarginsF(border / 2., border / 2., border / 2., border / 2.);
+            const auto buttonRect = border > 0.1 ? rect.marginsRemoved(margins) : rect;
 
             painter->drawRoundedRect(buttonRect, radius, radius);
         }

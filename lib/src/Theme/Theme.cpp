@@ -1,11 +1,12 @@
 #include "VanillaStyle/Theme/Theme.h"
-
+#include <QToolTip>
 namespace VanillaStyle
 {
 Theme::Theme()
     : configManager(std::make_shared<ConfigManager>())
 {
     styleConfig = std::make_shared<VanillaStyle::StyleConfig>(configManager->defaultConfig());
+    initPalette();
 }
 void Theme::setConfig(const std::string& configPath)
 {
@@ -15,6 +16,22 @@ void Theme::setConfig(const std::string& configPath)
     {
         //        styleConfig = configManager->defaultConfig();
     }
+}
+void Theme::initPalette()
+{
+    palette.setColor(QPalette::Window, Qt::transparent);
+    palette.setColor(QPalette::Base, styleConfig->color.backgroundColor);
+    palette.setColor(QPalette::WindowText, styleConfig->color.textColor);
+    palette.setColor(QPalette::Text, styleConfig->color.textColor);
+    palette.setColor(QPalette::Highlight, QColor(0x53, 0x94, 0x9f));
+
+    // Text color on buttons
+    palette.setColor(QPalette::ButtonText, styleConfig->color.textColor);
+
+    // pal.setColor(QPalette::ToolTipBase, baseBackground());
+    palette.setColor(QPalette::ToolTipText, styleConfig->color.textColor);
+
+    QToolTip::setPalette(palette);
 }
 Theme::State Theme::stateAdapter(const QStyleOption* option)
 {
@@ -92,7 +109,11 @@ QColor Theme::getColor(const QStyleOption* option, QPalette::ColorRole role) con
     return getBrush(option, option->palette.brush(role), option->palette.currentColorGroup(), role).color();
 }
 
-int Theme::getRadius(RadiusRole radiusRole) const
+QPalette Theme::standardPalette() const
+{
+    return palette;
+}
+int Theme::getRadius(const RadiusRole radiusRole) const
 {
     switch (radiusRole)
     {
@@ -104,11 +125,12 @@ int Theme::getRadius(RadiusRole radiusRole) const
         return 5;
     }
 }
-int Theme::getBorder(Theme::BorderRole borderRole) const
+int Theme::getBorder(const BorderRole borderRole) const
 {
     switch (borderRole)
     {
-    case ButtonBorder:{
+    case ButtonBorder:
+    {
         return styleConfig->size.borderWidth;
     }
     default:

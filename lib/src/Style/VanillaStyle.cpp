@@ -1,7 +1,6 @@
 #include <QPushButton>
 #include <QCheckBox>
 #include <QMenu>
-#include <QPainter>
 #include <QPainterPath>
 #include "VanillaStyle/Style/VanillaStyle.h"
 #include "VanillaStyle_p.h"
@@ -12,6 +11,10 @@ namespace VanillaStyle
 VanillaStyle::VanillaStyle()
     : d_ptr(new VanillaStylePrivate(this))
 {
+    Q_D(VanillaStyle);
+
+    const auto palette = d->m_theme->palette;
+    QApplication::setPalette(palette);
 }
 
 void VanillaStyle::drawPrimitive(PrimitiveElement pe, const QStyleOption* option, QPainter* painter, const QWidget* widget) const
@@ -26,7 +29,7 @@ void VanillaStyle::drawPrimitive(PrimitiveElement pe, const QStyleOption* option
     case PE_FrameDockWidget:
         break;
     case PE_FrameFocusRect:
-        break;
+        return;
     case PE_FrameGroupBox:
         break;
     case PE_FrameLineEdit:
@@ -63,6 +66,73 @@ void VanillaStyle::drawPrimitive(PrimitiveElement pe, const QStyleOption* option
         return;
     }
     default:
+        break;
+    case PE_FrameButtonBevel:
+        break;
+    case PE_FrameButtonTool:
+        break;
+    case PE_FrameTabBarBase:
+        break;
+    case PE_PanelButtonCommand:
+        break;
+    case PE_PanelButtonBevel:
+        break;
+    case PE_PanelButtonTool:
+        break;
+    case PE_PanelToolBar:
+        break;
+    case PE_PanelLineEdit:
+        d->m_lineEditStyle->draw(option, painter, widget, d->m_theme);
+        return;
+    case PE_IndicatorArrowDown:
+        break;
+    case PE_IndicatorArrowLeft:
+        break;
+    case PE_IndicatorArrowRight:
+        break;
+    case PE_IndicatorArrowUp:
+        break;
+    case PE_IndicatorBranch:
+        break;
+    case PE_IndicatorButtonDropDown:
+        break;
+    case PE_IndicatorItemViewItemCheck:
+        break;
+    case PE_IndicatorDockWidgetResizeHandle:
+        break;
+    case PE_IndicatorHeaderArrow:
+        break;
+    case PE_IndicatorMenuCheckMark:
+        break;
+    case PE_IndicatorProgressChunk:
+        break;
+    case PE_IndicatorSpinDown:
+        break;
+    case PE_IndicatorSpinMinus:
+        break;
+    case PE_IndicatorSpinPlus:
+        break;
+    case PE_IndicatorSpinUp:
+        break;
+    case PE_IndicatorToolBarHandle:
+        break;
+    case PE_IndicatorToolBarSeparator:
+        break;
+    case PE_PanelTipLabel:
+        break;
+    case PE_IndicatorTabTear:
+        break;
+    case PE_PanelScrollAreaCorner:
+        break;
+    case PE_PanelItemViewItem:
+        break;
+    case PE_PanelItemViewRow:
+        break;
+    case PE_PanelStatusBar:
+        break;
+    case PE_IndicatorTabClose:
+        break;
+    case PE_IndicatorTabTearRight:
         break;
     }
     QCommonStyle::drawPrimitive(pe, option, painter, widget);
@@ -138,7 +208,6 @@ void VanillaStyle::drawControl(ControlElement element, const QStyleOption* optio
         return;
     case CE_MenuBarEmptyArea:
     {
-        //        painter->fillRect(option->rect, QColor(255, 255, 255));
         return;
     }
     case CE_ToolBoxTabShape:
@@ -149,6 +218,62 @@ void VanillaStyle::drawControl(ControlElement element, const QStyleOption* optio
         break;
     case CE_ShapedFrame:
         return;
+    case CE_CheckBox:
+        break;
+    case CE_CheckBoxLabel:
+        break;
+    case CE_RadioButton:
+        break;
+    case CE_RadioButtonLabel:
+        break;
+    case CE_TabBarTab:
+        break;
+    case CE_TabBarTabShape:
+        break;
+    case CE_TabBarTabLabel:
+        break;
+    case CE_MenuScroller:
+        break;
+    case CE_ToolButtonLabel:
+        break;
+    case CE_Header:
+        break;
+    case CE_HeaderSection:
+        break;
+    case CE_HeaderLabel:
+        break;
+    case CE_ToolBoxTab:
+        break;
+    case CE_SizeGrip:
+        break;
+    case CE_Splitter:
+        break;
+    case CE_RubberBand:
+        break;
+    case CE_DockWidgetTitle:
+        break;
+    case CE_ScrollBarAddLine:
+        break;
+    case CE_ScrollBarSubLine:
+        break;
+    case CE_ScrollBarAddPage:
+        break;
+    case CE_ScrollBarSubPage:
+        break;
+    case CE_ScrollBarSlider:
+        break;
+    case CE_ScrollBarFirst:
+        break;
+    case CE_ScrollBarLast:
+        break;
+    case CE_ComboBoxLabel:
+        break;
+    case CE_ToolBar:
+        break;
+    case CE_HeaderEmptyArea:
+        break;
+    case CE_ItemViewItem:
+        break;
     default:
         break;
     }
@@ -198,6 +323,10 @@ QRect VanillaStyle::subElementRect(SubElement subElement, const QStyleOption* op
     case SE_ProgressBarLabel:
     {
         return d->m_progressBarStyle->subElementRect(subElement, option, widget);
+    }
+    case SE_LineEditContents:
+    {
+        return d->m_lineEditStyle->subElementRect(subElement, option, widget);
     }
     default:
         break;
@@ -277,6 +406,7 @@ int VanillaStyle::styleHint(QStyle::StyleHint stylehint, const QStyleOption* opt
     }
     return QCommonStyle::styleHint(stylehint, option, widget, returnData);
 }
+
 QRect VanillaStyle::subControlRect(QStyle::ComplexControl control, const QStyleOptionComplex* option, QStyle::SubControl subControl,
                                    const QWidget* widget) const
 {
@@ -319,6 +449,10 @@ VanillaStylePrivate::VanillaStylePrivate(VanillaStyle* q)
     , m_progressBarStyle(new ProgressBarStyle())
     , m_menuStyle(new MenuStyle())
     , m_spinBoxStyle(new SpinBoxStyle())
+    , m_lineEditStyle(new LineEditStyle())
+    , m_comboBoxStyle(new ComboBoxStyle())
+
 {
+
 }
 }  // namespace VanillaStyle
