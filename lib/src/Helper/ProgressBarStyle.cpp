@@ -7,12 +7,14 @@ void ProgressBarStyle::drawGroove(const QStyleOption* option, QPainter* painter,
 {
     if (const auto* progressBarOption = qstyleoption_cast<const QStyleOptionProgressBar*>(option))
     {
-        auto radius = theme->getRadius(Theme::ButtonRadius);
+        // auto radius = theme->getRadius(Theme::ButtonRadius);
         painter->setRenderHint(QPainter::Antialiasing);
         // buttonOutlineColor
         painter->setPen(QColor(198, 220, 186));
         // baseBackground
         painter->setBrush(QBrush(QColor(198, 220, 186)));
+        const qreal radius = option->rect.height() / 2;
+
         painter->drawRoundedRect(QRectF(progressBarOption->rect), radius, radius);
     }
 }
@@ -39,11 +41,9 @@ void ProgressBarStyle::drawContents(const QStyleOption* option, QPainter* painte
         const qreal radius = progressBarOption->rect.height() / 2 - 2.5;
         painter->drawRoundedRect(QRectF(progressRect).adjusted(0.5, 0.5, -0.5, -0.5), radius, radius);
 
-        // Additional trick: the groove itself gets a gradient until the current X value
         QRect repaintedGrooveRect = option->rect;
         repaintedGrooveRect.setWidth(double(value) / double(range) * repaintedGrooveRect.width());
         painter->setClipRect(repaintedGrooveRect);
-        // progressBarOutlineFadingBrush
         painter->setPen(QPen(QColor(198, 210, 156)));
         painter->setBrush(Qt::NoBrush);
         painter->setOpacity(0.43);

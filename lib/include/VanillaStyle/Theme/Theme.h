@@ -10,22 +10,34 @@ class Theme
 public:
     enum State
     {
-        NormalState = 0x00000000,
-        HoverState = 0x00000001,
-        PressState = 0x00000002,
-        DisabledState = 0x00000003,
-        StateCustomBase = 0x000000f0,
+        Normal = 0x00000000,
+        Hover = 0x00000001,
+        Press=0x00000002,
+        StateBase = 0x000000f0,
 
         Flag = 0x000000ff,
-        CheckedFlag = 0x00000100,
-        SelectedFlag = 0x00000200,
-        FocusFlag = 0x00000300,
-        FlagCustomBase = 0xf00000
+        Selected = 0x00000100,
+        Focus =0x00000200,
+        Checked = 0x00000300,
+        FlagBase = 0xf00000,
     };
-    Q_DECLARE_FLAGS(Flags, State)
+    Q_DECLARE_FLAGS(StateFlags, State)
 
-    static State stateAdapter(const QStyleOption *option);
-    static Flags flagsAdapter(const QStyleOption *option);
+    static State state(const QStyleOption *option);
+    static StateFlags flags(const QStyleOption* option);
+    enum ColorRole
+    {
+        Text,
+        ButtonForeground,
+        ButtonBackground,
+    };
+
+    enum PainterRole
+    {
+        Button,
+        RadioButton,
+        CheckBox,
+    };
 
     enum RadiusRole {
         NormalRadius,
@@ -43,18 +55,22 @@ public:
 
     QPalette palette;
     void initPalette();
-    QPalette standardPalette() const;
+    [[nodiscard]] QPalette standardPalette() const;
     [[nodiscard]] int getRadius(RadiusRole radiusRole) const;
     [[nodiscard]] int getBorder(BorderRole borderRole) const;
-    QBrush getBrush(const QStyleOption* option, const QBrush& brush, QPalette::ColorGroup group, QPalette::ColorRole role) const;
-    QBrush getBrush(State state, const QStyleOption* option, const QBrush& brush, QPalette::ColorGroup group, QPalette::ColorRole role) const;
-    [[nodiscard]] QBrush getBrush(Flags flags, const QBrush& brush, QPalette::ColorGroup group, QPalette::ColorRole role) const;
-    QColor getColor(const QStyleOption *option, QPalette::ColorRole role) const;
 
-    QColor checkBtnBgColor(const QStyleOption* option) const;
-    QColor checkBtnFgColor(const QStyleOption* option) const;
+    QColor getColor(const QStyleOption* option, ColorRole role) const;
+    QColor createColor(State state, const QStyleOption* option, ColorRole role) const;
+    QColor createColor(StateFlags flags, const QStyleOption* option, ColorRole role) const;
+
+    void setupPainter(const QStyleOption* option, QPainter* painter, PainterRole role) const;
+    void setupButtonPainter(const QStyleOption* option, QPainter* painter) const;
+    void setupRaioPainter(const QStyleOption* option, QPainter* painter) const;
+
+    void adjustTextPalette(QStyleOptionButton* option) const;
 private:
     std::shared_ptr<ConfigManager> configManager;
     std::shared_ptr<StyleConfig> styleConfig;
+    std::shared_ptr<Color> colorConfig = nullptr;
 };
 }  // namespace VanillaStyle

@@ -38,14 +38,23 @@ VanillaStyle::StyleConfig VanillaStyle::ConfigManager::defaultConfig()
     "color": {
         "backgroundColor": "#0xFFFFFF",
         "textColor": "#0x1890FF",
+        "pressedTextColor": "#344955FF",
+        "hoverTextColor": "#50727BFF",
         "primaryColorHovered": "#0x2C9DFF",
-        "buttonHoveredColor": "#0x2C9DFF"
+        "buttonForeground": "#9F95A3FF",
+        "buttonBackground": "#F5F4F5FF",
+        "buttonHoveredForeground": "#53949FFF",
+        "buttonHoveredBackground": "#53949FFF",
+        "buttonPressedForeground": "#322D35FF",
+        "buttonPressedBackground": "#F8F7F8FF"
     },
     "size": {
         "fontSize": 12,
         "borderWidth": 1,
         "iconSize": 16,
-        "buttonRadius": 4
+        "normalRadius": 4,
+        "buttonRadius": 4,
+        "menuItemRadius": 4
     }
 }
 )"_json;

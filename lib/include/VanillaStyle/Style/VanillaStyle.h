@@ -14,6 +14,7 @@ class VanillaStyle : public QCommonStyle
 public:
     explicit VanillaStyle();
 
+    QPalette getStandardPalette() const;
     void drawPrimitive(PrimitiveElement pe, const QStyleOption* option, QPainter* painter, const QWidget* widget = nullptr) const override;
     int pixelMetric(PixelMetric pm, const QStyleOption* option = nullptr, const QWidget* widget = nullptr) const override;
     void drawControl(ControlElement element, const QStyleOption* option, QPainter* painter, const QWidget* widget = nullptr) const override;
@@ -26,7 +27,8 @@ public:
     bool eventFilter(QObject* obj, QEvent* event) override;
 
     void setConfigPath(const std::string& path);
-
+    QColor handleColor();
+    QColor buttonBackgroud();
 private:
     Q_DECLARE_PRIVATE(VanillaStyle);
     Q_DISABLE_COPY(VanillaStyle);

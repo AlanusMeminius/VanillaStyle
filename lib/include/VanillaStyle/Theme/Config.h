@@ -51,15 +51,24 @@ class Color : public Basic
 public:
     QColor backgroundColor;
     QColor textColor;
+    QColor pressedTextColor;
+    QColor hoverTextColor;
     QColor primaryColorHovered;
-    QColor buttonHoveredColor;
+    QColor buttonForeground;
+    QColor buttonBackground;
+    QColor buttonHoveredForeground;
+    QColor buttonHoveredBackground;
+    QColor buttonPressedForeground;
+    QColor buttonPressedBackground;
     std::string toString()
     {
         nlohmann::json json;
         to_json(json, *this);
         return json.dump(4);
     }
-    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Color, backgroundColor, textColor, primaryColorHovered, buttonHoveredColor);
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Color, backgroundColor, textColor, pressedTextColor, hoverTextColor, primaryColorHovered, buttonForeground,
+                                                buttonBackground, buttonHoveredForeground, buttonPressedForeground, buttonHoveredBackground,
+                                                buttonPressedBackground);
 };
 
 class Size : public Basic
@@ -68,14 +77,16 @@ public:
     int fontSize{};
     int borderWidth{};
     int iconSize{};
+    int normalRadius{};
     int buttonRadius{};
+    int menuItemRadius{};
     std::string toString()
     {
         nlohmann::json json;
         to_json(json, *this);
         return json.dump(4);
     }
-    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Size, fontSize, borderWidth, iconSize, buttonRadius);
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Size, fontSize, borderWidth, iconSize, normalRadius, buttonRadius);
 };
 
 class StyleConfig : public Basic

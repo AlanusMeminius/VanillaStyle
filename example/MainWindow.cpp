@@ -8,6 +8,7 @@
 #include <QShortcut>
 #include <QtGui/QPainter>
 #include "VanillaStyle/Widgets/SwitchButton.h"
+#include "VanillaStyle/Widgets/ToggleButton.h"
 // #include <Theme.h>
 
 MainWindow::MainWindow(QWidget* parent)
@@ -20,30 +21,29 @@ MainWindow::MainWindow(QWidget* parent)
     ui->setupUi(this);
     m_timer->setInterval(50);
     // ui->lineEdit->setDisabled(true);
-
     ui->horizontalLayout_7->insertWidget(0, new VanillaStyle::SwitchButton(this));
 
-    // QStringList list;
-    // list << ":grid.svg"
-    //      << ":list.svg"
-    //      << ":download.svg";
-    //
-    // const auto iconToggleButton = new ToggleButton(list, this);
-    // iconToggleButton->setUseIcon(true);
-    // iconToggleButton->setColumnWidth(50);
-    // ui->horizontalLayout_3->addWidget(iconToggleButton);
-    //
-    // QStringList textList;
-    // textList << "Default"
-    //          << "Account"
-    //          << "Advance";
-    // const auto textToggleButton = new ToggleButton(textList, this);
-    // textToggleButton->setUseIcon(false);
-    // textToggleButton->setColumnWidth(100);
-    // ui->horizontalLayout_3->addWidget(textToggleButton);
+    QStringList list;
+    list << ":grid.svg"
+         << ":list.svg"
+         << ":download.svg";
+
+    const auto iconToggleButton = new VanillaStyle::ToggleButton(list, this);
+    iconToggleButton->setUseIcon(true);
+    iconToggleButton->setColumnWidth(50);
+    ui->horizontalLayout_3->addWidget(iconToggleButton);
+
+    QStringList textList;
+    textList << "Default"
+             << "Account"
+             << "Advance";
+    const auto textToggleButton = new VanillaStyle::ToggleButton(textList, this);
+    textToggleButton->setUseIcon(false);
+    textToggleButton->setColumnWidth(100);
+    ui->horizontalLayout_3->addWidget(textToggleButton);
 
     ui->radioButton->setChecked(true);
-    setTheme(true);
+    // setTheme(true);
     connect(ui->radioButton, &QRadioButton::clicked, this, [this]() {
         setTheme(true);
     });
@@ -113,10 +113,10 @@ void MainWindow::installWindowAgent()
     windowAgent->setTitleBar(bar);
     setMenuWidget(bar);
 }
-void MainWindow::paintEvent(QPaintEvent* event)
-{
-//    QMainWindow::paintEvent(event);
-    QPainter painter(this);
-    painter.setCompositionMode(QPainter::CompositionMode_Clear);
-    painter.fillRect(event->rect(), Qt::transparent);
-}
+// void MainWindow::paintEvent(QPaintEvent* event)
+// {
+//     QMainWindow::paintEvent(event);
+//     // QPainter painter(this);
+//     // painter.setCompositionMode(QPainter::CompositionMode_Clear);
+//     // painter.fillRect(event->rect(), Qt::transparent);
+// }

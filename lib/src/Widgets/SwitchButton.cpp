@@ -31,7 +31,7 @@ void SwitchButton::paintEvent(QPaintEvent* event)
     Q_D(SwitchButton);
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
-    painter.setPen(QColor(0, 0, 0));
+    painter.setPen(QColor(0x9f, 0x95, 0xa3));
     const auto radius = height() / 2;
     painter.drawRoundedRect(QRectF(rect()).adjusted(1, 1, -1, -1), radius, radius);
 

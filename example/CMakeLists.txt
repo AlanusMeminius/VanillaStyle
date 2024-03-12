@@ -19,5 +19,6 @@ add_executable(Example main.cpp
 target_link_libraries(Example
         PRIVATE VanillaStyle
         Qt::Core Qt::Gui Qt::Widgets Qt::Svg
+        QWindowKit::Core
         QWindowKit::Widgets
 )

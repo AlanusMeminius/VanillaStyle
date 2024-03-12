@@ -17,15 +17,15 @@ public:
     explicit VanillaStylePrivate(VanillaStyle* q);
 
 private:
-    Theme* m_theme;
-    std::shared_ptr<CheckBoxStyle> m_checkBoxStyle;
-    std::shared_ptr<RadioButtonStyle> m_radioButtonStyle;
-    std::shared_ptr<ButtonStyle> m_buttonStyle;
-    std::shared_ptr<ProgressBarStyle> m_progressBarStyle;
-    std::shared_ptr<MenuStyle> m_menuStyle;
-    std::shared_ptr<SpinBoxStyle> m_spinBoxStyle;
-    std::shared_ptr<LineEditStyle> m_lineEditStyle;
-    std::shared_ptr<ComboBoxStyle> m_comboBoxStyle;
+    Theme* theme;
+    std::shared_ptr<CheckBoxStyle> checkBoxStyle;
+    std::shared_ptr<RadioButtonStyle> radioButtonStyle;
+    std::shared_ptr<ButtonStyle> buttonStyle;
+    std::shared_ptr<ProgressBarStyle> progressBarStyle;
+    std::shared_ptr<MenuStyle> menuStyle;
+    std::shared_ptr<SpinBoxStyle> spinBoxStyle;
+    std::shared_ptr<LineEditStyle> lineEditStyle;
+    std::shared_ptr<ComboBoxStyle> comboBoxStyle;
 private:
     VanillaStyle* const q_ptr;
     Q_DECLARE_PUBLIC(VanillaStyle);

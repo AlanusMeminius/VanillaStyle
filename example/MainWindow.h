@@ -21,7 +21,7 @@ Q_OBJECT
 public:
 
     explicit MainWindow(QWidget *parent = nullptr);
-    ~MainWindow() override;
+    ~MainWindow();
 
     void setTheme(bool theme);
 
@@ -37,8 +37,8 @@ private:
     void installWindowAgent();
     QWK::WidgetWindowAgent* windowAgent;
 
-protected:
-    void paintEvent(QPaintEvent* event) override;
+// protected:
+    // void paintEvent(QPaintEvent* event) override;
 };
 
 

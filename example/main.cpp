@@ -6,12 +6,11 @@
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
-//    VanillaStyle::Style::setStyle();
-    auto style = new VanillaStyle::VanillaStyle();
-//    auto style = new CustomStyle();
-    qApp->setStyle(style);
-//    app.setStyle(style);
     MainWindow w;
+    auto style = new VanillaStyle::VanillaStyle();
+    qApp->setStyle(style);
+    QApplication::setPalette(style->getStandardPalette());
     w.show();
+    w.setTheme(true);
     return QApplication::exec();
 }

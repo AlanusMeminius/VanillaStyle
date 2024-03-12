@@ -1,11 +1,51 @@
 #include "VanillaStyle/Theme/Theme.h"
 #include <QToolTip>
+#include <QPainter>
+
 namespace VanillaStyle
 {
+Theme::State Theme::state(const QStyleOption* option)
+{
+    State state = Normal;
+    if (!option->state.testFlag(QStyle::State_Enabled))
+    {
+        return Normal;
+    }
+    if (option->state.testFlag(QStyle::State_MouseOver))
+    {
+        state = Hover;
+    }
+    if (option->state.testFlag(QStyle::State_Sunken))
+    {
+        state = Press;
+    }
+    return state;
+}
+Theme::StateFlags Theme::flags(const QStyleOption* option)
+{
+    StateFlags flags{0};
+
+    if (option->state.testFlag(QStyle::State_On))
+    {
+        flags |= Checked;
+    }
+
+    if (option->state.testFlag(QStyle::State_Selected))
+    {
+        flags |= Selected;
+    }
+
+    if (option->state.testFlag(QStyle::State_HasFocus))
+    {
+        flags |= Focus;
+    }
+    return flags;
+}
 Theme::Theme()
     : configManager(std::make_shared<ConfigManager>())
 {
-    styleConfig = std::make_shared<VanillaStyle::StyleConfig>(configManager->defaultConfig());
+    styleConfig = std::make_shared<StyleConfig>(configManager->defaultConfig());
+    colorConfig = std::make_shared<Color>(styleConfig->color);
     initPalette();
 }
 void Theme::setConfig(const std::string& configPath)
@@ -33,80 +73,59 @@ void Theme::initPalette()
 
     QToolTip::setPalette(palette);
 }
-Theme::State Theme::stateAdapter(const QStyleOption* option)
-{
-    State state = NormalState;
-    if (!option->state.testFlag(QStyle::State_Enabled))
-    {
-        state = NormalState;
-    }
-    if (option->state.testFlag(QStyle::State_MouseOver))
-    {
-        state = HoverState;
-    }
-    if (option->state.testFlag(QStyle::State_Sunken))
-    {
-        state = PressState;
-    }
-    return state;
-}
-Theme::Flags Theme::flagsAdapter(const QStyleOption* option)
-{
-    Flags flags;
-    if (option->state.testFlag(QStyle::State_On))
-    {
-        flags |= State::CheckedFlag;
-    }
-    if (option->state.testFlag(QStyle::State_Selected))
-    {
-        flags |= State::SelectedFlag;
-    }
-    if (option->state.testFlag(QStyle::State_HasFocus))
-    {
-        flags |= State::FocusFlag;
-    }
-    return flags;
-}
-QBrush Theme::getBrush(const QStyleOption* option, const QBrush& brush, QPalette::ColorGroup group, QPalette::ColorRole role) const
-{
-    return getBrush(stateAdapter(option), option, brush, group, role);
-}
 
-QBrush Theme::getBrush(State state, const QStyleOption* option, const QBrush& brush, QPalette::ColorGroup group, QPalette::ColorRole role) const
+void Theme::setupPainter(const QStyleOption* option, QPainter* painter, const PainterRole role) const
 {
-    return getBrush(flagsAdapter(option) | state, brush, group, role);
+    switch (role)
+    {
+    case Button:
+    case RadioButton:
+    case CheckBox:
+    {
+        setupButtonPainter(option, painter);
+    }
+    default:
+        break;
+    }
 }
-QBrush Theme::getBrush(Flags flags, const QBrush& brush, QPalette::ColorGroup group, QPalette::ColorRole role) const
+void Theme::setupButtonPainter(const QStyleOption* option, QPainter* painter) const
 {
-    QColor color = brush.color();
-    if (!color.isValid())
+    if (state(option) == Press)
     {
-        return brush;
+        painter->setPen(QPen(styleConfig->color.buttonPressedForeground));
+        painter->setBrush(styleConfig->color.buttonPressedBackground);
     }
-    if ((flags & Flag) == HoverState)
+    else if (state(option) == Hover)
     {
-        switch (role)
-        {
-        case QPalette::Button:
-            color = styleConfig->color.buttonHoveredColor;
-            break;
-        default:
-            break;
-        }
-
-        return color;
+        painter->setPen(QPen(styleConfig->color.buttonHoveredForeground));
+        painter->setBrush(styleConfig->color.buttonHoveredBackground);
     }
-    else if ((flags & Flag) == PressState)
+    else
     {
+        painter->setPen(QPen(styleConfig->color.buttonForeground));
+        painter->setBrush(styleConfig->color.buttonBackground);
     }
-    else if ((flags & Flag) == FocusFlag)
-    {
-    }
-    return brush;
 }
-QColor Theme::getColor(const QStyleOption* option, QPalette::ColorRole role) const
+void Theme::setupRaioPainter(const QStyleOption* option, QPainter* painter) const
 {
-    return getBrush(option, option->palette.brush(role), option->palette.currentColorGroup(), role).color();
+    setupButtonPainter(option, painter);
+}
+void Theme::adjustTextPalette(QStyleOptionButton* option) const
+{
+    QColor textColor;
+    if (state(option) == Press)
+    {
+        textColor = styleConfig->color.pressedTextColor;
+    }
+    else if (state(option) == Hover)
+    {
+        textColor = styleConfig->color.hoverTextColor;
+    }
+    else
+    {
+        textColor = styleConfig->color.buttonForeground;
+    }
+    option->palette.setColor(QPalette::ButtonText, textColor);
 }
 
 QPalette Theme::standardPalette() const
@@ -137,14 +156,68 @@ int Theme::getBorder(const BorderRole borderRole) const
         return 0;
     }
 }
-QColor Theme::checkBtnBgColor(const QStyleOption* option) const
+QColor Theme::getColor(const QStyleOption* option, const ColorRole role) const
 {
-    return getColor(option, QPalette::Button);
+    return createColor(state(option), option, role);
 }
-
-QColor Theme::checkBtnFgColor(const QStyleOption* option) const
+QColor Theme::createColor(const State state, const QStyleOption* option, const ColorRole role) const
 {
-    return getColor(option, QPalette::ButtonText);
+    return createColor(flags(option) | state, option, role);
 }
-
+QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRole role) const
+{
+    QColor color;
+    switch (role)
+    {
+    case Text:
+    {
+        if ((flags & Flag) == Hover)
+        {
+            color = colorConfig->hoverTextColor;
+        }
+        else if ((flags & Flag) == Press)
+        {
+            color = colorConfig->pressedTextColor;
+        }
+        else
+        {
+            color = colorConfig->buttonForeground;
+        }
+        break;
+    }
+    case ButtonForeground:
+    {
+        if ((flags & Flag) == Hover)
+        {
+            color = colorConfig->buttonHoveredForeground;
+        }
+        else if ((flags & Flag) == Press)
+        {
+            color = colorConfig->buttonPressedForeground;
+        }
+        else
+        {
+            color = colorConfig->buttonForeground;
+        }
+        break;
+    }
+    case ButtonBackground:
+    {
+        if ((flags & Flag) == Hover)
+        {
+            color = colorConfig->buttonHoveredBackground;
+        }
+        else if ((flags & Flag) == Press)
+        {
+            color = colorConfig->buttonPressedBackground;
+        }
+        else
+        {
+            color = colorConfig->buttonBackground;
+        }
+        break;
+    }
+    }
+    return color;
+}
 }  // namespace VanillaStyle
