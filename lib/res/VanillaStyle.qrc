@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/VanillaStyle">
+        <file>icons/plane.svg</file>
+    </qresource>
+</RCC>

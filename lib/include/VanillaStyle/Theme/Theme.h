@@ -30,13 +30,9 @@ public:
         Text,
         ButtonForeground,
         ButtonBackground,
-    };
-
-    enum PainterRole
-    {
-        Button,
-        RadioButton,
-        CheckBox,
+        ProgressBarForeground,
+        ProgressBarBackground,
+        ProgressBarText,
     };
 
     enum RadiusRole {
@@ -63,10 +59,7 @@ public:
     QColor createColor(State state, const QStyleOption* option, ColorRole role) const;
     QColor createColor(StateFlags flags, const QStyleOption* option, ColorRole role) const;
 
-    void setupPainter(const QStyleOption* option, QPainter* painter, PainterRole role) const;
-    void setupButtonPainter(const QStyleOption* option, QPainter* painter) const;
-    void setupRaioPainter(const QStyleOption* option, QPainter* painter) const;
-
+    [[nodiscard]] QColor customColor(ColorRole role) const;
     void adjustTextPalette(QStyleOptionButton* option) const;
 private:
     std::shared_ptr<ConfigManager> configManager;

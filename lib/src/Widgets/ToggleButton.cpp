@@ -166,7 +166,15 @@ void ToggleButtonPrivate::setupAnimation()
 void ToggleButtonPrivate::paint(QPainter* painter)
 {
     Q_Q(const ToggleButton);
-
+    QColor handleColor;
+    QColor backgroundColor;
+    QColor textColor;
+    if (auto * customStyle = qobject_cast<VanillaStyle*>(q->style()))
+    {
+        handleColor = customStyle->getCustomColor(Theme::ColorRole::ButtonForeground);
+        backgroundColor = customStyle->getCustomColor(Theme::ColorRole::ButtonBackground);
+        textColor = customStyle->getCustomColor(Theme::ColorRole::Text);
+    }
     painter->save();
     painter->setRenderHint(QPainter::Antialiasing);
     if (!m_useIcon)
@@ -175,19 +183,13 @@ void ToggleButtonPrivate::paint(QPainter* painter)
         QPainterPath background;
         const QRectF backgroundRect(0, 0, sizeHint().width(), rowHeight);
         background.addRoundedRect(backgroundRect, radius, radius);
-        painter->fillPath(background, QBrush(QColor(229, 230, 235)));
+        painter->fillPath(background, QBrush(backgroundColor));
     }
 
     QPainterPath handlePath;
     const QRectF handleRect(offset + handlePadding, handlePadding, columnWidth - 2 * handlePadding, handleSize);
     handlePath.addRoundedRect(handleRect, radius, radius);
-    QColor handleColor;
-    QColor backgroundColor;
-    if (auto * customStyle = qobject_cast<VanillaStyle*>(q->style()))
-    {
-        handleColor = customStyle->handleColor();
-        backgroundColor = customStyle->buttonBackgroud();
-    }
+
     painter->fillPath(handlePath, QBrush(handleColor));
 
     if (itemList.empty())
@@ -210,7 +212,7 @@ void ToggleButtonPrivate::paint(QPainter* painter)
         QRectF textRect(0, 0, columnWidth, rowHeight);
         for (const auto& item : itemList)
         {
-            painter->setPen(backgroundColor);
+            painter->setPen(textColor);
             painter->drawText(textRect, Qt::AlignVCenter | Qt::AlignHCenter, item);
             textRect.translate(columnWidth, 0);
         }

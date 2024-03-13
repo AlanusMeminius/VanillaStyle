@@ -96,12 +96,12 @@ void VanillaStyle::drawControl(ControlElement element, const QStyleOption* optio
     }
     case CE_ProgressBarContents:
     {
-        d->progressBarStyle->drawContents(option, painter, widget);
+        d->progressBarStyle->drawContents(option, painter, widget, d->theme);
         return;
     }
     case CE_ProgressBarLabel:
     {
-        d->progressBarStyle->drawText(option, painter, widget);
+        d->progressBarStyle->drawText(option, painter, widget, d->theme);
         return;
     }
     case CE_FocusFrame:
@@ -273,16 +273,12 @@ bool VanillaStyle::eventFilter(QObject* obj, QEvent* event)
 void VanillaStyle::setConfigPath(const std::string& path)
 {
 }
-QColor VanillaStyle::handleColor()
+QColor VanillaStyle::getCustomColor(const Theme::ColorRole role)
 {
     Q_D(VanillaStyle);
-    return {246, 245, 245, 100};
+    return d->theme->customColor(role);
 }
-QColor VanillaStyle::buttonBackgroud()
-{
-    Q_D(VanillaStyle);
-    return {105, 109, 120,100};
-}
+
 int VanillaStyle::styleHint(QStyle::StyleHint stylehint, const QStyleOption* option, const QWidget* widget, QStyleHintReturn* returnData) const
 {
     switch (stylehint)

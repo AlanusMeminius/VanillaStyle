@@ -1,5 +1,7 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
+#include "VanillaStyle/Widgets/IconLabel.h"
+
 #include <QWKCore/styleagent.h>
 #include <QWKWidgets/widgetwindowagent.h>
 #include <QTimer>
@@ -41,6 +43,13 @@ MainWindow::MainWindow(QWidget* parent)
     textToggleButton->setUseIcon(false);
     textToggleButton->setColumnWidth(100);
     ui->horizontalLayout_3->addWidget(textToggleButton);
+
+    const auto iconLabel = new VanillaStyle::IconLabel(QIcon(":download.svg"), QStringLiteral("Download"), this);
+    // iconLabel->setIcon(QIcon(":download.svg"));
+    // QString text = "dsdf";
+    // iconLabel->setLabel(text);
+    // iconLabel->setDirction(Qt::RightToLeft);
+    ui->horizontalLayout_3->addWidget(iconLabel);
 
     ui->radioButton->setChecked(true);
     // setTheme(true);

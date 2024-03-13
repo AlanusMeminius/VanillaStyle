@@ -60,9 +60,9 @@ QIcon createIcon(const QString& path, int size)
 }
 void renderSvgFromString(const std::string& svg, QPainter* painter, const QRect& rect)
 {
-    QSvgRenderer renderer;
-    renderer.load(QString::fromStdString(svg).toUtf8());
-    renderer.render(painter, rect);
+    QSvgRenderer render;
+    render.load(QString::fromStdString(svg).toUtf8());
+    render.render(painter, rect);
 }
 QPixmap roundedPixmap(const QPixmap& input, const double radius)
 {

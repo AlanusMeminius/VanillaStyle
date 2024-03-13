@@ -60,6 +60,9 @@ public:
     QColor buttonHoveredBackground;
     QColor buttonPressedForeground;
     QColor buttonPressedBackground;
+    QColor progressBarBackground;
+    QColor progressBarForeground;
+    QColor progressBarText;
     std::string toString()
     {
         nlohmann::json json;
@@ -68,7 +71,7 @@ public:
     }
     NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Color, backgroundColor, textColor, pressedTextColor, hoverTextColor, primaryColorHovered, buttonForeground,
                                                 buttonBackground, buttonHoveredForeground, buttonPressedForeground, buttonHoveredBackground,
-                                                buttonPressedBackground);
+                                                buttonPressedBackground, progressBarBackground, progressBarForeground, progressBarText);
 };
 
 class Size : public Basic

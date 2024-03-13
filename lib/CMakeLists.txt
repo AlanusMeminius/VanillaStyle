@@ -9,6 +9,9 @@ file(GLOB_RECURSE SRC
 file(GLOB_RECURSE HEADER
         "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h"
 )
+set(RESOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/res/VanillaStyle.qrc)
+
 add_library(VanillaStyle STATIC)
 
 target_include_directories(
@@ -24,6 +27,7 @@ target_sources(
         PUBLIC
         ${SRC}
         ${HEADER}
+        ${RESOURCES}
 )
 target_include_directories(
         ${PROJECT_NAME}
@@ -41,5 +45,16 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
         Qt::Core
         Qt::Widgets
         Qt::Svg
+)
+
+set_target_properties(${PROJECT_NAME}
+        PROPERTIES
+        AUTOMOC ON
+        AUTORCC ON
+        OUTPUT_NAME ${PROJECT_NAME}
+        PROJECT_LABEL ${PROJECT_NAME}
+        SOVERSION ${PROJECT_VERSION_MAJOR}
+        VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
+        DEBUG_POSTFIX _debug
 )
 

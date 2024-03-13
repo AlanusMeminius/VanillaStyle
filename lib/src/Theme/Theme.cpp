@@ -74,42 +74,6 @@ void Theme::initPalette()
     QToolTip::setPalette(palette);
 }
 
-void Theme::setupPainter(const QStyleOption* option, QPainter* painter, const PainterRole role) const
-{
-    switch (role)
-    {
-    case Button:
-    case RadioButton:
-    case CheckBox:
-    {
-        setupButtonPainter(option, painter);
-    }
-    default:
-        break;
-    }
-}
-void Theme::setupButtonPainter(const QStyleOption* option, QPainter* painter) const
-{
-    if (state(option) == Press)
-    {
-        painter->setPen(QPen(styleConfig->color.buttonPressedForeground));
-        painter->setBrush(styleConfig->color.buttonPressedBackground);
-    }
-    else if (state(option) == Hover)
-    {
-        painter->setPen(QPen(styleConfig->color.buttonHoveredForeground));
-        painter->setBrush(styleConfig->color.buttonHoveredBackground);
-    }
-    else
-    {
-        painter->setPen(QPen(styleConfig->color.buttonForeground));
-        painter->setBrush(styleConfig->color.buttonBackground);
-    }
-}
-void Theme::setupRaioPainter(const QStyleOption* option, QPainter* painter) const
-{
-    setupButtonPainter(option, painter);
-}
 void Theme::adjustTextPalette(QStyleOptionButton* option) const
 {
     QColor textColor;
@@ -217,7 +181,38 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
         }
         break;
     }
+    case ProgressBarForeground:
+    {
+        color = colorConfig->progressBarForeground;
+        break;
+    }
+    case ProgressBarBackground:
+    {
+        color = colorConfig->progressBarBackground;
+        break;
+    }
+    case ProgressBarText:
+    {
+        color = colorConfig->progressBarText;
+        break;
+    }
     }
     return color;
+}
+QColor Theme::customColor(const ColorRole role) const
+{
+    switch (role)
+    {
+    case Text:
+    {
+        return colorConfig->textColor;
+    }
+    case ButtonForeground:
+        return colorConfig->buttonForeground;
+    case ButtonBackground:
+        return colorConfig->buttonBackground;
+    default:
+        return {};
+    }
 }
 }  // namespace VanillaStyle

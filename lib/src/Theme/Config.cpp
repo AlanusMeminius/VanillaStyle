@@ -40,13 +40,16 @@ VanillaStyle::StyleConfig VanillaStyle::ConfigManager::defaultConfig()
         "textColor": "#0x1890FF",
         "pressedTextColor": "#344955FF",
         "hoverTextColor": "#50727BFF",
-        "primaryColorHovered": "#0x2C9DFF",
+        "primaryColorHovered": "#0x2C9D",
         "buttonForeground": "#9F95A3FF",
         "buttonBackground": "#F5F4F5FF",
         "buttonHoveredForeground": "#53949FFF",
         "buttonHoveredBackground": "#53949FFF",
         "buttonPressedForeground": "#322D35FF",
-        "buttonPressedBackground": "#F8F7F8FF"
+        "buttonPressedBackground": "#F8F7F8FF",
+        "progressBarBackground": "#EADFB4",
+        "progressBarForeground": "#76ABAE",
+        "progressBarText": "#C6D27E"
     },
     "size": {
         "fontSize": 12,

@@ -27,8 +27,7 @@ public:
     bool eventFilter(QObject* obj, QEvent* event) override;
 
     void setConfigPath(const std::string& path);
-    QColor handleColor();
-    QColor buttonBackgroud();
+    QColor getCustomColor(Theme::ColorRole role);
 private:
     Q_DECLARE_PRIVATE(VanillaStyle);
     Q_DISABLE_COPY(VanillaStyle);
