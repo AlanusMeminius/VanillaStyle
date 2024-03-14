@@ -12,7 +12,6 @@ VanillaStyle::VanillaStyle()
     : d_ptr(new VanillaStylePrivate(this))
 {
     Q_D(VanillaStyle);
-
 }
 QPalette VanillaStyle::getStandardPalette() const
 {
@@ -127,70 +126,11 @@ void VanillaStyle::drawControl(ControlElement element, const QStyleOption* optio
     {
         return;
     }
-    case CE_ToolBoxTabShape:
-        break;
-    case CE_ToolBoxTabLabel:
-        break;
-    case CE_ColumnViewGrip:
-        break;
+    case CE_ItemViewItem:
+        d->itemViewStyle->draw(option, painter, widget, d->theme);
+        return;
     case CE_ShapedFrame:
         return;
-    case CE_CheckBox:
-        break;
-    case CE_CheckBoxLabel:
-        break;
-    case CE_RadioButton:
-        break;
-    case CE_RadioButtonLabel:
-        break;
-    case CE_TabBarTab:
-        break;
-    case CE_TabBarTabShape:
-        break;
-    case CE_TabBarTabLabel:
-        break;
-    case CE_MenuScroller:
-        break;
-    case CE_ToolButtonLabel:
-        break;
-    case CE_Header:
-        break;
-    case CE_HeaderSection:
-        break;
-    case CE_HeaderLabel:
-        break;
-    case CE_ToolBoxTab:
-        break;
-    case CE_SizeGrip:
-        break;
-    case CE_Splitter:
-        break;
-    case CE_RubberBand:
-        break;
-    case CE_DockWidgetTitle:
-        break;
-    case CE_ScrollBarAddLine:
-        break;
-    case CE_ScrollBarSubLine:
-        break;
-    case CE_ScrollBarAddPage:
-        break;
-    case CE_ScrollBarSubPage:
-        break;
-    case CE_ScrollBarSlider:
-        break;
-    case CE_ScrollBarFirst:
-        break;
-    case CE_ScrollBarLast:
-        break;
-    case CE_ComboBoxLabel:
-        break;
-    case CE_ToolBar:
-        break;
-    case CE_HeaderEmptyArea:
-        break;
-    case CE_ItemViewItem:
-        break;
     default:
         break;
     }
@@ -206,6 +146,11 @@ void VanillaStyle::drawComplexControl(ComplexControl complexControl, const QStyl
     case CC_SpinBox:
     {
         d->spinBoxStyle->draw(opt, painter, widget, d->theme);
+        return;
+    }
+    case CC_ComboBox:
+    {
+        d->comboBoxStyle->draw(opt, painter, widget, d->theme, this);
         return;
     }
     default:
@@ -373,9 +318,9 @@ VanillaStylePrivate::VanillaStylePrivate(VanillaStyle* q)
     , spinBoxStyle(new SpinBoxStyle())
     , lineEditStyle(new LineEditStyle())
     , comboBoxStyle(new ComboBoxStyle())
+    , itemViewStyle(new ItemViewStyle())
     , q_ptr(q)
 
 {
-
 }
 }  // namespace VanillaStyle

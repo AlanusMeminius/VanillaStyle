@@ -4,6 +4,7 @@
 #include "VanillaStyle/Helper/ButtonStyle.h"
 #include "VanillaStyle/Helper/CheckBoxStyle.h"
 #include "VanillaStyle/Helper/ComboBoxStyle.h"
+#include "VanillaStyle/Helper/ItemViewStyle.h"
 #include "VanillaStyle/Helper/RadioButtonStyle.h"
 #include "VanillaStyle/Helper/ProgressBarStyle.h"
 #include "VanillaStyle/Helper/MenuStyle.h"
@@ -26,6 +27,7 @@ private:
     std::shared_ptr<SpinBoxStyle> spinBoxStyle;
     std::shared_ptr<LineEditStyle> lineEditStyle;
     std::shared_ptr<ComboBoxStyle> comboBoxStyle;
+    std::shared_ptr<ItemViewStyle> itemViewStyle;
 private:
     VanillaStyle* const q_ptr;
     Q_DECLARE_PUBLIC(VanillaStyle);

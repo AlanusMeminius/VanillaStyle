@@ -1,4 +1,5 @@
 #include "VanillaStyle/Theme/Theme.h"
+#include <QFileInfo>
 #include <QToolTip>
 #include <QPainter>
 
@@ -117,7 +118,7 @@ int Theme::getBorder(const BorderRole borderRole) const
         return styleConfig->size.borderWidth;
     }
     default:
-        return 0;
+        return 1;
     }
 }
 QColor Theme::getColor(const QStyleOption* option, const ColorRole role) const
@@ -130,7 +131,7 @@ QColor Theme::createColor(const State state, const QStyleOption* option, const C
 }
 QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRole role) const
 {
-    QColor color;
+    QColor color = option->palette.color(QPalette::Base);
     switch (role)
     {
     case Text:
@@ -196,6 +197,20 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
         color = colorConfig->progressBarText;
         break;
     }
+    case LineEditOutline:
+    {
+        if ((flags & Flag) == Focus)
+        {
+            color = colorConfig->lineEditFocusOutline;
+        }
+        else
+        {
+            color = colorConfig->lineEditOutline;
+        }
+        break;
+    }
+    default:
+        break;
     }
     return color;
 }
@@ -211,6 +226,34 @@ QColor Theme::customColor(const ColorRole role) const
         return colorConfig->buttonForeground;
     case ButtonBackground:
         return colorConfig->buttonBackground;
+    default:
+        return {};
+    }
+}
+QString Theme::checkIconFile(const std::string& path) const
+{
+    if (const QFileInfo file(QString::fromStdString(path)); file.exists())
+    {
+        return QString::fromStdString(path);
+    }
+    return {};
+}
+QString Theme::getIconPath(const IconRole role) const
+{
+    switch (role)
+    {
+    case UpArrow:
+    {
+        return checkIconFile(styleConfig->icons.upArrow);
+    }
+    case DownArrow:
+    {
+        return checkIconFile(styleConfig->icons.downArrow);
+    }
+    case ProgressIndicator:
+    {
+        return checkIconFile(styleConfig->icons.progressIndicator);
+    }
     default:
         return {};
     }

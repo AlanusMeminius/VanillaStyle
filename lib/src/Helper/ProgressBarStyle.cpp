@@ -33,7 +33,6 @@ void ProgressBarStyle::drawContents(const QStyleOption* option, QPainter* painte
         const auto range = progressBarOption->maximum - progressBarOption->minimum;
         if (value > 0)
         {
-            painter->save();
             painter->setRenderHint(QPainter::Antialiasing);
             const auto rect = progressBarOption->rect;
 
@@ -43,10 +42,16 @@ void ProgressBarStyle::drawContents(const QStyleOption* option, QPainter* painte
             const auto percentage = 1 - static_cast<double>(value) / static_cast<double>(range);
             const auto progressRect = rect.adjusted(0, 0, -static_cast<int>(rect.width() * percentage), 0);
             painter->drawLine(QPoint(progressRect.right(), progressRect.height() / 2), QPoint(progressRect.left(), progressRect.height() / 2));
-            QSvgRenderer render;
-            render.load(QStringLiteral(":/VanillaStyle/icons/plane.svg"));
+
             const auto planeRect = QRect(progressRect.right(), progressRect.top(), progressRect.height(), progressRect.height());
-            render.render(painter, planeRect);
+            const auto path = theme->getIconPath(Theme::IconRole::ProgressIndicator);
+            // const auto path = QStringLiteral(":VanillaStyle/icons/Airplane.svg");
+            if (path.isEmpty())
+            {
+                return;
+            }
+            renderSvgFromPath(path, painter, planeRect);
+            // render.render(painter, planeRect);
             // const QRect usableRect = progressBarOption->rect.adjusted(3, 3, -3, -3);
             // QRect progressRect = usableRect;
             // progressRect.setWidth(double(value) / double(range) * usableRect.width());
@@ -66,8 +71,6 @@ void ProgressBarStyle::drawContents(const QStyleOption* option, QPainter* painte
             // painter->setBrush(Qt::NoBrush);
             // painter->setOpacity(0.43);
             // painter->drawRoundedRect(QRectF(option->rect).adjusted(0.5, 0.5, -0.5, -0.5), radius, radius);
-
-            painter->restore();
         }
     }
 }

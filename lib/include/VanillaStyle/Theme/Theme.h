@@ -33,6 +33,7 @@ public:
         ProgressBarForeground,
         ProgressBarBackground,
         ProgressBarText,
+        LineEditOutline,
     };
 
     enum RadiusRole {
@@ -44,6 +45,13 @@ public:
     enum BorderRole {
         NormalBorder,
         ButtonBorder,
+    };
+
+    enum IconRole
+    {
+        UpArrow,
+        DownArrow,
+        ProgressIndicator,
     };
 
     explicit Theme();
@@ -60,6 +68,10 @@ public:
     QColor createColor(StateFlags flags, const QStyleOption* option, ColorRole role) const;
 
     [[nodiscard]] QColor customColor(ColorRole role) const;
+
+    QString checkIconFile(const std::string& path) const;
+    QString getIconPath(IconRole role) const;
+
     void adjustTextPalette(QStyleOptionButton* option) const;
 private:
     std::shared_ptr<ConfigManager> configManager;

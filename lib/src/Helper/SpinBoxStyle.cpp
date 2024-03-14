@@ -9,30 +9,24 @@ void SpinBoxStyle::draw(const QStyleOptionComplex* option, QPainter* painter, co
     if (const auto* optionSpinBox = qstyleoption_cast<const QStyleOptionSpinBox*>(option))
     {
         painter->setRenderHint(QPainter::Antialiasing, true);
-        const auto spinBoxEnabled = optionSpinBox->state.testFlag(QStyle::State_Enabled);
+
+        // 画边框
+        const auto spinBoxRect = optionSpinBox->rect.adjusted(1, 1, -1, -1);
+        painter->setPen(theme->getColor(optionSpinBox, Theme::ColorRole::LineEditOutline));
+        painter->drawRoundedRect(spinBoxRect, 5, 5);
+
+        // 画箭头
         if (optionSpinBox->buttonSymbols != QAbstractSpinBox::NoButtons)
         {
-            const auto radius = theme->getRadius(Theme::ButtonRadius);
-            const auto upButtonRect = subControlRect(QStyle::CC_SpinBox, option, QStyle::SC_SpinBoxUp, widget);
-            if (upButtonRect.isValid())
+            if (const auto upButtonRect = subControlRect(QStyle::CC_SpinBox, option, QStyle::SC_SpinBoxUp, widget); upButtonRect.isValid())
             {
-                // 画按钮
-                painter->setPen(Qt::NoPen);
-                painter->setBrush(QColor(255, 12, 23));
-                // painter->drawRoundedRect(upButtonRect, radius, radius);
-                // 画按钮上的箭头
-                drawUpArrow(painter, upButtonRect, QColor(255, 255, 255));
+                const auto iconPath = theme->getIconPath(Theme::IconRole::UpArrow);
+                drawUpArrow(iconPath, painter, upButtonRect, QColor(255, 255, 255));
             }
-
-            const auto downButtonRect = subControlRect(QStyle::CC_SpinBox, option, QStyle::SC_SpinBoxDown, widget);
-
-            if (downButtonRect.isValid())
+            if (const auto downButtonRect = subControlRect(QStyle::CC_SpinBox, option, QStyle::SC_SpinBoxDown, widget); downButtonRect.isValid())
             {
-                painter->setPen(Qt::NoPen);
-                painter->setBrush(QColor(255, 12, 23));
-                // painter->drawRoundedRect(downButtonRect, radius, radius);
-
-                drawDownArrow(painter, downButtonRect, QColor(255, 255, 255));
+                const auto iconPath = theme->getIconPath(Theme::IconRole::DownArrow);
+                drawDownArrow(iconPath, painter, downButtonRect, QColor(255, 255, 255));
             }
         }
     }

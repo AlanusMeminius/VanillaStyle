@@ -32,33 +32,40 @@ VanillaStyle::StyleConfig VanillaStyle::ConfigManager::defaultConfig()
 {
     const auto config = R"(
 {
-    "name": "Crescent",
-    "author": "Alanus",
-    "mode": "light",
-    "color": {
-        "backgroundColor": "#0xFFFFFF",
-        "textColor": "#0x1890FF",
-        "pressedTextColor": "#344955FF",
-        "hoverTextColor": "#50727BFF",
-        "primaryColorHovered": "#0x2C9D",
-        "buttonForeground": "#9F95A3FF",
-        "buttonBackground": "#F5F4F5FF",
-        "buttonHoveredForeground": "#53949FFF",
-        "buttonHoveredBackground": "#53949FFF",
-        "buttonPressedForeground": "#322D35FF",
-        "buttonPressedBackground": "#F8F7F8FF",
-        "progressBarBackground": "#EADFB4",
-        "progressBarForeground": "#76ABAE",
-        "progressBarText": "#C6D27E"
-    },
-    "size": {
-        "fontSize": 12,
-        "borderWidth": 1,
-        "iconSize": 16,
-        "normalRadius": 4,
-        "buttonRadius": 4,
-        "menuItemRadius": 4
-    }
+  "name": "Crescent",
+  "author": "Alanus",
+  "mode": "light",
+  "color": {
+    "backgroundColor": "#0xFFFFFF",
+    "textColor": "#0x1890FF",
+    "pressedTextColor": "#344955FF",
+    "hoverTextColor": "#50727BFF",
+    "primaryColorHovered": "#0x2C9D",
+    "buttonForeground": "#9F95A3FF",
+    "buttonBackground": "#F5F4F5FF",
+    "buttonHoveredForeground": "#53949FFF",
+    "buttonHoveredBackground": "#53949FFF",
+    "buttonPressedForeground": "#322D35FF",
+    "buttonPressedBackground": "#F8F7F8FF",
+    "progressBarBackground": "#EADFB4",
+    "progressBarForeground": "#76ABAE",
+    "progressBarText": "#C6D27E",
+    "lineEditFocusOutline": "#B5C0D0FF",
+    "lineEditOutline": "#B784B7FF"
+  },
+  "size": {
+    "fontSize": 12,
+    "borderWidth": 1,
+    "iconSize": 16,
+    "normalRadius": 4,
+    "buttonRadius": 4,
+    "menuItemRadius": 4
+  },
+  "icons": {
+    "upArrow": ":/VanillaStyle/icons/UpArrow.svg",
+    "downArrow": ":/VanillaStyle/icons/DownArrow.svg",
+    "progressIndicator": ":/VanillaStyle/icons/Airplane.svg"
+  }
 }
 )"_json;
     return config.get<StyleConfig>();

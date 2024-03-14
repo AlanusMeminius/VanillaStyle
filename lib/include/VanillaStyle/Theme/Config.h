@@ -63,6 +63,8 @@ public:
     QColor progressBarBackground;
     QColor progressBarForeground;
     QColor progressBarText;
+    QColor lineEditFocusOutline;
+    QColor lineEditOutline;
     std::string toString()
     {
         nlohmann::json json;
@@ -71,7 +73,8 @@ public:
     }
     NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Color, backgroundColor, textColor, pressedTextColor, hoverTextColor, primaryColorHovered, buttonForeground,
                                                 buttonBackground, buttonHoveredForeground, buttonPressedForeground, buttonHoveredBackground,
-                                                buttonPressedBackground, progressBarBackground, progressBarForeground, progressBarText);
+                                                buttonPressedBackground, progressBarBackground, progressBarForeground, progressBarText, lineEditFocusOutline,
+                                                lineEditOutline);
 };
 
 class Size : public Basic
@@ -92,6 +95,21 @@ public:
     NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Size, fontSize, borderWidth, iconSize, normalRadius, buttonRadius);
 };
 
+class Icons : public Basic
+{
+public:
+    std::string upArrow;
+    std::string downArrow;
+    std::string progressIndicator;
+    std::string toString()
+    {
+        nlohmann::json json;
+        to_json(json, *this);
+        return json.dump(4);
+    }
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Icons, upArrow, downArrow, progressIndicator);
+};
+
 class StyleConfig : public Basic
 {
 public:
@@ -100,6 +118,7 @@ public:
     std::string mode;
     Color color;
     Size size;
+    Icons icons;
 
     std::string toString()
     {
@@ -108,7 +127,7 @@ public:
         return json.dump(4);
     }
 
-    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(StyleConfig, name, author, mode, color, size);
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(StyleConfig, name, author, mode, color, size, icons);
 };
 
 class ConfigManager

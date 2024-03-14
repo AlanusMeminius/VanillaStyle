@@ -44,21 +44,21 @@
        <item>
         <widget class="QRadioButton" name="radioButton">
          <property name="text">
-          <string>Light readConfig</string>
+          <string>Light</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QRadioButton" name="radioButton_2">
          <property name="text">
-          <string>Dark readConfig</string>
+          <string>Dark</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QRadioButton" name="radioButton_3">
          <property name="text">
-          <string>Auto readConfig</string>
+          <string>Auto</string>
          </property>
         </widget>
        </item>
@@ -143,6 +143,9 @@
      <widget class="QWidget" name="widget_7" native="true">
       <layout class="QHBoxLayout" name="horizontalLayout_7">
        <item>
+        <widget class="VanillaStyle::SwitchButton" name="switchBtn" native="true"/>
+       </item>
+       <item>
         <spacer name="horizontalSpacer">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -167,7 +170,88 @@
     </item>
     <item>
      <widget class="QWidget" name="widget_3" native="true">
-      <layout class="QHBoxLayout" name="horizontalLayout_3"/>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="VanillaStyle::ToggleButton" name="toggleBtnfirst" native="true"/>
+       </item>
+       <item>
+        <widget class="VanillaStyle::ToggleButton" name="toggleBtnSecond" native="true"/>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_10">
+      <property name="text">
+       <string>IconLabel</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="widget_9" native="true">
+      <layout class="QHBoxLayout" name="horizontalLayout_9">
+       <item>
+        <widget class="VanillaStyle::IconLabel" name="iconLabelFirst" native="true"/>
+       </item>
+       <item>
+        <widget class="VanillaStyle::IconLabel" name="iconLabelSecond" native="true"/>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_11">
+      <property name="text">
+       <string>IconBtn</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="widget_10" native="true">
+      <layout class="QHBoxLayout" name="horizontalLayout_10">
+       <item>
+        <widget class="VanillaStyle::IconButton" name="iconBtn"/>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_4">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
      </widget>
     </item>
     <item>
@@ -245,6 +329,32 @@
    </layout>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>VanillaStyle::SwitchButton</class>
+   <extends>QWidget</extends>
+   <header>VanillaStyle/Widgets/SwitchButton.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>VanillaStyle::ToggleButton</class>
+   <extends>QWidget</extends>
+   <header>VanillaStyle/Widgets/ToggleButton.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>VanillaStyle::IconLabel</class>
+   <extends>QWidget</extends>
+   <header>VanillaStyle/Widgets/IconLabel.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>VanillaStyle::IconButton</class>
+   <extends>QAbstractButton</extends>
+   <header>VanillaStyle/Widgets/IconButton.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

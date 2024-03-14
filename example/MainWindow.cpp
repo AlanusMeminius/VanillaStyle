@@ -23,33 +23,24 @@ MainWindow::MainWindow(QWidget* parent)
     ui->setupUi(this);
     m_timer->setInterval(50);
     // ui->lineEdit->setDisabled(true);
-    ui->horizontalLayout_7->insertWidget(0, new VanillaStyle::SwitchButton(this));
 
-    QStringList list;
-    list << ":grid.svg"
-         << ":list.svg"
-         << ":download.svg";
+    ui->toggleBtnfirst->setItemList(QStringList{":grid.svg", ":list.svg", ":download.svg"});
+    ui->toggleBtnfirst->setColumnWidth(50);
 
-    const auto iconToggleButton = new VanillaStyle::ToggleButton(list, this);
-    iconToggleButton->setUseIcon(true);
-    iconToggleButton->setColumnWidth(50);
-    ui->horizontalLayout_3->addWidget(iconToggleButton);
+    ui->toggleBtnSecond->setUseIcon(false);
+    ui->toggleBtnSecond->setItemList(QStringList{"Default", "Account", "Advance"});
+    ui->toggleBtnSecond->setColumnWidth(100);
 
-    QStringList textList;
-    textList << "Default"
-             << "Account"
-             << "Advance";
-    const auto textToggleButton = new VanillaStyle::ToggleButton(textList, this);
-    textToggleButton->setUseIcon(false);
-    textToggleButton->setColumnWidth(100);
-    ui->horizontalLayout_3->addWidget(textToggleButton);
+    ui->iconLabelFirst->setIcon(QIcon(":download.svg"));
+    ui->iconLabelFirst->setLabel("Download");
+    ui->iconLabelFirst->setDirction(Qt::RightToLeft);
 
-    const auto iconLabel = new VanillaStyle::IconLabel(QIcon(":download.svg"), QStringLiteral("Download"), this);
-    // iconLabel->setIcon(QIcon(":download.svg"));
-    // QString text = "dsdf";
-    // iconLabel->setLabel(text);
-    // iconLabel->setDirction(Qt::RightToLeft);
-    ui->horizontalLayout_3->addWidget(iconLabel);
+    ui->iconLabelSecond->setIcon(QIcon(":download.svg"));
+    ui->iconLabelSecond->setLabel("Download");
+    ui->iconLabelSecond->setDirction(Qt::LeftToRight);
+
+
+    ui->iconBtn->setIcon(QIcon(":download.svg"));
 
     ui->radioButton->setChecked(true);
     // setTheme(true);
