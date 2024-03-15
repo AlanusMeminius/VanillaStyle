@@ -1,14 +1,13 @@
 #pragma once
-#include <QWidget>
-#include <QStyleOption>
+#include "Helper.h"
 #include "VanillaStyle/Theme/Theme.h"
 
-namespace VanillaStyle {
-class VanillaStyle;
-class ComboBoxStyle {
-
+namespace VanillaStyle
+{
+class ComboBoxStyle : public Helper
+{
 public:
-    void draw(const QStyleOption* option, QPainter* painter, const QWidget* widget, const Theme* theme, const VanillaStyle* style) const;
+    bool draw(const QStyleOptionComplex* option, QPainter* painter, const Theme* theme, const QWidget* widget) const;
 };
 
-} // VanillaStyle
+}  // namespace VanillaStyle

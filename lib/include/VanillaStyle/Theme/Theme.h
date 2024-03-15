@@ -75,7 +75,7 @@ public:
     void adjustTextPalette(QStyleOptionButton* option) const;
 private:
     std::shared_ptr<ConfigManager> configManager;
-    std::shared_ptr<StyleConfig> styleConfig;
-    std::shared_ptr<Color> colorConfig = nullptr;
+    StyleConfig styleConfig;
+    Color colorConfig;
 };
 }  // namespace VanillaStyle

@@ -5,7 +5,7 @@
 
 namespace VanillaStyle
 {
-void MenuStyle::drawPrimitive(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget) const
+bool MenuStyle::drawPrimitive(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget) const
 {
     //        const auto radius = d->m_theme->getRadius(Theme::ButtonRadius);
     const auto radius = 5;
@@ -32,6 +32,8 @@ void MenuStyle::drawPrimitive(const QStyleOption* option, QPainter* painter, con
     painter->setPen(bgColor);
     painter->setBrush(bgColor);
     painter->drawRoundedRect(bgFrameRect, radius, radius);
+
+    return true;
 }
 void MenuStyle::eventFilter(QMenu* menu) const
 {

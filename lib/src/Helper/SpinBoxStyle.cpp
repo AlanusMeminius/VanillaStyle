@@ -4,32 +4,35 @@
 
 namespace VanillaStyle
 {
-void SpinBoxStyle::draw(const QStyleOptionComplex* option, QPainter* painter, const QWidget* widget, const Theme* theme) const
+bool SpinBoxStyle::draw(const QStyleOptionComplex* option, QPainter* painter, const Theme* theme, const QWidget* widget) const
 {
-    if (const auto* optionSpinBox = qstyleoption_cast<const QStyleOptionSpinBox*>(option))
+    const auto* opt = qstyleoption_cast<const QStyleOptionSpinBox*>(option);
+    if (!opt)
     {
-        painter->setRenderHint(QPainter::Antialiasing, true);
+        return true;
+    }
+    painter->setRenderHint(QPainter::Antialiasing, true);
 
-        // 画边框
-        const auto spinBoxRect = optionSpinBox->rect.adjusted(1, 1, -1, -1);
-        painter->setPen(theme->getColor(optionSpinBox, Theme::ColorRole::LineEditOutline));
-        painter->drawRoundedRect(spinBoxRect, 5, 5);
+    // 画边框
+    const auto spinBoxRect = opt->rect.adjusted(1, 1, -1, -1);
+    painter->setPen(theme->getColor(opt, Theme::ColorRole::LineEditOutline));
+    painter->drawRoundedRect(spinBoxRect, 5, 5);
 
-        // 画箭头
-        if (optionSpinBox->buttonSymbols != QAbstractSpinBox::NoButtons)
+    // 画箭头
+    if (opt->buttonSymbols != QAbstractSpinBox::NoButtons)
+    {
+        if (const auto upButtonRect = subControlRect(QStyle::CC_SpinBox, option, QStyle::SC_SpinBoxUp, widget); upButtonRect.isValid())
         {
-            if (const auto upButtonRect = subControlRect(QStyle::CC_SpinBox, option, QStyle::SC_SpinBoxUp, widget); upButtonRect.isValid())
-            {
-                const auto iconPath = theme->getIconPath(Theme::IconRole::UpArrow);
-                drawUpArrow(iconPath, painter, upButtonRect, QColor(255, 255, 255));
-            }
-            if (const auto downButtonRect = subControlRect(QStyle::CC_SpinBox, option, QStyle::SC_SpinBoxDown, widget); downButtonRect.isValid())
-            {
-                const auto iconPath = theme->getIconPath(Theme::IconRole::DownArrow);
-                drawDownArrow(iconPath, painter, downButtonRect, QColor(255, 255, 255));
-            }
+            const auto iconPath = theme->getIconPath(Theme::IconRole::UpArrow);
+            drawUpArrow(iconPath, painter, upButtonRect, QColor(255, 255, 255));
+        }
+        if (const auto downButtonRect = subControlRect(QStyle::CC_SpinBox, option, QStyle::SC_SpinBoxDown, widget); downButtonRect.isValid())
+        {
+            const auto iconPath = theme->getIconPath(Theme::IconRole::DownArrow);
+            drawDownArrow(iconPath, painter, downButtonRect, QColor(255, 255, 255));
         }
     }
+    return true;
 }
 QRect SpinBoxStyle::subControlRect(QStyle::ComplexControl control, const QStyleOptionComplex* option, QStyle::SubControl subControl,
                                    const QWidget* widget) const

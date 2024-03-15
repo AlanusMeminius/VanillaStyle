@@ -1,5 +1,8 @@
 #include "VanillaStyle/Widgets/SwitchButton.h"
 #include "SwitchButton_p.h"
+#include "VanillaStyle/Style/VanillaStyle.h"
+#include "VanillaStyle/Theme/Theme.h"
+
 #include <QPainter>
 #include <QPainterPath>
 #include <QMouseEvent>
@@ -31,14 +34,22 @@ void SwitchButton::paintEvent(QPaintEvent* event)
     Q_D(SwitchButton);
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
-    painter.setPen(QColor(0x9f, 0x95, 0xa3));
+    QColor handleColor;
+    QColor backgroundColor;
+    if (auto * customStyle = qobject_cast<VanillaStyle*>(style()))
+    {
+        handleColor = customStyle->getCustomColor(Theme::ColorRole::ButtonForeground);
+        backgroundColor = customStyle->getCustomColor(Theme::ColorRole::ButtonBackground);
+    }
+    painter.setPen(Qt::NoPen);
+    painter.setBrush(handleColor);
     const auto radius = height() / 2;
     painter.drawRoundedRect(QRectF(rect()).adjusted(1, 1, -1, -1), radius, radius);
 
     const auto handlePosition = d->handleAnimation.currentValue().toDouble();
     QPainterPath handle;
     handle.addEllipse(d->margin + d->handleSize * handlePosition, d->margin, d->handleSize, d->handleSize);
-    painter.fillPath(handle, QBrush(QColor(200, 255, 255)));
+    painter.fillPath(handle, QBrush(backgroundColor));
 }
 void SwitchButton::mousePressEvent(QMouseEvent* event)
 {

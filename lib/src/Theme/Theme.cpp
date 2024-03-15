@@ -45,32 +45,36 @@ Theme::StateFlags Theme::flags(const QStyleOption* option)
 Theme::Theme()
     : configManager(std::make_shared<ConfigManager>())
 {
-    styleConfig = std::make_shared<StyleConfig>(configManager->defaultConfig());
-    colorConfig = std::make_shared<Color>(styleConfig->color);
+    styleConfig = configManager->defaultConfig();
+    colorConfig = styleConfig.color;
+    qDebug() << "default " << styleConfig.color.buttonBackground.name();
+
     initPalette();
 }
 void Theme::setConfig(const std::string& configPath)
 {
     configManager->setConfigPath(configPath);
-    auto error = configManager->readConfig(*styleConfig);
+    auto error = configManager->readConfig(styleConfig);
+    colorConfig = styleConfig.color;
     if (error != ConfigManager::ErrorCode::NoError)
     {
         //        styleConfig = configManager->defaultConfig();
     }
+    qDebug() << "change " << colorConfig.buttonBackground.name();
 }
 void Theme::initPalette()
 {
     palette.setColor(QPalette::Window, Qt::transparent);
-    palette.setColor(QPalette::Base, styleConfig->color.backgroundColor);
-    palette.setColor(QPalette::WindowText, styleConfig->color.textColor);
-    palette.setColor(QPalette::Text, styleConfig->color.textColor);
+    palette.setColor(QPalette::Base, styleConfig.color.backgroundColor);
+    palette.setColor(QPalette::WindowText, styleConfig.color.textColor);
+    palette.setColor(QPalette::Text, styleConfig.color.textColor);
     palette.setColor(QPalette::Highlight, QColor(0x53, 0x94, 0x9f));
 
     // Text color on buttons
-    palette.setColor(QPalette::ButtonText, styleConfig->color.textColor);
+    palette.setColor(QPalette::ButtonText, styleConfig.color.textColor);
 
     // pal.setColor(QPalette::ToolTipBase, baseBackground());
-    palette.setColor(QPalette::ToolTipText, styleConfig->color.textColor);
+    palette.setColor(QPalette::ToolTipText, styleConfig.color.textColor);
 
     QToolTip::setPalette(palette);
 }
@@ -80,15 +84,15 @@ void Theme::adjustTextPalette(QStyleOptionButton* option) const
     QColor textColor;
     if (state(option) == Press)
     {
-        textColor = styleConfig->color.pressedTextColor;
+        textColor = styleConfig.color.pressedTextColor;
     }
     else if (state(option) == Hover)
     {
-        textColor = styleConfig->color.hoverTextColor;
+        textColor = styleConfig.color.hoverTextColor;
     }
     else
     {
-        textColor = styleConfig->color.buttonForeground;
+        textColor = styleConfig.color.buttonForeground;
     }
     option->palette.setColor(QPalette::ButtonText, textColor);
 }
@@ -103,7 +107,7 @@ int Theme::getRadius(const RadiusRole radiusRole) const
     {
     case ButtonRadius:
     {
-        return styleConfig->size.buttonRadius;
+        return styleConfig.size.buttonRadius;
     }
     default:
         return 5;
@@ -115,7 +119,7 @@ int Theme::getBorder(const BorderRole borderRole) const
     {
     case ButtonBorder:
     {
-        return styleConfig->size.borderWidth;
+        return styleConfig.size.borderWidth;
     }
     default:
         return 1;
@@ -138,15 +142,15 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
     {
         if ((flags & Flag) == Hover)
         {
-            color = colorConfig->hoverTextColor;
+            color = colorConfig.hoverTextColor;
         }
         else if ((flags & Flag) == Press)
         {
-            color = colorConfig->pressedTextColor;
+            color = colorConfig.pressedTextColor;
         }
         else
         {
-            color = colorConfig->buttonForeground;
+            color = colorConfig.buttonForeground;
         }
         break;
     }
@@ -154,15 +158,15 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
     {
         if ((flags & Flag) == Hover)
         {
-            color = colorConfig->buttonHoveredForeground;
+            color = colorConfig.buttonHoveredForeground;
         }
         else if ((flags & Flag) == Press)
         {
-            color = colorConfig->buttonPressedForeground;
+            color = colorConfig.buttonPressedForeground;
         }
         else
         {
-            color = colorConfig->buttonForeground;
+            color = colorConfig.buttonForeground;
         }
         break;
     }
@@ -170,42 +174,42 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
     {
         if ((flags & Flag) == Hover)
         {
-            color = colorConfig->buttonHoveredBackground;
+            color = colorConfig.buttonHoveredBackground;
         }
         else if ((flags & Flag) == Press)
         {
-            color = colorConfig->buttonPressedBackground;
+            color = colorConfig.buttonPressedBackground;
         }
         else
         {
-            color = colorConfig->buttonBackground;
+            color = colorConfig.buttonBackground;
         }
         break;
     }
     case ProgressBarForeground:
     {
-        color = colorConfig->progressBarForeground;
+        color = colorConfig.progressBarForeground;
         break;
     }
     case ProgressBarBackground:
     {
-        color = colorConfig->progressBarBackground;
+        color = colorConfig.progressBarBackground;
         break;
     }
     case ProgressBarText:
     {
-        color = colorConfig->progressBarText;
+        color = colorConfig.progressBarText;
         break;
     }
     case LineEditOutline:
     {
         if ((flags & Flag) == Focus)
         {
-            color = colorConfig->lineEditFocusOutline;
+            color = colorConfig.lineEditFocusOutline;
         }
         else
         {
-            color = colorConfig->lineEditOutline;
+            color = colorConfig.lineEditOutline;
         }
         break;
     }
@@ -220,12 +224,12 @@ QColor Theme::customColor(const ColorRole role) const
     {
     case Text:
     {
-        return colorConfig->textColor;
+        return colorConfig.textColor;
     }
     case ButtonForeground:
-        return colorConfig->buttonForeground;
+        return colorConfig.buttonForeground;
     case ButtonBackground:
-        return colorConfig->buttonBackground;
+        return colorConfig.buttonBackground;
     default:
         return {};
     }
@@ -244,15 +248,15 @@ QString Theme::getIconPath(const IconRole role) const
     {
     case UpArrow:
     {
-        return checkIconFile(styleConfig->icons.upArrow);
+        return checkIconFile(styleConfig.icons.upArrow);
     }
     case DownArrow:
     {
-        return checkIconFile(styleConfig->icons.downArrow);
+        return checkIconFile(styleConfig.icons.downArrow);
     }
     case ProgressIndicator:
     {
-        return checkIconFile(styleConfig->icons.progressIndicator);
+        return checkIconFile(styleConfig.icons.progressIndicator);
     }
     default:
         return {};

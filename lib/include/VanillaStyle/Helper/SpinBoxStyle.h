@@ -1,14 +1,13 @@
 #pragma once
-#include <QWidget>
-#include <QStyleOption>
+#include "Helper.h"
 #include "VanillaStyle/Theme/Theme.h"
 namespace VanillaStyle
 {
 
-class SpinBoxStyle
+class SpinBoxStyle : public Helper
 {
 public:
-    void draw(const QStyleOptionComplex* option, QPainter* painter, const QWidget* widget, const Theme* theme) const;
+    bool draw(const QStyleOptionComplex* option, QPainter* painter, const Theme* theme, const QWidget* widget) const;
     QRect subControlRect(QStyle::ComplexControl control, const QStyleOptionComplex* option, QStyle::SubControl subControl, const QWidget* widget) const;
     int pixelMetric(QStyle::PixelMetric pm, const QStyleOption* option = nullptr, const QWidget* widget = nullptr) const;
 };

@@ -1,5 +1,7 @@
 #include "VanillaStyle/Widgets/IconLabel.h"
 #include "IconLabel_p.h"
+#include "VanillaStyle/Style/VanillaStyle.h"
+#include "VanillaStyle/Theme/Theme.h"
 
 #include <QPainter>
 #include <QStyle>
@@ -152,8 +154,13 @@ void IconLabelPrivate::paint(QPainter* painter)
     if (!m_label.isEmpty())
     {
         const auto font = q->font();
+        QColor textColor;
+        if (auto * customStyle = qobject_cast<VanillaStyle*>(q->style()))
+        {
+            textColor = customStyle->getCustomColor(Theme::ColorRole::Text);
+        }
         painter->setFont(font);
-        painter->setPen(Qt::black);
+        painter->setPen(textColor);
         // const auto textRect = QRect(m_iconSize.width() + padding, 0, m_labelWidth, q->height());
         painter->drawText(textRect, Qt::AlignCenter | Qt::TextSingleLine, m_label);
     }

@@ -22,141 +22,88 @@ QPalette VanillaStyle::getStandardPalette() const
 void VanillaStyle::drawPrimitive(PrimitiveElement pe, const QStyleOption* option, QPainter* painter, const QWidget* widget) const
 {
     Q_D(const VanillaStyle);
+    std::pair<std::shared_ptr<Helper>, ControlHelper> fcn = std::make_pair(nullptr, nullptr);
+
     switch (pe)
     {
-    case PE_Frame:
-        return;
     case PE_FrameFocusRect:
-        return;
     case PE_FrameMenu:
-        return;  // Nothing to draw.
+        fcn = StyleHelper<ControlHelper>(d->helper, &Helper::emptyControl);
+        break;
     case PE_IndicatorRadioButton:
-    {
-        d->radioButtonStyle->draw(option, painter, widget, d->theme);
-        return;
-    }
+        fcn = StyleHelper<ControlHelper>(d->radioButtonStyle, &RadioButtonStyle::drawIndicator);
+        break;
     case PE_IndicatorCheckBox:
-    {
-        d->checkBoxStyle->draw(option, painter, widget, d->theme);
-        return;
-    }
+        fcn = StyleHelper<ControlHelper>(d->checkBoxStyle, &CheckBoxStyle::draw);
+        break;
     case PE_PanelMenu:
-    {
-        d->menuStyle->drawPrimitive(option, painter, d->theme, widget);
-        return;
-    }
+        fcn = StyleHelper<ControlHelper>(d->menuStyle, &MenuStyle::drawPrimitive);
+        break;
     case PE_PanelLineEdit:
-        d->lineEditStyle->draw(option, painter, widget, d->theme);
-        return;
+        fcn = StyleHelper<ControlHelper>(d->lineEditStyle, &LineEditStyle::draw);
+        break;
     default:
         break;
     }
-    QCommonStyle::drawPrimitive(pe, option, painter, widget);
+    painter->save();
+    if (check(fcn, option, painter, d->theme, widget))
+    {
+        QCommonStyle::drawPrimitive(pe, option, painter, widget);
+    }
+    painter->restore();
 }
 
 void VanillaStyle::drawControl(ControlElement element, const QStyleOption* option, QPainter* painter, const QWidget* widget) const
 {
     Q_D(const VanillaStyle);
 
+    std::pair<std::shared_ptr<Helper>, ControlHelper> fcn = std::make_pair(nullptr, nullptr);
     switch (element)
     {
-        /* PushButton */
-    case CE_PushButton:
-    {
-        QCommonStyle::drawControl(element, option, painter, widget);
-        return;
-    }
     case CE_PushButtonBevel:
-    {
-        d->buttonStyle->draw(option, painter, widget, d->theme);
-        return;
-    }
-    case CE_PushButtonLabel:
-    {
-        if (const auto* optionButton = qstyleoption_cast<const QStyleOptionButton*>(option))
-        {
-            QStyleOptionButton copy = *optionButton;
-            d->theme->adjustTextPalette(&copy);
-            QCommonStyle::drawControl(element, &copy, painter, widget);
-        }
-        return;
-    }
-
-        /* ProgressBar */
-    case CE_ProgressBar:
-    {
-        QCommonStyle::drawControl(element, option, painter, widget);
-        return;
-    }
+        fcn = StyleHelper<ControlHelper>(d->buttonStyle, &ButtonStyle::drawPushButtonBevel);
+        break;
     case CE_ProgressBarGroove:
-    {
-        d->progressBarStyle->drawGroove(option, painter, widget, d->theme);
-        return;
-    }
+        fcn = StyleHelper<ControlHelper>(d->progressBarStyle, &ProgressBarStyle::drawGroove);
+        break;
     case CE_ProgressBarContents:
-    {
-        d->progressBarStyle->drawContents(option, painter, widget, d->theme);
-        return;
-    }
+        fcn = StyleHelper<ControlHelper>(d->progressBarStyle, &ProgressBarStyle::drawContents);
+        break;
     case CE_ProgressBarLabel:
-    {
-        d->progressBarStyle->drawText(option, painter, widget, d->theme);
-        return;
-    }
-    case CE_FocusFrame:
-        return;
-    case CE_MenuItem:
-        d->menuStyle->drawMenuItem(option, painter, d->theme, widget);
-        return;
-    case CE_MenuVMargin:
-        // Nothing to draw.
-        return;
-    case CE_MenuHMargin:
-        // Nothing to draw.
-        return;
-    case CE_MenuEmptyArea:
-        // Nothing to draw.
-        return;
-    case CE_MenuTearoff:
-        return;
-    case CE_MenuBarItem:
-        d->menuStyle->drawMenuBarItem(option, painter, d->theme, widget);
-        return;
-    case CE_MenuBarEmptyArea:
-    {
-        return;
-    }
-    case CE_ItemViewItem:
-        d->itemViewStyle->draw(option, painter, widget, d->theme);
-        return;
-    case CE_ShapedFrame:
-        return;
+        fcn = StyleHelper<ControlHelper>(d->progressBarStyle, &ProgressBarStyle::drawLabel);
+        break;
     default:
         break;
     }
-    QCommonStyle::drawControl(element, option, painter, widget);
+    painter->save();
+    if (check(fcn, option, painter, d->theme, widget))
+    {
+        QCommonStyle::drawControl(element, option, painter, widget);
+    }
+    painter->restore();
 }
 
 void VanillaStyle::drawComplexControl(ComplexControl complexControl, const QStyleOptionComplex* opt, QPainter* painter, const QWidget* widget) const
 {
     Q_D(const VanillaStyle);
-
+    std::pair<std::shared_ptr<Helper>, ComplexHelper> fcn = std::make_pair(nullptr, nullptr);
     switch (complexControl)
     {
     case CC_SpinBox:
-    {
-        d->spinBoxStyle->draw(opt, painter, widget, d->theme);
-        return;
-    }
+        fcn = StyleHelper<ComplexHelper>(d->spinBoxStyle, &SpinBoxStyle::draw);
+        break;
     case CC_ComboBox:
-    {
-        d->comboBoxStyle->draw(opt, painter, widget, d->theme, this);
-        return;
-    }
+        fcn = StyleHelper<ComplexHelper>(d->comboBoxStyle, &ComboBoxStyle::draw);
+        break;
     default:
         break;
     }
-    QCommonStyle::drawComplexControl(complexControl, opt, painter, widget);
+    painter->save();
+    if (check(fcn, opt, painter, d->theme, widget))
+    {
+        QCommonStyle::drawComplexControl(complexControl, opt, painter, widget);
+    }
+    painter->restore();
 }
 
 int VanillaStyle::pixelMetric(PixelMetric pm, const QStyleOption* option, const QWidget* widget) const
@@ -178,20 +125,23 @@ QSize VanillaStyle::sizeFromContents(ContentsType type, const QStyleOption* opti
 QRect VanillaStyle::subElementRect(SubElement subElement, const QStyleOption* option, const QWidget* widget) const
 {
     Q_D(const VanillaStyle);
+    std::pair<std::shared_ptr<Helper>, SubElementHelper> fcn = std::make_pair(nullptr, nullptr);
     switch (subElement)
     {
     case SE_ProgressBarGroove:
     case SE_ProgressBarContents:
     case SE_ProgressBarLabel:
-    {
-        return d->progressBarStyle->subElementRect(subElement, option, widget);
-    }
+        fcn = StyleHelper<SubElementHelper>(d->progressBarStyle, &ProgressBarStyle::subElementRect);
+        break;
     case SE_LineEditContents:
-    {
-        return d->lineEditStyle->subElementRect(subElement, option, widget);
-    }
+        fcn = StyleHelper<SubElementHelper>(d->lineEditStyle, &LineEditStyle::subElementRect);
+        break;
     default:
         break;
+    }
+    if (fcn.second)
+    {
+        return call(fcn, subElement, option, widget);
     }
     return QCommonStyle::subElementRect(subElement, option, widget);
 }
@@ -217,6 +167,16 @@ bool VanillaStyle::eventFilter(QObject* obj, QEvent* event)
 
 void VanillaStyle::setConfigPath(const std::string& path)
 {
+    Q_D(VanillaStyle);
+    d->theme->setConfig(path);
+
+    d->theme->initPalette();
+    const auto palette = d->theme->standardPalette();
+    QApplication::setPalette(palette);
+    // const auto topLevelWidgets = QApplication::topLevelWidgets();
+    // for (auto* widget : topLevelWidgets) {
+    //     widget->update();
+    // }
 }
 QColor VanillaStyle::getCustomColor(const Theme::ColorRole role)
 {
@@ -224,92 +184,35 @@ QColor VanillaStyle::getCustomColor(const Theme::ColorRole role)
     return d->theme->customColor(role);
 }
 
-int VanillaStyle::styleHint(QStyle::StyleHint stylehint, const QStyleOption* option, const QWidget* widget, QStyleHintReturn* returnData) const
+int VanillaStyle::styleHint(StyleHint stylehint, const QStyleOption* option, const QWidget* widget, QStyleHintReturn* returnData) const
 {
-    switch (stylehint)
-    {
-        // Menu
-    case SH_Menu_AllowActiveAndDisabled:
-        return false;
-    case SH_Menu_SpaceActivatesItem:
-        return true;
-    case SH_Menu_SubMenuPopupDelay:
-        return 300;
-    case SH_Menu_MouseTracking:
-        return true;
-    case SH_Menu_Scrollable:
-        return true;
-    case SH_Menu_SloppySubMenus:
-        break;
-    case SH_Menu_FillScreenWithScroll:
-        return true;
-    case SH_Menu_KeyboardSearch:
-        return true;
-    case SH_Menu_SelectionWrap:
-        return true;
-    case SH_Menu_Mask:
-        break;
-    case SH_Menu_FlashTriggeredItem:
-        return true;
-    case SH_Menu_FadeOutOnHide:
-        return true;
-    case SH_Menu_SupportsSections:
-        return false;
-    case SH_Menu_SubMenuUniDirection:
-        break;
-    case SH_Menu_SubMenuUniDirectionFailCount:
-        break;
-    case SH_Menu_SubMenuSloppySelectOtherActions:
-        break;
-    case SH_Menu_SubMenuSloppyCloseTimeout:
-        break;
-    case SH_Menu_SubMenuResetWhenReenteringParent:
-        break;
-    case SH_Menu_SubMenuDontStartSloppyOnLeave:
-        break;
-    case SH_UnderlineShortcut:
-        break;
-    default:
-        break;
-    }
     return QCommonStyle::styleHint(stylehint, option, widget, returnData);
 }
 
-QRect VanillaStyle::subControlRect(QStyle::ComplexControl control, const QStyleOptionComplex* option, QStyle::SubControl subControl,
-                                   const QWidget* widget) const
+QRect VanillaStyle::subControlRect(ComplexControl control, const QStyleOptionComplex* option, SubControl subControl, const QWidget* widget) const
 {
     Q_D(const VanillaStyle);
-
+    std::pair<std::shared_ptr<Helper>, subControlHelper> fcn = std::make_pair(nullptr, nullptr);
     switch (control)
     {
     case CC_SpinBox:
     {
-        return d->spinBoxStyle->subControlRect(control, option, subControl, widget);
+        fcn = StyleHelper<subControlHelper>(d->spinBoxStyle, &SpinBoxStyle::subControlRect);
+        break;
     }
-    case CC_ComboBox:
+    default:
         break;
-    case CC_ScrollBar:
-        break;
-    case CC_Slider:
-        break;
-    case CC_ToolButton:
-        break;
-    case CC_TitleBar:
-        break;
-    case CC_Dial:
-        break;
-    case CC_GroupBox:
-        break;
-    case CC_MdiControls:
-        break;
-    case CC_CustomBase:
-        break;
+    }
+    if (fcn.second)
+    {
+        return call(fcn, control, option, subControl, widget);
     }
     return QCommonStyle::subControlRect(control, option, subControl, widget);
 }
 
 VanillaStylePrivate::VanillaStylePrivate(VanillaStyle* q)
     : theme(new Theme())
+    , helper(new Helper())
     , checkBoxStyle(new CheckBoxStyle())
     , radioButtonStyle(new RadioButtonStyle())
     , buttonStyle(new ButtonStyle())

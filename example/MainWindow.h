@@ -2,6 +2,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "VanillaStyle/Style/VanillaStyle.h"
+
 #include <QMainWindow>
 
 
@@ -36,6 +38,7 @@ private:
     QTimer *m_timer;
     void installWindowAgent();
     QWK::WidgetWindowAgent* windowAgent;
+
 
 // protected:
     // void paintEvent(QPaintEvent* event) override;

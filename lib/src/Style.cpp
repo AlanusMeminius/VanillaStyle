@@ -4,8 +4,5 @@
 
 void VanillaStyle::Style::setStyle()
 {
-    auto style = new VanillaStyle();
-//    style->setConfigPath("config.json");
-//    qApp->setPalette(style->palette())
-    qApp->setStyle(style);
+
 }

@@ -1,19 +1,15 @@
 #pragma once
-#include <QWidget>
-#include <QStyleOption>
 #include "VanillaStyle/Theme/Theme.h"
+#include "Helper.h"
 
 namespace VanillaStyle
 {
-//class QStyleOption;
-//class QStyleOptionButton;
 
-
-class CheckBoxStyle
+class CheckBoxStyle : public Helper
 {
 public:
-    void draw(const QStyleOption* option, QPainter* painter, const QWidget* widget, const Theme* theme) const;
-    void drawIndicator(const QStyleOption* option, const QRectF rect, QPainter* painter, const Theme* theme) const;
+    bool draw(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget) const;
+    void drawIndicator(const QStyleOption* option, QRectF rect, QPainter* painter, const Theme* theme) const;
     [[nodiscard]] int indicatorSize() const;
 };
 

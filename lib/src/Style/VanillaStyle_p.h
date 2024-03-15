@@ -4,6 +4,7 @@
 #include "VanillaStyle/Helper/ButtonStyle.h"
 #include "VanillaStyle/Helper/CheckBoxStyle.h"
 #include "VanillaStyle/Helper/ComboBoxStyle.h"
+#include "VanillaStyle/Helper/Helper.h"
 #include "VanillaStyle/Helper/ItemViewStyle.h"
 #include "VanillaStyle/Helper/RadioButtonStyle.h"
 #include "VanillaStyle/Helper/ProgressBarStyle.h"
@@ -11,7 +12,8 @@
 #include "VanillaStyle/Helper/SpinBoxStyle.h"
 #include "VanillaStyle/Helper/LineEditStyle.h"
 
-namespace VanillaStyle {
+namespace VanillaStyle
+{
 class VanillaStylePrivate
 {
 public:
@@ -19,6 +21,7 @@ public:
 
 private:
     Theme* theme;
+    std::shared_ptr<Helper> helper;
     std::shared_ptr<CheckBoxStyle> checkBoxStyle;
     std::shared_ptr<RadioButtonStyle> radioButtonStyle;
     std::shared_ptr<ButtonStyle> buttonStyle;
@@ -28,8 +31,9 @@ private:
     std::shared_ptr<LineEditStyle> lineEditStyle;
     std::shared_ptr<ComboBoxStyle> comboBoxStyle;
     std::shared_ptr<ItemViewStyle> itemViewStyle;
+
 private:
     VanillaStyle* const q_ptr;
     Q_DECLARE_PUBLIC(VanillaStyle);
 };
-}
+}  // namespace VanillaStyle

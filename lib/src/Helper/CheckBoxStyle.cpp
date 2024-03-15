@@ -5,34 +5,38 @@
 
 namespace VanillaStyle
 {
-void CheckBoxStyle::draw(const QStyleOption* option, QPainter* painter, const QWidget* widget, const Theme* theme) const
+bool CheckBoxStyle::draw(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget) const
 {
-    if (const auto* optionButton = qstyleoption_cast<const QStyleOptionButton*>(option))
+    const auto* opt = qstyleoption_cast<const QStyleOptionButton*>(option);
+    if (!opt)
     {
-        painter->setRenderHints(QPainter::Antialiasing);
-        // 计算rect
-        const auto rect = QRectF(optionButton->rect);
-        // theme->setupPainter(option, painter, Theme::CheckBox);
-        const auto bgColor = theme->getColor(option, Theme::ButtonBackground);
-        const auto border = theme->getBorder(Theme::ButtonBorder);
-        const auto radius = theme->getRadius(Theme::ButtonRadius);
-        if (radius < 1)
-        {
-            painter->fillRect(rect, bgColor);
-        }
-        else
-        {
-            const auto margins = QMarginsF(border / 2., border / 2., border / 2., border / 2.);
-            const auto buttonRect = border > 0.1 ? rect.marginsRemoved(margins) : rect;
-            painter->setPen(Qt::NoPen);
-            painter->setBrush(QBrush(bgColor));
-            painter->drawRoundedRect(buttonRect, radius, radius);
-        }
-        if (option->state & QStyle::State_On)
-        {
-            drawIndicator(option, rect, painter, theme);
-        }
+        return true;
     }
+
+    painter->setRenderHints(QPainter::Antialiasing);
+    // 计算rect
+    const auto rect = QRectF(opt->rect);
+    // theme->setupPainter(option, painter, Theme::CheckBox);
+    const auto bgColor = theme->getColor(option, Theme::ButtonBackground);
+    const auto border = theme->getBorder(Theme::ButtonBorder);
+    if (const auto radius = theme->getRadius(Theme::ButtonRadius); radius < 1)
+    {
+        painter->fillRect(rect, bgColor);
+    }
+    else
+    {
+        const auto margins = QMarginsF(border / 2., border / 2., border / 2., border / 2.);
+        const auto buttonRect = border > 0.1 ? rect.marginsRemoved(margins) : rect;
+        painter->setPen(Qt::NoPen);
+        painter->setBrush(QBrush(bgColor));
+        painter->drawRoundedRect(buttonRect, radius, radius);
+    }
+    if (option->state & QStyle::State_On)
+    {
+        drawIndicator(option, rect, painter, theme);
+    }
+
+    return true;
 }
 void CheckBoxStyle::drawIndicator(const QStyleOption* option, const QRectF rect, QPainter* painter, const Theme* theme) const
 {
@@ -40,6 +44,7 @@ void CheckBoxStyle::drawIndicator(const QStyleOption* option, const QRectF rect,
 
     // auto fgColor = painter->pen().color();
     painter->setPen(QPen{fgColor, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin});
+    // painter->setBrush(Qt::NoBrush);
     const auto w = rect.width();
     const auto h = rect.width();
     const auto x = rect.x();

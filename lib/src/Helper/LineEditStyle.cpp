@@ -4,19 +4,23 @@
 
 namespace VanillaStyle
 {
-void LineEditStyle::draw(const QStyleOption* option, QPainter* painter, const QWidget* widget, const Theme* theme) const
+bool LineEditStyle::draw(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget) const
 {
-    if (const auto* optionLineEdit = qstyleoption_cast<const QStyleOptionFrame*>(option))
+    const auto* opt = qstyleoption_cast<const QStyleOptionFrame*>(option);
+    if (!opt)
     {
-        painter->setRenderHints(QPainter::Antialiasing);
-        if (optionLineEdit->lineWidth > 0)
-        {
-            const auto radius = theme->getRadius(Theme::ButtonRadius);
-            const auto fgColor = theme->getColor(option, Theme::ColorRole::LineEditOutline);
-            painter->setPen(fgColor);
-            painter->drawRoundedRect(QRectF(optionLineEdit->rect).adjusted(1, 1, -1, -1), radius, radius);
-        }
+        return true;
     }
+
+    painter->setRenderHints(QPainter::Antialiasing);
+    if (opt->lineWidth > 0)
+    {
+        const auto radius = theme->getRadius(Theme::ButtonRadius);
+        const auto fgColor = theme->getColor(option, Theme::ColorRole::LineEditOutline);
+        painter->setPen(fgColor);
+        painter->drawRoundedRect(QRectF(opt->rect).adjusted(1, 1, -1, -1), radius, radius);
+    }
+    return true;
 }
 QRect LineEditStyle::subElementRect(QStyle::SubElement element, const QStyleOption* option, const QWidget* widget) const
 {

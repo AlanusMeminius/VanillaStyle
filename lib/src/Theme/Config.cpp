@@ -7,7 +7,7 @@ void VanillaStyle::ConfigManager::setConfigPath(const std::string& path)
 }
 VanillaStyle::ConfigManager::ConfigManager() = default;
 
-VanillaStyle::ConfigManager::ErrorCode VanillaStyle::ConfigManager::readConfig(VanillaStyle::StyleConfig& config) const
+VanillaStyle::ConfigManager::ErrorCode VanillaStyle::ConfigManager::readConfig(StyleConfig& config) const
 {
     std::ifstream file(m_configPath);
     if (!file.is_open())
@@ -36,22 +36,22 @@ VanillaStyle::StyleConfig VanillaStyle::ConfigManager::defaultConfig()
   "author": "Alanus",
   "mode": "light",
   "color": {
-    "backgroundColor": "#0xFFFFFF",
-    "textColor": "#0x1890FF",
-    "pressedTextColor": "#344955FF",
-    "hoverTextColor": "#50727BFF",
+    "backgroundColor": "#FEFBF6",
+    "textColor": "#0x1890",
+    "pressedTextColor": "#344955",
+    "hoverTextColor": "#50727B",
     "primaryColorHovered": "#0x2C9D",
-    "buttonForeground": "#9F95A3FF",
-    "buttonBackground": "#F5F4F5FF",
-    "buttonHoveredForeground": "#53949FFF",
-    "buttonHoveredBackground": "#53949FFF",
-    "buttonPressedForeground": "#322D35FF",
-    "buttonPressedBackground": "#F8F7F8FF",
+    "buttonForeground": "#9F95A3",
+    "buttonBackground": "#B4B4B8",
+    "buttonHoveredForeground": "#53949F",
+    "buttonHoveredBackground": "#53949F",
+    "buttonPressedForeground": "#322D35",
+    "buttonPressedBackground": "#F8F7F8",
     "progressBarBackground": "#EADFB4",
     "progressBarForeground": "#76ABAE",
     "progressBarText": "#C6D27E",
-    "lineEditFocusOutline": "#B5C0D0FF",
-    "lineEditOutline": "#B784B7FF"
+    "lineEditFocusOutline": "#B5C0D0",
+    "lineEditOutline": "#B784B7"
   },
   "size": {
     "fontSize": 12,

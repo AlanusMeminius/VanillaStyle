@@ -1,5 +1,6 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
+#include "VanillaStyle/Style/VanillaStyle.h"
 #include "VanillaStyle/Widgets/IconLabel.h"
 
 #include <QWKCore/styleagent.h>
@@ -39,15 +40,23 @@ MainWindow::MainWindow(QWidget* parent)
     ui->iconLabelSecond->setLabel("Download");
     ui->iconLabelSecond->setDirction(Qt::LeftToRight);
 
-
     ui->iconBtn->setIcon(QIcon(":download.svg"));
 
     ui->radioButton->setChecked(true);
-    // setTheme(true);
-    connect(ui->radioButton, &QRadioButton::clicked, this, [this]() {
+    const auto style = new VanillaStyle::VanillaStyle();
+    qApp->setStyle(style);
+    QApplication::setPalette(style->getStandardPalette());
+    const auto appPath = QApplication::applicationDirPath();
+    const auto ligthTheme = appPath + "/LightVanillaStyle.json";
+    const auto darkTheme = appPath + "/DarkVanillaStyle.json";
+    style->setConfigPath(ligthTheme.toStdString());
+    setTheme(true);
+    connect(ui->radioButton, &QRadioButton::clicked, this, [this, style, ligthTheme]() {
+        style->setConfigPath(ligthTheme.toStdString());
         setTheme(true);
     });
-    connect(ui->radioButton_2, &QRadioButton::clicked, this, [this]() {
+    connect(ui->radioButton_2, &QRadioButton::clicked, this, [this, style, darkTheme]() {
+        style->setConfigPath(darkTheme.toStdString());
         setTheme(false);
     });
 
@@ -81,7 +90,6 @@ void MainWindow::setTheme(const bool theme)
 {
     // CustomTheme::setDarkMode(!theme);
     windowAgent->setWindowAttribute(QStringLiteral("blur-effect"), theme ? "light" : "dark");
-    style()->polish(this);
 }
 void MainWindow::start()
 {
