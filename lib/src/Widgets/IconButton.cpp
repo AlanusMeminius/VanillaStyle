@@ -16,16 +16,12 @@ IconButton::IconButton(const QIcon& icon, QWidget* parent)
 {
     setIcon(icon);
 }
+
 QSize IconButton::sizeHint() const
 {
-    return iconSize();
+    Q_D(const IconButton);
+    return d->sizeHint();
 }
-// QSize IconButton::sizeHint() const
-// {
-//     Q_D(const IconButton);
-//
-//     // return d->sizeHint();
-// }
 void IconButton::paintEvent(QPaintEvent* event)
 {
     Q_D(IconButton);
@@ -41,26 +37,25 @@ void IconButtonPrivate::init()
 {
     Q_Q(IconButton);
     q->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-
-
 }
 QSize IconButtonPrivate::sizeHint() const
 {
     Q_Q(const IconButton);
-    return q->iconSize();
+    return q->iconSize() + QSize(padding * 2, padding * 2);
 }
 void IconButtonPrivate::paint(QPainter* painter)
 {
     Q_Q(IconButton);
     const auto opacity = q->isEnabled() ? 1.0 : 0.2;
     painter->setOpacity(opacity);
-    const auto rect = q->rect();
-    const auto pixmap = q->icon().pixmap(q->iconSize());
-    if(pixmap.isNull())
+    const auto rectCenter = q->rect().center();
+    // constexpr auto padding = 2;
+    const auto halfWidth = q->iconSize().width() / 2;
+    const auto iconPoint = rectCenter - QPoint(halfWidth, halfWidth);
+    if (const auto pixmap = q->icon().pixmap(q->iconSize()); !pixmap.isNull())
     {
-        return;
+        painter->drawPixmap(iconPoint, pixmap);
     }
-    painter->drawPixmap(rect, pixmap, pixmap.rect());
 }
 
 }  // namespace VanillaStyle

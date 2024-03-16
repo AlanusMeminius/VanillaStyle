@@ -65,6 +65,7 @@ public:
     QColor progressBarText;
     QColor lineEditFocusOutline;
     QColor lineEditOutline;
+    QColor iconLabelText;
     std::string toString()
     {
         nlohmann::json json;
@@ -74,7 +75,7 @@ public:
     NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Color, backgroundColor, textColor, pressedTextColor, hoverTextColor, primaryColorHovered, buttonForeground,
                                                 buttonBackground, buttonHoveredForeground, buttonPressedForeground, buttonHoveredBackground,
                                                 buttonPressedBackground, progressBarBackground, progressBarForeground, progressBarText, lineEditFocusOutline,
-                                                lineEditOutline);
+                                                lineEditOutline, iconLabelText);
 };
 
 class Size : public Basic

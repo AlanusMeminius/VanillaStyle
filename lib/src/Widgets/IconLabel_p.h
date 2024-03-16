@@ -12,12 +12,12 @@ public:
     void init();
 
 private:
-    QSize m_iconSize;
-    int m_labelWidth = 0;
+    QSize iconSize;
+    int labelWidth = 0;
     int padding = 4;
-    QIcon m_icon;
-    QString m_label;
-    Qt::LayoutDirection m_layoutDirection = Qt::LeftToRight;
+    QIcon icon;
+    QString label;
+    Qt::LayoutDirection layoutDirection = Qt::LeftToRight;
 
     [[nodiscard]] QSize sizeHint() const;
     void paint(QPainter* painter);

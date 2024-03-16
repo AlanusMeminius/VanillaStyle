@@ -51,7 +51,8 @@ VanillaStyle::StyleConfig VanillaStyle::ConfigManager::defaultConfig()
     "progressBarForeground": "#76ABAE",
     "progressBarText": "#C6D27E",
     "lineEditFocusOutline": "#B5C0D0",
-    "lineEditOutline": "#B784B7"
+    "lineEditOutline": "#B784B7",
+    "iconLabelText": "#50727B"
   },
   "size": {
     "fontSize": 12,

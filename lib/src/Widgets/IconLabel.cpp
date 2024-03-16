@@ -40,16 +40,16 @@ QSize IconLabel::sizeHint() const
 const QString& IconLabel::label() const
 {
     Q_D(const IconLabel);
-    return d->m_label;
+    return d->label;
 }
 void IconLabel::setLabel(const QString& label)
 {
     Q_D(IconLabel);
-    if (d->m_label != label)
+    if (d->label != label)
     {
-        d->m_label = label;
+        d->label = label;
         const QFontMetrics fm(font());
-        d->m_labelWidth = fm.horizontalAdvance(label);
+        d->labelWidth = fm.horizontalAdvance(label);
         updateGeometry();
         update();
         Q_EMIT labelChanged();
@@ -58,46 +58,32 @@ void IconLabel::setLabel(const QString& label)
 const QIcon& IconLabel::icon() const
 {
     Q_D(const IconLabel);
-    return d->m_icon;
+    return d->icon;
 }
 void IconLabel::setIcon(const QIcon& icon)
 {
     Q_D(IconLabel);
-    d->m_icon = icon;
+    d->icon = icon;
     update();
 }
 const QSize& IconLabel::iconSize() const
 {
     Q_D(const IconLabel);
-    return d->m_iconSize;
+    return d->iconSize;
 }
 void IconLabel::setIconSize(const QSize& iconSize)
 {
     Q_D(IconLabel);
 
-    if (iconSize != d->m_iconSize)
+    if (iconSize != d->iconSize)
     {
-        d->m_iconSize = iconSize;
+        d->iconSize = iconSize;
         emit iconSizeChanged();
         updateGeometry();
         update();
     }
 }
-const Qt::LayoutDirection& IconLabel::dirction() const
-{
-    Q_D(const IconLabel);
-    return d->m_layoutDirection;
-}
-void IconLabel::setDirction(const Qt::LayoutDirection& dirction)
-{
-    Q_D(IconLabel);
-    if (d->m_layoutDirection != dirction)
-    {
-        d->m_layoutDirection = dirction;
-        emit dirctionChanged();
-        update();
-    }
-}
+
 void IconLabel::paintEvent(QPaintEvent* event)
 {
     // Q_UNUSED(event);
@@ -123,46 +109,36 @@ void IconLabelPrivate::init()
     {
         size = style->pixelMetric(QStyle::PM_ButtonIconSize);
     }
-    m_iconSize = QSize(size, size);
+    iconSize = QSize(size, size);
 }
 QSize IconLabelPrivate::sizeHint() const
 {
-    return {m_iconSize.width() + padding + m_labelWidth, m_iconSize.height()};
+    return {iconSize.width() + padding + labelWidth, iconSize.height()};
 }
 void IconLabelPrivate::paint(QPainter* painter)
 {
     Q_Q(IconLabel);
     painter->setRenderHint(QPainter::Antialiasing);
-
-    QPoint iconPoint;
-    QRect textRect;
-    if (q->layoutDirection() == Qt::LeftToRight)
-    {
-        iconPoint = QPoint(m_labelWidth + padding, 0);
-        textRect = QRect(0, 0, m_labelWidth, q->height());
-    }
-    else
-    {
-        iconPoint = QPoint(0, 0);
-        textRect = QRect(m_iconSize.width() + padding, 0, m_labelWidth, q->height());
-    }
-    if (const auto pixmap = m_icon.pixmap(m_iconSize.height()); !pixmap.isNull())
+    const auto rect = q->rect();
+    const auto isIconFirst = q->isIconFirst();
+    const auto iconPoint = QPoint(isIconFirst ? rect.x() : rect.x() + labelWidth + padding, rect.y());
+    const auto textRect = QRect(isIconFirst ? iconSize.width() + padding : rect.x(), rect.y(), labelWidth, rect.height());
+    if (const auto pixmap = icon.pixmap(iconSize.height()); !pixmap.isNull())
     {
         painter->drawPixmap(iconPoint, pixmap);
     }
-
-    if (!m_label.isEmpty())
+    if (!label.isEmpty())
     {
-        const auto font = q->font();
         QColor textColor;
-        if (auto * customStyle = qobject_cast<VanillaStyle*>(q->style()))
+        QFont font;
+        if (auto* customStyle = qobject_cast<VanillaStyle*>(q->style()))
         {
-            textColor = customStyle->getCustomColor(Theme::ColorRole::Text);
+            textColor = customStyle->getCustomColor(Theme::ColorRole::IconLabelText);
+            font = customStyle->getCustomFont(Theme::TextSizeRole::H5);
         }
         painter->setFont(font);
         painter->setPen(textColor);
-        // const auto textRect = QRect(m_iconSize.width() + padding, 0, m_labelWidth, q->height());
-        painter->drawText(textRect, Qt::AlignCenter | Qt::TextSingleLine, m_label);
+        painter->drawText(textRect, Qt::AlignCenter | Qt::TextSingleLine, label);
     }
 }
 

@@ -16,6 +16,7 @@ VanillaStyle::VanillaStyle()
 QPalette VanillaStyle::getStandardPalette() const
 {
     Q_D(const VanillaStyle);
+    d->theme->initPalette();
     return d->theme->palette;
 }
 
@@ -182,6 +183,11 @@ QColor VanillaStyle::getCustomColor(const Theme::ColorRole role)
 {
     Q_D(VanillaStyle);
     return d->theme->customColor(role);
+}
+QFont VanillaStyle::getCustomFont(Theme::TextSizeRole sizeRole)
+{
+    Q_D(VanillaStyle);
+    return d->theme->getFont(sizeRole);
 }
 
 int VanillaStyle::styleHint(StyleHint stylehint, const QStyleOption* option, const QWidget* widget, QStyleHintReturn* returnData) const

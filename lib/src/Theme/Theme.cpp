@@ -125,6 +125,21 @@ int Theme::getBorder(const BorderRole borderRole) const
         return 1;
     }
 }
+QFont Theme::getFont(const TextSizeRole sizeRole)
+{
+    QFont font;
+    font.setWeight(QFont::Weight::Normal);
+    font.setPointSize(12);
+    switch (sizeRole)
+    {
+    case H5:
+        font.setPointSize(10);
+        break;
+    default:
+        break;
+    }
+    return font;
+}
 QColor Theme::getColor(const QStyleOption* option, const ColorRole role) const
 {
     return createColor(state(option), option, role);
@@ -230,6 +245,8 @@ QColor Theme::customColor(const ColorRole role) const
         return colorConfig.buttonForeground;
     case ButtonBackground:
         return colorConfig.buttonBackground;
+    case IconLabelText:
+        return colorConfig.iconLabelText;
     default:
         return {};
     }

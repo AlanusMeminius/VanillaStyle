@@ -1,5 +1,6 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
+#include "VanillaStyle/Style.h"
 #include "VanillaStyle/Style/VanillaStyle.h"
 #include "VanillaStyle/Widgets/IconLabel.h"
 
@@ -19,6 +20,7 @@ MainWindow::MainWindow(QWidget* parent)
     , ui(new Ui::MainWindow)
     , m_timer(new QTimer(this))
     , windowAgent(new QWK::WidgetWindowAgent(this))
+    , styleAgent(new QWK::StyleAgent(this))
 {
     installWindowAgent();
     ui->setupUi(this);
@@ -34,41 +36,27 @@ MainWindow::MainWindow(QWidget* parent)
 
     ui->iconLabelFirst->setIcon(QIcon(":download.svg"));
     ui->iconLabelFirst->setLabel("Download");
-    ui->iconLabelFirst->setDirction(Qt::RightToLeft);
 
     ui->iconLabelSecond->setIcon(QIcon(":download.svg"));
     ui->iconLabelSecond->setLabel("Download");
-    ui->iconLabelSecond->setDirction(Qt::LeftToRight);
+    ui->iconLabelSecond->setIconFirst(false);
 
     ui->iconBtn->setIcon(QIcon(":download.svg"));
 
     ui->radioButton->setChecked(true);
-    const auto style = new VanillaStyle::VanillaStyle();
-    qApp->setStyle(style);
-    QApplication::setPalette(style->getStandardPalette());
-    const auto appPath = QApplication::applicationDirPath();
-    const auto ligthTheme = appPath + "/LightVanillaStyle.json";
-    const auto darkTheme = appPath + "/DarkVanillaStyle.json";
-    style->setConfigPath(ligthTheme.toStdString());
-    setTheme(true);
-    connect(ui->radioButton, &QRadioButton::clicked, this, [this, style, ligthTheme]() {
-        style->setConfigPath(ligthTheme.toStdString());
-        setTheme(true);
-    });
-    connect(ui->radioButton_2, &QRadioButton::clicked, this, [this, style, darkTheme]() {
-        style->setConfigPath(darkTheme.toStdString());
-        setTheme(false);
-    });
 
-    auto styleAgent = new QWK::StyleAgent(this);
-    connect(styleAgent, &QWK::StyleAgent::systemThemeChanged, this, [this, styleAgent]() {
-        if (const auto theme = styleAgent->systemTheme(); theme == QWK::StyleAgent::SystemTheme::Dark)
+    setAutoTheme();
+
+    connect(ui->radioButton, &QRadioButton::toggled, this, &MainWindow::setLightTheme);
+    connect(ui->radioButton_2, &QRadioButton::toggled, this, &MainWindow::setDarkTheme);
+    connect(ui->radioButton_3, &QRadioButton::clicked, this, [this](const bool checked) {
+        if (checked)
         {
-            setTheme(false);
+            connect(styleAgent, &QWK::StyleAgent::systemThemeChanged, this, &MainWindow::setAutoTheme);
         }
-        else if (theme == QWK::StyleAgent::SystemTheme::Light)
+        else
         {
-            setTheme(true);
+            disconnect(styleAgent, &QWK::StyleAgent::systemThemeChanged, this, &MainWindow::setAutoTheme);
         }
     });
 
@@ -88,8 +76,22 @@ MainWindow::~MainWindow()
 }
 void MainWindow::setTheme(const bool theme)
 {
-    // CustomTheme::setDarkMode(!theme);
     windowAgent->setWindowAttribute(QStringLiteral("blur-effect"), theme ? "light" : "dark");
+}
+void MainWindow::setLightTheme()
+{
+    VanillaStyle::Style::setStyleFromName(QStringLiteral("LightVanillaStyle"));
+    setTheme(true);
+}
+void MainWindow::setDarkTheme()
+{
+    VanillaStyle::Style::setStyleFromName(QStringLiteral("DarkVanillaStyle"));
+    setTheme(false);
+}
+void MainWindow::setAutoTheme()
+{
+    const auto theme = styleAgent->systemTheme();
+    theme == QWK::StyleAgent::SystemTheme::Dark ? setDarkTheme() : setLightTheme();
 }
 void MainWindow::start()
 {

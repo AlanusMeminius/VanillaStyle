@@ -34,6 +34,17 @@ public:
         ProgressBarBackground,
         ProgressBarText,
         LineEditOutline,
+        IconLabelText,
+    };
+
+    enum TextSizeRole
+    {
+        Default,
+        H1,
+        H2,
+        H3,
+        H4,
+        H5
     };
 
     enum RadiusRole {
@@ -62,6 +73,7 @@ public:
     [[nodiscard]] QPalette standardPalette() const;
     [[nodiscard]] int getRadius(RadiusRole radiusRole) const;
     [[nodiscard]] int getBorder(BorderRole borderRole) const;
+    QFont getFont(TextSizeRole sizeRole);
 
     QColor getColor(const QStyleOption* option, ColorRole role) const;
     QColor createColor(State state, const QStyleOption* option, ColorRole role) const;

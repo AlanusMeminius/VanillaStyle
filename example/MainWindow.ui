@@ -204,7 +204,21 @@
      <widget class="QWidget" name="widget_9" native="true">
       <layout class="QHBoxLayout" name="horizontalLayout_9">
        <item>
+        <widget class="QLabel" name="label_12">
+         <property name="text">
+          <string>IconFirst</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="VanillaStyle::IconLabel" name="iconLabelFirst" native="true"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_13">
+         <property name="text">
+          <string>TextFirst</string>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="VanillaStyle::IconLabel" name="iconLabelSecond" native="true"/>

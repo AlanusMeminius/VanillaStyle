@@ -11,7 +11,7 @@ class IconLabel : public QWidget
     Q_PROPERTY(QString label READ label WRITE setLabel NOTIFY labelChanged)
     Q_PROPERTY(QIcon icon READ icon WRITE setIcon NOTIFY iconChanged)
     Q_PROPERTY(QSize iconSize READ iconSize WRITE setIconSize NOTIFY iconSizeChanged)
-    Q_PROPERTY(Qt::LayoutDirection dirction READ dirction WRITE setDirction NOTIFY dirctionChanged)
+    Q_PROPERTY(bool iconFirst READ isIconFirst WRITE setIconFirst)
 public:
     explicit IconLabel(QWidget* parent = nullptr);
     explicit IconLabel(const QIcon& icon, QWidget* parent = nullptr);
@@ -32,9 +32,9 @@ public:
     void setIconSize(const QSize& iconSize);
     Q_SIGNAL void iconSizeChanged();
 
-    [[nodiscard]] const Qt::LayoutDirection& dirction() const;
-    void setDirction(const Qt::LayoutDirection& dirction);
-    Q_SIGNAL void dirctionChanged();
+    bool iconFirst = true;
+    [[nodiscard]] const bool& isIconFirst() const {return iconFirst;}
+    void setIconFirst(const bool& iconFirst) {this->iconFirst = iconFirst;}
 
 protected:
     void paintEvent(QPaintEvent* event) override;

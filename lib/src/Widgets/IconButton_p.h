@@ -12,6 +12,7 @@ public:
 
 private:
 
+    int padding = 2;
     [[nodiscard]] QSize sizeHint() const;
     void paint(QPainter* painter);
     IconButton* const q_ptr;
