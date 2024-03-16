@@ -68,6 +68,12 @@ MainWindow::MainWindow(QWidget* parent)
     connect(plusShortcut, &QShortcut::activated, this, &MainWindow::increaseProgress);
     auto* minusShortcut = new QShortcut(Qt::Key_K, this);
     connect(minusShortcut, &QShortcut::activated, this, &MainWindow::decreaseProgress);
+
+    // QPalette pal = QPalette();
+    // pal.setColor(QPalette::Window, Qt::transparent);
+    // ui->listWidget->setAutoFillBackground(true);
+    // ui->listWidget->setBackgroundRole(QPalette::Window);
+    // ui->listWidget->setPalette(pal);
 }
 
 MainWindow::~MainWindow()
@@ -123,10 +129,3 @@ void MainWindow::installWindowAgent()
     windowAgent->setTitleBar(bar);
     setMenuWidget(bar);
 }
-// void MainWindow::paintEvent(QPaintEvent* event)
-// {
-//     QMainWindow::paintEvent(event);
-//     // QPainter painter(this);
-//     // painter.setCompositionMode(QPainter::CompositionMode_Clear);
-//     // painter.fillRect(event->rect(), Qt::transparent);
-// }

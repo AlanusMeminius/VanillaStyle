@@ -1,6 +1,7 @@
 #include <QPushButton>
 #include <QCheckBox>
 #include <QMenu>
+#include <QListWidget>
 #include <QPainterPath>
 #include "VanillaStyle/Style/VanillaStyle.h"
 #include "VanillaStyle_p.h"
@@ -27,8 +28,14 @@ void VanillaStyle::drawPrimitive(PrimitiveElement pe, const QStyleOption* option
 
     switch (pe)
     {
+    case PE_Widget:
+    case PE_Frame:
+    case PE_FrameWindow:
+    case PE_PanelScrollAreaCorner:
     case PE_FrameFocusRect:
     case PE_FrameMenu:
+    case PE_IndicatorColumnViewArrow:
+    case PE_IndicatorItemViewItemDrop:
         fcn = StyleHelper<ControlHelper>(d->helper, &Helper::emptyControl);
         break;
     case PE_IndicatorRadioButton:
@@ -72,6 +79,9 @@ void VanillaStyle::drawControl(ControlElement element, const QStyleOption* optio
         break;
     case CE_ProgressBarLabel:
         fcn = StyleHelper<ControlHelper>(d->progressBarStyle, &ProgressBarStyle::drawLabel);
+        break;
+    case CE_ItemViewItem:
+        fcn = StyleHelper<ControlHelper>(d->itemViewStyle, &ItemViewStyle::draw);
         break;
     default:
         break;
@@ -154,6 +164,11 @@ void VanillaStyle::polish(QWidget* w)
     if (qobject_cast<QPushButton*>(w) || qobject_cast<QCheckBox*>(w))
     {
         w->setAttribute(Qt::WA_Hover);
+    }
+    if (auto* itemView =  qobject_cast<QAbstractItemView*>(w))
+    {
+        itemView->setBackgroundRole(QPalette::NoRole);
+        itemView->viewport()->setBackgroundRole(QPalette::NoRole);
     }
 
     if (auto* menu = qobject_cast<QMenu*>(w))

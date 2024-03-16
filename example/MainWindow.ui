@@ -328,6 +328,20 @@
      </widget>
     </item>
     <item>
+     <widget class="QListWidget" name="listWidget">
+      <item>
+       <property name="text">
+        <string>Item One</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Item Two</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+    <item>
      <spacer name="verticalSpacer">
       <property name="orientation">
        <enum>Qt::Vertical</enum>

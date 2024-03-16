@@ -11,6 +11,8 @@ public:
     {
         return true;
     }
+
+    bool drawListWidgetBackground(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget) const;
 };
 
 }  // namespace VanillaStyle

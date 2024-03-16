@@ -1,14 +1,12 @@
 #pragma once
-#include <QWidget>
-#include <QStyleOption>
+#include "Helper.h"
 #include "VanillaStyle/Theme/Theme.h"
 
 namespace VanillaStyle {
-class ItemViewStyle {
+class ItemViewStyle : public Helper{
 public:
-    void draw(const QStyleOption* option, QPainter* painter, const QWidget* widget, const Theme* theme) const;
+    bool draw(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget) const;
     void drawPrimitive(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget = nullptr) const;
-
 };
 
 } // VanillaStyle
