@@ -12,7 +12,10 @@ bool ItemViewStyle::draw(const QStyleOption* option, QPainter* painter, const Th
         return true;
     }
 
-    drawPrimitive(option, painter, theme, widget);
+    if (const bool isDrawItemBackground = widget->property("noBackground").toBool(); !isDrawItemBackground)
+    {
+        drawPrimitive(option, painter, theme, widget);
+    }
 
     const auto rect = opt->rect;
     if (!opt->text.isEmpty())
@@ -20,7 +23,8 @@ bool ItemViewStyle::draw(const QStyleOption* option, QPainter* painter, const Th
         const auto& fm = opt->fontMetrics;
         const auto elidedText = fm.elidedText(opt->text, Qt::ElideRight, rect.width(), Qt::TextSingleLine);
         const auto textAlignment = opt->displayAlignment;
-        const auto textFlags = Qt::AlignVCenter | Qt::AlignBaseline | Qt::TextSingleLine | (textAlignment.testFlag(Qt::AlignRight) ? Qt::AlignRight : Qt::AlignLeft);
+        const auto textFlags =
+            Qt::AlignVCenter | Qt::AlignBaseline | Qt::TextSingleLine | (textAlignment.testFlag(Qt::AlignRight) ? Qt::AlignRight : Qt::AlignLeft);
         painter->setFont(opt->font);
         painter->setBrush(Qt::NoBrush);
         const auto textColor = theme->getColor(option, Theme::Text);
@@ -52,7 +56,7 @@ void ItemViewStyle::drawPrimitive(const QStyleOption* option, QPainter* painter,
         painter->setRenderHint(QPainter::Antialiasing);
         painter->setBrush(bgColor);
         painter->setPen(Qt::NoPen);
-        painter->drawRoundedRect(rect.adjusted(1, 1, -1, -1), 5, 5);
+        painter->drawRoundedRect(rect.adjusted(1, 3, -1, -3), 5, 5);
     }
 }
 }  // namespace VanillaStyle

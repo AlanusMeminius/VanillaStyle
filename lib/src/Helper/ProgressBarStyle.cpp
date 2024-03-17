@@ -20,7 +20,10 @@ bool ProgressBarStyle::drawGroove(const QStyleOption* option, QPainter* painter,
     painter->setPen(QPen(bgColor, 2, Qt::DashLine));
 
     const auto rect = opt->rect;
-    painter->drawLine(QPoint(rect.right(), rect.height() / 2), QPoint(rect.left(), rect.height() / 2));
+    const auto padding = theme->getSize(Theme::NormalBorder);
+    const auto& fm = opt->fontMetrics;
+    const auto textWidth = fm.boundingRect(opt->rect, Qt::AlignLeft, opt->text).width() + padding;
+    painter->drawLine(QPoint(rect.left(), rect.height() / 2), QPoint(rect.right() - textWidth, rect.height() / 2));
     painter->setBrush(QBrush(bgColor));
     // const qreal radius = option->rect.height() / 2;
 
@@ -92,8 +95,8 @@ bool ProgressBarStyle::drawLabel(const QStyleOption* option, QPainter* painter, 
     // progressBarTextColor
     const QColor tColor = theme->getColor(option, Theme::ProgressBarText);
     painter->setPen(tColor);
-    const auto textRext = opt->rect.adjusted(0, 0, 0, -opt->rect.height() / 2 - 2);
-    painter->drawText(textRext, Qt::AlignRight | Qt::AlignVCenter | Qt::TextSingleLine, opt->text);
+    // const auto textRext = opt->rect.adjusted(0, 0, 0, -opt->rect.height());
+    painter->drawText(opt->rect, Qt::AlignRight | Qt::AlignVCenter | Qt::TextSingleLine, opt->text);
     painter->setPen(oldPen);
     return true;
 }
@@ -104,9 +107,8 @@ QRect ProgressBarStyle::subElementRect(QStyle::SubElement subElement, const QSty
     {
         if (subElement == QStyle::SE_ProgressBarLabel)
         {
-            return progressBarOption->rect.adjusted(0, 0, -6, 0);  // right-align before the round rect
+            return progressBarOption->rect.adjusted(0, 0, 0, 0);
         }
-        // The area for both groove and content is the whole rect. The drawing will take care of actual contents rect.
         return progressBarOption->rect;
     }
     return option->rect;
