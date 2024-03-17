@@ -14,7 +14,7 @@ bool ButtonStyle::drawPushButtonBevel(const QStyleOption* option, QPainter* pain
         return true;
     }
     const auto rect = QRectF(optionButton->rect);
-    const auto border = theme->getBorder(Theme::ButtonBorder);
+    const auto border = theme->getSize(Theme::ButtonBorder);
     const auto radius = theme->getRadius(Theme::ButtonRadius);
 
     const auto margins = QMarginsF(border / 2., border / 2., border / 2., border / 2.);
@@ -38,6 +38,7 @@ bool ButtonStyle::drawPushButtonLabel(const QStyleOption* option, QPainter* pain
         theme->adjustTextPalette(&copy);
         // QCommonStyle::drawControl(QStyle::CE_PushButtonLabel, &copy, painter, widget);
     }
+    return true;
 }
 
 }  // namespace VanillaStyle

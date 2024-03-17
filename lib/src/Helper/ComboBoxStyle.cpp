@@ -27,4 +27,7 @@ bool ComboBoxStyle::draw(const QStyleOptionComplex* option, QPainter* painter, c
     }
     return true;
 }
+void ComboBoxStyle::eventFilter(QComboBox* obj) const
+{
+}
 }  // namespace VanillaStyle

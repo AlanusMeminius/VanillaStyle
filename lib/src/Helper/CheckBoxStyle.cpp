@@ -18,7 +18,7 @@ bool CheckBoxStyle::draw(const QStyleOption* option, QPainter* painter, const Th
     const auto rect = QRectF(opt->rect);
     // theme->setupPainter(option, painter, Theme::CheckBox);
     const auto bgColor = theme->getColor(option, Theme::ButtonBackground);
-    const auto border = theme->getBorder(Theme::ButtonBorder);
+    const auto border = theme->getSize(Theme::ButtonBorder);
     if (const auto radius = theme->getRadius(Theme::ButtonRadius); radius < 1)
     {
         painter->fillRect(rect, bgColor);

@@ -1,11 +1,16 @@
 #include <QPushButton>
 #include <QCheckBox>
+#include <QComboBox>
 #include <QMenu>
+#include <QPainter>
 #include <QListWidget>
+#include <QBoxLayout>
 #include <QPainterPath>
 #include "VanillaStyle/Style/VanillaStyle.h"
 #include "VanillaStyle_p.h"
 #include "VanillaStyle/Theme/Theme.h"
+
+#include <QtWidgets/qboxlayout.h>
 
 namespace VanillaStyle
 {
@@ -28,8 +33,8 @@ void VanillaStyle::drawPrimitive(PrimitiveElement pe, const QStyleOption* option
 
     switch (pe)
     {
-    case PE_Widget:
     case PE_Frame:
+    case PE_Widget:
     case PE_FrameWindow:
     case PE_PanelScrollAreaCorner:
     case PE_FrameFocusRect:
@@ -68,6 +73,9 @@ void VanillaStyle::drawControl(ControlElement element, const QStyleOption* optio
     std::pair<std::shared_ptr<Helper>, ControlHelper> fcn = std::make_pair(nullptr, nullptr);
     switch (element)
     {
+    case CE_ShapedFrame:
+        fcn = StyleHelper<ControlHelper>(d->helper, &Helper::shapedFrame);
+        break;
     case CE_PushButtonBevel:
         fcn = StyleHelper<ControlHelper>(d->buttonStyle, &ButtonStyle::drawPushButtonBevel);
         break;
@@ -83,6 +91,8 @@ void VanillaStyle::drawControl(ControlElement element, const QStyleOption* optio
     case CE_ItemViewItem:
         fcn = StyleHelper<ControlHelper>(d->itemViewStyle, &ItemViewStyle::draw);
         break;
+    case CE_MenuItem:
+        fcn = StyleHelper<ControlHelper>(d->menuStyle, &MenuStyle::drawMenuItem);
     default:
         break;
     }
@@ -128,6 +138,12 @@ QSize VanillaStyle::sizeFromContents(ContentsType type, const QStyleOption* opti
     {
     case CT_MenuBar:
         return contentsSize;
+    case CT_ItemViewItem:
+        if (const auto* opt = qstyleoption_cast<const QStyleOptionViewItem*>(option))
+        {
+            const auto textH = opt->fontMetrics.height();
+            return {contentsSize.width(), textH + 4};
+        }
     default:
         break;
     }
@@ -165,10 +181,19 @@ void VanillaStyle::polish(QWidget* w)
     {
         w->setAttribute(Qt::WA_Hover);
     }
-    if (auto* itemView =  qobject_cast<QAbstractItemView*>(w))
+    if (auto* itemView = qobject_cast<QAbstractItemView*>(w))
     {
         itemView->setBackgroundRole(QPalette::NoRole);
         itemView->viewport()->setBackgroundRole(QPalette::NoRole);
+    }
+    if (const auto* combox = qobject_cast<QComboBox*>(w))
+    {
+        if (const auto container = qobject_cast<QWidget*>(combox->children().back()))
+        {
+            container->setWindowFlag(Qt::FramelessWindowHint, true);
+            container->setWindowFlag(Qt::NoDropShadowWindowHint, true);
+            container->setProperty("_q_windowsDropShadow", false);
+        }
     }
 
     if (auto* menu = qobject_cast<QMenu*>(w))

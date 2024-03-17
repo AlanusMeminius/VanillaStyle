@@ -53,9 +53,11 @@ public:
         MenuItemRadius
     };
 
-    enum BorderRole {
+    enum SizeRole {
         NormalBorder,
         ButtonBorder,
+        MenuItemPadding,
+        IconSize,
     };
 
     enum IconRole
@@ -72,7 +74,7 @@ public:
     void initPalette();
     [[nodiscard]] QPalette standardPalette() const;
     [[nodiscard]] int getRadius(RadiusRole radiusRole) const;
-    [[nodiscard]] int getBorder(BorderRole borderRole) const;
+    [[nodiscard]] int getSize(SizeRole sizeRole) const;
     QFont getFont(TextSizeRole sizeRole);
 
     QColor getColor(const QStyleOption* option, ColorRole role) const;

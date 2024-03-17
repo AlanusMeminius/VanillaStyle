@@ -8,6 +8,8 @@ class ComboBoxStyle : public Helper
 {
 public:
     bool draw(const QStyleOptionComplex* option, QPainter* painter, const Theme* theme, const QWidget* widget) const;
+    void eventFilter(QComboBox* obj) const;
+
 };
 
 }  // namespace VanillaStyle

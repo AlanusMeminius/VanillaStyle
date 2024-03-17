@@ -10,7 +10,7 @@ bool MenuStyle::drawPrimitive(const QStyleOption* option, QPainter* painter, con
     //        const auto radius = d->m_theme->getRadius(Theme::ButtonRadius);
     const auto radius = 5;
     const auto bgColor = QColor(245, 245, 245);
-    const auto border = theme->getBorder(Theme::ButtonBorder);
+    const auto border = theme->getSize(Theme::ButtonBorder);
     painter->setRenderHint(QPainter::Antialiasing);
     const auto totalRect = option->rect;
     const auto shadowPadding = 2;
@@ -49,79 +49,93 @@ void MenuStyle::eventFilter(QMenu* menu) const
     // Place the QMenu correctly by making up for the drop shadow margins.
     menu->installEventFilter(new MenuEventFilter(menu));
 }
-void MenuStyle::drawMenuBarItem(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget) const
+bool MenuStyle::drawMenuBarItem(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget) const
 {
-    if (const auto* optMenuItem = qstyleoption_cast<const QStyleOptionMenuItem*>(option))
+    const auto* opt = qstyleoption_cast<const QStyleOptionMenuItem*>(option);
+    if (!opt)
     {
-        // MenuBar background.
-        const auto& barBgColor = QColor(55, 55, 55);
-        painter->fillRect(optMenuItem->rect, barBgColor);
-        const auto& bgColor = QColor(255, 255, 255);
-        const auto& fgColor = QColor(12, 12, 12);
-        int textFlags = Qt::AlignVCenter | Qt::AlignBaseline | Qt::TextSingleLine | Qt::AlignHCenter;
-        const auto radius = theme->getRadius(Theme::ButtonRadius);
-        painter->setPen(Qt::NoPen);
-        painter->setBrush(bgColor);
-        painter->setRenderHint(QPainter::Antialiasing, true);
-        painter->drawRoundedRect(option->rect, radius, radius);
-        painter->setBrush(Qt::NoBrush);
-        painter->setPen(fgColor);
-        painter->drawText(optMenuItem->rect, textFlags, optMenuItem->text);
+        return true;
     }
+    // MenuBar background.
+    const auto& barBgColor = QColor(55, 55, 55);
+    painter->fillRect(opt->rect, barBgColor);
+    const auto& bgColor = QColor(255, 255, 255);
+    const auto& fgColor = QColor(12, 12, 12);
+    int textFlags = Qt::AlignVCenter | Qt::AlignBaseline | Qt::TextSingleLine | Qt::AlignHCenter;
+    const auto radius = theme->getRadius(Theme::ButtonRadius);
+    painter->setPen(Qt::NoPen);
+    painter->setBrush(bgColor);
+    painter->setRenderHint(QPainter::Antialiasing, true);
+    painter->drawRoundedRect(option->rect, radius, radius);
+    painter->setBrush(Qt::NoBrush);
+    painter->setPen(fgColor);
+    painter->drawText(opt->rect, textFlags, opt->text);
+    return true;
 }
-void MenuStyle::drawMenuItem(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget) const
+bool MenuStyle::drawMenuItem(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget) const
 {
-    if (const auto* opt = qstyleoption_cast<const QStyleOptionMenuItem*>(option))
+    const auto* opt = qstyleoption_cast<const QStyleOptionMenuItem*>(option);
+    if (!opt)
     {
-        if (opt->menuItemType == QStyleOptionMenuItem::Separator)
+        return true;
+    }
+    const auto padding = theme->getSize(Theme::MenuItemPadding);
+
+    if (opt->menuItemType == QStyleOptionMenuItem::Separator)
+    {
+        const auto& color = QColor(100, 100, 100);
+        const auto rect = opt->rect;
+        drawMenuSeparator(painter, rect, color, padding);
+    }
+    else if (opt->menuItemType == QStyleOptionMenuItem::Normal || opt->menuItemType == QStyleOptionMenuItem::SubMenu)
+    {
+        // Background.
+        const auto& bgRect = opt->rect.adjusted(4, 0, 4, 0);
+
+        // Foreground.
+        const auto fgRect = bgRect.marginsRemoved(QMargins{ padding, 0, padding, 0 });
+        const auto arrowWidth = theme->getSize(Theme::IconSize);
+        const auto& fgColor = theme->getColor(opt, Theme::ColorRole::Text);
+        constexpr int textFlags = Qt::AlignVCenter | Qt::AlignBaseline | Qt::TextSingleLine | Qt::TextShowMnemonic | Qt::AlignLeft;
+        const auto& fm = opt->fontMetrics;
+
+        const auto hasSubMenu = opt->menuItemType == QStyleOptionMenuItem::SubMenu;
+
+        auto availableWidth = fgRect.width() - (hasSubMenu ? arrowWidth + padding : 0);
+
+        const auto elements = opt->text.split('\t', Qt::KeepEmptyParts);
+        const auto& label = !elements.empty() ? elements.first() : QString("");
+        const auto& shortcut = elements.size() > 1 ? elements.at(1) : QString("");
+
+        if (!shortcut.isEmpty())
         {
-            const auto& color = QColor(100, 100, 100);
-            const auto rect = opt->rect;
-            const auto thickness = theme->getBorder(Theme::ButtonBorder);
-            drawMenuSeparator(painter, rect, color, thickness);
-        }
-        else if (opt->menuItemType == QStyleOptionMenuItem::Normal || opt->menuItemType == QStyleOptionMenuItem::SubMenu)
-        {
-            // Background.
-            const auto& bgRect = opt->rect.adjusted(4,0,4,0);
-//            const auto& bgColor = QColor(200, 200, 200);
-//            const auto menuItemRadius = theme->getRadius(Theme::MenuItemRadius);
-//            painter->setRenderHint(QPainter::Antialiasing);
-//            painter->setPen(Qt::NoPen);
-//            painter->setBrush(bgColor);
-//            painter->drawRoundedRect(opt->rect, menuItemRadius, menuItemRadius);
-
-            // Foreground.
-            const auto& fgColor = QColor(12, 12, 12);
-            const auto spacing = theme->getBorder(Theme::NormalBorder);
-
-            const auto menuHasCheckable = opt->menuHasCheckableItems;
-            const auto checkable = opt->checkType != QStyleOptionMenuItem::NotCheckable;
-//            const auto checkState = opt->checked ? CheckState::Checked : CheckState::NotChecked;
-
-//            const auto useMnemonic = styleHint(SH_UnderlineShortcut, opt, w);
-
-            const auto* parent = widget ? widget->parentWidget() : nullptr;
-            const auto hasFocus = (widget && widget->hasFocus()) || (parent && parent->hasFocus());
-            const auto hasSubMenu = opt->menuItemType == QStyleOptionMenuItem::SubMenu;
-            const auto showMnemonic = hasFocus;
-            int textFlags =
-                Qt::AlignVCenter | Qt::AlignBaseline | Qt::TextSingleLine | Qt::TextShowMnemonic | Qt::AlignLeft;
-
-            const auto& fm = opt->fontMetrics;
-
+            const auto shortcutWidth = fm.boundingRect(opt->rect, Qt::AlignRight, shortcut).width();
+            const auto shortcutX = fgRect.x() + fgRect.width() - shortcutWidth;
+            const auto shortcutRect = QRect{ shortcutX, fgRect.y(), shortcutWidth, fgRect.height() };
+            constexpr auto shortcutFlags =
+              Qt::AlignVCenter | Qt::AlignBaseline | Qt::TextSingleLine | Qt::AlignRight | Qt::TextHideMnemonic;
             painter->setPen(fgColor);
-            painter->drawText(bgRect, textFlags, opt->text, nullptr);
-
+            painter->drawText(shortcutRect, shortcutFlags, shortcut);
+            availableWidth -= shortcutWidth;
+        }
+        if (!label.isEmpty())
+        {
+            const auto labelWidth = fm.boundingRect(opt->rect, Qt::AlignLeft, label).width();
+            const auto labelRect = QRect{ fgRect.x(), fgRect.y(), std::min(labelWidth, availableWidth), fgRect.height() };
+            painter->setPen(fgColor);
+            painter->drawText(labelRect, textFlags, label);
         }
     }
+    return true;
 }
 void MenuStyle::drawMenuSeparator(QPainter* painter, const QRect& rect, const QColor& color, const int thickness) const
 {
-    const auto x = rect.x();
-    const auto w = rect.width();
-    const auto h = std::max(1, thickness);
+    const auto x = rect.x() + thickness;
+    const auto w = rect.width() - 2 * thickness;
+    const auto h = std::max(1, 2);
     const auto y = rect.y() + (rect.height() - h) / 2;
-    painter->fillRect(QRect{x, y, w, h}, color);
+    const auto separatorRect = QRect{ x, y, w, h };
+    painter->setBrush(color);
+    painter->drawRoundedRect(separatorRect, 2, 2);
 }
 }  // namespace VanillaStyle

@@ -1,5 +1,7 @@
 #pragma once
 #include "VanillaStyle/Theme/Theme.h"
+
+#include <QComboBox>
 namespace VanillaStyle
 {
 
@@ -10,9 +12,9 @@ public:
     bool emptyControl(const QStyleOption*, QPainter*, const Theme* theme, const QWidget*) const
     {
         return true;
-    }
-
-    bool drawListWidgetBackground(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget) const;
+    };
+    bool shapedFrame(const QStyleOption*, QPainter*, const Theme* theme, const QWidget*) const;
 };
+
 
 }  // namespace VanillaStyle

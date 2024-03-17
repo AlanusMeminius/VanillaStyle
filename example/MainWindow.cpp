@@ -1,6 +1,7 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "VanillaStyle/Style.h"
+#include "VanillaStyle/Helper/ItemViewStyle.h"
 #include "VanillaStyle/Style/VanillaStyle.h"
 #include "VanillaStyle/Widgets/IconLabel.h"
 
@@ -69,11 +70,8 @@ MainWindow::MainWindow(QWidget* parent)
     auto* minusShortcut = new QShortcut(Qt::Key_K, this);
     connect(minusShortcut, &QShortcut::activated, this, &MainWindow::decreaseProgress);
 
-    // QPalette pal = QPalette();
-    // pal.setColor(QPalette::Window, Qt::transparent);
-    // ui->listWidget->setAutoFillBackground(true);
-    // ui->listWidget->setBackgroundRole(QPalette::Window);
-    // ui->listWidget->setPalette(pal);
+    // auto *view = new VanillaStyle::RoundRectListView;
+    // ui->comboBox->setView(view);
 }
 
 MainWindow::~MainWindow()

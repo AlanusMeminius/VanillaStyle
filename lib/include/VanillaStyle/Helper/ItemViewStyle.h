@@ -1,5 +1,6 @@
 #pragma once
 #include "Helper.h"
+#include <QListView>
 #include "VanillaStyle/Theme/Theme.h"
 
 namespace VanillaStyle {

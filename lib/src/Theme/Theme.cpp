@@ -47,8 +47,6 @@ Theme::Theme()
 {
     styleConfig = configManager->defaultConfig();
     colorConfig = styleConfig.color;
-    qDebug() << "default " << styleConfig.color.buttonBackground.name();
-
     initPalette();
 }
 void Theme::setConfig(const std::string& configPath)
@@ -60,7 +58,6 @@ void Theme::setConfig(const std::string& configPath)
     {
         //        styleConfig = configManager->defaultConfig();
     }
-    qDebug() << "change " << colorConfig.buttonBackground.name();
 }
 void Theme::initPalette()
 {
@@ -113,14 +110,16 @@ int Theme::getRadius(const RadiusRole radiusRole) const
         return 5;
     }
 }
-int Theme::getBorder(const BorderRole borderRole) const
+int Theme::getSize(const SizeRole sizeRole) const
 {
-    switch (borderRole)
+    switch (sizeRole)
     {
     case ButtonBorder:
-    {
         return styleConfig.size.borderWidth;
-    }
+    case MenuItemPadding:
+        return 5;
+    case IconSize:
+        return styleConfig.size.iconSize;
     default:
         return 1;
     }
@@ -165,7 +164,7 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
         }
         else
         {
-            color = colorConfig.buttonForeground;
+            color = colorConfig.textColor;
         }
         break;
     }

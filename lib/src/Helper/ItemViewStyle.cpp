@@ -19,15 +19,13 @@ bool ItemViewStyle::draw(const QStyleOption* option, QPainter* painter, const Th
     {
         const auto& fm = opt->fontMetrics;
         const auto elidedText = fm.elidedText(opt->text, Qt::ElideRight, rect.width(), Qt::TextSingleLine);
-        // const auto textX = availableX;
-        // const auto textRect = QRect{ textX, contentRect.y(), availableW, contentRect.height() };
         const auto textAlignment = opt->displayAlignment;
-        auto textFlags = Qt::AlignVCenter | Qt::AlignBaseline | Qt::TextSingleLine | (textAlignment.testFlag(Qt::AlignRight) ? Qt::AlignRight : Qt::AlignLeft);
+        const auto textFlags = Qt::AlignVCenter | Qt::AlignBaseline | Qt::TextSingleLine | (textAlignment.testFlag(Qt::AlignRight) ? Qt::AlignRight : Qt::AlignLeft);
         painter->setFont(opt->font);
         painter->setBrush(Qt::NoBrush);
         const auto textColor = theme->getColor(option, Theme::Text);
         painter->setPen(textColor);
-        painter->drawText(rect.adjusted(2,0,0,0), int(textFlags), elidedText, nullptr);
+        painter->drawText(rect.adjusted(5, 0, 0, 0), static_cast<int>(textFlags), elidedText, nullptr);
     }
     return true;
 }
@@ -37,17 +35,24 @@ void ItemViewStyle::drawPrimitive(const QStyleOption* option, QPainter* painter,
     {
         const auto& rect = opt->rect;
         const auto row = opt->index.row();
-        const auto column = opt->index.column();
-        const auto widgetHasFocus = (widget && widget->hasFocus());
-        const auto focus = widgetHasFocus && VanillaStyle::Theme::state(option) == Theme::Selected;
-        const auto bgColor = theme->getColor(option, Theme::ButtonBackground);
+        QColor bgColor;
+        if (row % 2 == 0)
+        {
+            bgColor = QColor(200, 200, 200);  // 偶数行的背景色为浅灰色
+        }
+        else
+        {
+            bgColor = QColor(220, 220, 220);  // 奇数行的背景色为淡灰色
+        }
+        if (opt->state.testFlag(QStyle::State_Active) && opt->state.testFlag(QStyle::State_Selected))
+        {
+            bgColor = theme->getColor(option, Theme::ButtonBackground);
+        }
 
         painter->setRenderHint(QPainter::Antialiasing);
         painter->setBrush(bgColor);
         painter->setPen(Qt::NoPen);
-        painter->drawRoundedRect(rect.adjusted(1,1,-1,-1), 5,5);
-        // painter->fillRect(rect, bgColor);
+        painter->drawRoundedRect(rect.adjusted(1, 1, -1, -1), 5, 5);
     }
 }
-
 }  // namespace VanillaStyle

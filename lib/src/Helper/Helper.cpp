@@ -1,18 +1,22 @@
 #include <QPainter>
 #include <QtWidgets/QListWidget>
 #include "VanillaStyle/Helper/Helper.h"
+
+#include <QPainterPath>
 namespace VanillaStyle {
 
-bool Helper::drawListWidgetBackground(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget) const
+bool Helper::shapedFrame(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget) const
 {
-    qDebug() << "drawWidget" << widget->objectName();
-
-    if (const auto opt = qobject_cast<const QListWidget*>(widget))
+    if (const bool isComboPopList = widget->inherits("QComboBoxPrivateContainer"); !isComboPopList)
     {
-        qDebug() << "drawListWidgetBackground" << widget->objectName();
-        painter->fillRect(option->rect, Qt::red);
         return true;
     }
+    painter->setRenderHint(QPainter::Antialiasing);
+    painter->setBrush(QBrush(Qt::white));
+    painter->setPen(Qt::NoPen);
+    const auto radius = theme->getRadius(Theme::NormalRadius);
+    painter->drawRoundedRect(option->rect, radius, radius);
+
     return true;
 }
 } // VanillaStyle

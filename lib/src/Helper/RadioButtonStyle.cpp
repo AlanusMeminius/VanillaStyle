@@ -10,7 +10,7 @@ bool VanillaStyle::RadioButtonStyle::drawIndicator(const QStyleOption* option, Q
         return true;
     }
     const auto rect = QRectF(opt->rect);
-    const auto border = theme->getBorder(Theme::ButtonBorder);
+    const auto border = theme->getSize(Theme::ButtonBorder);
     const auto margins = QMarginsF(border / 2., border / 2., border / 2., border / 2.);
     const auto buttonRect = border > 0.1 ? rect.marginsRemoved(margins) : rect;
 
