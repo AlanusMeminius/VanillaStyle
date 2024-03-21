@@ -51,7 +51,7 @@ QIcon createIcon(const QString& path, int size)
         return {};
 
     QIcon icon;
-    constexpr std::array<int, 2> ratios{1, 2};
+    const std::array<int, 2> ratios{1, 2};
     for (const auto& ratio : ratios)
     {
         icon.addPixmap(renderSvgToPixmap(path, size, ratio));
