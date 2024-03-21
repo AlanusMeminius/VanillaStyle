@@ -1,7 +1,6 @@
 #include "VanillaStyle/Widgets/ToggleButton.h"
-#include "ToggleButton_p.h"
 #include "VanillaStyle/Style/VanillaStyle.h"
-
+#include "ToggleButton_p.h"
 #include <QMouseEvent>
 #include <QPainter>
 #include <QPainterPath>
@@ -35,6 +34,7 @@ void ToggleButton::setItemList(const QStringList& list)
 {
     Q_D(ToggleButton);
     d->itemList = list;
+    setSize();
 }
 const QStringList& ToggleButton::itemList() const
 {
@@ -72,7 +72,7 @@ void ToggleButton::setColumnWidth(const int width)
 {
     Q_D(ToggleButton);
     d->columnWidth = width;
-    update();
+    setSize();
 }
 int ToggleButton::rowHeight() const
 {
@@ -114,6 +114,12 @@ void ToggleButton::mouseReleaseEvent(QMouseEvent* event)
     {
         event->ignore();
     }
+}
+void ToggleButton::setSize()
+{
+    Q_D(ToggleButton);
+    setFixedWidth(d->columnWidth * static_cast<int>(d->itemList.size()));
+    update();
 }
 void ToggleButton::paintEvent(QPaintEvent* event)
 {

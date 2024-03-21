@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 
-add_subdirectory(lib)
+add_subdirectory(vanillastyle)
 
 set(BUILD_EXAMPLES ON)
 if (BUILD_EXAMPLES)

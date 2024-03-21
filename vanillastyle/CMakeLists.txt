@@ -32,10 +32,10 @@ target_sources(
 target_include_directories(
         ${PROJECT_NAME}
         PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/extern/FastGaussianBlur
+        ${CMAKE_CURRENT_SOURCE_DIR}/lib/FastGaussianBlur
 )
 if (NOT TARGET nlohmann_json)
-    add_subdirectory(extern/json EXCLUDE_FROM_ALL)
+    add_subdirectory(lib/json EXCLUDE_FROM_ALL)
     target_link_libraries(${PROJECT_NAME} PUBLIC nlohmann_json)
 else ()
     target_link_libraries(${PROJECT_NAME} PUBLIC nlohmann_json)

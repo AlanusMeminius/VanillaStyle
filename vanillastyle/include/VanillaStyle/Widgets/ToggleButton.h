@@ -43,6 +43,7 @@ protected:
     ToggleButtonPrivate* d_ptr;
 
 private:
+    void setSize();
     Q_DECLARE_PRIVATE(ToggleButton);
 };
 

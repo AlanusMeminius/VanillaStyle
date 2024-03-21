@@ -3,8 +3,7 @@
 #define MAINWINDOW_H
 
 #include "VanillaStyle/Style/VanillaStyle.h"
-#include "extern/qwindowkit/src/core/style/styleagent.h"
-
+#include "QWKCore/styleagent.h"
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
