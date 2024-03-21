@@ -1,5 +1,5 @@
-
-find_package(Qt6 COMPONENTS Core Widgets Svg REQUIRED)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Widgets Svg)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Widgets Svg)
 
 
 file(GLOB_RECURSE SRC
@@ -41,7 +41,8 @@ else ()
     target_link_libraries(${PROJECT_NAME} PUBLIC nlohmann_json)
 endif ()
 
-target_link_libraries(${PROJECT_NAME} PUBLIC
+target_link_libraries(${PROJECT_NAME}
+        PUBLIC
         Qt::Core
         Qt::Widgets
         Qt::Svg
