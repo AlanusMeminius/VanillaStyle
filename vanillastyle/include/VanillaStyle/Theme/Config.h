@@ -25,7 +25,12 @@ struct adl_serializer<QColor>
     {
         try
         {
-            color = QColor::fromString(QString::fromStdString(j.get<std::string>()));
+            QString colorString = QString::fromStdString(j.get<std::string>());
+            if (colorString.startsWith("#"))
+            {
+                colorString.replace("#", "0x");
+            }
+            color = QColor(colorString.toUInt(nullptr, 16));
         }
         catch (const std::exception& e)
         {
