@@ -2,6 +2,7 @@
 #include "fast_gaussian_blur_template.h"
 #include <QSvgRenderer>
 #include <QPainter>
+#include <array>
 
 namespace VanillaStyle
 {
