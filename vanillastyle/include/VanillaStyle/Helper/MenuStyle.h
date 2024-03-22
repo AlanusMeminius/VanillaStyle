@@ -1,7 +1,7 @@
 #pragma once
 #include "Helper.h"
 #include "VanillaStyle/Theme/Theme.h"
-
+class QMenu;
 namespace VanillaStyle
 {
 

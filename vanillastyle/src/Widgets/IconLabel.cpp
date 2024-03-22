@@ -48,8 +48,6 @@ void IconLabel::setLabel(const QString& label)
     if (d->label != label)
     {
         d->label = label;
-        const QFontMetrics fm(font());
-        d->labelWidth = fm.horizontalAdvance(label);
         updateGeometry();
         update();
         Q_EMIT labelChanged();
@@ -119,6 +117,15 @@ void IconLabelPrivate::paint(QPainter* painter)
 {
     Q_Q(IconLabel);
     painter->setRenderHint(QPainter::Antialiasing);
+    QColor textColor;
+    QFont font = q->font();
+    if (auto* customStyle = qobject_cast<VanillaStyle*>(q->style()))
+    {
+        textColor = customStyle->getCustomColor(Theme::ColorRole::IconLabelText);
+        font = customStyle->getCustomFont(Theme::TextSizeRole::H5);
+    }
+    const QFontMetrics fm(font);
+    labelWidth = fm.horizontalAdvance(label);
     const auto rect = q->rect();
     const auto isIconFirst = q->isIconFirst();
     const auto iconPoint = QPoint(isIconFirst ? rect.x() : rect.x() + labelWidth + padding, rect.y());
@@ -129,13 +136,6 @@ void IconLabelPrivate::paint(QPainter* painter)
     }
     if (!label.isEmpty())
     {
-        QColor textColor;
-        QFont font;
-        if (auto* customStyle = qobject_cast<VanillaStyle*>(q->style()))
-        {
-            textColor = customStyle->getCustomColor(Theme::ColorRole::IconLabelText);
-            font = customStyle->getCustomFont(Theme::TextSizeRole::H5);
-        }
         painter->setFont(font);
         painter->setPen(textColor);
         painter->drawText(textRect, Qt::AlignCenter | Qt::TextSingleLine, label);

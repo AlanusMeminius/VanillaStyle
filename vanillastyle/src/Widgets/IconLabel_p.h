@@ -1,6 +1,7 @@
 #pragma once
 #include "VanillaStyle/Widgets/IconLabel.h"
 #include <QSize>
+#include <QIcon>
 
 namespace VanillaStyle
 {

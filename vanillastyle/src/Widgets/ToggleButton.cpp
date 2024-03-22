@@ -103,7 +103,12 @@ void ToggleButton::mouseReleaseEvent(QMouseEvent* event)
     if (event->button() == Qt::LeftButton)
     {
         d->m_mouseDown = false;
-        if (const auto index = qIntCast(event->position().x()) / d->columnWidth; index < static_cast<int>(d->itemList.size()))
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        const auto index = qIntCast(event->position().x()) / d->columnWidth;
+#else
+        const auto index = event->pos().x() / d->columnWidth;
+#endif
+        if (index < static_cast<int>(d->itemList.size()))
         {
             d->setCurrentIndex(index);
             emit currentItemChanged(index);
@@ -175,7 +180,7 @@ void ToggleButtonPrivate::paint(QPainter* painter)
     QColor handleColor;
     QColor backgroundColor;
     QColor textColor;
-    if (auto * customStyle = qobject_cast<VanillaStyle*>(q->style()))
+    if (auto* customStyle = qobject_cast<VanillaStyle*>(q->style()))
     {
         handleColor = customStyle->getCustomColor(Theme::ColorRole::ButtonForeground);
         backgroundColor = customStyle->getCustomColor(Theme::ColorRole::ButtonBackground);
@@ -204,12 +209,12 @@ void ToggleButtonPrivate::paint(QPainter* painter)
     }
     if (m_useIcon)
     {
-        QRect iconRectF((columnWidth - iconSize) / 2, padding, iconSize, iconSize);
+        QRectF iconRectF((columnWidth - iconSize) / 2., padding, iconSize, iconSize);
         QSvgRenderer grid;
         for (const auto& item : itemList)
         {
             grid.load(item);
-            grid.render(painter, iconRectF.toRectF());
+            grid.render(painter, iconRectF);
             iconRectF.translate(columnWidth, 0);
         }
     }
