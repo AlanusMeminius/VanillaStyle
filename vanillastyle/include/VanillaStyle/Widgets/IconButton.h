@@ -1,16 +1,17 @@
 #pragma once
 #include <QAbstractButton>
 
-namespace VanillaStyle {
+namespace Vanilla
+{
 
 class IconButtonPrivate;
-class IconButton : public QAbstractButton{
-
+class IconButton : public QAbstractButton
+{
     Q_OBJECT
 public:
     explicit IconButton(QWidget* parent = nullptr);
     explicit IconButton(const QIcon& icon, QWidget* parent = nullptr);
-
+    ~IconButton();
     [[nodiscard]] QSize sizeHint() const override;
 
 protected:
@@ -21,4 +22,4 @@ private:
     Q_DECLARE_PRIVATE(IconButton);
 };
 
-} // VanillaStyle
+}  // namespace Vanilla

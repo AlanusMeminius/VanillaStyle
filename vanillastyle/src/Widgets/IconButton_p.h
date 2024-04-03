@@ -2,7 +2,7 @@
 #include <QSize>
 #include "VanillaStyle/Widgets/IconButton.h"
 
-namespace VanillaStyle {
+namespace Vanilla {
 
 class IconButtonPrivate
 {

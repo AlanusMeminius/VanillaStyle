@@ -1,20 +1,17 @@
 #pragma once
 #include <QWidget>
 
-namespace VanillaStyle
+namespace Vanilla
 {
 class SwitchButtonPrivate;
 class SwitchButton : public QWidget
 {
     Q_OBJECT
-//    Q_PROPERTY(int handlePosition READ handlePosition WRITE setHandlePosition)
 public:
     explicit SwitchButton(QWidget* parent = nullptr);
-
+    ~SwitchButton();
     [[nodiscard]] QSize sizeHint() const override;
 
-//    [[nodiscard]] int handlePosition() const;
-//    void setHandlePosition(int pos);
 signals:
     void toggled(bool checked);
     void checked(bool checked);
@@ -30,4 +27,4 @@ protected:
 private:
     Q_DECLARE_PRIVATE(SwitchButton);
 };
-}  // namespace VanillaStyle
+}  // namespace Vanilla

@@ -1,15 +1,21 @@
 #pragma once
-#include "Helper.h"
-#include "VanillaStyle/Theme/Theme.h"
 
-namespace VanillaStyle
+#include <memory>
+
+class QComboBox;
+class QPainter;
+class QStyleOptionComplex;
+class QWidget;
+
+namespace Vanilla
 {
-class ComboBoxStyle : public Helper
+class Theme;
+
+class ComboBoxStyle
 {
 public:
-    bool draw(const QStyleOptionComplex* option, QPainter* painter, const Theme* theme, const QWidget* widget) const;
+    bool draw(const QStyleOptionComplex* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const;
     void eventFilter(QComboBox* obj) const;
-
 };
 
-}  // namespace VanillaStyle
+}  // namespace Vanilla

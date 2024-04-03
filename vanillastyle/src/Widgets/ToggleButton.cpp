@@ -6,7 +6,7 @@
 #include <QPainterPath>
 #include <QSvgRenderer>
 
-namespace VanillaStyle
+namespace Vanilla
 {
 ToggleButton::ToggleButton(QWidget* parent)
     : QWidget(parent)
@@ -23,6 +23,10 @@ ToggleButton::ToggleButton(const QStringList& list, QWidget* parent)
 {
     Q_D(ToggleButton);
     d->itemList = list;
+}
+ToggleButton::~ToggleButton()
+{
+    delete d_ptr;
 }
 QSize ToggleButton::sizeHint() const
 {

@@ -1,10 +1,13 @@
-#include "VanillaStyle/Helper/ItemViewStyle.h"
 #include <QPainter>
-#include <QtWidgets/QListWidget>
+#include <QListWidget>
 
-namespace VanillaStyle
+#include "VanillaStyle/Helper/ItemViewStyle.h"
+#include "VanillaStyle/Theme/Theme.h"
+
+
+namespace Vanilla
 {
-bool ItemViewStyle::draw(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget) const
+bool ItemViewStyle::draw(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
 {
     const auto* opt = qstyleoption_cast<const QStyleOptionViewItem*>(option);
     if (!opt)
@@ -33,7 +36,7 @@ bool ItemViewStyle::draw(const QStyleOption* option, QPainter* painter, const Th
     }
     return true;
 }
-void ItemViewStyle::drawPrimitive(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget) const
+void ItemViewStyle::drawPrimitive(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
 {
     if (const auto* opt = qstyleoption_cast<const QStyleOptionViewItem*>(option))
     {

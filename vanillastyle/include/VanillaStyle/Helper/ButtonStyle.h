@@ -1,15 +1,21 @@
 #pragma once
-#include "Helper.h"
-#include "VanillaStyle/Theme/Theme.h"
 
-namespace VanillaStyle
+#include <memory>
+
+class QPainter;
+class QStyleOption;
+class QWidget;
+
+namespace Vanilla
 {
-class ButtonStyle : public Helper
+class Theme;
+
+class ButtonStyle
 {
 public:
-    bool drawPushButtonBevel(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget = nullptr) const;
+    bool drawPushButtonBevel(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget = nullptr) const;
 
-    bool drawPushButtonLabel(const QStyleOption* option, QPainter* painter, const QWidget* widget, const Theme* theme) const;
+    bool drawPushButtonLabel(const QStyleOption* option, QPainter* painter, const QWidget* widget, const std::shared_ptr<Theme>& theme) const;
 };
 
 }

@@ -1,14 +1,16 @@
-#include "VanillaStyle/Helper/RadioButtonStyle.h"
 #include <QPainter>
-#include <QPainterPath>
 
-bool VanillaStyle::RadioButtonStyle::drawIndicator(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget) const
+#include "VanillaStyle/Helper/RadioButtonStyle.h"
+#include "VanillaStyle/Theme/Theme.h"
+
+bool Vanilla::RadioButtonStyle::drawIndicator(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
 {
     const auto* opt = qstyleoption_cast<const QStyleOptionButton*>(option);
     if (!opt)
     {
         return true;
     }
+
     const auto rect = QRectF(opt->rect);
     const auto border = theme->getSize(Theme::ButtonBorder);
     const auto margins = QMarginsF(border / 2., border / 2., border / 2., border / 2.);
@@ -42,14 +44,18 @@ bool VanillaStyle::RadioButtonStyle::drawIndicator(const QStyleOption* option, Q
     return true;
 }
 
-// void VanillaStyle::RadioButtonStyle::drawIndicator(const QStyleOption* option, const QRectF rect, QPainter* painter, const VanillaStyle::Theme* theme) const
-// {
-//     if (option->state & QStyle::State_On)
-//     {
-//         const QRect indicatorRect = option->rect;
-//         QPainterPath path;
-//         path.addEllipse(indicatorRect.adjusted(2, 2, -2, -2));
-//         const auto gfColor = theme->getColor(option, Theme::ButtonForeground);
-//         painter->fillPath(path, gfColor);
-//     }
-// }
+QRect Vanilla::RadioButtonStyle::subElementRect(QStyle::SubElement element, const QStyleOption* option, const std::shared_ptr<Theme>& theme,
+                                                const QWidget* widget) const
+{
+    Q_UNUSED(widget);
+    if (element == QStyle::SE_RadioButtonIndicator)
+    {
+        const auto indicatorSize = theme->getSize(Theme::IconSize);
+        const auto indicatorY = option->rect.y() + (option->rect.height() - indicatorSize) / 2;
+        return QRect{option->rect.x(), indicatorY, indicatorSize, indicatorSize};
+    }
+    // SE_RadioButtonContents
+    const auto indicatorSize = theme->getSize(Theme::IconSize);
+    const auto border = theme->getSize(Theme::NormalBorder);
+    return option->rect.marginsRemoved({indicatorSize + border, 0, 0, 0});
+}

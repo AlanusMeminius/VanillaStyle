@@ -2,7 +2,7 @@
 #include "IconButton_p.h"
 #include <QPainter>
 
-namespace VanillaStyle
+namespace Vanilla
 {
 IconButton::IconButton(QWidget* parent)
     : QAbstractButton(parent)
@@ -15,6 +15,10 @@ IconButton::IconButton(const QIcon& icon, QWidget* parent)
     : IconButton(parent)
 {
     setIcon(icon);
+}
+IconButton::~IconButton()
+{
+    delete d_ptr;
 }
 
 QSize IconButton::sizeHint() const

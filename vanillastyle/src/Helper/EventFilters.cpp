@@ -3,7 +3,7 @@
 #include <QMenuBar>
 #include <QTimer>
 
-namespace VanillaStyle
+namespace Vanilla
 {
 MenuEventFilter::MenuEventFilter(QMenu* menu)
     : QObject(menu)

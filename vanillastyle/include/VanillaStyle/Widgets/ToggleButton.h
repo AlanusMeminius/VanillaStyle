@@ -1,6 +1,8 @@
 #pragma once
+
 #include <QWidget>
-namespace VanillaStyle
+
+namespace Vanilla
 {
 
 class ToggleButtonPrivate;
@@ -14,7 +16,7 @@ class ToggleButton : public QWidget
 public:
     explicit ToggleButton(QWidget* parent = nullptr);
     explicit ToggleButton(const QStringList& list, QWidget* parent = nullptr);
-
+    ~ToggleButton();
     [[nodiscard]] QSize sizeHint() const override;
 
     void setItemList(const QStringList& list);
@@ -47,4 +49,4 @@ private:
     Q_DECLARE_PRIVATE(ToggleButton);
 };
 
-}  // namespace VanillaStyle
+}  // namespace Vanilla

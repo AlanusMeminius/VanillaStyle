@@ -3,7 +3,7 @@
 #include <QSize>
 #include <QVariantAnimation>
 
-namespace VanillaStyle
+namespace Vanilla
 {
 class SwitchButtonPrivate
 {

@@ -1,10 +1,13 @@
 #pragma once
-#include "Config.h"
-#include "Utils.h"
+
 #include <QPalette>
 #include <QStyleOption>
-namespace VanillaStyle
+
+namespace Vanilla
 {
+class StyleConfig;
+class ConfigManager;
+
 class Theme
 {
 public:
@@ -12,29 +15,30 @@ public:
     {
         Normal = 0x00000000,
         Hover = 0x00000001,
-        Press=0x00000002,
+        Press = 0x00000002,
+        Disabled = 0x00000003,
         StateBase = 0x000000f0,
 
         Flag = 0x000000ff,
         Selected = 0x00000100,
-        Focus =0x00000200,
+        Focus = 0x00000200,
         Checked = 0x00000300,
         FlagBase = 0xf00000,
     };
     Q_DECLARE_FLAGS(StateFlags, State)
 
-    static State state(const QStyleOption *option);
+    static State state(const QStyleOption* option);
     static StateFlags flags(const QStyleOption* option);
     enum ColorRole
     {
         Text,
+        LabelText,
         ButtonForeground,
         ButtonBackground,
         ProgressBarForeground,
         ProgressBarBackground,
         ProgressBarText,
         LineEditOutline,
-        IconLabelText,
     };
 
     enum TextSizeRole
@@ -47,13 +51,15 @@ public:
         H5
     };
 
-    enum RadiusRole {
+    enum RadiusRole
+    {
         NormalRadius,
         ButtonRadius,
         MenuItemRadius
     };
 
-    enum SizeRole {
+    enum SizeRole
+    {
         NormalBorder,
         ButtonBorder,
         MenuItemPadding,
@@ -87,9 +93,9 @@ public:
     QString getIconPath(IconRole role) const;
 
     void adjustTextPalette(QStyleOptionButton* option) const;
+
 private:
     std::shared_ptr<ConfigManager> configManager;
-    StyleConfig styleConfig;
-    Color colorConfig;
+    std::shared_ptr<StyleConfig> styleConfig;
 };
-}  // namespace VanillaStyle
+}  // namespace Vanilla

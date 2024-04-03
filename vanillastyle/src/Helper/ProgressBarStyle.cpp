@@ -1,10 +1,15 @@
-#include "VanillaStyle/Helper/ProgressBarStyle.h"
 #include <QPainter>
 #include <QSvgRenderer>
 
-namespace VanillaStyle
+#include "VanillaStyle/Helper/ProgressBarStyle.h"
+
+#include "VanillaStyle/Helper/Common.h"
+#include "VanillaStyle/Theme/Theme.h"
+
+
+namespace Vanilla
 {
-bool ProgressBarStyle::drawGroove(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget) const
+bool ProgressBarStyle::drawGroove(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
 {
     const auto* opt = qstyleoption_cast<const QStyleOptionProgressBar*>(option);
     if (!opt)
@@ -30,7 +35,7 @@ bool ProgressBarStyle::drawGroove(const QStyleOption* option, QPainter* painter,
     // painter->drawRoundedRect(QRectF(progressBarOption->rect), radius, radius);
     return true;
 }
-bool ProgressBarStyle::drawContents(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget) const
+bool ProgressBarStyle::drawContents(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
 {
     Q_UNUSED(widget);
     const auto* opt = qstyleoption_cast<const QStyleOptionProgressBar*>(option);
@@ -83,7 +88,7 @@ bool ProgressBarStyle::drawContents(const QStyleOption* option, QPainter* painte
     }
     return true;
 }
-bool ProgressBarStyle::drawLabel(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget) const
+bool ProgressBarStyle::drawLabel(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
 {
     Q_UNUSED(widget)
     const auto* opt = qstyleoption_cast<const QStyleOptionProgressBar*>(option);
@@ -100,7 +105,7 @@ bool ProgressBarStyle::drawLabel(const QStyleOption* option, QPainter* painter, 
     painter->setPen(oldPen);
     return true;
 }
-QRect ProgressBarStyle::subElementRect(QStyle::SubElement subElement, const QStyleOption* option, const QWidget* widget) const
+QRect ProgressBarStyle::subElementRect(QStyle::SubElement subElement, const QStyleOption* option, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
 {
     Q_UNUSED(widget)
     if (const auto* progressBarOption = qstyleoption_cast<const QStyleOptionProgressBar*>(option))

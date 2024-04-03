@@ -3,9 +3,9 @@
 #include <QPainter>
 #include <QPainterPath>
 
-namespace VanillaStyle
+namespace Vanilla
 {
-bool CheckBoxStyle::draw(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget) const
+bool CheckBoxStyle::draw(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
 {
     const auto* opt = qstyleoption_cast<const QStyleOptionButton*>(option);
     if (!opt)
@@ -38,7 +38,7 @@ bool CheckBoxStyle::draw(const QStyleOption* option, QPainter* painter, const Th
 
     return true;
 }
-void CheckBoxStyle::drawIndicator(const QStyleOption* option, const QRectF rect, QPainter* painter, const Theme* theme) const
+void CheckBoxStyle::drawIndicator(const QStyleOption* option, const QRectF rect, QPainter* painter, const std::shared_ptr<Theme>& theme) const
 {
     const auto fgColor = theme->getColor(option, Theme::ButtonForeground);
 

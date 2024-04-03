@@ -1,9 +1,8 @@
 #pragma once
 #include <QPixmap>
-#include <QImage>
-#include <QtGui/qicon.h>
+#include <QIcon>
 
-namespace VanillaStyle
+namespace Vanilla
 {
 
 QImage switchImageColor(const QPixmap& original, const QColor& color);

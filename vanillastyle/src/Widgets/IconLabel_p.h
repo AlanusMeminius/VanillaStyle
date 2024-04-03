@@ -3,7 +3,7 @@
 #include <QSize>
 #include <QIcon>
 
-namespace VanillaStyle
+namespace Vanilla
 {
 
 class IconLabelPrivate

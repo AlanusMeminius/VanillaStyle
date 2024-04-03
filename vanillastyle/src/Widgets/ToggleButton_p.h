@@ -3,7 +3,7 @@
 #include <QPropertyAnimation>
 #include <QtCore/QSizeF>
 
-namespace VanillaStyle {
+namespace Vanilla {
 
 class ToggleButtonPrivate {
 public:

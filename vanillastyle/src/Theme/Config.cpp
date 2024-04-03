@@ -1,34 +1,30 @@
+#include <fstream>
+
 #include "VanillaStyle/Theme/Config.h"
-#include "fstream"
 
-void VanillaStyle::ConfigManager::setConfigPath(const std::string& path)
+Vanilla::StyleConfig Vanilla::ConfigManager::getConfig(const std::string& path) const
 {
-    m_configPath = path;
-}
-VanillaStyle::ConfigManager::ConfigManager() = default;
-
-VanillaStyle::ConfigManager::ErrorCode VanillaStyle::ConfigManager::readConfig(StyleConfig& config) const
-{
-    std::ifstream file(m_configPath);
+    std::ifstream file(path);
     if (!file.is_open())
     {
-        config = defaultConfig();
-        return FileNotFound;
+        errorHandler.handleError(ConfigErrorHanler::FileNotFound);
+        return defaultConfig();
     }
     nlohmann::json json;
     file >> json;
     try
     {
-        config = json.get<StyleConfig>();
-        return NoError;
+        errorHandler.handleError(ConfigErrorHanler::NoError);
+        return json.get<StyleConfig>();
     }
     catch (nlohmann::json::parse_error& e)
     {
-        config = defaultConfig();
-        return ParseError;
+        errorHandler.handleError(ConfigErrorHanler::ParseError);
+        return defaultConfig();
     }
 }
-VanillaStyle::StyleConfig VanillaStyle::ConfigManager::defaultConfig()
+
+Vanilla::StyleConfig Vanilla::ConfigManager::defaultConfig()
 {
     const auto config = R"(
 {

@@ -1,7 +1,6 @@
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Widgets Svg)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Widgets Svg)
 
-
 file(GLOB_RECURSE SRC
         "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h"
@@ -10,7 +9,8 @@ file(GLOB_RECURSE HEADER
         "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h"
 )
 set(RESOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/res/VanillaStyle.qrc)
+        ${CMAKE_CURRENT_SOURCE_DIR}/res/VanillaStyle.qrc
+)
 
 add_library(VanillaStyle STATIC)
 
@@ -43,9 +43,9 @@ endif ()
 
 target_link_libraries(${PROJECT_NAME}
         PUBLIC
-        Qt::Core
-        Qt::Widgets
-        Qt::Svg
+        Qt${QT_VERSION_MAJOR}::Core
+        Qt${QT_VERSION_MAJOR}::Widgets
+        Qt${QT_VERSION_MAJOR}::Svg
 )
 
 set_target_properties(${PROJECT_NAME}

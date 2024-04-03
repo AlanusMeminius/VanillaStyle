@@ -1,11 +1,17 @@
 #include <QPainter>
-#include <QtWidgets/QListWidget>
+
 #include "VanillaStyle/Helper/Helper.h"
+#include "VanillaStyle/Theme/Theme.h"
 
-#include <QPainterPath>
-namespace VanillaStyle {
+namespace Vanilla
+{
 
-bool Helper::shapedFrame(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget) const
+bool Helper::emptyControl(const QStyleOption*, QPainter*, const std::shared_ptr<Theme>&, const QWidget*) const
+{
+    return true;
+}
+
+bool Helper::shapedFrame(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
 {
     if (const bool isComboPopList = widget->inherits("QComboBoxPrivateContainer"); !isComboPopList)
     {
@@ -19,4 +25,26 @@ bool Helper::shapedFrame(const QStyleOption* option, QPainter* painter, const Th
 
     return true;
 }
-} // VanillaStyle
+
+bool Helper::drawRadioCheckLabel(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget*) const
+{
+    const auto* opt = qstyleoption_cast<const QStyleOptionButton*>(option);
+    if (!opt)
+    {
+        return true;
+    }
+    if (!opt->text.isEmpty())
+    {
+        painter->setRenderHints(QPainter::Antialiasing);
+
+        const auto rect = opt->rect;
+        constexpr auto textFlags = Qt::AlignVCenter | Qt::AlignBaseline | Qt::TextSingleLine | Qt::AlignLeft | Qt::TextHideMnemonic;
+        const auto elidedText = opt->fontMetrics.elidedText(opt->text, Qt::ElideRight, rect.width(), Qt::TextSingleLine);
+        painter->setBrush(Qt::NoBrush);
+        const auto fgcolor = theme->getColor(option, Theme::LabelText);
+        painter->setPen(fgcolor);
+        painter->drawText(rect, textFlags, elidedText);
+    }
+    return true;
+}
+}  // namespace Vanilla

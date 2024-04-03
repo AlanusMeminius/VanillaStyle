@@ -1,10 +1,15 @@
-#include "VanillaStyle/Helper/SpinBoxStyle.h"
-#include <QPainter>
 #include <QPainterPath>
+#include <QPainter>
 
-namespace VanillaStyle
+#include "VanillaStyle/Helper/SpinBoxStyle.h"
+
+#include "VanillaStyle/Helper/Common.h"
+#include "VanillaStyle/Theme/Theme.h"
+
+
+namespace Vanilla
 {
-bool SpinBoxStyle::draw(const QStyleOptionComplex* option, QPainter* painter, const Theme* theme, const QWidget* widget) const
+bool SpinBoxStyle::draw(const QStyleOptionComplex* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
 {
     const auto* opt = qstyleoption_cast<const QStyleOptionSpinBox*>(option);
     if (!opt)
@@ -21,12 +26,12 @@ bool SpinBoxStyle::draw(const QStyleOptionComplex* option, QPainter* painter, co
     // 画箭头
     if (opt->buttonSymbols != QAbstractSpinBox::NoButtons)
     {
-        if (const auto upButtonRect = subControlRect(QStyle::CC_SpinBox, option, QStyle::SC_SpinBoxUp, widget); upButtonRect.isValid())
+        if (const auto upButtonRect = subControlRect(QStyle::CC_SpinBox, option, QStyle::SC_SpinBoxUp, theme, widget); upButtonRect.isValid())
         {
             const auto iconPath = theme->getIconPath(Theme::IconRole::UpArrow);
             drawUpArrow(iconPath, painter, upButtonRect, QColor(255, 255, 255));
         }
-        if (const auto downButtonRect = subControlRect(QStyle::CC_SpinBox, option, QStyle::SC_SpinBoxDown, widget); downButtonRect.isValid())
+        if (const auto downButtonRect = subControlRect(QStyle::CC_SpinBox, option, QStyle::SC_SpinBoxDown, theme, widget); downButtonRect.isValid())
         {
             const auto iconPath = theme->getIconPath(Theme::IconRole::DownArrow);
             drawDownArrow(iconPath, painter, downButtonRect, QColor(255, 255, 255));
@@ -34,7 +39,7 @@ bool SpinBoxStyle::draw(const QStyleOptionComplex* option, QPainter* painter, co
     }
     return true;
 }
-QRect SpinBoxStyle::subControlRect(QStyle::ComplexControl control, const QStyleOptionComplex* option, QStyle::SubControl subControl,
+QRect SpinBoxStyle::subControlRect(QStyle::ComplexControl control, const QStyleOptionComplex* option, QStyle::SubControl subControl, const std::shared_ptr<Theme>& theme,
                                    const QWidget* widget) const
 {
     if (control == QStyle::CC_SpinBox)
@@ -94,4 +99,4 @@ int SpinBoxStyle::pixelMetric(QStyle::PixelMetric pm, const QStyleOption* option
     return 12;
 }
 
-}  // namespace VanillaStyle
+}  // namespace Vanilla

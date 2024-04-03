@@ -12,7 +12,7 @@
 #include "VanillaStyle/Helper/SpinBoxStyle.h"
 #include "VanillaStyle/Helper/LineEditStyle.h"
 
-namespace VanillaStyle
+namespace Vanilla
 {
 class VanillaStylePrivate
 {
@@ -20,11 +20,11 @@ public:
     explicit VanillaStylePrivate(VanillaStyle* q);
 
 private:
-    Theme* theme;
+    std::shared_ptr<Theme> theme;
     std::shared_ptr<Helper> helper;
     std::shared_ptr<CheckBoxStyle> checkBoxStyle;
     std::shared_ptr<RadioButtonStyle> radioButtonStyle;
-    std::shared_ptr<ButtonStyle> buttonStyle;
+     std::shared_ptr<ButtonStyle> buttonStyle;
     std::shared_ptr<ProgressBarStyle> progressBarStyle;
     std::shared_ptr<MenuStyle> menuStyle;
     std::shared_ptr<SpinBoxStyle> spinBoxStyle;

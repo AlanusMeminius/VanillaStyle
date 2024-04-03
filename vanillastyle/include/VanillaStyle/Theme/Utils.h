@@ -2,7 +2,7 @@
 #include <QStyle>
 #include "VanillaStyle/Helper/Common.h"
 
-namespace VanillaStyle
+namespace Vanilla
 {
 
 //enum State

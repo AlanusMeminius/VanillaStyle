@@ -1,12 +1,12 @@
 #pragma once
 #include <QMenu>
 
-namespace VanillaStyle
+namespace Vanilla
 {
 
 class MenuEventFilter : public QObject {
 public:
-    MenuEventFilter(QMenu* menu);
+    explicit MenuEventFilter(QMenu* menu);
 
     bool eventFilter(QObject* watchedObject, QEvent* evt) override;
 

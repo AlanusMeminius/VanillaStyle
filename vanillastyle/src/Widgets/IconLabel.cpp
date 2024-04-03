@@ -7,7 +7,7 @@
 #include <QStyle>
 #include <qevent.h>
 
-namespace VanillaStyle
+namespace Vanilla
 {
 IconLabel::IconLabel(QWidget* parent)
     : QWidget(parent)
@@ -31,6 +31,10 @@ IconLabel::IconLabel(const QIcon& icon, const QString& label, QWidget* parent)
 {
     setIcon(icon);
     setLabel(label);
+}
+IconLabel::~IconLabel()
+{
+    delete d_ptr;
 }
 QSize IconLabel::sizeHint() const
 {
@@ -121,7 +125,7 @@ void IconLabelPrivate::paint(QPainter* painter)
     QFont font = q->font();
     if (auto* customStyle = qobject_cast<VanillaStyle*>(q->style()))
     {
-        textColor = customStyle->getCustomColor(Theme::ColorRole::IconLabelText);
+        textColor = customStyle->getCustomColor(Theme::ColorRole::LabelText);
         font = customStyle->getCustomFont(Theme::TextSizeRole::H5);
     }
     const QFontMetrics fm(font);

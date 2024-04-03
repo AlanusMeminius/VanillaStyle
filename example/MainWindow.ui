@@ -143,7 +143,7 @@
      <widget class="QWidget" name="widget_7" native="true">
       <layout class="QHBoxLayout" name="horizontalLayout_7">
        <item>
-        <widget class="VanillaStyle::SwitchButton" name="switchBtn" native="true"/>
+        <widget class="Vanilla::SwitchButton" name="switchBtn" native="true"/>
        </item>
        <item>
         <spacer name="horizontalSpacer">
@@ -172,10 +172,10 @@
      <widget class="QWidget" name="widget_3" native="true">
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
-        <widget class="VanillaStyle::ToggleButton" name="toggleBtnfirst" native="true"/>
+        <widget class="Vanilla::ToggleButton" name="toggleBtnfirst" native="true"/>
        </item>
        <item>
-        <widget class="VanillaStyle::ToggleButton" name="toggleBtnSecond" native="true"/>
+        <widget class="Vanilla::ToggleButton" name="toggleBtnSecond" native="true"/>
        </item>
        <item>
         <spacer name="horizontalSpacer_2">
@@ -211,7 +211,7 @@
         </widget>
        </item>
        <item>
-        <widget class="VanillaStyle::IconLabel" name="iconLabelFirst" native="true"/>
+        <widget class="Vanilla::IconLabel" name="iconLabelFirst" native="true"/>
        </item>
        <item>
         <widget class="QLabel" name="label_13">
@@ -221,7 +221,7 @@
         </widget>
        </item>
        <item>
-        <widget class="VanillaStyle::IconLabel" name="iconLabelSecond" native="true"/>
+        <widget class="Vanilla::IconLabel" name="iconLabelSecond" native="true"/>
        </item>
        <item>
         <spacer name="horizontalSpacer_3">
@@ -250,7 +250,7 @@
      <widget class="QWidget" name="widget_10" native="true">
       <layout class="QHBoxLayout" name="horizontalLayout_10">
        <item>
-        <widget class="VanillaStyle::IconButton" name="iconBtn"/>
+        <widget class="Vanilla::IconButton" name="iconBtn"/>
        </item>
        <item>
         <spacer name="horizontalSpacer_4">
@@ -359,25 +359,25 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>VanillaStyle::SwitchButton</class>
+   <class>Vanilla::SwitchButton</class>
    <extends>QWidget</extends>
    <header>VanillaStyle/Widgets/SwitchButton.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>VanillaStyle::ToggleButton</class>
+   <class>Vanilla::ToggleButton</class>
    <extends>QWidget</extends>
    <header>VanillaStyle/Widgets/ToggleButton.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>VanillaStyle::IconLabel</class>
+   <class>Vanilla::IconLabel</class>
    <extends>QWidget</extends>
    <header>VanillaStyle/Widgets/IconLabel.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>VanillaStyle::IconButton</class>
+   <class>Vanilla::IconButton</class>
    <extends>QAbstractButton</extends>
    <header>VanillaStyle/Widgets/IconButton.h</header>
    <container>1</container>

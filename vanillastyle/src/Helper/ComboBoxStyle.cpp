@@ -1,9 +1,11 @@
-#include "VanillaStyle/Helper/ComboBoxStyle.h"
-#include "VanillaStyle/Style/VanillaStyle.h"
+#include <QPainter>
 
-namespace VanillaStyle
+#include "VanillaStyle/Helper/ComboBoxStyle.h"
+#include "VanillaStyle/Theme/Theme.h"
+
+namespace Vanilla
 {
-bool ComboBoxStyle::draw(const QStyleOptionComplex* option, QPainter* painter, const Theme* theme, const QWidget* widget) const
+bool ComboBoxStyle::draw(const QStyleOptionComplex* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
 {
     const auto* opt = qstyleoption_cast<const QStyleOptionComboBox*>(option);
     if (!opt)

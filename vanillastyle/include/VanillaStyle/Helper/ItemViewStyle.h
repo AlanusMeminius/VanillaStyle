@@ -1,13 +1,19 @@
 #pragma once
-#include "Helper.h"
-#include <QListView>
-#include "VanillaStyle/Theme/Theme.h"
 
-namespace VanillaStyle {
-class ItemViewStyle : public Helper{
+#include <memory>
+
+class QPainter;
+class QStyleOption;
+class QWidget;
+
+namespace Vanilla
+{
+class Theme;
+class ItemViewStyle
+{
 public:
-    bool draw(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget) const;
-    void drawPrimitive(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget = nullptr) const;
+    bool draw(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const;
+    void drawPrimitive(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget = nullptr) const;
 };
 
-} // VanillaStyle
+}  // namespace Vanilla

@@ -1,7 +1,8 @@
 #pragma once
 #include <QWidget>
 #include <QString>
-namespace VanillaStyle
+
+namespace Vanilla
 {
 
 class IconLabelPrivate;
@@ -17,7 +18,7 @@ public:
     explicit IconLabel(const QIcon& icon, QWidget* parent = nullptr);
     explicit IconLabel(const QString& label, QWidget* parent = nullptr);
     explicit IconLabel(const QIcon& icon, const QString& label, QWidget* parent = nullptr);
-
+    ~IconLabel() override;
     [[nodiscard]] QSize sizeHint() const override;
 
     [[nodiscard]] const QString& label() const;
@@ -33,8 +34,14 @@ public:
     Q_SIGNAL void iconSizeChanged();
 
     bool iconFirst = true;
-    [[nodiscard]] const bool& isIconFirst() const {return iconFirst;}
-    void setIconFirst(const bool& iconFirst) {this->iconFirst = iconFirst;}
+    [[nodiscard]] const bool& isIconFirst() const
+    {
+        return iconFirst;
+    }
+    void setIconFirst(const bool& iconFirst)
+    {
+        this->iconFirst = iconFirst;
+    }
 
 protected:
     void paintEvent(QPaintEvent* event) override;
@@ -45,4 +52,4 @@ private:
     Q_DECLARE_PRIVATE(IconLabel);
 };
 
-}  // namespace VanillaStyle
+}  // namespace Vanilla

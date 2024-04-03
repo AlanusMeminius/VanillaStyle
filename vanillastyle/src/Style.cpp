@@ -2,20 +2,20 @@
 #include "VanillaStyle/Style.h"
 #include "VanillaStyle/Style/VanillaStyle.h"
 
-void VanillaStyle::Style::setStyle()
+void Vanilla::Style::setStyle()
 {
     set({});
 }
-void VanillaStyle::Style::setStyleFromName(const QString& styleName)
+void Vanilla::Style::setStyleFromName(const QString& styleName)
 {
     const auto configPath = QApplication::applicationDirPath() + "/" + styleName + ".json";
     set(configPath);
 }
-void VanillaStyle::Style::setStyleFromPath(const QString& configPath)
+void Vanilla::Style::setStyleFromPath(const QString& configPath)
 {
     set(configPath);
 }
-void VanillaStyle::Style::set(const QString& configPath)
+void Vanilla::Style::set(const QString& configPath)
 {
     const auto style = new VanillaStyle();
     if (!configPath.isEmpty())
@@ -23,5 +23,4 @@ void VanillaStyle::Style::set(const QString& configPath)
         style->setConfigPath(configPath.toStdString());
     }
     qApp->setStyle(style);
-    QApplication::setPalette(style->getStandardPalette());
 }

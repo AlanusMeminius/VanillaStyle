@@ -7,7 +7,7 @@
 #include <QPainterPath>
 #include <QMouseEvent>
 
-namespace VanillaStyle
+namespace Vanilla
 {
 
 SwitchButton::SwitchButton(QWidget* parent)
@@ -16,6 +16,10 @@ SwitchButton::SwitchButton(QWidget* parent)
 {
     Q_D(SwitchButton);
     d->init();
+}
+SwitchButton::~SwitchButton()
+{
+    delete d_ptr;
 }
 QSize SwitchButton::sizeHint() const
 {

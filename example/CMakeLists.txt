@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.27)
 project(Example)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
@@ -20,10 +20,10 @@ add_executable(Example
 target_link_libraries(Example
         PRIVATE
         VanillaStyle
-        Qt::Core
-        Qt::Gui
-        Qt::Widgets
-        Qt::Svg
+        Qt${QT_VERSION_MAJOR}::Core
+        Qt${QT_VERSION_MAJOR}::Gui
+        Qt${QT_VERSION_MAJOR}::Widgets
+        Qt${QT_VERSION_MAJOR}::Svg
 )
 if (NOT TARGET QWindowKit::Core)
     add_subdirectory(lib/qwindowkit EXCLUDE_FROM_ALL)

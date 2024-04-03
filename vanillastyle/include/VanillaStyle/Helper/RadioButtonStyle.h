@@ -1,14 +1,20 @@
 #pragma once
-#include "Helper.h"
-#include "VanillaStyle/Theme/Theme.h"
 
-namespace VanillaStyle
+#include <memory>
+
+#include <QStyle>
+
+class QPainter;
+class QStyleOption;
+class QWidget;
+
+namespace Vanilla
 {
-class RadioButtonStyle : public Helper
+class Theme;
+class RadioButtonStyle
 {
 public:
-    bool drawIndicator(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget = nullptr) const;
-    // void draw(const QStyleOption* option, QPainter* painter, const QWidget* widget, const Theme* theme) const;
-    // void drawIndicator(const QStyleOption* option, const QRectF rect, QPainter* painter, const Theme* theme) const;
+    bool drawIndicator(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget = nullptr) const;
+    QRect subElementRect(QStyle::SubElement element, const QStyleOption* option, const std::shared_ptr<Theme>& theme, const QWidget* widget) const;
 };
 }  // namespace VanillaStyle

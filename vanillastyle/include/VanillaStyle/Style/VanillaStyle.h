@@ -1,14 +1,12 @@
 #pragma once
-// #include "../../../src/Style/VanillaStyle_p.h"
-#include "VanillaStyle/Helper/ButtonStyle.h"
+
+#include "VanillaStyle/Helper/Helper.h"
+#include "VanillaStyle/Theme/Theme.h"
 
 #include <QCommonStyle>
 #include <QPainter>
-#include "VanillaStyle/Theme/Theme.h"
-#include "VanillaStyle/Helper/CheckBoxStyle.h"
-#include "VanillaStyle/Theme/Config.h"
 
-namespace VanillaStyle
+namespace Vanilla
 {
 class VanillaStylePrivate;
 class VanillaStyle : public QCommonStyle
@@ -16,8 +14,9 @@ class VanillaStyle : public QCommonStyle
     Q_OBJECT
 public:
     explicit VanillaStyle();
+    ~VanillaStyle();
 
-    QPalette getStandardPalette() const;
+
     void drawPrimitive(PrimitiveElement pe, const QStyleOption* option, QPainter* painter, const QWidget* widget = nullptr) const override;
     int pixelMetric(PixelMetric pm, const QStyleOption* option = nullptr, const QWidget* widget = nullptr) const override;
     void drawControl(ControlElement element, const QStyleOption* option, QPainter* painter, const QWidget* widget = nullptr) const override;
@@ -32,17 +31,17 @@ public:
     void setConfigPath(const std::string& path);
     QColor getCustomColor(Theme::ColorRole role);
     QFont getCustomFont(Theme::TextSizeRole sizeRole);
-    using ControlHelper = bool (Helper::*)(const QStyleOption*, QPainter*, const Theme*, const QWidget*) const;
-    using ComplexHelper = bool (Helper::*)(const QStyleOptionComplex*, QPainter*, const Theme*, const QWidget*) const;
-    using SubElementHelper = QRect (Helper::*)(SubElement, const QStyleOption*, const QWidget*) const;
-    using subControlHelper = QRect (Helper::*)(ComplexControl, const QStyleOptionComplex*, SubControl, const QWidget*) const;
 
-    template <typename Func, typename T, typename F>
-    static auto StyleHelper(T& h, F f);
-    template <typename Func, typename... Args>
-    decltype(auto) check(std::pair<std::shared_ptr<Helper>, Func>& fcn, Args&&... args) const;
-    template <typename Func, typename... Args>
-    decltype(auto) call(std::pair<std::shared_ptr<Helper>, Func>& fcn, Args&&... args) const;
+    // using StyleHintHelper = int (Helper::*)(StyleHint, const QStyleOption*, const QWidget*, QStyleHintReturn*) const;
+    // using SizeFromContentsHelper = QSize (Helper::*)(ContentsType, const QStyleOption*, const QSize&, const QWidget*) const;
+
+    using ControlHelper = std::function<bool(const QStyleOption*, QPainter*, const std::shared_ptr<Theme>&, const QWidget*)>;
+    using ComplexHelper = std::function<bool(const QStyleOptionComplex*, QPainter*, const std::shared_ptr<Theme>&, const QWidget*)>;
+    using SubElementHelper = std::function<QRect(SubElement, const QStyleOption*, const std::shared_ptr<Theme>&, const QWidget*)>;
+    using SubControlHelper = std::function<QRect(ComplexControl, const QStyleOptionComplex*, SubControl, const std::shared_ptr<Theme>&, const QWidget*)>;
+
+    template <typename T, typename F>
+    auto createHelper(const std::shared_ptr<T>& objectPtr, F fptr) const;
 
 private:
     Q_DECLARE_PRIVATE(VanillaStyle);
@@ -50,20 +49,12 @@ private:
     VanillaStylePrivate* const d_ptr;
 };
 
-template <typename Func, typename T, typename F>
-auto VanillaStyle::StyleHelper(T& h, F f)
+template <typename T, typename F>
+auto VanillaStyle::createHelper(const std::shared_ptr<T>& objectPtr, F fptr) const
 {
-    return std::make_pair(h, static_cast<Func>(f));
-}
-template <typename Func, typename... Args>
-decltype(auto) VanillaStyle::check(std::pair<std::shared_ptr<Helper>, Func>& fcn, Args&&... args) const
-{
-    return !(fcn.second && call(fcn, std::forward<Args>(args)...));
-}
-template <typename Func, typename... Args>
-decltype(auto) VanillaStyle::call(std::pair<std::shared_ptr<Helper>, Func> &fcn, Args&&... args) const
-{
-    return (fcn.first.get()->*fcn.second)(std::forward<Args>(args)...);
+    return [objectPtr, fptr](auto&&... params) {
+        return (objectPtr.get()->*fptr)(std::forward<decltype(params)>(params)...);
+    };
 }
 
-}  // namespace VanillaStyle
+}  // namespace Vanilla

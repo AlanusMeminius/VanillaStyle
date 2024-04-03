@@ -1,13 +1,15 @@
-#include "VanillaStyle/Helper/ButtonStyle.h"
-
-#include <QCommonStyle>
+#include <QStyleOption>
 #include <QPainter>
 #include <QPainterPath>
 
-namespace VanillaStyle
+#include "VanillaStyle/Helper/ButtonStyle.h"
+#include "VanillaStyle/Theme/Theme.h"
+
+namespace Vanilla
 {
-bool ButtonStyle::drawPushButtonBevel(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget) const
+bool ButtonStyle::drawPushButtonBevel(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
 {
+    Q_UNUSED(widget);
     const auto* optionButton = qstyleoption_cast<const QStyleOptionButton*>(option);
     if (!optionButton)
     {
@@ -30,8 +32,12 @@ bool ButtonStyle::drawPushButtonBevel(const QStyleOption* option, QPainter* pain
     // painter->drawRoundedRect(buttonRect, radius, radius);
     return true;
 }
-bool ButtonStyle::drawPushButtonLabel(const QStyleOption* option, QPainter* painter, const QWidget* widget, const Theme* theme) const
+
+bool ButtonStyle::drawPushButtonLabel(const QStyleOption* option, QPainter* painter, const QWidget* widget, const std::shared_ptr<Theme>& theme) const
 {
+    Q_UNUSED(widget);
+    Q_UNUSED(painter);
+    Q_UNUSED(theme);
     if (const auto* optionButton = qstyleoption_cast<const QStyleOptionButton*>(option))
     {
         QStyleOptionButton copy = *optionButton;

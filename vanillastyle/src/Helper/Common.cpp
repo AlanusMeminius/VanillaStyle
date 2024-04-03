@@ -4,7 +4,7 @@
 #include <QPainter>
 #include <array>
 
-namespace VanillaStyle
+namespace Vanilla
 {
 
 QImage switchImageColor(const QPixmap& original, const QColor& color)

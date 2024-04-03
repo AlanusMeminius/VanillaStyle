@@ -1,17 +1,25 @@
 #pragma once
-#include "Helper.h"
-#include "VanillaStyle/Theme/Theme.h"
 
-namespace VanillaStyle
+#include <memory>
+
+#include <QRect>
+#include <QStyle>
+
+class QPainter;
+class QStyleOption;
+class QWidget;
+
+namespace Vanilla
 {
+class Theme;
 
-class ProgressBarStyle : public Helper
+class ProgressBarStyle
 {
 public:
-    bool drawGroove(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget) const;
-    bool drawContents(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget) const;
-    bool drawLabel(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget) const;
-    QRect subElementRect(QStyle::SubElement subElement, const QStyleOption* option, const QWidget* widget) const;
+    bool drawGroove(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const;
+    bool drawContents(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const;
+    bool drawLabel(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const;
+    QRect subElementRect(QStyle::SubElement subElement, const QStyleOption* option, const std::shared_ptr<Theme>& theme, const QWidget* widget) const;
 };
 
 }  // namespace VanillaStyle

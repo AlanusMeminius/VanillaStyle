@@ -1,20 +1,18 @@
-#include "MainWindow.h"
-#include "ui_MainWindow.h"
-#include "VanillaStyle/Style.h"
-#include "VanillaStyle/Helper/ItemViewStyle.h"
-#include "VanillaStyle/Style/VanillaStyle.h"
-#include "VanillaStyle/Widgets/IconLabel.h"
+#include <QTimer>
+#include <QButtonGroup>
+#include <QShortcut>
 
 #include <QWKCore/styleagent.h>
 #include <QWKWidgets/widgetwindowagent.h>
-#include <QTimer>
-#include <QButtonGroup>
-#include <QColorDialog>
-#include <QShortcut>
-#include <QtGui/QPainter>
-#include "VanillaStyle/Widgets/SwitchButton.h"
+
+#include <VanillaStyle/Style.h>
+
+#include "MainWindow.h"
+#include "ui_MainWindow.h"
+
+
+
 #include "VanillaStyle/Widgets/ToggleButton.h"
-// #include <Theme.h>
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
@@ -26,7 +24,6 @@ MainWindow::MainWindow(QWidget* parent)
     installWindowAgent();
     ui->setupUi(this);
     m_timer->setInterval(50);
-    // ui->lineEdit->setDisabled(true);
 
     ui->toggleBtnfirst->setItemList(QStringList{":grid.svg", ":list.svg", ":download.svg"});
     ui->toggleBtnfirst->setColumnWidth(50);
@@ -65,13 +62,6 @@ MainWindow::MainWindow(QWidget* parent)
     connect(ui->stopButton, &QPushButton::clicked, this, &MainWindow::stop);
     connect(m_timer, &QTimer::timeout, this, &MainWindow::increaseProgress);
 
-    auto* plusShortcut = new QShortcut(Qt::Key_J, this);
-    connect(plusShortcut, &QShortcut::activated, this, &MainWindow::increaseProgress);
-    auto* minusShortcut = new QShortcut(Qt::Key_K, this);
-    connect(minusShortcut, &QShortcut::activated, this, &MainWindow::decreaseProgress);
-
-    // auto *view = new VanillaStyle::RoundRectListView;
-    // ui->comboBox->setView(view);
 }
 
 MainWindow::~MainWindow()
@@ -84,12 +74,12 @@ void MainWindow::setTheme(const bool theme)
 }
 void MainWindow::setLightTheme()
 {
-    VanillaStyle::Style::setStyleFromName(QStringLiteral("LightVanillaStyle"));
+    Vanilla::Style::setStyleFromName(QStringLiteral("LightVanillaStyle"));
     setTheme(true);
 }
 void MainWindow::setDarkTheme()
 {
-    VanillaStyle::Style::setStyleFromName(QStringLiteral("DarkVanillaStyle"));
+    Vanilla::Style::setStyleFromName(QStringLiteral("DarkVanillaStyle"));
     setTheme(false);
 }
 void MainWindow::setAutoTheme()

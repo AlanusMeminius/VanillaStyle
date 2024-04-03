@@ -1,11 +1,16 @@
-#include "VanillaStyle/Helper/MenuStyle.h"
-#include "VanillaStyle/Helper/EventFilters.h"
 #include <QPainter>
 #include <QMenu>
 
-namespace VanillaStyle
+#include "VanillaStyle/Helper/EventFilters.h"
+#include "VanillaStyle/Helper/MenuStyle.h"
+
+#include "VanillaStyle/Helper/Common.h"
+#include "VanillaStyle/Theme/Theme.h"
+
+
+namespace Vanilla
 {
-bool MenuStyle::drawPrimitive(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget) const
+bool MenuStyle::drawPrimitive(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
 {
     //        const auto radius = d->m_theme->getRadius(Theme::ButtonRadius);
     const auto radius = 5;
@@ -49,7 +54,7 @@ void MenuStyle::eventFilter(QMenu* menu) const
     // Place the QMenu correctly by making up for the drop shadow margins.
     menu->installEventFilter(new MenuEventFilter(menu));
 }
-bool MenuStyle::drawMenuBarItem(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget) const
+bool MenuStyle::drawMenuBarItem(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
 {
     const auto* opt = qstyleoption_cast<const QStyleOptionMenuItem*>(option);
     if (!opt)
@@ -72,7 +77,7 @@ bool MenuStyle::drawMenuBarItem(const QStyleOption* option, QPainter* painter, c
     painter->drawText(opt->rect, textFlags, opt->text);
     return true;
 }
-bool MenuStyle::drawMenuItem(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget) const
+bool MenuStyle::drawMenuItem(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
 {
     const auto* opt = qstyleoption_cast<const QStyleOptionMenuItem*>(option);
     if (!opt)

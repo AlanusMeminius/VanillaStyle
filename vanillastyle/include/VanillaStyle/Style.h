@@ -1,5 +1,5 @@
 #pragma once
-namespace VanillaStyle
+namespace Vanilla
 {
 class Style
 {

@@ -1,10 +1,13 @@
-#include "VanillaStyle/Helper/LineEditStyle.h"
 #include <QPainter>
 #include <QPainterPath>
 
-namespace VanillaStyle
+#include "VanillaStyle/Helper/LineEditStyle.h"
+#include "VanillaStyle/Theme/Theme.h"
+
+
+namespace Vanilla
 {
-bool LineEditStyle::draw(const QStyleOption* option, QPainter* painter, const Theme* theme, const QWidget* widget) const
+bool LineEditStyle::draw(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
 {
     const auto* opt = qstyleoption_cast<const QStyleOptionFrame*>(option);
     if (!opt)
@@ -22,7 +25,7 @@ bool LineEditStyle::draw(const QStyleOption* option, QPainter* painter, const Th
     }
     return true;
 }
-QRect LineEditStyle::subElementRect(QStyle::SubElement element, const QStyleOption* option, const QWidget* widget) const
+QRect LineEditStyle::subElementRect(QStyle::SubElement element, const QStyleOption* option, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
 {
     if (element == QStyle::SE_LineEditContents)
     {

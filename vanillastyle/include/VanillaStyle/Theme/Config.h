@@ -2,6 +2,7 @@
 #include <QApplication>
 #include <QSettings>
 #include <QColor>
+
 #include <nlohmann/json.hpp>
 
 namespace nlohmann
@@ -40,7 +41,7 @@ struct adl_serializer<QColor>
 };
 }  // namespace nlohmann
 
-namespace VanillaStyle
+namespace Vanilla
 {
 
 class Basic
@@ -136,7 +137,7 @@ public:
     NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(StyleConfig, name, author, mode, color, size, icons);
 };
 
-class ConfigManager
+class ConfigErrorHanler
 {
 public:
     enum ErrorCode
@@ -145,12 +146,35 @@ public:
         FileNotFound,
         ParseError
     };
-    explicit ConfigManager();
-    void setConfigPath(const std::string& path);
-    static StyleConfig defaultConfig();
-    ErrorCode readConfig(StyleConfig& config) const;
+
+    using ErrorCallback = std::function<void(const ErrorCode&)>;
+
+    void handleError(const ErrorCode& errorType) const
+    {
+        if (errorCallback)
+        {
+            errorCallback(errorType);
+        }
+    }
+
+    void setErrorCallback(const ErrorCallback& callback)
+    {
+        errorCallback = callback;
+    }
 
 private:
-    std::string m_configPath;
+    ErrorCallback errorCallback;
 };
-}  // namespace VanillaStyle
+
+class ConfigManager
+{
+public:
+    explicit ConfigManager() = default;
+
+    static StyleConfig defaultConfig();
+    StyleConfig getConfig(const std::string& path) const;
+
+public:
+    ConfigErrorHanler errorHandler;
+};
+}  // namespace Vanilla
