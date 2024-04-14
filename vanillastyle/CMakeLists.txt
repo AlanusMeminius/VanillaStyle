@@ -62,13 +62,11 @@ set_target_properties(${LIBRAY_NAME}
 
 set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/install})
 
-install(
-        TARGETS ${LIBRAY_NAME}
-        EXPORT ${PROJECT_NAME}Targets
-        BUNDLE DESTINATION .
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-        PUBLIC_HEADER DESTINATION include/${LIBRAY_NAME}
-)
+#install(
+#        TARGETS ${LIBRAY_NAME}
+#        EXPORT ${PROJECT_NAME}Targets
+#        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+#)
 #
 #install(DIRECTORY include/${LIBRAY_NAME}
 #        DESTINATION include
