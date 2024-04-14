@@ -9,7 +9,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_subdirectory(vanillastyle)
 
+
 set(BUILD_EXAMPLES OFF)
 if (BUILD_EXAMPLES)
     add_subdirectory(example)
 endif ()
+
+set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/install)
+install(TARGETS ${PROJECT_NAME}
+        BUNDLE DESTINATION .
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
