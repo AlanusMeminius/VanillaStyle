@@ -4,5 +4,7 @@
         <file>icons/Airplane.svg</file>
         <file>icons/DownArrow.svg</file>
         <file>icons/UpArrow.svg</file>
+        <file>styles/DarkVanillaStyle.json</file>
+        <file>styles/LightVanillaStyle.json</file>
     </qresource>
 </RCC>

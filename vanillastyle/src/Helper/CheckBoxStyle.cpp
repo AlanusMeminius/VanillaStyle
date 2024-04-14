@@ -1,7 +1,8 @@
-#include "VanillaStyle/Helper/CheckBoxStyle.h"
-#include "VanillaStyle/Theme/Theme.h"
 #include <QPainter>
 #include <QPainterPath>
+
+#include "VanillaStyle/Helper/CheckBoxStyle.h"
+#include "VanillaStyle/Theme/Theme.h"
 
 namespace Vanilla
 {
@@ -14,24 +15,22 @@ bool CheckBoxStyle::draw(const QStyleOption* option, QPainter* painter, const st
     }
 
     painter->setRenderHints(QPainter::Antialiasing);
-    // 计算rect
     const auto rect = QRectF(opt->rect);
-    // theme->setupPainter(option, painter, Theme::CheckBox);
-    const auto bgColor = theme->getColor(option, Theme::ButtonBackground);
+    const auto bgColor = theme->getColor(option, Theme::CheckBoxBackground);
+    const auto borderColor = theme->getColor(option, Theme::CheckBoxBorder);
     const auto border = theme->getSize(Theme::ButtonBorder);
-    if (const auto radius = theme->getRadius(Theme::ButtonRadius); radius < 1)
+    const auto halfBorder = border / 2.;
+    const auto margins = QMarginsF(halfBorder, halfBorder, halfBorder, halfBorder);
+    const auto buttonRect = border > 0.1 ? rect.marginsRemoved(margins) : rect;
+
+    const auto radius = theme->getRadius(Theme::ButtonRadius);
+    Helper::renderRoundRect(painter, buttonRect, bgColor, radius);
+    if (border > 0.1)
     {
-        painter->fillRect(rect, bgColor);
+        Helper::renderRoundBorder(painter, buttonRect, borderColor, border, radius);
     }
-    else
-    {
-        const auto margins = QMarginsF(border / 2., border / 2., border / 2., border / 2.);
-        const auto buttonRect = border > 0.1 ? rect.marginsRemoved(margins) : rect;
-        painter->setPen(Qt::NoPen);
-        painter->setBrush(QBrush(bgColor));
-        painter->drawRoundedRect(buttonRect, radius, radius);
-    }
-    if (option->state & QStyle::State_On)
+
+    if ((theme->flags(option) & Theme::Checked) == Theme::Checked)
     {
         drawIndicator(option, rect, painter, theme);
     }
@@ -40,7 +39,7 @@ bool CheckBoxStyle::draw(const QStyleOption* option, QPainter* painter, const st
 }
 void CheckBoxStyle::drawIndicator(const QStyleOption* option, const QRectF rect, QPainter* painter, const std::shared_ptr<Theme>& theme) const
 {
-    const auto fgColor = theme->getColor(option, Theme::ButtonForeground);
+    const auto fgColor = theme->getColor(option, Theme::CheckBoxForeground);
 
     // auto fgColor = painter->pen().color();
     painter->setPen(QPen{fgColor, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin});
@@ -65,4 +64,4 @@ int CheckBoxStyle::indicatorSize() const
 {
     return 0;
 }
-}  // namespace VanillaStyle
+}  // namespace Vanilla

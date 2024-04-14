@@ -3,6 +3,8 @@
 #include <QPainterPath>
 
 #include "VanillaStyle/Helper/ButtonStyle.h"
+
+#include "VanillaStyle/Helper/Helper.h"
 #include "VanillaStyle/Theme/Theme.h"
 
 namespace Vanilla
@@ -23,13 +25,13 @@ bool ButtonStyle::drawPushButtonBevel(const QStyleOption* option, QPainter* pain
     const auto buttonRect = border > 0.1 ? rect.marginsRemoved(margins) : rect;
 
     painter->setRenderHints(QPainter::Antialiasing);
-    // theme->setupButtonPainter(option, painter);
     const auto bgColor = theme->getColor(option, Theme::ButtonBackground);
-    // painter->setBrush(QBrush(bgColor));
-    QPainterPath path;
-    path.addRoundedRect(buttonRect, radius, radius);
-    painter->fillPath(path, QBrush(bgColor));
-    // painter->drawRoundedRect(buttonRect, radius, radius);
+    Helper::renderRoundRect(painter, buttonRect, bgColor, radius);
+    if (border > 0.1)
+    {
+        const auto borderColor = theme->getColor(option, Theme::ButtonForeground);
+        Helper::renderRoundBorder(painter, buttonRect, borderColor, border, radius);
+    }
     return true;
 }
 
@@ -47,4 +49,4 @@ bool ButtonStyle::drawPushButtonLabel(const QStyleOption* option, QPainter* pain
     return true;
 }
 
-}  // namespace VanillaStyle
+}  // namespace Vanilla

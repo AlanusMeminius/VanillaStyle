@@ -137,44 +137,5 @@ public:
     NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(StyleConfig, name, author, mode, color, size, icons);
 };
 
-class ConfigErrorHanler
-{
-public:
-    enum ErrorCode
-    {
-        NoError,
-        FileNotFound,
-        ParseError
-    };
 
-    using ErrorCallback = std::function<void(const ErrorCode&)>;
-
-    void handleError(const ErrorCode& errorType) const
-    {
-        if (errorCallback)
-        {
-            errorCallback(errorType);
-        }
-    }
-
-    void setErrorCallback(const ErrorCallback& callback)
-    {
-        errorCallback = callback;
-    }
-
-private:
-    ErrorCallback errorCallback;
-};
-
-class ConfigManager
-{
-public:
-    explicit ConfigManager() = default;
-
-    static StyleConfig defaultConfig();
-    StyleConfig getConfig(const std::string& path) const;
-
-public:
-    ConfigErrorHanler errorHandler;
-};
 }  // namespace Vanilla

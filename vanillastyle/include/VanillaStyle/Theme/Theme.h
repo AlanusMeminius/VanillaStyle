@@ -1,11 +1,12 @@
 #pragma once
 
+#include "Config.h"
+
 #include <QPalette>
 #include <QStyleOption>
 
 namespace Vanilla
 {
-class StyleConfig;
 class ConfigManager;
 
 class Theme
@@ -35,6 +36,13 @@ public:
         LabelText,
         ButtonForeground,
         ButtonBackground,
+        ButtonBorderColor,
+        CheckBoxForeground,
+        CheckBoxBackground,
+        CheckBoxBorder,
+        RadioButtonForeground,
+        RadioButtonBackground,
+        RadioButtonBorder,
         ProgressBarForeground,
         ProgressBarBackground,
         ProgressBarText,
@@ -48,7 +56,8 @@ public:
         H2,
         H3,
         H4,
-        H5
+        H5,
+        H6
     };
 
     enum RadiusRole
@@ -64,6 +73,8 @@ public:
         ButtonBorder,
         MenuItemPadding,
         IconSize,
+        CheckBoxIndicatorMargin,
+        CheckBoxSpacing,
     };
 
     enum IconRole
@@ -96,6 +107,6 @@ public:
 
 private:
     std::shared_ptr<ConfigManager> configManager;
-    std::shared_ptr<StyleConfig> styleConfig;
+    StyleConfig styleConfig;
 };
 }  // namespace Vanilla

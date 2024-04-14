@@ -1,0 +1,42 @@
+{
+  "name": "Crescent",
+  "author": "Alanus",
+  "mode": "dark",
+  "color": {
+    "backgroundColor": "#222831",
+    "textColor": "#B4B4B8",
+    "pressedTextColor": "#222831",
+    "hoverTextColor": "#00224D",
+    "primaryColorHovered": "#0x2C9D",
+    "buttonForeground": "#76ABAE",
+    "buttonBackground": "#31363F",
+    "buttonHoveredForeground": "#3D3B40",
+    "buttonHoveredBackground": "#3C3633",
+    "buttonPressedForeground": "#3C3633",
+    "buttonPressedBackground": "#675D50",
+    "progressBarBackground": "#ABC4AA",
+    "progressBarForeground": "#675D50",
+    "progressBarText": "#AA5656",
+    "lineEditFocusOutline": "#567189",
+    "lineEditOutline": "#65647C",
+    "iconLabelText": "#F7DED0"
+  },
+  "size": {
+    "fontSize": 12,
+    "fontH1": 34,
+    "fontH2": 26,
+    "fontH3": 22,
+    "fontH4": 18,
+    "fontH5": 14,
+    "borderWidth": 1,
+    "iconSize": 16,
+    "normalRadius": 4,
+    "buttonRadius": 4,
+    "menuItemRadius": 4
+  },
+  "icons": {
+    "upArrow": ":/VanillaStyle/icons/UpArrow.svg",
+    "downArrow": ":/VanillaStyle/icons/DownArrow.svg",
+    "progressIndicator": ":/VanillaStyle/icons/Airplane.svg"
+  }
+}

@@ -52,8 +52,8 @@ private:
 template <typename T, typename F>
 auto VanillaStyle::createHelper(const std::shared_ptr<T>& objectPtr, F fptr) const
 {
-    return [objectPtr, fptr](auto&&... params) {
-        return (objectPtr.get()->*fptr)(std::forward<decltype(params)>(params)...);
+    return [objectPtr, fptr]<typename... P>(P&&... params) {
+        return (objectPtr.get()->*fptr)(std::forward<P>(params)...);
     };
 }
 

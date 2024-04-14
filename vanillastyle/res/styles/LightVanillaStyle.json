@@ -1,0 +1,43 @@
+{
+  "name": "Crescent",
+  "author": "Alanus",
+  "mode": "light",
+  "color": {
+    "backgroundColor": "#FEFBF6",
+    "textColor": "#0x1890",
+    "pressedTextColor": "#344955",
+    "hoverTextColor": "#50727B",
+    "primaryColorHovered": "#0x2C9D",
+    "buttonForeground": "#FFE6E6",
+    "buttonBackground": "#CCD3CA",
+    "buttonHoveredForeground": "#F7DED0",
+    "buttonHoveredBackground": "#CCD3CA",
+    "buttonPressedForeground": "#322D35",
+    "buttonPressedBackground": "#F8F7F8",
+    "progressBarBackground": "#EADFB4",
+    "progressBarForeground": "#76ABAE",
+    "progressBarText": "#FDAF7B",
+    "lineEditFocusOutline": "#B5C0D0",
+    "lineEditOutline": "#B784B7",
+    "iconLabelText": "#50727B"
+  },
+  "size": {
+    "fontSize": 12,
+    "fontH1": 34,
+    "fontH2": 26,
+    "fontH3": 22,
+    "fontH4": 18,
+    "fontH5": 14,
+    "borderWidth": 2,
+    "iconSize": 16,
+    "normalRadius": 4,
+    "buttonRadius": 4,
+    "menuItemRadius": 4
+  },
+  "icons": {
+    "upArrow": ":/VanillaStyle/icons/UpArrow.svg",
+    "downArrow": ":/VanillaStyle/icons/DownArrow.svg",
+    "progressIndicator": ":/VanillaStyle/icons/Airplane.svg"
+  },
+  "progressBarMode": "mode1"
+}

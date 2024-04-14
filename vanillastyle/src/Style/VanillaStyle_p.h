@@ -18,7 +18,8 @@ class VanillaStylePrivate
 {
 public:
     explicit VanillaStylePrivate(VanillaStyle* q);
-
+    void init();
+    void updatePalette();
 private:
     std::shared_ptr<Theme> theme;
     std::shared_ptr<Helper> helper;

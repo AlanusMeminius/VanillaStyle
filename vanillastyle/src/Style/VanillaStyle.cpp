@@ -2,6 +2,8 @@
 #include <QPainterPath>
 #include <QListWidget>
 #include <QPushButton>
+#include <QFontDatabase>
+#include <QRadioButton>
 #include <QCheckBox>
 #include <QComboBox>
 #include <QMenu>
@@ -16,6 +18,7 @@ VanillaStyle::VanillaStyle()
     : d_ptr(new VanillaStylePrivate(this))
 {
     Q_D(VanillaStyle);
+    d->init();
 }
 
 VanillaStyle::~VanillaStyle()
@@ -27,7 +30,7 @@ void VanillaStyle::drawPrimitive(PrimitiveElement pe, const QStyleOption* option
 {
     Q_D(const VanillaStyle);
 
-    ControlHelper helper;
+    ControlHelper helper{nullptr};
 
     switch (pe)
     {
@@ -42,7 +45,7 @@ void VanillaStyle::drawPrimitive(PrimitiveElement pe, const QStyleOption* option
         helper = createHelper(d->helper, &Helper::emptyControl);
         break;
     case PE_IndicatorRadioButton:
-        helper = createHelper(d->radioButtonStyle, &RadioButtonStyle::drawIndicator);
+        helper = createHelper(d->radioButtonStyle, &RadioButtonStyle::draw);
         break;
     case PE_IndicatorCheckBox:
         helper = createHelper(d->checkBoxStyle, &CheckBoxStyle::draw);
@@ -69,7 +72,7 @@ void VanillaStyle::drawControl(ControlElement element, const QStyleOption* optio
 {
     Q_D(const VanillaStyle);
 
-    ControlHelper helper;
+    ControlHelper helper{nullptr};
 
     switch (element)
     {
@@ -94,10 +97,6 @@ void VanillaStyle::drawControl(ControlElement element, const QStyleOption* optio
     case CE_MenuItem:
         helper = createHelper(d->menuStyle, &MenuStyle::drawMenuItem);
         break;
-    case CE_CheckBox:
-        helper = createHelper(d->checkBoxStyle, &CheckBoxStyle::draw);
-        break;
-
     case CE_CheckBoxLabel:
     case CE_RadioButtonLabel:
         helper = createHelper(d->helper, &Helper::drawRadioCheckLabel);
@@ -118,7 +117,7 @@ void VanillaStyle::drawComplexControl(ComplexControl complexControl, const QStyl
 {
     Q_D(const VanillaStyle);
 
-    ComplexHelper helper;
+    ComplexHelper helper{nullptr};
 
     switch (complexControl)
     {
@@ -146,7 +145,13 @@ int VanillaStyle::pixelMetric(PixelMetric pm, const QStyleOption* option, const 
     switch (pm)
     {
     case PM_IndicatorWidth:
+    case PM_ExclusiveIndicatorWidth:
+    case PM_IndicatorHeight:
+    case PM_ExclusiveIndicatorHeight:
         return d->theme->getSize(Theme::IconSize);
+    case PM_RadioButtonLabelSpacing:
+    case PM_CheckBoxLabelSpacing:
+        return d->theme->getSize(Theme::CheckBoxSpacing);
     default:
         break;
     }
@@ -180,7 +185,7 @@ QRect VanillaStyle::subElementRect(SubElement subElement, const QStyleOption* op
 {
     Q_D(const VanillaStyle);
 
-    SubElementHelper helper;
+    SubElementHelper helper{nullptr};
 
     switch (subElement)
     {
@@ -209,7 +214,7 @@ QRect VanillaStyle::subElementRect(SubElement subElement, const QStyleOption* op
 QRect VanillaStyle::subControlRect(ComplexControl control, const QStyleOptionComplex* option, SubControl subControl, const QWidget* widget) const
 {
     Q_D(const VanillaStyle);
-    SubControlHelper helper;
+    SubControlHelper helper{nullptr};
 
     switch (control)
     {
@@ -234,7 +239,7 @@ void VanillaStyle::polish(QWidget* w)
     Q_D(VanillaStyle);
 
     QCommonStyle::polish(w);
-    if (qobject_cast<QPushButton*>(w) || qobject_cast<QCheckBox*>(w))
+    if (qobject_cast<QPushButton*>(w) || qobject_cast<QCheckBox*>(w) || qobject_cast<QRadioButton*>(w))
     {
         w->setAttribute(Qt::WA_Hover);
     }
@@ -268,10 +273,7 @@ void VanillaStyle::setConfigPath(const std::string& path)
 {
     Q_D(VanillaStyle);
     d->theme->setConfig(path);
-
-    d->theme->initPalette();
-    const auto palette = d->theme->standardPalette();
-    QApplication::setPalette(palette);
+    d->updatePalette();
 }
 
 QColor VanillaStyle::getCustomColor(const Theme::ColorRole role)
@@ -301,5 +303,34 @@ VanillaStylePrivate::VanillaStylePrivate(VanillaStyle* q)
     , q_ptr(q)
 
 {
+}
+void VanillaStylePrivate::init()
+{
+
+    updatePalette();
+    // install font
+    const auto RobotoFontPath = ":/VanillaStyle/fonts/Roboto/";
+    const std::array<std::string, 4> fontFiles = {"Roboto-Regular.ttf", "Roboto-Medium.ttf", "Roboto-Bold.ttf", "Roboto-Black.ttf"};
+    for (const auto& file : fontFiles)
+    {
+        const auto path = RobotoFontPath + file;
+        QFontDatabase::addApplicationFont(path.c_str());
+    }
+#if __WIN32__
+    const auto DefaultFont = ":/VanillaStyle/fonts/Inter/";
+    const std::array<std::string, 4> DefaultFontFiles = {"Inter-Regular.ttf", "Inter-Medium.ttf", "Inter-Bold.ttf", "Inter-Black.ttf"};
+    for (const auto& file : DefaultFontFiles)
+    {
+        const auto path = DefaultFont + file;
+        QFontDatabase::addApplicationFont(path.c_str());
+    }
+#endif
+}
+void VanillaStylePrivate::updatePalette()
+{
+    // set up palette
+    theme->initPalette();
+    const auto palette = theme->standardPalette();
+    QApplication::setPalette(palette);
 }
 }  // namespace Vanilla

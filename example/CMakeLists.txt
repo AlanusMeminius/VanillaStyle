@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.27)
+cmake_minimum_required(VERSION 3.16)
 project(Example)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -17,6 +17,12 @@ add_executable(Example
         MainWindow.ui
         res/res.qrc
 )
+
+if (NOT TARGET QWindowKit)
+    add_subdirectory(lib/qwindowkit EXCLUDE_FROM_ALL)
+endif ()
+
+
 target_link_libraries(Example
         PRIVATE
         VanillaStyle
@@ -24,10 +30,6 @@ target_link_libraries(Example
         Qt${QT_VERSION_MAJOR}::Gui
         Qt${QT_VERSION_MAJOR}::Widgets
         Qt${QT_VERSION_MAJOR}::Svg
+        QWindowKit::Core
+        QWindowKit::Widgets
 )
-if (NOT TARGET QWindowKit::Core)
-    add_subdirectory(lib/qwindowkit EXCLUDE_FROM_ALL)
-    target_link_libraries(${PROJECT_NAME} PUBLIC QWindowKit::Core QWindowKit::Widgets)
-else ()
-    target_link_libraries(${PROJECT_NAME} PUBLIC QWindowKit::Core QWindowKit::Widgets)
-endif ()

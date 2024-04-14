@@ -47,4 +47,31 @@ bool Helper::drawRadioCheckLabel(const QStyleOption* option, QPainter* painter, 
     }
     return true;
 }
+
+void Helper::renderRoundBorder(QPainter* painter, const QRectF& rect, const QColor& color, const qreal border, const qreal radius)
+{
+    painter->setPen(QPen(color, border, Qt::SolidLine));
+    painter->setBrush(Qt::NoBrush);
+    painter->drawRoundedRect(rect, radius, radius);
+}
+
+void Helper::renderRoundRect(QPainter* painter, const QRectF& rect, const QColor& color, qreal radius)
+{
+    painter->setPen(Qt::NoPen);
+    painter->setBrush(QBrush(color));
+    painter->drawRoundedRect(rect, radius, radius);
+}
+void Helper::renderEllipse(QPainter* painter, const QRectF& rect, const QColor& color)
+{
+    painter->setPen(Qt::NoPen);
+    painter->setBrush(color);
+    painter->drawEllipse(rect);
+}
+void Helper::renderEllipseBorder(QPainter* painter, const QRectF& rect, const QColor& color, qreal border)
+{
+    painter->setPen(QPen(color, border, Qt::SolidLine));
+    painter->setBrush(Qt::NoBrush);
+    painter->drawEllipse(rect);
+}
+
 }  // namespace Vanilla
