@@ -60,6 +60,8 @@ set_target_properties(${LIBRAY_NAME}
         PUBLIC_HEADER "${HEADER}"
 )
 
+set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_BINARY_DIR}/lib/${LIBRAY_NAME})
+
 install(
         TARGETS ${LIBRAY_NAME}
         EXPORT ${PROJECT_NAME}Targets
