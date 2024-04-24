@@ -4,6 +4,7 @@
 
 namespace Vanilla
 {
+
 Spinner::Spinner(QWidget* parent)
     : QWidget(parent)
     , d_ptr(new SpinnerPrivate(this))
@@ -19,7 +20,8 @@ Spinner::~Spinner()
 
 QSize Spinner::sizeHint() const
 {
-    return {100,100};
+    Q_D(const Spinner);
+    return d->sizeHint();
 }
 
 int Spinner::getDelta() const
@@ -40,10 +42,21 @@ void Spinner::setDelta(const int value)
     emit deltaChanged();
 }
 
-void Spinner::paintEvent(QPaintEvent* event)
+void Spinner::updataPosition()
+{
+    if (const auto* parent = parentWidget(); parent != nullptr)
+    {
+        const int x = parent->width() / 2 - width() / 2;
+        const int y = parent->height() / 2 - height() / 2;
+        move(x, y);
+    }
+}
+
+void Spinner::paintEvent(QPaintEvent* /*event*/)
 {
     Q_D(Spinner);
     QPainter painter(this);
+    updataPosition();
     d->paint(&painter);
 }
 
@@ -51,6 +64,11 @@ SpinnerPrivate::SpinnerPrivate(Spinner* q)
     : timer(new QTimer(q))
     , q_ptr(q)
 {
+}
+
+SpinnerPrivate::~SpinnerPrivate()
+{
+    delete timer;
 }
 
 void SpinnerPrivate::init()
@@ -69,10 +87,18 @@ void SpinnerPrivate::updateColor()
     Q_Q(Spinner);
     if (auto* customStyle = qobject_cast<VanillaStyle*>(q->style()))
     {
-        color_ = customStyle->getCustomColor(Theme::ColorRole::ButtonForeground);
-    } else
+        m_color = customStyle->getCustomColor(Theme::ColorRole::ButtonForeground);
+    }
+    else
     {
-        color_ = QColor(237, 148, 85);  //rgb(237, 148, 85)
+        m_color = QColor(22, 121, 171);  // rgb(237, 148, 85)
+    }
+
+    m_colors = std::vector(numCircles, m_color.toRgb());
+    for (int i = 0; i < numCircles; i++)
+    {
+        const float alpha = static_cast<float>(i) / static_cast<float>(numCircles);
+        m_colors[i].setAlphaF(alpha * (1.0F - alpha));
     }
 }
 
@@ -81,22 +107,22 @@ void SpinnerPrivate::paint(QPainter* painter)
     Q_Q(Spinner);
     painter->setRenderHint(QPainter::Antialiasing);
     painter->translate(q->width() / 2, q->height() / 2);
-    int sideLength = qMin(q->width(), q->height());
-    painter->scale(sideLength / 100.0, sideLength / 100.0);
+    const auto miniSide = std::min(q->width(), q->height());
+    painter->scale(miniSide / 100., miniSide / 100.);
     painter->rotate(angle);
     painter->setPen(Qt::NoPen);
-
-    QColor currentColor = color_.toRgb();
-    int numCircles = 360 / q->delta + 1;
-    for (int i = 0; i < numCircles; i++)
+    for (const auto& color : m_colors)
     {
-        double alpha = 1.0 * i / 10;
-        currentColor.setAlphaF(alpha);
-        painter->setBrush(currentColor);
-        painter->drawEllipse(30, -10, 20, 20);
-        painter->rotate(q->delta);
+        painter->setBrush(color);
+        painter->drawEllipse(innerCircleRadius, -innerCircleRadius, circleRadius, circleRadius);
+        painter->rotate(delta);
     }
-    angle += q->delta;
-    angle %= 360;
+    angle += delta;
+    angle %= circle;
+}
+
+QSize SpinnerPrivate::sizeHint() const
+{
+    return {2 * (innerCircleRadius + circleRadius), 2 * (innerCircleRadius + circleRadius)};
 }
 }  // namespace Vanilla

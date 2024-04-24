@@ -20,8 +20,10 @@ public:
     [[nodiscard]] int getDelta() const;
     void setDelta(int value);
 
-signals:
-    void deltaChanged();
+    void updataPosition();
+
+    signals:
+        void deltaChanged();
 
 protected:
     void paintEvent(QPaintEvent* event) override;
@@ -29,6 +31,8 @@ protected:
 
 private:
     int delta = 36;
+    int circleRadius = 15;
+    int innerCircleRadius = 20;
     Q_DECLARE_PRIVATE(Spinner);
 };
 
