@@ -9,10 +9,12 @@
 
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
-
-
+#include "VanillaStyle/Widgets/Spinner.h"
 
 #include "VanillaStyle/Widgets/ToggleButton.h"
+
+#include <QPushButton>
+#include <QRadioButton>
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
@@ -42,6 +44,9 @@ MainWindow::MainWindow(QWidget* parent)
     ui->iconBtn->setIcon(QIcon(":download.svg"));
 
     ui->radioButton->setChecked(true);
+
+    auto spinner = new Vanilla::Spinner(this);
+    ui->verticalLayout->addWidget(spinner);
 
     setAutoTheme();
 
