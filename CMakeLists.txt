@@ -10,7 +10,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 add_subdirectory(vanillastyle)
 
 
-set(BUILD_EXAMPLES ON)
+set(BUILD_EXAMPLES OFF)
 if (BUILD_EXAMPLES)
     add_subdirectory(example)
 endif ()
