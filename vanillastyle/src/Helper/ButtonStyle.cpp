@@ -31,7 +31,7 @@ bool ButtonStyle::drawPushButtonBevel(const QStyleOption* option, QPainter* pain
     Helper::renderRoundRect(painter, buttonRect, bgColor, radius);
     if (border > 0.1)
     {
-        const auto borderColor = theme->getColor(option, Theme::ButtonForeground);
+        const auto borderColor = theme->getColor(option, Theme::ButtonBorderColor);
         Helper::renderRoundBorder(painter, buttonRect, borderColor, border, radius);
     }
     return true;

@@ -3,23 +3,33 @@
   "author": "Alanus",
   "mode": "dark",
   "color": {
-    "backgroundColor": "#222831",
-    "textColor": "#B4B4B8",
-    "pressedTextColor": "#222831",
-    "hoverTextColor": "#00224D",
-    "primaryColorHovered": "#0x2C9D",
-    "buttonForeground": "#76ABAE",
+    "backgroundColor": "#FEFBF6",
+    "primaryColor": "#EBEBF0",
+    "textColor": "#FAF0E6",
+    "pressedTextColor": "#344955",
+    "hoverTextColor": "#50727B",
+    "buttonForeground": "#C08B5C",
     "buttonBackground": "#31363F",
-    "buttonHoveredForeground": "#3D3B40",
-    "buttonHoveredBackground": "#3C3633",
-    "buttonPressedForeground": "#3C3633",
-    "buttonPressedBackground": "#675D50",
-    "progressBarBackground": "#ABC4AA",
-    "progressBarForeground": "#675D50",
-    "progressBarText": "#AA5656",
-    "lineEditFocusOutline": "#567189",
-    "lineEditOutline": "#65647C",
-    "iconLabelText": "#F7DED0"
+    "buttonHoveredForeground": "#31363F",
+    "buttonHoveredBackground": "#31363F",
+    "buttonPressedForeground": "#222831",
+    "buttonPressedBackground": "#222831",
+    "buttonBorderColor": "#222831",
+    "checkBoxBackground": "#00FFFFFF",
+    "checkBoxForeground": "#A4907C",
+    "checkBoxCheckedForeground": "#F5EEE6",
+    "checkBoxCheckedBackground": "#8D7B68",
+    "checkBoxHoveredBackground": "#8D7B68",
+    "CheckBoxBorderColor": "#8D7B68",
+    "progressBarBackground": "#ad8b73",
+    "progressBarForeground": "#7D5A50",
+    "progressBarText": "#7D5A50",
+    "toggleButtonBackground": "#636366",
+    "toggleButtonForeground": "#FDAF7B",
+    "toggleButtonIndicatorColor": "#AEAEB2",
+    "lineEditFocusOutline": "#B5C0D0",
+    "lineEditOutline": "#AF8260",
+    "iconLabelText": "#50727B"
   },
   "size": {
     "fontSize": 12,
@@ -28,7 +38,7 @@
     "fontH3": 22,
     "fontH4": 18,
     "fontH5": 14,
-    "borderWidth": 1,
+    "borderWidth": 2,
     "iconSize": 16,
     "normalRadius": 4,
     "buttonRadius": 4,
@@ -37,6 +47,7 @@
   "icons": {
     "upArrow": ":/VanillaStyle/icons/UpArrow.svg",
     "downArrow": ":/VanillaStyle/icons/DownArrow.svg",
-    "progressIndicator": ":/VanillaStyle/icons/Airplane.svg"
-  }
+    "progressIndicator": ":/VanillaStyle/icons/Plane.svg"
+  },
+  "progressBarMode": "mode1"
 }

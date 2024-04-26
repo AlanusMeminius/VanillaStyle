@@ -32,7 +32,7 @@ public:
     static StateFlags flags(const QStyleOption* option);
     enum ColorRole
     {
-        Text,
+        PrimaryText,
         LabelText,
         ButtonForeground,
         ButtonBackground,
@@ -47,6 +47,10 @@ public:
         ProgressBarBackground,
         ProgressBarText,
         LineEditOutline,
+        ToggleButtonBackground,
+        ToggleButtonForeground,
+        ToggleButtonBorderColor,
+        ToggleButtonIndicatorColor,
     };
 
     enum TextSizeRole

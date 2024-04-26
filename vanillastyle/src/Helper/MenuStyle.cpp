@@ -100,7 +100,7 @@ bool MenuStyle::drawMenuItem(const QStyleOption* option, QPainter* painter, cons
         // Foreground.
         const auto fgRect = bgRect.marginsRemoved(QMargins{ padding, 0, padding, 0 });
         const auto arrowWidth = theme->getSize(Theme::IconSize);
-        const auto& fgColor = theme->getColor(opt, Theme::ColorRole::Text);
+        const auto& fgColor = theme->getColor(opt, Theme::ColorRole::PrimaryText);
         constexpr int textFlags = Qt::AlignVCenter | Qt::AlignBaseline | Qt::TextSingleLine | Qt::TextShowMnemonic | Qt::AlignLeft;
         const auto& fm = opt->fontMetrics;
 

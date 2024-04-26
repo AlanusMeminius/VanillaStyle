@@ -30,7 +30,7 @@ bool ItemViewStyle::draw(const QStyleOption* option, QPainter* painter, const st
             Qt::AlignVCenter | Qt::AlignBaseline | Qt::TextSingleLine | (textAlignment.testFlag(Qt::AlignRight) ? Qt::AlignRight : Qt::AlignLeft);
         painter->setFont(opt->font);
         painter->setBrush(Qt::NoBrush);
-        const auto textColor = theme->getColor(option, Theme::Text);
+        const auto textColor = theme->getColor(option, Theme::PrimaryText);
         painter->setPen(textColor);
         painter->drawText(rect.adjusted(5, 0, 0, 0), static_cast<int>(textFlags), elidedText, nullptr);
     }

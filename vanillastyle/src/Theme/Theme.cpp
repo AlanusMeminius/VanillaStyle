@@ -69,15 +69,15 @@ void Theme::initPalette()
 {
     palette.setColor(QPalette::Window, Qt::transparent);
     palette.setColor(QPalette::Base, styleConfig.color.backgroundColor);
-    palette.setColor(QPalette::WindowText, styleConfig.color.textColor);
-    palette.setColor(QPalette::Text, styleConfig.color.textColor);
+    palette.setColor(QPalette::WindowText, styleConfig.color.primaryColor);
+    palette.setColor(QPalette::Text, styleConfig.color.primaryColor);
     palette.setColor(QPalette::Highlight, QColor(0x53, 0x94, 0x9f));
 
     // Text color on buttons
-    palette.setColor(QPalette::ButtonText, styleConfig.color.textColor);
+    palette.setColor(QPalette::ButtonText, styleConfig.color.primaryColor);
 
     // pal.setColor(QPalette::ToolTipBase, baseBackground());
-    palette.setColor(QPalette::ToolTipText, styleConfig.color.textColor);
+    palette.setColor(QPalette::ToolTipText, styleConfig.color.primaryColor);
 
     QToolTip::setPalette(palette);
 }
@@ -170,9 +170,18 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
     QColor color = option->palette.color(QPalette::Base);
     switch (role)
     {
-    case Text:
+    case PrimaryText:
     {
-        if ((flags & Flag) == Hover)
+        color = styleConfig.color.primaryColor;
+        break;
+    }
+    case LabelText:
+    {
+        if ((flags & Flag) == Disabled)
+        {
+            color = QColor(Qt::gray);
+        }
+        else if ((flags & Flag) == Hover)
         {
             color = styleConfig.color.hoverTextColor;
         }
@@ -186,31 +195,19 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
         }
         break;
     }
-    case LabelText:
-    {
-        if ((flags & Flag) == Disabled)
-        {
-            color = QColor(Qt::gray);
-        }
-        else
-        {
-            color = QColor(49, 54, 63);
-        }
-        break;
-    }
     case ButtonForeground:
     {
         if ((flags & Flag) == Hover)
         {
-            color = QColor(192, 140, 100);
+            color = styleConfig.color.buttonHoveredForeground;
         }
         else if ((flags & Flag) == Press)
         {
-            color = QColor(192, 139, 92);
+            color = styleConfig.color.buttonPressedForeground;
         }
         else
         {
-            color = QColor(192, 139, 92);
+            color = styleConfig.color.buttonForeground;
         }
         break;
     }
@@ -218,42 +215,43 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
     {
         if ((flags & Flag) == Hover)
         {
-            color = QColor(192, 140, 100);
+            color = styleConfig.color.buttonHoveredBackground;
         }
         else if ((flags & Flag) == Press)
         {
-            color = QColor(245, 238, 230);
+            color = styleConfig.color.buttonPressedBackground;
         }
         else
         {
-            color = QColor(246, 245, 242);
+            color = styleConfig.color.buttonBackground;
         }
         break;
     }
     case ButtonBorderColor:
     {
-        color = QColor(232, 117, 26);
+        color = styleConfig.color.buttonBorderColor;
         break;
     }
     case RadioButtonForeground:
     {
-        color = QColor(253, 164, 3);
+        // color = QColor(253, 164, 3);
+        color = styleConfig.color.checkBoxForeground;
         break;
     }
     case CheckBoxForeground:
     {
-        color = QColor(221, 221, 221);
+        color = styleConfig.color.checkBoxCheckedForeground;
         break;
     }
     case RadioButtonBackground:
     {
         if ((flags & Checked) != Checked && (flags & Flag) == Hover)
         {
-            color = QColor(229, 194, 135);
+            color = styleConfig.color.checkBoxCheckedBackground;
         }
         else
         {
-            color = QColor(0, 0, 0, 0);
+            color = styleConfig.color.checkBoxBackground;
         }
         break;
     }
@@ -261,21 +259,21 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
     {
         if ((flags & Checked) == Checked)
         {
-            color = QColor(232, 117, 26);
+            color = styleConfig.color.checkBoxCheckedBackground;
         }
         else if ((flags & Checked) != Checked && (flags & Flag) == Hover)
         {
-            color = QColor(229, 194, 135);
+            color = styleConfig.color.checkBoxHoveredBackground;
         }
         else
         {
-            color = QColor(0, 0, 0, 0);
+            color = styleConfig.color.checkBoxBackground;
         }
         break;
     }
     case CheckBoxBorderColor:
     {
-        color = QColor(232, 117, 26);
+        color = styleConfig.color.CheckBoxBorderColor;
         break;
     }
     case ProgressBarForeground:
@@ -315,7 +313,7 @@ QColor Theme::customColor(const ColorRole role) const
 {
     switch (role)
     {
-    case Text:
+    case PrimaryText:
     {
         return styleConfig.color.textColor;
     }
@@ -325,6 +323,12 @@ QColor Theme::customColor(const ColorRole role) const
         return styleConfig.color.buttonBackground;
     case LabelText:
         return styleConfig.color.iconLabelText;
+    case ToggleButtonBackground:
+        return styleConfig.color.toggleButtonBackground;
+    case ToggleButtonForeground:
+        return styleConfig.color.toggleButtonForeground;
+    case ToggleButtonIndicatorColor:
+        return styleConfig.color.toggleButtonIndicatorColor;
     default:
         return Qt::white;
     }
@@ -361,7 +365,7 @@ QString Theme::getIconPath(const IconRole role) const
 }
 Theme::ProgressMode Theme::getProgressMode() const
 {
-    return ModeTwo;
+    return ModeOne;
     // return styleConfig.progressBarMode == "mode1" ? ModeOne : ModeTwo;
 }
 }  // namespace Vanilla

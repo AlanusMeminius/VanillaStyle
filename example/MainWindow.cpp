@@ -13,6 +13,7 @@
 
 #include "VanillaStyle/Widgets/ToggleButton.h"
 
+#include <QFile>
 #include <QPushButton>
 #include <QRadioButton>
 
@@ -27,6 +28,7 @@ MainWindow::MainWindow(QWidget* parent)
     ui->setupUi(this);
     m_timer->setInterval(100);
 
+    ui->progressBar->setValue(100);
     ui->toggleBtnfirst->setItemList(QStringList{":grid.svg", ":list.svg", ":download.svg"});
     ui->toggleBtnfirst->setColumnWidth(50);
 
@@ -65,6 +67,7 @@ MainWindow::MainWindow(QWidget* parent)
     connect(ui->stopButton, &QPushButton::clicked, this, &MainWindow::stop);
     connect(m_timer, &QTimer::timeout, this, &MainWindow::increaseProgress);
 
+    connect(ui->pushButton, &QPushButton::clicked, this, &MainWindow::setAutoTheme);
 }
 
 MainWindow::~MainWindow()
@@ -77,12 +80,19 @@ void MainWindow::setTheme(const bool theme)
 }
 void MainWindow::setLightTheme()
 {
-    Vanilla::Style::setStyleFromName(QStringLiteral("LightVanillaStyle"));
+    // Vanilla::Style::setStyleFromName(QStringLiteral("LightVanillaStyle"));
+    const auto filePath = QCoreApplication::applicationDirPath() + "/LightVanillaStyle.json";
+    if (QFile(filePath).exists())
+    {
+        Vanilla::Style::setStyleFromPath(filePath);
+    }
     setTheme(true);
 }
 void MainWindow::setDarkTheme()
 {
-    Vanilla::Style::setStyleFromName(QStringLiteral("DarkVanillaStyle"));
+    // Vanilla::Style::setStyleFromName(QStringLiteral("DarkVanillaStyle"));
+    const auto filePath = QCoreApplication::applicationDirPath() + "/DarkVanillaStyle.json";
+    Vanilla::Style::setStyleFromPath(filePath);
     setTheme(false);
 }
 void MainWindow::setAutoTheme()

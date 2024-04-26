@@ -199,9 +199,9 @@ void ToggleButtonPrivate::paint(QPainter* painter)
     QColor textColor;
     if (auto* customStyle = qobject_cast<VanillaStyle*>(q->style()))
     {
-        handleColor = customStyle->getCustomColor(Theme::ColorRole::ButtonForeground);
-        backgroundColor = customStyle->getCustomColor(Theme::ColorRole::ButtonBackground);
-        textColor = customStyle->getCustomColor(Theme::ColorRole::Text);
+        handleColor = customStyle->getCustomColor(Theme::ColorRole::ToggleButtonIndicatorColor);
+        backgroundColor = customStyle->getCustomColor(Theme::ColorRole::ToggleButtonBackground);
+        textColor = customStyle->getCustomColor(Theme::ColorRole::PrimaryText);
     }
     painter->save();
     painter->setRenderHint(QPainter::Antialiasing);

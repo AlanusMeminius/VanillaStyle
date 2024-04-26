@@ -23,7 +23,7 @@ bool ProgressBarStyle::drawGroove(const QStyleOption* option, QPainter* painter,
     if (const auto mode = theme->getProgressMode(); mode == Theme::ModeOne)
     {
         painter->setPen(QPen(bgColor, 2, Qt::DashLine));
-        painter->drawLine(QPointF(rect.left(), rect.center().y()), QPointF(rect.right(), rect.center().y()));
+        painter->drawLine(QPointF(rect.left(), rect.center().y()), QPointF(rect.right() - rect.height() / 2, rect.center().y()));
     }
     else if (mode == Theme::ModeTwo)
     {
@@ -58,9 +58,13 @@ bool ProgressBarStyle::drawContents(const QStyleOption* option, QPainter* painte
         if (mode == Theme::ModeOne)
         {
             painter->setPen(QPen(fgColor, 2, Qt::SolidLine));
-            painter->drawLine(QPointF(progressRect.left(), progressRect.center().y()), QPointF(progressRect.right(), progressRect.center().y()));
             const double indicatorSize = progressRect.height();
-            const auto planeRect = QRectF(progressRect.right(), progressRect.center().y() - indicatorSize / 2, indicatorSize, indicatorSize);
+            const auto rightPonit = QPointF(progressRect.left(), progressRect.center().y());
+            const auto leftPonit = QPointF(progressRect.right() - indicatorSize / 2, progressRect.center().y());
+            painter->drawLine(rightPonit, leftPonit);
+
+            const auto topRightPoint = QPointF(progressRect.right() - indicatorSize, progressRect.center().y() - indicatorSize / 2);
+            const auto planeRect = QRectF(topRightPoint, QSizeF(indicatorSize, indicatorSize));
             const auto path = theme->getIconPath(Theme::IconRole::ProgressIndicator);
             if (path.isEmpty())
             {
@@ -118,7 +122,7 @@ QRect ProgressBarStyle::subElementRect(QStyle::SubElement subElement, const QSty
         else if (subElement == QStyle::SE_ProgressBarContents)
         {
             const auto textWidth = theme->getSize(Theme::ProgressBarTextMargin);
-            return progressBarOption->rect.adjusted(0, 0, -textWidth - option->rect.height() / 2, 0);
+            return progressBarOption->rect.adjusted(0, 0, -textWidth, 0);
         }
         else if (subElement == QStyle::SE_ProgressBarGroove)
         {

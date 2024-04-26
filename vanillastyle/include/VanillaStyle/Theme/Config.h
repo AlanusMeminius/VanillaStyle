@@ -29,9 +29,13 @@ struct adl_serializer<QColor>
             QString colorString = QString::fromStdString(j.get<std::string>());
             if (colorString.startsWith("#"))
             {
-                colorString.replace("#", "0x");
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+                color = QColor::fromString(colorString);
+#else
+                color = QColor();
+                color.setNamedColor(colorString);
+#endif
             }
-            color = QColor(colorString.toUInt(nullptr, 16));
         }
         catch (const std::exception& e)
         {
@@ -56,19 +60,29 @@ class Color : public Basic
 {
 public:
     QColor backgroundColor;
+    QColor primaryColor;
     QColor textColor;
     QColor pressedTextColor;
     QColor hoverTextColor;
-    QColor primaryColorHovered;
     QColor buttonForeground;
-    QColor buttonBackground;
     QColor buttonHoveredForeground;
-    QColor buttonHoveredBackground;
     QColor buttonPressedForeground;
+    QColor buttonBackground;
+    QColor buttonHoveredBackground;
     QColor buttonPressedBackground;
+    QColor buttonBorderColor;
+    QColor checkBoxBackground;
+    QColor checkBoxForeground;
+    QColor checkBoxCheckedForeground;
+    QColor checkBoxCheckedBackground;
+    QColor checkBoxHoveredBackground;
+    QColor CheckBoxBorderColor;
     QColor progressBarBackground;
     QColor progressBarForeground;
     QColor progressBarText;
+    QColor toggleButtonBackground;
+    QColor toggleButtonForeground;
+    QColor toggleButtonIndicatorColor;
     QColor lineEditFocusOutline;
     QColor lineEditOutline;
     QColor iconLabelText;
@@ -78,10 +92,11 @@ public:
         to_json(json, *this);
         return json.dump(4);
     }
-    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Color, backgroundColor, textColor, pressedTextColor, hoverTextColor, primaryColorHovered, buttonForeground,
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Color, backgroundColor, primaryColor, textColor, pressedTextColor, hoverTextColor, buttonForeground,
                                                 buttonBackground, buttonHoveredForeground, buttonPressedForeground, buttonHoveredBackground,
-                                                buttonPressedBackground, progressBarBackground, progressBarForeground, progressBarText, lineEditFocusOutline,
-                                                lineEditOutline, iconLabelText);
+                                                buttonPressedBackground, buttonBorderColor, checkBoxBackground, checkBoxForeground, checkBoxCheckedBackground,
+                                                checkBoxCheckedForeground, checkBoxHoveredBackground, CheckBoxBorderColor, progressBarBackground,
+                                                progressBarForeground, progressBarText, toggleButtonBackground,toggleButtonForeground,toggleButtonIndicatorColor,lineEditFocusOutline, lineEditOutline, iconLabelText);
 };
 
 class Size : public Basic
@@ -136,6 +151,5 @@ public:
 
     NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(StyleConfig, name, author, mode, color, size, icons);
 };
-
 
 }  // namespace Vanilla
