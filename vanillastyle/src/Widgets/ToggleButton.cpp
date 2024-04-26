@@ -89,6 +89,19 @@ void ToggleButton::setRowHeight(const int height)
     d->rowHeight = height;
     update();
 }
+int ToggleButton::currentIndex() const
+{
+    Q_D(const ToggleButton);
+    return d->currentIndex;
+}
+
+void ToggleButton::setCurrentIndex(int index)
+{
+    Q_D(ToggleButton);
+    d->setCurrentIndex(index);
+    update();
+}
+
 void ToggleButton::mousePressEvent(QMouseEvent* event)
 {
     Q_D(ToggleButton);

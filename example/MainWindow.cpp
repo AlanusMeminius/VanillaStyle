@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget* parent)
 {
     installWindowAgent();
     ui->setupUi(this);
-    m_timer->setInterval(50);
+    m_timer->setInterval(100);
 
     ui->toggleBtnfirst->setItemList(QStringList{":grid.svg", ":list.svg", ":download.svg"});
     ui->toggleBtnfirst->setColumnWidth(50);
@@ -47,8 +47,6 @@ MainWindow::MainWindow(QWidget* parent)
 
     auto spinner = new Vanilla::Spinner(this);
     ui->verticalLayout->addWidget(spinner);
-
-    setAutoTheme();
 
     connect(ui->radioButton, &QRadioButton::toggled, this, &MainWindow::setLightTheme);
     connect(ui->radioButton_2, &QRadioButton::toggled, this, &MainWindow::setDarkTheme);

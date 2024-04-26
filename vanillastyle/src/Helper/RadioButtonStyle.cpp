@@ -15,7 +15,7 @@ bool Vanilla::RadioButtonStyle::draw(const QStyleOption* option, QPainter* paint
     painter->setRenderHints(QPainter::Antialiasing);
 
     const auto rect = QRectF(opt->rect);
-    const auto border = theme->getSize(Theme::ButtonBorder);
+    const auto border = theme->getSize(Theme::CheckBoxBorder);
     const auto halfBorder = border / 2.;
     const auto margins = QMarginsF(halfBorder, halfBorder, halfBorder, halfBorder);
     const auto buttonRect = border > 0.1 ? rect.marginsRemoved(margins) : rect;
@@ -27,7 +27,7 @@ bool Vanilla::RadioButtonStyle::draw(const QStyleOption* option, QPainter* paint
     // btn border
     if (border > 0.1)
     {
-        const auto borderColor = theme->getColor(option, Theme::CheckBoxBorder);
+        const auto borderColor = theme->getColor(option, Theme::CheckBoxBorderColor);
         Helper::renderEllipseBorder(painter, buttonRect, borderColor, border);
     }
 

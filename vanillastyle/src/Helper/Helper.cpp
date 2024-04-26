@@ -25,8 +25,7 @@ bool Helper::shapedFrame(const QStyleOption* option, QPainter* painter, const st
 
     return true;
 }
-
-bool Helper::drawRadioCheckLabel(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget*) const
+bool Helper::drawLabel(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget, int flag) const
 {
     const auto* opt = qstyleoption_cast<const QStyleOptionButton*>(option);
     if (!opt)
@@ -38,7 +37,7 @@ bool Helper::drawRadioCheckLabel(const QStyleOption* option, QPainter* painter, 
         painter->setRenderHints(QPainter::Antialiasing);
 
         const auto rect = opt->rect;
-        constexpr auto textFlags = Qt::AlignVCenter | Qt::AlignBaseline | Qt::TextSingleLine | Qt::AlignLeft | Qt::TextHideMnemonic;
+        const auto textFlags = flag | Qt::AlignVCenter | Qt::AlignBaseline | Qt::TextSingleLine | Qt::TextHideMnemonic;
         const auto elidedText = opt->fontMetrics.elidedText(opt->text, Qt::ElideRight, rect.width(), Qt::TextSingleLine);
         painter->setBrush(Qt::NoBrush);
         const auto fgcolor = theme->getColor(option, Theme::LabelText);
@@ -46,6 +45,17 @@ bool Helper::drawRadioCheckLabel(const QStyleOption* option, QPainter* painter, 
         painter->drawText(rect, textFlags, elidedText);
     }
     return true;
+}
+
+bool Helper::drawAlignCenterLabel(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
+{
+    return drawLabel(option, painter, theme, widget, Qt::AlignCenter);
+}
+
+bool Helper::drawAlignLeftLabel(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
+{
+    return drawLabel(option, painter, theme, widget, Qt::AlignLeft);
+
 }
 
 void Helper::renderRoundBorder(QPainter* painter, const QRectF& rect, const QColor& color, const qreal border, const qreal radius)

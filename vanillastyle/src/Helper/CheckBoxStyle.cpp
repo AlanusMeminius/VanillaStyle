@@ -17,8 +17,8 @@ bool CheckBoxStyle::draw(const QStyleOption* option, QPainter* painter, const st
     painter->setRenderHints(QPainter::Antialiasing);
     const auto rect = QRectF(opt->rect);
     const auto bgColor = theme->getColor(option, Theme::CheckBoxBackground);
-    const auto borderColor = theme->getColor(option, Theme::CheckBoxBorder);
-    const auto border = theme->getSize(Theme::ButtonBorder);
+    const auto borderColor = theme->getColor(option, Theme::CheckBoxBorderColor);
+    const auto border = theme->getSize(Theme::CheckBoxBorder);
     const auto halfBorder = border / 2.;
     const auto margins = QMarginsF(halfBorder, halfBorder, halfBorder, halfBorder);
     const auto buttonRect = border > 0.1 ? rect.marginsRemoved(margins) : rect;
@@ -37,13 +37,12 @@ bool CheckBoxStyle::draw(const QStyleOption* option, QPainter* painter, const st
 
     return true;
 }
+
 void CheckBoxStyle::drawIndicator(const QStyleOption* option, const QRectF rect, QPainter* painter, const std::shared_ptr<Theme>& theme) const
 {
     const auto fgColor = theme->getColor(option, Theme::CheckBoxForeground);
 
-    // auto fgColor = painter->pen().color();
     painter->setPen(QPen{fgColor, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin});
-    // painter->setBrush(Qt::NoBrush);
     const auto w = rect.width();
     const auto h = rect.width();
     const auto x = rect.x();
@@ -60,6 +59,7 @@ void CheckBoxStyle::drawIndicator(const QStyleOption* option, const QRectF rect,
     indicatorPath.lineTo(p3);
     painter->drawPath(indicatorPath);
 }
+
 int CheckBoxStyle::indicatorSize() const
 {
     return 0;

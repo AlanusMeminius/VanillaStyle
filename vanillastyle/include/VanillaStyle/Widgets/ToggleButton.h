@@ -12,6 +12,7 @@ class ToggleButton : public QWidget
     Q_PROPERTY(int offset READ offset WRITE setOffset)
     Q_PROPERTY(int columnWidth READ columnWidth WRITE setColumnWidth)
     Q_PROPERTY(int rowHeight READ rowHeight WRITE setRowHeight)
+    Q_PROPERTY(int index READ currentIndex WRITE setCurrentIndex NOTIFY currentItemChanged)
 
 public:
     explicit ToggleButton(QWidget* parent = nullptr);
@@ -33,6 +34,9 @@ public:
 
     [[nodiscard]] int rowHeight() const;
     void setRowHeight(int height);
+
+    [[nodiscard]] int currentIndex() const;
+    void setCurrentIndex(int index);
 
 signals:
     void currentItemChanged(int index);

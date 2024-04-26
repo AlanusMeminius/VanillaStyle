@@ -11,7 +11,7 @@ QPixmap switchPixColor(const QPixmap& original, const QColor& color);
 QPixmap renderSvgToPixmap(const QString& path, int size, int ratio);
 QIcon createIcon(const QString& path, int size);
 
-void renderSvgFromPath(const QString& path, QPainter* painter, const QRect& rect);
+void renderSvgFromPath(const QString& path, QPainter* painter, const QRectF& rect);
 void renderSvgFromString(const std::string& svg, QPainter* painter, const QRect& rect);
 
 QPixmap roundedPixmap(QPixmap const& input, double radius);

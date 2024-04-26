@@ -39,10 +39,10 @@ public:
         ButtonBorderColor,
         CheckBoxForeground,
         CheckBoxBackground,
-        CheckBoxBorder,
+        CheckBoxBorderColor,
         RadioButtonForeground,
         RadioButtonBackground,
-        RadioButtonBorder,
+        RadioButtonBorderColor,
         ProgressBarForeground,
         ProgressBarBackground,
         ProgressBarText,
@@ -64,17 +64,21 @@ public:
     {
         NormalRadius,
         ButtonRadius,
-        MenuItemRadius
+        MenuItemRadius,
+        ProgressRadius
     };
 
     enum SizeRole
     {
         NormalBorder,
         ButtonBorder,
+        CheckBoxBorder,
         MenuItemPadding,
         IconSize,
         CheckBoxIndicatorMargin,
         CheckBoxSpacing,
+        ProgressBarHeight,
+        ProgressBarTextMargin
     };
 
     enum IconRole
@@ -82,6 +86,12 @@ public:
         UpArrow,
         DownArrow,
         ProgressIndicator,
+    };
+
+    enum ProgressMode
+    {
+        ModeOne,
+        ModeTwo
     };
 
     explicit Theme();
@@ -92,6 +102,7 @@ public:
     [[nodiscard]] QPalette standardPalette() const;
     [[nodiscard]] int getRadius(RadiusRole radiusRole) const;
     [[nodiscard]] int getSize(SizeRole sizeRole) const;
+
     QFont getFont(TextSizeRole sizeRole);
 
     QColor getColor(const QStyleOption* option, ColorRole role) const;
@@ -100,10 +111,10 @@ public:
 
     [[nodiscard]] QColor customColor(ColorRole role) const;
 
-    QString checkIconFile(const std::string& path) const;
-    QString getIconPath(IconRole role) const;
+    [[nodiscard]] QString checkIconFile(const std::string& path) const;
+    [[nodiscard]] QString getIconPath(IconRole role) const;
 
-    void adjustTextPalette(QStyleOptionButton* option) const;
+    [[nodiscard]] ProgressMode getProgressMode() const;
 
 private:
     std::shared_ptr<ConfigManager> configManager;

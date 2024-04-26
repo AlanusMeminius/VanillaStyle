@@ -50,8 +50,7 @@ Theme::StateFlags Theme::flags(const QStyleOption* option)
 Theme::Theme()
     : configManager(std::make_shared<ConfigManager>())
 {
-    styleConfig = std::move(configManager->defaultConfig());
-    ;
+    styleConfig = configManager->defaultConfig();
     initPalette();
 }
 
@@ -83,24 +82,6 @@ void Theme::initPalette()
     QToolTip::setPalette(palette);
 }
 
-void Theme::adjustTextPalette(QStyleOptionButton* option) const
-{
-    QColor textColor;
-    if (state(option) == Press)
-    {
-        textColor = styleConfig.color.pressedTextColor;
-    }
-    else if (state(option) == Hover)
-    {
-        textColor = styleConfig.color.hoverTextColor;
-    }
-    else
-    {
-        textColor = styleConfig.color.buttonForeground;
-    }
-    option->palette.setColor(QPalette::ButtonText, textColor);
-}
-
 QPalette Theme::standardPalette() const
 {
     return palette;
@@ -111,9 +92,9 @@ int Theme::getRadius(const RadiusRole radiusRole) const
     switch (radiusRole)
     {
     case ButtonRadius:
-    {
         return 4;
-    }
+    case ProgressRadius:
+        return 3;
     default:
         return 5;
     }
@@ -124,6 +105,8 @@ int Theme::getSize(const SizeRole sizeRole) const
     switch (sizeRole)
     {
     case ButtonBorder:
+        return 1;
+    case CheckBoxBorder:
         return 2;
     case MenuItemPadding:
         return 5;
@@ -133,6 +116,10 @@ int Theme::getSize(const SizeRole sizeRole) const
         return 4;
     case CheckBoxSpacing:
         return 5;
+    case ProgressBarHeight:
+        return 6;
+    case ProgressBarTextMargin:
+        return 35;
     default:
         return 3;
     }
@@ -207,7 +194,7 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
         }
         else
         {
-            color = QColor(49,54,63);
+            color = QColor(49, 54, 63);
         }
         break;
     }
@@ -215,15 +202,15 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
     {
         if ((flags & Flag) == Hover)
         {
-            color = styleConfig.color.buttonHoveredForeground;
+            color = QColor(192, 140, 100);
         }
         else if ((flags & Flag) == Press)
         {
-            color = styleConfig.color.buttonPressedForeground;
+            color = QColor(192, 139, 92);
         }
         else
         {
-            color = styleConfig.color.buttonForeground;
+            color = QColor(192, 139, 92);
         }
         break;
     }
@@ -231,15 +218,15 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
     {
         if ((flags & Flag) == Hover)
         {
-            color = QColor(233,200,116);
+            color = QColor(192, 140, 100);
         }
         else if ((flags & Flag) == Press)
         {
-            color = QColor(192,139,92);
+            color = QColor(245, 238, 230);
         }
         else
         {
-            color = QColor(255,201,74);
+            color = QColor(246, 245, 242);
         }
         break;
     }
@@ -255,7 +242,7 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
     }
     case CheckBoxForeground:
     {
-        color = QColor(221,221,221);
+        color = QColor(221, 221, 221);
         break;
     }
     case RadioButtonBackground:
@@ -286,7 +273,7 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
         }
         break;
     }
-    case CheckBoxBorder:
+    case CheckBoxBorderColor:
     {
         color = QColor(232, 117, 26);
         break;
@@ -371,5 +358,10 @@ QString Theme::getIconPath(const IconRole role) const
     default:
         return {};
     }
+}
+Theme::ProgressMode Theme::getProgressMode() const
+{
+    return ModeTwo;
+    // return styleConfig.progressBarMode == "mode1" ? ModeOne : ModeTwo;
 }
 }  // namespace Vanilla

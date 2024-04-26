@@ -33,7 +33,7 @@ StyleConfig ConfigManager::getConfig(const std::string& path) const
 StyleConfig ConfigManager::defaultConfig()
 {
     QFile file(":/VanillaStyle/styles/LightVanillaStyle.json");
-    if (!file.open(QIODevice::ReadOnly) | QIODevice::Text)
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         return {};
     }

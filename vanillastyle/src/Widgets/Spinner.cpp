@@ -106,7 +106,8 @@ void SpinnerPrivate::paint(QPainter* painter)
 {
     Q_Q(Spinner);
     painter->setRenderHint(QPainter::Antialiasing);
-    painter->translate(q->width() / 2, q->height() / 2);
+    const auto translateDistance = QPoint(q->width() /2, q->height() / 2);
+    painter->translate(translateDistance);
     const auto miniSide = std::min(q->width(), q->height());
     painter->scale(miniSide / 100., miniSide / 100.);
     painter->rotate(angle);

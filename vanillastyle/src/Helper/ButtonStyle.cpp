@@ -17,34 +17,22 @@ bool ButtonStyle::drawPushButtonBevel(const QStyleOption* option, QPainter* pain
     {
         return true;
     }
+    painter->setRenderHints(QPainter::Antialiasing);
+
     const auto rect = QRectF(optionButton->rect);
     const auto border = theme->getSize(Theme::ButtonBorder);
     const auto radius = theme->getRadius(Theme::ButtonRadius);
 
-    const auto margins = QMarginsF(border / 2., border / 2., border / 2., border / 2.);
+    const auto halfBorder = border / 2.;
+    const auto margins = QMarginsF(halfBorder, halfBorder, halfBorder, halfBorder);
     const auto buttonRect = border > 0.1 ? rect.marginsRemoved(margins) : rect;
 
-    painter->setRenderHints(QPainter::Antialiasing);
     const auto bgColor = theme->getColor(option, Theme::ButtonBackground);
     Helper::renderRoundRect(painter, buttonRect, bgColor, radius);
     if (border > 0.1)
     {
         const auto borderColor = theme->getColor(option, Theme::ButtonForeground);
         Helper::renderRoundBorder(painter, buttonRect, borderColor, border, radius);
-    }
-    return true;
-}
-
-bool ButtonStyle::drawPushButtonLabel(const QStyleOption* option, QPainter* painter, const QWidget* widget, const std::shared_ptr<Theme>& theme) const
-{
-    Q_UNUSED(widget);
-    Q_UNUSED(painter);
-    Q_UNUSED(theme);
-    if (const auto* optionButton = qstyleoption_cast<const QStyleOptionButton*>(option))
-    {
-        QStyleOptionButton copy = *optionButton;
-        theme->adjustTextPalette(&copy);
-        // QCommonStyle::drawControl(QStyle::CE_PushButtonLabel, &copy, painter, widget);
     }
     return true;
 }

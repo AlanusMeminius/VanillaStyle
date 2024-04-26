@@ -59,7 +59,7 @@ QIcon createIcon(const QString& path, int size)
     }
     return icon;
 }
-void renderSvgFromPath(const QString& path, QPainter* painter, const QRect& rect)
+void renderSvgFromPath(const QString& path, QPainter* painter, const QRectF& rect)
 {
     QSvgRenderer render(path);
     render.render(painter, rect);

@@ -8,14 +8,14 @@
     "pressedTextColor": "#344955",
     "hoverTextColor": "#50727B",
     "primaryColorHovered": "#0x2C9D",
-    "buttonForeground": "#FFE6E6",
+    "buttonForeground": "#C08B5C",
     "buttonBackground": "#CCD3CA",
     "buttonHoveredForeground": "#F7DED0",
     "buttonHoveredBackground": "#CCD3CA",
     "buttonPressedForeground": "#322D35",
     "buttonPressedBackground": "#F8F7F8",
-    "progressBarBackground": "#EADFB4",
-    "progressBarForeground": "#76ABAE",
+    "progressBarBackground": "#ad8b73",
+    "progressBarForeground": "#112D4E",
     "progressBarText": "#FDAF7B",
     "lineEditFocusOutline": "#B5C0D0",
     "lineEditOutline": "#B784B7",
@@ -37,7 +37,7 @@
   "icons": {
     "upArrow": ":/VanillaStyle/icons/UpArrow.svg",
     "downArrow": ":/VanillaStyle/icons/DownArrow.svg",
-    "progressIndicator": ":/VanillaStyle/icons/Airplane.svg"
+    "progressIndicator": ":/VanillaStyle/icons/Plane.svg"
   },
   "progressBarMode": "mode1"
 }

@@ -97,9 +97,12 @@ void VanillaStyle::drawControl(ControlElement element, const QStyleOption* optio
     case CE_MenuItem:
         helper = createHelper(d->menuStyle, &MenuStyle::drawMenuItem);
         break;
+    case CE_PushButtonLabel:
+        helper = createHelper(d->helper, &Helper::drawAlignCenterLabel);
+        break;
     case CE_CheckBoxLabel:
     case CE_RadioButtonLabel:
-        helper = createHelper(d->helper, &Helper::drawRadioCheckLabel);
+        helper = createHelper(d->helper, &Helper::drawAlignLeftLabel);
         break;
     default:
         break;
@@ -309,10 +312,10 @@ void VanillaStylePrivate::init()
 
     updatePalette();
     // install font
-    const auto RobotoFontPath = ":/VanillaStyle/fonts/Roboto/";
     const std::array<std::string, 4> fontFiles = {"Roboto-Regular.ttf", "Roboto-Medium.ttf", "Roboto-Bold.ttf", "Roboto-Black.ttf"};
     for (const auto& file : fontFiles)
     {
+        const auto RobotoFontPath = ":/VanillaStyle/fonts/Roboto/";
         const auto path = RobotoFontPath + file;
         QFontDatabase::addApplicationFont(path.c_str());
     }
