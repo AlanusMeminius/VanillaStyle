@@ -17,7 +17,7 @@ bool ProgressBarStyle::drawGroove(const QStyleOption* option, QPainter* painter,
         return true;
     }
     painter->setRenderHint(QPainter::Antialiasing);
-    const auto rect = opt->rect.toRectF();
+    const auto rect = QRectF(opt->rect);
 
     const QColor bgColor = theme->getColor(option, Theme::ProgressBarBackground);
     if (const auto mode = theme->getProgressMode(); mode == Theme::ModeOne)
@@ -54,7 +54,8 @@ bool ProgressBarStyle::drawContents(const QStyleOption* option, QPainter* painte
         const QColor fgColor = theme->getColor(option, Theme::ProgressBarForeground);
         const auto mode = theme->getProgressMode();
         const auto percentage = 1 - static_cast<double>(value) / static_cast<double>(range);
-        const auto progressRect = rect.adjusted(0, 0, -static_cast<int>(rect.width() * percentage), 0).toRectF();
+        const auto progressQRect = rect.adjusted(0, 0, -static_cast<int>(rect.width() * percentage), 0);
+        const auto progressRect = QRectF(progressQRect);
         if (mode == Theme::ModeOne)
         {
             painter->setPen(QPen(fgColor, 2, Qt::SolidLine));
