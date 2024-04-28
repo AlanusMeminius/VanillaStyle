@@ -67,6 +67,11 @@ void Theme::setConfig(const std::string& configPath)
     configManager->setErrorHandler(callback);
 }
 
+void Theme::setMode(const Mode mode)
+{
+    styleConfig = configManager->defaultConfig(mode);
+}
+
 bool Theme::isEnableHotReload() const
 {
     return styleConfig.debug;

@@ -1,14 +1,15 @@
 #pragma once
+#include "Theme/Config.h"
 namespace Vanilla
 {
 class Style
 {
 public:
     static void setStyle();
-    static void setStyleFromName(const QString& styleName);
-    static void setStyleFromPath(const QString& configPath);
+    static void setStyleFromName(const QString& styleName, Mode mode = Light);
+    static void setStyleFromPath(const QString& configPath, Mode mode = Light);
 
 private:
-    static void set(const QString& configPath);
+    static void set(const QString& configPath, Mode mode);
 };
-}  // namespace VanillaStyle
+}  // namespace Vanilla

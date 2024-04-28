@@ -19,6 +19,7 @@ class VanillaStylePrivate
 {
 public:
     explicit VanillaStylePrivate(VanillaStyle* q);
+    explicit VanillaStylePrivate(VanillaStyle*q, Mode mode);
     void init() const;
     void updatePalette() const;
     void updateFont() const;

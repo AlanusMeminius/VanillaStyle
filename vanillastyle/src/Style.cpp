@@ -4,20 +4,23 @@
 
 void Vanilla::Style::setStyle()
 {
-    set({});
+    set({}, {});
 }
-void Vanilla::Style::setStyleFromName(const QString& styleName)
+
+void Vanilla::Style::setStyleFromName(const QString& styleName, const Mode mode)
 {
     const auto configPath = QApplication::applicationDirPath() + "/" + styleName + ".json";
-    set(configPath);
+    set(configPath, mode);
 }
-void Vanilla::Style::setStyleFromPath(const QString& configPath)
+
+void Vanilla::Style::setStyleFromPath(const QString& configPath, const Mode mode)
 {
-    set(configPath);
+    set(configPath, mode);
 }
-void Vanilla::Style::set(const QString& configPath)
+
+void Vanilla::Style::set(const QString& configPath, const Mode mode)
 {
-    const auto style = new VanillaStyle();
+    const auto style = new VanillaStyle(mode);
     if (!configPath.isEmpty())
     {
         style->setConfigPath(configPath.toStdString());

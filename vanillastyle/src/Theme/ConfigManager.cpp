@@ -8,13 +8,13 @@
 namespace Vanilla
 {
 
-StyleConfig ConfigManager::getConfig(const std::string& path) const
+StyleConfig ConfigManager::getConfig(const std::string& path, const Mode mode) const
 {
     std::ifstream file(path);
     if (!file.is_open())
     {
         errorHandler.handleError(ConfigErrorHanler::FileNotFound);
-        return defaultConfig();
+        return defaultConfig(mode);
     }
     nlohmann::json json;
     file >> json;
@@ -26,13 +26,21 @@ StyleConfig ConfigManager::getConfig(const std::string& path) const
     catch (nlohmann::json::parse_error& e)
     {
         errorHandler.handleError(ConfigErrorHanler::ParseError);
-        return defaultConfig();
+        return defaultConfig(mode);
     }
 }
 
-StyleConfig ConfigManager::defaultConfig()
+StyleConfig ConfigManager::defaultConfig(const Mode mode)
 {
-    QFile file(":/VanillaStyle/styles/LightVanillaStyle.json");
+    QFile file;
+    if (mode == Light)
+    {
+        file.setFileName(":/VanillaStyle/styles/LightVanillaStyle.json");
+    } else
+    {
+        file.setFileName(":/VanillaStyle/styles/DarkVanillaStyle.json");
+    }
+    // QFile file(":/VanillaStyle/styles/LightVanillaStyle.json");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         return {};

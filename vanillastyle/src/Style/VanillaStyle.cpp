@@ -21,6 +21,13 @@ VanillaStyle::VanillaStyle()
     d->init();
 }
 
+VanillaStyle::VanillaStyle(const Mode mode)
+    : d_ptr(new VanillaStylePrivate(this, mode))
+{
+    Q_D(VanillaStyle);
+    d->init();
+}
+
 VanillaStyle::~VanillaStyle()
 {
     delete d_ptr;
@@ -312,6 +319,12 @@ VanillaStylePrivate::VanillaStylePrivate(VanillaStyle* q)
     , itemViewStyle(new ItemViewStyle())
     , q_ptr(q)
 {
+}
+
+VanillaStylePrivate::VanillaStylePrivate(VanillaStyle* q, const Mode mode)
+    : VanillaStylePrivate(q)
+{
+    theme->setMode(mode);
 }
 
 void VanillaStylePrivate::init() const

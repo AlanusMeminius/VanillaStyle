@@ -28,7 +28,7 @@ MainWindow::MainWindow(QWidget* parent)
     ui->setupUi(this);
     m_timer->setInterval(100);
 
-    ui->progressBar->setValue(100);
+    ui->progressBar->setValue(0);
     ui->toggleBtnfirst->setItemList(QStringList{":grid.svg", ":list.svg", ":download.svg"});
     ui->toggleBtnfirst->setColumnWidth(50);
 

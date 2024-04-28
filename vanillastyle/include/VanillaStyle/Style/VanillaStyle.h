@@ -14,6 +14,7 @@ class VanillaStyle : public QCommonStyle
     Q_OBJECT
 public:
     explicit VanillaStyle();
+    explicit VanillaStyle(Mode mode);
     ~VanillaStyle();
 
 
