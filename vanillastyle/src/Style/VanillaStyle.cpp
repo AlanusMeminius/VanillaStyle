@@ -46,7 +46,7 @@ void VanillaStyle::drawPrimitive(PrimitiveElement pe, const QStyleOption* option
     case PE_Widget:
     case PE_FrameWindow:
     case PE_PanelScrollAreaCorner:
-    // case PE_FrameFocusRect:
+    case PE_FrameFocusRect:
     case PE_FrameMenu:
     case PE_FrameLineEdit:
     case PE_IndicatorColumnViewArrow:
@@ -341,30 +341,11 @@ VanillaStylePrivate::VanillaStylePrivate(VanillaStyle* q, const Mode mode)
     : VanillaStylePrivate(q)
 {
     theme->setMode(mode);
-    updatePalette();
-    updateFont();
+    init();
 }
 
 void VanillaStylePrivate::init() const
 {
-    // install font
-    const std::array<std::string, 4> fontFiles = {"Roboto-Regular.ttf", "Roboto-Medium.ttf", "Roboto-Bold.ttf", "Roboto-Black.ttf"};
-    for (const auto& file : fontFiles)
-    {
-        const auto RobotoFontPath = ":/VanillaStyle/fonts/Roboto/";
-        const auto path = RobotoFontPath + file;
-        QFontDatabase::addApplicationFont(path.c_str());
-    }
-#if __WIN32__
-    const auto DefaultFont = ":/VanillaStyle/fonts/Inter/";
-    const std::array<std::string, 4> DefaultFontFiles = {"Inter-Regular.ttf", "Inter-Medium.ttf", "Inter-Bold.ttf", "Inter-Black.ttf"};
-    for (const auto& file : DefaultFontFiles)
-    {
-        const auto path = DefaultFont + file;
-        QFontDatabase::addApplicationFont(path.c_str());
-    }
-#endif
-
     updatePalette();
     updateFont();
 }
@@ -372,7 +353,6 @@ void VanillaStylePrivate::init() const
 void VanillaStylePrivate::updatePalette() const
 {
     // set up palette
-    theme->initPalette();
     const auto palette = theme->standardPalette();
     QApplication::setPalette(palette);
 }
@@ -380,7 +360,6 @@ void VanillaStylePrivate::updatePalette() const
 void VanillaStylePrivate::updateFont() const
 {
     // set up font
-    theme->initFont();
     const auto font = theme->getFont(Theme::TextSizeRole::Default);
     QApplication::setFont(font);
 }

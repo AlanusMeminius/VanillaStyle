@@ -4,11 +4,13 @@
   "mode": "light",
   "color":
   {
-    "backgroundColor": "#FEFBF6",
-    "primaryColor": "#322C2B",
+    "backgroundColor": "#CCffffff",
+
+    "primaryTextColor": "#322C2B",
     "textColor": "#0x1890",
     "pressedTextColor": "#344955",
     "hoverTextColor": "#50727B",
+    "highlightTextColor": "#322C2B",
 
     "indicatorColor": "#0B60B0",
 

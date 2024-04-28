@@ -2,11 +2,13 @@
 #include <QToolTip>
 #include <QPainter>
 #include <QScreen>
+#include <QFontDatabase>
 
 #include "VanillaStyle/Helper/Common.h"
 #include "VanillaStyle/Theme/Theme.h"
 #include "VanillaStyle/Theme/Config.h"
 #include "VanillaStyle/Theme/ConfigManager.h"
+
 
 namespace Vanilla
 {
@@ -54,6 +56,7 @@ Theme::Theme()
 {
     styleConfig = configManager->defaultConfig();
     initPalette();
+    initFont();
 }
 
 void Theme::setConfig(const std::string& configPath)
@@ -80,23 +83,38 @@ bool Theme::isEnableHotReload() const
 
 void Theme::initPalette()
 {
-    palette.setColor(QPalette::Window, Qt::transparent);
+    palette.setColor(QPalette::Window, styleConfig.color.backgroundColor);
     palette.setColor(QPalette::Base, styleConfig.color.backgroundColor);
-    palette.setColor(QPalette::WindowText, styleConfig.color.primaryColor);
-    palette.setColor(QPalette::Text, styleConfig.color.primaryColor);
-    palette.setColor(QPalette::Highlight, QColor(0x53, 0x94, 0x9f));
 
-    // Text color on buttons
-    palette.setColor(QPalette::ButtonText, styleConfig.color.primaryColor);
-
-    // pal.setColor(QPalette::ToolTipBase, baseBackground());
-    palette.setColor(QPalette::ToolTipText, styleConfig.color.primaryColor);
+    palette.setColor(QPalette::WindowText, styleConfig.color.primaryTextColor);
+    palette.setColor(QPalette::Text, styleConfig.color.primaryTextColor);
+    palette.setColor(QPalette::Highlight, styleConfig.color.highlightTextColor);
+    palette.setColor(QPalette::ButtonText, styleConfig.color.primaryTextColor);
+    palette.setColor(QPalette::ToolTipText, styleConfig.color.primaryTextColor);
 
     QToolTip::setPalette(palette);
 }
 
 void Theme::initFont()
 {
+    // install font
+    const std::array<std::string, 4> fontFiles = {"Roboto-Regular.ttf", "Roboto-Medium.ttf", "Roboto-Bold.ttf", "Roboto-Black.ttf"};
+    for (const auto& file : fontFiles)
+    {
+        const auto RobotoFontPath = ":/VanillaStyle/fonts/Roboto/";
+        const auto path = RobotoFontPath + file;
+        QFontDatabase::addApplicationFont(path.c_str());
+    }
+#if __WIN32__
+    const auto DefaultFont = ":/VanillaStyle/fonts/Inter/";
+    const std::array<std::string, 4> DefaultFontFiles = {"Inter-Regular.ttf", "Inter-Medium.ttf", "Inter-Bold.ttf", "Inter-Black.ttf"};
+    for (const auto& file : DefaultFontFiles)
+    {
+        const auto path = DefaultFont + file;
+        QFontDatabase::addApplicationFont(path.c_str());
+    }
+#endif
+
     const auto regularFont = QFont();
 #if __WIN32__
     regularFont = QFont(QStringLiteral("Inter"));
@@ -108,6 +126,7 @@ void Theme::initFont()
     fontRegular.setPixelSize(16);
     fontBold = regularFont;
     fontBold.setWeight(QFont::Weight::Bold);
+    fontBold.setPixelSize(16);
 
     fontH1 = regularFont;
     fontH1.setPixelSize(24);
@@ -119,6 +138,8 @@ void Theme::initFont()
     fontH4.setPixelSize(14);
     fontH5 = regularFont;
     fontH5.setPixelSize(12);
+    fontH6 = regularFont;
+    fontH6.setPixelSize(10);
 
     fontFixed = fixedFont;
     fontFixed.setPixelSize(16);
@@ -203,7 +224,7 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
     {
     case PrimaryText:
     {
-        color = styleConfig.color.primaryColor;
+        color = styleConfig.color.primaryTextColor;
         break;
     }
     case LabelText:

@@ -3,11 +3,13 @@
   "author": "Alanus",
   "mode": "dark",
   "color": {
-    "backgroundColor": "#FEFBF6",
-    "primaryColor": "#EBEBF0",
+    "backgroundColor": "#CC322C2B",
+
+    "primaryTextColor": "#EBEBF0",
     "textColor": "#FAF0E6",
     "pressedTextColor": "#344955",
     "hoverTextColor": "#50727B",
+    "highlightTextColor": "#322C2B",
 
     "indicatorColor": "#948979",
 

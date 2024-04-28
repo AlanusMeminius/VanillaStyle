@@ -60,7 +60,8 @@ class Color : public Basic
 {
 public:
     QColor backgroundColor;
-    QColor primaryColor;
+    QColor highlightTextColor;
+    QColor primaryTextColor;
 
     QColor indicatorColor;
 
@@ -107,13 +108,14 @@ public:
         to_json(json, *this);
         return json.dump(4);
     }
-    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Color, backgroundColor, primaryColor, indicatorColor, textColor, pressedTextColor, hoverTextColor, buttonForeground,
-                                                buttonBackground, buttonHoveredForeground, buttonPressedForeground, buttonHoveredBackground,
-                                                buttonPressedBackground, buttonBorderColor, checkBoxBackground, checkBoxForeground, checkBoxCheckedBackground,
-                                                checkBoxCheckedForeground, checkBoxHoveredBackground, checkBoxBorderColor, checkBoxHoveredBorderColor,
-                                                progressBarBackground, progressBarForeground, progressBarText, toggleButtonBackground, toggleButtonForeground,
-                                                toggleButtonIndicatorColor, itemViewEvenRowColor, itemViewOddRowColor, itemViewSelectedColor,
-                                                lineEditFocusOutline, lineEditOutline, comboBoxDropDownBackground, iconLabelText);
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Color, backgroundColor, primaryTextColor, highlightTextColor, indicatorColor, textColor, pressedTextColor,
+                                                hoverTextColor, buttonForeground, buttonBackground, buttonHoveredForeground, buttonPressedForeground,
+                                                buttonHoveredBackground, buttonPressedBackground, buttonBorderColor, checkBoxBackground, checkBoxForeground,
+                                                checkBoxCheckedBackground, checkBoxCheckedForeground, checkBoxHoveredBackground, checkBoxBorderColor,
+                                                checkBoxHoveredBorderColor, progressBarBackground, progressBarForeground, progressBarText,
+                                                toggleButtonBackground, toggleButtonForeground, toggleButtonIndicatorColor, itemViewEvenRowColor,
+                                                itemViewOddRowColor, itemViewSelectedColor, lineEditFocusOutline, lineEditOutline, comboBoxDropDownBackground,
+                                                iconLabelText);
 };
 
 class Size : public Basic
@@ -137,7 +139,8 @@ public:
         to_json(json, *this);
         return json.dump(4);
     }
-    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Size, fontSize, fontH1, fontH2, fontH3, fontH4, fontH5, fontH6, borderWidth, iconSize, normalRadius, buttonRadius);
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Size, fontSize, fontH1, fontH2, fontH3, fontH4, fontH5, fontH6, borderWidth, iconSize, normalRadius,
+                                                buttonRadius);
 };
 
 class Icons : public Basic
@@ -175,7 +178,7 @@ public:
         return json.dump(4);
     }
 
-    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(StyleConfig, name, author, mode, color, size, icons, progressBarMode,debug);
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(StyleConfig, name, author, mode, color, size, icons, progressBarMode, debug);
 };
 
 enum Mode
