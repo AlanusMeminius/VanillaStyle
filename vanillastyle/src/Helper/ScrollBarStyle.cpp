@@ -17,7 +17,6 @@ bool ScrollBarStyle::drawSlider(const QStyleOption* option, QPainter* painter, c
         return true;
     }
     QRectF rect = opt->rect;
-    qDebug() << rect;
     QPointF center = rect.center();
     rect.setHeight(10);
     rect.setWidth(rect.width() / 2);
@@ -25,16 +24,6 @@ bool ScrollBarStyle::drawSlider(const QStyleOption* option, QPainter* painter, c
     painter->setBrush(Qt::gray);
     painter->setPen(Qt::NoPen);
     painter->drawRoundedRect(rect, 3, 3);
-    // auto pos = opt->sliderPosition * 1.0 * opt->maximum;
-    // const auto value = opt->sliderPosition - opt->minimum;
-    // const auto range = opt->maximum - opt->minimum;
-    // const auto percentage = 1 - static_cast<double>(value) / static_cast<double>(range);
-    // painter->setRenderHint(QPainter::Antialiasing);
-    //
-    // const int sliderSize = theme->getSize(Theme::IconSize);
-    // auto sliderRect = QRectF(0,  percentage * opt->rect.height(), sliderSize, sliderSize);
-    //
-    // Helper::renderEllipse(painter, sliderRect, Qt::red);
     return true;
 }
 
