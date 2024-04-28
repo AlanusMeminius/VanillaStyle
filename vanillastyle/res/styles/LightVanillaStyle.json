@@ -6,10 +6,12 @@
   {
     "backgroundColor": "#FEFBF6",
     "primaryColor": "#322C2B",
-    "indicatorColor": "#0B60B0",
     "textColor": "#0x1890",
     "pressedTextColor": "#344955",
     "hoverTextColor": "#50727B",
+
+    "indicatorColor": "#0B60B0",
+
     "buttonForeground": "#C08B5C",
     "buttonBackground": "#F6F5F2",
     "buttonHoveredForeground": "#C08C64",
@@ -17,6 +19,7 @@
     "buttonPressedForeground": "#C08B5C",
     "buttonPressedBackground": "#F5EEE6",
     "buttonBorderColor": "#00FFFFFF",
+
     "checkBoxBackground": "#00FFFFFF",
     "checkBoxForeground": "#A4907C",
     "checkBoxCheckedForeground": "#F5EEE6",
@@ -24,15 +27,19 @@
     "checkBoxHoveredBackground": "#00ffffff",
     "checkBoxBorderColor": "#39A7FF",
     "checkBoxHoveredBorderColor": "#3876BF",
+
     "progressBarBackground": "#ad8b73",
     "progressBarForeground": "#7D5A50",
     "progressBarText": "#7D5A50",
+
     "toggleButtonBackground": "#EEEEEE",
     "toggleButtonForeground": "#FDAF7B",
     "toggleButtonIndicatorColor": "#D1D1D6",
+
     "itemViewEvenRowColor": "#c8c8c8",
     "itemViewOddRowColor": "#dcdcdc",
     "itemViewSelectedColor": "#B3A492",
+
     "lineEditFocusOutline": "#87C4FF",
     "lineEditOutline": "#87C4FF",
     "iconLabelText": "#50727B",
@@ -40,7 +47,7 @@
   },
   "size":
   {
-    "fontSize": 14,
+    "fontSize": 12,
     "fontH1": 32,
     "fontH2": 24,
     "fontH3": 19,

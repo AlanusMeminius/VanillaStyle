@@ -85,6 +85,9 @@ void MainWindow::setLightTheme()
     if (QFile(filePath).exists())
     {
         Vanilla::Style::setStyleFromPath(filePath);
+    } else
+    {
+        Vanilla::Style::setStyle(Vanilla::Light);
     }
     setTheme(true);
 }
@@ -92,7 +95,13 @@ void MainWindow::setDarkTheme()
 {
     // Vanilla::Style::setStyleFromName(QStringLiteral("DarkVanillaStyle"));
     const auto filePath = QCoreApplication::applicationDirPath() + "/DarkVanillaStyle.json";
-    Vanilla::Style::setStyleFromPath(filePath);
+    if (QFile(filePath).exists())
+    {
+        Vanilla::Style::setStyleFromPath(filePath);
+    } else
+    {
+        Vanilla::Style::setStyle(Vanilla::Dark);
+    }
     setTheme(false);
 }
 void MainWindow::setAutoTheme()

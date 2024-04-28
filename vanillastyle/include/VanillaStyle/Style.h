@@ -5,7 +5,7 @@ namespace Vanilla
 class Style
 {
 public:
-    static void setStyle();
+    static void setStyle(const Mode mode);
     static void setStyleFromName(const QString& styleName, Mode mode = Light);
     static void setStyleFromPath(const QString& configPath, Mode mode = Light);
 

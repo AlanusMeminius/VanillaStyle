@@ -325,6 +325,8 @@ VanillaStylePrivate::VanillaStylePrivate(VanillaStyle* q, const Mode mode)
     : VanillaStylePrivate(q)
 {
     theme->setMode(mode);
+    updatePalette();
+    updateFont();
 }
 
 void VanillaStylePrivate::init() const

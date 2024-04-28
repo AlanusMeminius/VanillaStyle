@@ -70,6 +70,7 @@ void Theme::setConfig(const std::string& configPath)
 void Theme::setMode(const Mode mode)
 {
     styleConfig = configManager->defaultConfig(mode);
+    initPalette();
 }
 
 bool Theme::isEnableHotReload() const

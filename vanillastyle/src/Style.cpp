@@ -2,9 +2,9 @@
 #include "VanillaStyle/Style.h"
 #include "VanillaStyle/Style/VanillaStyle.h"
 
-void Vanilla::Style::setStyle()
+void Vanilla::Style::setStyle(const Mode mode)
 {
-    set({}, {});
+    set(nullptr,mode);
 }
 
 void Vanilla::Style::setStyleFromName(const QString& styleName, const Mode mode)
