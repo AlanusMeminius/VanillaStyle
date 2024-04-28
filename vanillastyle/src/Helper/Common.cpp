@@ -6,7 +6,6 @@
 #include <QPainter>
 #include <QTextStream>
 #include <array>
-#include <qDebug>
 
 namespace Vanilla
 {
