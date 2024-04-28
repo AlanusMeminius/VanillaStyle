@@ -11,6 +11,7 @@
 #include "VanillaStyle/Helper/MenuStyle.h"
 #include "VanillaStyle/Helper/SpinBoxStyle.h"
 #include "VanillaStyle/Helper/LineEditStyle.h"
+#include "VanillaStyle/Helper/ScrollBarStyle.h"
 #include "VanillaStyle/Theme/Utils.h"
 
 namespace Vanilla
@@ -37,6 +38,7 @@ private:
     std::shared_ptr<LineEditStyle> lineEditStyle;
     std::shared_ptr<ComboBoxStyle> comboBoxStyle;
     std::shared_ptr<ItemViewStyle> itemViewStyle;
+    std::shared_ptr<ScrollBarStyle> scrollBarStyle;
 
     std::unique_ptr<ConfigChangeNotifier> configChangeNotifier = nullptr;
 

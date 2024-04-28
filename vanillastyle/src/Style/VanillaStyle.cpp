@@ -11,6 +11,7 @@
 #include "VanillaStyle/Style/VanillaStyle.h"
 #include "VanillaStyle/Theme/Theme.h"
 #include "VanillaStyle_p.h"
+#include "VanillaStyle/Helper/ScrollBarStyle.h"
 
 namespace Vanilla
 {
@@ -45,7 +46,7 @@ void VanillaStyle::drawPrimitive(PrimitiveElement pe, const QStyleOption* option
     case PE_Widget:
     case PE_FrameWindow:
     case PE_PanelScrollAreaCorner:
-    case PE_FrameFocusRect:
+    // case PE_FrameFocusRect:
     case PE_FrameMenu:
     case PE_FrameLineEdit:
     case PE_IndicatorColumnViewArrow:
@@ -111,6 +112,20 @@ void VanillaStyle::drawControl(ControlElement element, const QStyleOption* optio
     case CE_CheckBoxLabel:
     case CE_RadioButtonLabel:
         helper = createHelper(d->helper, &Helper::drawAlignLeftLabel);
+        break;
+    case CE_ScrollBarSlider:
+        helper = createHelper(d->scrollBarStyle, &ScrollBarStyle::drawSlider);
+        // painter->fillRect(option->rect, QColor("#EC6EAD"));
+        break;
+    case CE_ScrollBarAddLine:
+        helper = createHelper(d->scrollBarStyle, &ScrollBarStyle::drawAddLine);
+        break;
+    case CE_ScrollBarSubLine:
+        helper = createHelper(d->scrollBarStyle, &ScrollBarStyle::drawSubLine);
+        break;
+    case CE_ScrollBarAddPage:
+    case CE_ScrollBarSubPage:
+        helper = createHelper(d->helper, &Helper::emptyControl);
         break;
     default:
         break;
@@ -317,6 +332,7 @@ VanillaStylePrivate::VanillaStylePrivate(VanillaStyle* q)
     , lineEditStyle(new LineEditStyle())
     , comboBoxStyle(new ComboBoxStyle())
     , itemViewStyle(new ItemViewStyle())
+    , scrollBarStyle(new ScrollBarStyle())
     , q_ptr(q)
 {
 }
