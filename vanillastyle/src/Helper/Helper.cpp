@@ -18,10 +18,9 @@ bool Helper::shapedFrame(const QStyleOption* option, QPainter* painter, const st
         return true;
     }
     painter->setRenderHint(QPainter::Antialiasing);
-    painter->setBrush(QBrush(Qt::white));
-    painter->setPen(Qt::NoPen);
-    const auto radius = theme->getRadius(Theme::NormalRadius);
-    painter->drawRoundedRect(option->rect, radius, radius);
+
+    const auto radius = theme->getSize(Theme::NormalRadius);
+    renderRoundRect(painter, option->rect, theme->getColor(option, Theme::ComboBoxDropDownBackground), radius);
 
     return true;
 }
@@ -55,7 +54,6 @@ bool Helper::drawAlignCenterLabel(const QStyleOption* option, QPainter* painter,
 bool Helper::drawAlignLeftLabel(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
 {
     return drawLabel(option, painter, theme, widget, Qt::AlignLeft);
-
 }
 
 void Helper::renderRoundBorder(QPainter* painter, const QRectF& rect, const QColor& color, const qreal border, const qreal radius)

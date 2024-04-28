@@ -40,6 +40,7 @@ void VanillaStyle::drawPrimitive(PrimitiveElement pe, const QStyleOption* option
     case PE_PanelScrollAreaCorner:
     case PE_FrameFocusRect:
     case PE_FrameMenu:
+    case PE_FrameLineEdit:
     case PE_IndicatorColumnViewArrow:
     case PE_IndicatorItemViewItemDrop:
         helper = createHelper(d->helper, &Helper::emptyControl);
@@ -77,7 +78,7 @@ void VanillaStyle::drawControl(ControlElement element, const QStyleOption* optio
     switch (element)
     {
     case CE_ShapedFrame:
-        helper = createHelper(d->helper, &Helper::emptyControl);
+        helper = createHelper(d->helper, &Helper::shapedFrame);
         break;
     case CE_PushButtonBevel:
         helper = createHelper(d->buttonStyle, &ButtonStyle::drawPushButtonBevel);
@@ -176,7 +177,7 @@ QSize VanillaStyle::sizeFromContents(ContentsType type, const QStyleOption* opti
         if (const auto* opt = qstyleoption_cast<const QStyleOptionViewItem*>(option))
         {
             const auto textH = opt->fontMetrics.height();
-            return {contentsSize.width(), textH + 4};
+            return {contentsSize.width(), textH + 16};
         }
     default:
         break;
@@ -226,6 +227,9 @@ QRect VanillaStyle::subControlRect(ComplexControl control, const QStyleOptionCom
         helper = createHelper(d->spinBoxStyle, &SpinBoxStyle::subControlRect);
         break;
     }
+    case CC_ComboBox:
+        helper = createHelper(d->comboBoxStyle, &ComboBoxStyle::subControlRect);
+        break;
     default:
         break;
     }
@@ -255,8 +259,10 @@ void VanillaStyle::polish(QWidget* w)
     {
         if (const auto container = qobject_cast<QWidget*>(combox->children().back()))
         {
+            container->setBackgroundRole(QPalette::NoRole);
             container->setWindowFlag(Qt::FramelessWindowHint, true);
             container->setWindowFlag(Qt::NoDropShadowWindowHint, true);
+            container->setAttribute(Qt::WA_OpaquePaintEvent, false);
             container->setProperty("_q_windowsDropShadow", false);
         }
     }
@@ -276,6 +282,7 @@ void VanillaStyle::setConfigPath(const std::string& path)
 {
     Q_D(VanillaStyle);
     d->theme->setConfig(path);
+    d->configNotifier(path);
     d->updatePalette();
 }
 
@@ -304,13 +311,11 @@ VanillaStylePrivate::VanillaStylePrivate(VanillaStyle* q)
     , comboBoxStyle(new ComboBoxStyle())
     , itemViewStyle(new ItemViewStyle())
     , q_ptr(q)
-
 {
 }
-void VanillaStylePrivate::init()
-{
 
-    updatePalette();
+void VanillaStylePrivate::init() const
+{
     // install font
     const std::array<std::string, 4> fontFiles = {"Roboto-Regular.ttf", "Roboto-Medium.ttf", "Roboto-Bold.ttf", "Roboto-Black.ttf"};
     for (const auto& file : fontFiles)
@@ -328,12 +333,37 @@ void VanillaStylePrivate::init()
         QFontDatabase::addApplicationFont(path.c_str());
     }
 #endif
+
+    updatePalette();
+    updateFont();
 }
-void VanillaStylePrivate::updatePalette()
+
+void VanillaStylePrivate::updatePalette() const
 {
     // set up palette
     theme->initPalette();
     const auto palette = theme->standardPalette();
     QApplication::setPalette(palette);
+}
+
+void VanillaStylePrivate::updateFont() const
+{
+    // set up font
+    theme->initFont();
+    const auto font = theme->getFont(Theme::TextSizeRole::Default);
+    QApplication::setFont(font);
+}
+
+void VanillaStylePrivate::configNotifier(const std::string& configPath)
+{
+    Q_Q(VanillaStyle);
+    if (theme->isEnableHotReload())
+    {
+        configChangeNotifier = std::make_unique<ConfigChangeNotifier>(q, configPath);
+    }
+    else
+    {
+        configChangeNotifier.reset();
+    }
 }
 }  // namespace Vanilla

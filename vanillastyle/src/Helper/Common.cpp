@@ -1,8 +1,12 @@
 #include "VanillaStyle/Helper/Common.h"
 #include "fast_gaussian_blur_template.h"
+
+#include <QFile>
 #include <QSvgRenderer>
 #include <QPainter>
+#include <QTextStream>
 #include <array>
+#include <qDebug>
 
 namespace Vanilla
 {
@@ -31,10 +35,12 @@ QImage switchImageColor(const QPixmap& original, const QColor& color)
     }
     return outputImage;
 }
+
 QPixmap switchPixColor(const QPixmap& original, const QColor& color)
 {
     return QPixmap::fromImage(switchImageColor(original, color));
 }
+
 QPixmap renderSvgToPixmap(const QString& path, const int size, const int ratio)
 {
     QSvgRenderer renderer(path);
@@ -46,6 +52,7 @@ QPixmap renderSvgToPixmap(const QString& path, const int size, const int ratio)
     pixmap.setDevicePixelRatio(ratio);
     return pixmap;
 }
+
 QIcon createIcon(const QString& path, int size)
 {
     if (path.isEmpty())
@@ -59,17 +66,34 @@ QIcon createIcon(const QString& path, int size)
     }
     return icon;
 }
+
 void renderSvgFromPath(const QString& path, QPainter* painter, const QRectF& rect)
 {
     QSvgRenderer render(path);
     render.render(painter, rect);
 }
-void renderSvgFromString(const std::string& svg, QPainter* painter, const QRect& rect)
+
+void renderSvgFromString(const QString& svg, QPainter* painter, const QRectF& rect)
 {
     QSvgRenderer render;
-    render.load(QString::fromStdString(svg).toUtf8());
+    render.load(svg.toUtf8());
     render.render(painter, rect);
 }
+
+QString switchSvgColor(const QString& path, const QColor& color)
+{
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        return {};
+    }
+    QTextStream in(&file);
+    QString svg = in.readAll();
+    file.close();
+    svg.replace("#000000", color.name(QColor::HexRgb));
+    return svg;
+}
+
 QPixmap roundedPixmap(const QPixmap& input, const double radius)
 {
     if (input.isNull())
@@ -88,6 +112,7 @@ QPixmap roundedPixmap(const QPixmap& input, const double radius)
     result.setDevicePixelRatio(input.devicePixelRatio());
     return result;
 }
+
 QImage blurImage(const QImage& original, const double sigma)
 {
     if (original.isNull())
@@ -99,6 +124,7 @@ QImage blurImage(const QImage& original, const double sigma)
     fast_gaussian_blur<uchar, kExtend>(inputData, outputData, input.width(), input.height(), 4, static_cast<float>(sigma));
     return input;
 }
+
 QPixmap blurPixmap(const QPixmap& original, double blurRadius, const bool extend)
 {
     if (original.isNull())
@@ -117,6 +143,7 @@ QPixmap blurPixmap(const QPixmap& original, double blurRadius, const bool extend
     const auto output = blurImage(input, blurRadius);
     return QPixmap::fromImage(output);
 }
+
 QPixmap shadowPixmap(const QPixmap& original, const double blurRadius, const QColor& color)
 {
     if (original.isNull())
@@ -137,6 +164,7 @@ QPixmap shadowPixmap(const QPixmap& original, const double blurRadius, const QCo
     const auto output = blurImage(input, blurRadius);
     return QPixmap::fromImage(output);
 }
+
 QPixmap shadowPixmap(const QSize& size, const double borderRadius, const double blurRadius, const QColor& color)
 {
     if (size.isEmpty())
@@ -153,14 +181,19 @@ QPixmap shadowPixmap(const QSize& size, const double borderRadius, const double 
     }
     return shadowPixmap(input, blurRadius, color);
 }
-void drawUpArrow(const QString& iconPath, QPainter* painter, const QRect& rect, const QColor& color)
+
+void drawUpArrow(const QString& iconPath, QPainter* painter, const QRect& rect)
 {
     renderSvgFromPath(iconPath, painter, rect);
 }
-void drawDownArrow(const QString& iconPath, QPainter* painter, const QRect& rect, const QColor& color)
+
+void drawDownArrow(const QString& iconPath, QPainter* painter, const QRect& rect)
 {
+    // const auto pixmap = renderSvgToPixmap(iconPath, rect.height(), 2);
+    // painter->drawPixmap(rect, switchPixColor(pixmap, color));
     renderSvgFromPath(iconPath, painter, rect);
 }
+
 template <typename T>
 QImage extendedImage(const T& input, int padding)
 {
@@ -188,4 +221,4 @@ QImage extendedImage(const T& input, int padding)
     return inputImage;
 }
 
-}  // namespace VanillaStyle
+}  // namespace Vanilla

@@ -2,8 +2,9 @@
 
 #include "Config.h"
 
-#include <QPalette>
 #include <QStyleOption>
+#include <QPalette>
+#include <QFont>
 
 namespace Vanilla
 {
@@ -30,27 +31,41 @@ public:
 
     static State state(const QStyleOption* option);
     static StateFlags flags(const QStyleOption* option);
+
     enum ColorRole
     {
         PrimaryText,
         LabelText,
+
+        IndicatorColor,
         ButtonForeground,
         ButtonBackground,
         ButtonBorderColor,
+
         CheckBoxForeground,
         CheckBoxBackground,
         CheckBoxBorderColor,
+
         RadioButtonForeground,
         RadioButtonBackground,
         RadioButtonBorderColor,
+
         ProgressBarForeground,
         ProgressBarBackground,
         ProgressBarText,
+
         LineEditOutline,
+
         ToggleButtonBackground,
         ToggleButtonForeground,
         ToggleButtonBorderColor,
         ToggleButtonIndicatorColor,
+
+        ItemViewEvenRowColor,
+        ItemViewOddRowColor,
+        ItemViewSelectedColor,
+
+        ComboBoxDropDownBackground
     };
 
     enum TextSizeRole
@@ -64,19 +79,13 @@ public:
         H6
     };
 
-    enum RadiusRole
-    {
-        NormalRadius,
-        ButtonRadius,
-        MenuItemRadius,
-        ProgressRadius
-    };
-
     enum SizeRole
     {
         NormalBorder,
         ButtonBorder,
         CheckBoxBorder,
+        NormalRadius,
+        ButtonRadius,
         MenuItemPadding,
         IconSize,
         CheckBoxIndicatorMargin,
@@ -100,28 +109,44 @@ public:
 
     explicit Theme();
     void setConfig(const std::string& configPath);
+    [[nodiscard]] bool isEnableHotReload() const;
 
-    QPalette palette;
     void initPalette();
+    void initFont();
     [[nodiscard]] QPalette standardPalette() const;
-    [[nodiscard]] int getRadius(RadiusRole radiusRole) const;
-    [[nodiscard]] int getSize(SizeRole sizeRole) const;
 
     QFont getFont(TextSizeRole sizeRole);
+
+    [[nodiscard]] int getSize(SizeRole sizeRole) const;
 
     QColor getColor(const QStyleOption* option, ColorRole role) const;
     QColor createColor(State state, const QStyleOption* option, ColorRole role) const;
     QColor createColor(StateFlags flags, const QStyleOption* option, ColorRole role) const;
-
     [[nodiscard]] QColor customColor(ColorRole role) const;
 
     [[nodiscard]] QString checkIconFile(const std::string& path) const;
     [[nodiscard]] QString getIconPath(IconRole role) const;
+    QString getCachedIcon(const QString&, QColor color);
 
     [[nodiscard]] ProgressMode getProgressMode() const;
 
 private:
+    QPalette palette;
+
+    QFont fontRegular;
+    QFont fontFixed;
+    QFont fontBold;
+
+    QFont fontH1;
+    QFont fontH2;
+    QFont fontH3;
+    QFont fontH4;
+    QFont fontH5;
+    QFont fontH6;
+
     std::shared_ptr<ConfigManager> configManager;
     StyleConfig styleConfig;
+
+    std::unordered_map<QString, QString> iconData;
 };
 }  // namespace Vanilla

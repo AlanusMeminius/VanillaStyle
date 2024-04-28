@@ -61,9 +61,13 @@ class Color : public Basic
 public:
     QColor backgroundColor;
     QColor primaryColor;
+
+    QColor indicatorColor;
+
     QColor textColor;
     QColor pressedTextColor;
     QColor hoverTextColor;
+
     QColor buttonForeground;
     QColor buttonHoveredForeground;
     QColor buttonPressedForeground;
@@ -71,20 +75,31 @@ public:
     QColor buttonHoveredBackground;
     QColor buttonPressedBackground;
     QColor buttonBorderColor;
+
     QColor checkBoxBackground;
     QColor checkBoxForeground;
     QColor checkBoxCheckedForeground;
     QColor checkBoxCheckedBackground;
     QColor checkBoxHoveredBackground;
-    QColor CheckBoxBorderColor;
+    QColor checkBoxBorderColor;
+    QColor checkBoxHoveredBorderColor;
+
     QColor progressBarBackground;
     QColor progressBarForeground;
     QColor progressBarText;
+
     QColor toggleButtonBackground;
     QColor toggleButtonForeground;
     QColor toggleButtonIndicatorColor;
+
+    QColor itemViewEvenRowColor;
+    QColor itemViewOddRowColor;
+    QColor itemViewSelectedColor;
+
     QColor lineEditFocusOutline;
     QColor lineEditOutline;
+
+    QColor comboBoxDropDownBackground;
     QColor iconLabelText;
     std::string toString()
     {
@@ -92,17 +107,25 @@ public:
         to_json(json, *this);
         return json.dump(4);
     }
-    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Color, backgroundColor, primaryColor, textColor, pressedTextColor, hoverTextColor, buttonForeground,
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Color, backgroundColor, primaryColor, indicatorColor, textColor, pressedTextColor, hoverTextColor, buttonForeground,
                                                 buttonBackground, buttonHoveredForeground, buttonPressedForeground, buttonHoveredBackground,
                                                 buttonPressedBackground, buttonBorderColor, checkBoxBackground, checkBoxForeground, checkBoxCheckedBackground,
-                                                checkBoxCheckedForeground, checkBoxHoveredBackground, CheckBoxBorderColor, progressBarBackground,
-                                                progressBarForeground, progressBarText, toggleButtonBackground,toggleButtonForeground,toggleButtonIndicatorColor,lineEditFocusOutline, lineEditOutline, iconLabelText);
+                                                checkBoxCheckedForeground, checkBoxHoveredBackground, checkBoxBorderColor, checkBoxHoveredBorderColor,
+                                                progressBarBackground, progressBarForeground, progressBarText, toggleButtonBackground, toggleButtonForeground,
+                                                toggleButtonIndicatorColor, itemViewEvenRowColor, itemViewOddRowColor, itemViewSelectedColor,
+                                                lineEditFocusOutline, lineEditOutline, comboBoxDropDownBackground, iconLabelText);
 };
 
 class Size : public Basic
 {
 public:
     int fontSize{};
+    int fontH1;
+    int fontH2;
+    int fontH3;
+    int fontH4;
+    int fontH5;
+    int fontH6;
     int borderWidth{};
     int iconSize{};
     int normalRadius{};
@@ -114,7 +137,7 @@ public:
         to_json(json, *this);
         return json.dump(4);
     }
-    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Size, fontSize, borderWidth, iconSize, normalRadius, buttonRadius);
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Size, fontSize, fontH1, fontH2, fontH3, fontH4, fontH5, fontH6, borderWidth, iconSize, normalRadius, buttonRadius);
 };
 
 class Icons : public Basic
@@ -141,6 +164,9 @@ public:
     Color color;
     Size size;
     Icons icons;
+    std::string progressBarMode;
+    bool debug;
+    // Progress
 
     std::string toString()
     {
@@ -149,7 +175,7 @@ public:
         return json.dump(4);
     }
 
-    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(StyleConfig, name, author, mode, color, size, icons);
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(StyleConfig, name, author, mode, color, size, icons, progressBarMode,debug);
 };
 
 }  // namespace Vanilla

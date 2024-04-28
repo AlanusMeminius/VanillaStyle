@@ -31,7 +31,7 @@ bool ProgressBarStyle::drawGroove(const QStyleOption* option, QPainter* painter,
         auto modeTwoRect = rect;
         modeTwoRect.setHeight(progressHeight);
         modeTwoRect.moveCenter(rect.center());
-        const auto radius = theme->getRadius(Theme::ProgressRadius);
+        const auto radius = progressHeight / 3;
         Helper::renderRoundRect(painter, modeTwoRect, bgColor, radius);
     }
     return true;
@@ -78,7 +78,7 @@ bool ProgressBarStyle::drawContents(const QStyleOption* option, QPainter* painte
             const auto progressHeight = theme->getSize(Theme::ProgressBarHeight);
             const double indicatorSize = progressRect.height() / 2;
             const auto margin = (progressRect.height() - progressHeight) / 2;
-            const auto radius = theme->getRadius(Theme::ProgressRadius);
+            const auto radius = progressHeight / 3;
             const auto modeTwoRect = progressRect.adjusted(0, margin, 0, -margin);
             Helper::renderRoundRect(painter, modeTwoRect, fgColor, radius);
 
@@ -101,10 +101,8 @@ bool ProgressBarStyle::drawLabel(const QStyleOption* option, QPainter* painter, 
         return true;
     }
     const QPen oldPen = painter->pen();
-    // progressBarTextColor
     const QColor tColor = theme->getColor(option, Theme::ProgressBarText);
     painter->setPen(tColor);
-    // const auto textRext = opt->rect.adjusted(0, 0, 0, -opt->rect.height());
     painter->drawText(opt->rect, Qt::AlignRight | Qt::AlignVCenter | Qt::TextSingleLine, opt->text);
     painter->setPen(oldPen);
     return true;

@@ -39,7 +39,7 @@ class ConfigManager
 public:
     explicit ConfigManager() = default;
 
-    StyleConfig getConfig(const std::string& path) const;
+    [[nodiscard]] StyleConfig getConfig(const std::string& path) const;
     static StyleConfig defaultConfig();
 
     void setErrorHandler(const ConfigErrorHanler::ErrorCallback& callback)

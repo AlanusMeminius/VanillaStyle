@@ -21,7 +21,7 @@ bool ButtonStyle::drawPushButtonBevel(const QStyleOption* option, QPainter* pain
 
     const auto rect = QRectF(optionButton->rect);
     const auto border = theme->getSize(Theme::ButtonBorder);
-    const auto radius = theme->getRadius(Theme::ButtonRadius);
+    const auto radius = theme->getSize(Theme::ButtonRadius);
 
     const auto halfBorder = border / 2.;
     const auto margins = QMarginsF(halfBorder, halfBorder, halfBorder, halfBorder);

@@ -1,7 +1,9 @@
 #include <QFileInfo>
 #include <QToolTip>
 #include <QPainter>
+#include <QScreen>
 
+#include "VanillaStyle/Helper/Common.h"
 #include "VanillaStyle/Theme/Theme.h"
 #include "VanillaStyle/Theme/Config.h"
 #include "VanillaStyle/Theme/ConfigManager.h"
@@ -65,6 +67,11 @@ void Theme::setConfig(const std::string& configPath)
     configManager->setErrorHandler(callback);
 }
 
+bool Theme::isEnableHotReload() const
+{
+    return styleConfig.debug;
+}
+
 void Theme::initPalette()
 {
     palette.setColor(QPalette::Window, Qt::transparent);
@@ -82,22 +89,38 @@ void Theme::initPalette()
     QToolTip::setPalette(palette);
 }
 
+void Theme::initFont()
+{
+    const auto regularFont = QFont();
+#if __WIN32__
+    regularFont = QFont(QStringLiteral("Inter"));
+#endif
+
+    const auto fixedFont = QFont(QStringLiteral("Roboto"));
+
+    fontRegular = regularFont;
+    fontRegular.setPixelSize(16);
+    fontBold = regularFont;
+    fontBold.setWeight(QFont::Weight::Bold);
+
+    fontH1 = regularFont;
+    fontH1.setPixelSize(24);
+    fontH2 = regularFont;
+    fontH2.setPixelSize(20);
+    fontH3 = regularFont;
+    fontH3.setPixelSize(16);
+    fontH4 = regularFont;
+    fontH4.setPixelSize(14);
+    fontH5 = regularFont;
+    fontH5.setPixelSize(12);
+
+    fontFixed = fixedFont;
+    fontFixed.setPixelSize(16);
+}
+
 QPalette Theme::standardPalette() const
 {
     return palette;
-}
-
-int Theme::getRadius(const RadiusRole radiusRole) const
-{
-    switch (radiusRole)
-    {
-    case ButtonRadius:
-        return 4;
-    case ProgressRadius:
-        return 3;
-    default:
-        return 5;
-    }
 }
 
 int Theme::getSize(const SizeRole sizeRole) const
@@ -109,6 +132,10 @@ int Theme::getSize(const SizeRole sizeRole) const
     case CheckBoxBorder:
         return 2;
     case MenuItemPadding:
+        return 5;
+    case ButtonRadius:
+        return 4;
+    case NormalRadius:
         return 5;
     case IconSize:
         return styleConfig.size.iconSize;
@@ -127,32 +154,30 @@ int Theme::getSize(const SizeRole sizeRole) const
 
 QFont Theme::getFont(const TextSizeRole sizeRole)
 {
-    QFont font;
-    font.setWeight(QFont::Weight::Normal);
-    font.setPixelSize(16);
     switch (sizeRole)
     {
     case H6:
-        font.setPixelSize(11);
-        break;
+        fontH6.setPixelSize(styleConfig.size.fontH6);
+        return fontH6;
     case H5:
-        font.setPixelSize(13);
-        break;
+        fontH5.setPixelSize(styleConfig.size.fontH5);
+        return fontH5;
     case H4:
-        font.setPixelSize(16);
-        break;
+        fontH4.setPixelSize(styleConfig.size.fontH4);
+        return fontH4;
     case H3:
-        font.setPixelSize(19);
-        break;
+        fontH3.setPixelSize(styleConfig.size.fontH3);
+        return fontH3;
     case H2:
-        font.setPixelSize(24);
-        break;
+        fontH2.setPixelSize(styleConfig.size.fontH2);
+        return fontH2;
     case H1:
-        font.setPixelSize(32);
+        fontH1.setPixelSize(styleConfig.size.fontH1);
+        return fontH1;
     default:
-        break;
+        fontRegular.setPixelSize(styleConfig.size.fontSize);
+        return fontRegular;
     }
-    return font;
 }
 
 QColor Theme::getColor(const QStyleOption* option, const ColorRole role) const
@@ -195,6 +220,9 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
         }
         break;
     }
+    case IndicatorColor:
+        color = styleConfig.color.indicatorColor;
+        break;
     case ButtonForeground:
     {
         if ((flags & Flag) == Hover)
@@ -247,7 +275,7 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
     {
         if ((flags & Checked) != Checked && (flags & Flag) == Hover)
         {
-            color = styleConfig.color.checkBoxCheckedBackground;
+            color = styleConfig.color.checkBoxHoveredBackground;
         }
         else
         {
@@ -273,7 +301,14 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
     }
     case CheckBoxBorderColor:
     {
-        color = styleConfig.color.CheckBoxBorderColor;
+        if ((flags & Checked) != Checked && (flags & Flag) == Hover)
+        {
+            color = styleConfig.color.checkBoxHoveredBorderColor;
+        }
+        else
+        {
+            color = styleConfig.color.checkBoxBorderColor;
+        }
         break;
     }
     case ProgressBarForeground:
@@ -303,6 +338,21 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
         }
         break;
     }
+    case ItemViewSelectedColor:
+        color = styleConfig.color.itemViewSelectedColor;
+        break;
+    case ItemViewEvenRowColor:
+        color = styleConfig.color.itemViewEvenRowColor;
+        break;
+    case ItemViewOddRowColor:
+        color = styleConfig.color.itemViewOddRowColor;
+        break;
+
+    case ComboBoxDropDownBackground:
+    {
+        color = styleConfig.color.comboBoxDropDownBackground;
+        break;
+    }
     default:
         break;
     }
@@ -314,9 +364,7 @@ QColor Theme::customColor(const ColorRole role) const
     switch (role)
     {
     case PrimaryText:
-    {
         return styleConfig.color.textColor;
-    }
     case ButtonForeground:
         return styleConfig.color.buttonForeground;
     case ButtonBackground:
@@ -363,9 +411,21 @@ QString Theme::getIconPath(const IconRole role) const
         return {};
     }
 }
+
 Theme::ProgressMode Theme::getProgressMode() const
 {
-    return ModeOne;
-    // return styleConfig.progressBarMode == "mode1" ? ModeOne : ModeTwo;
+    return styleConfig.progressBarMode == "mode1" ? ModeOne : ModeTwo;
 }
+
+QString Theme::getCachedIcon(const QString& path, QColor color)
+{
+    if (iconData.contains(path))
+    {
+        return iconData.at(path);
+    }
+    const auto svg = switchSvgColor(path, color);
+    iconData.emplace(path, svg);
+    return svg;
+}
+
 }  // namespace Vanilla

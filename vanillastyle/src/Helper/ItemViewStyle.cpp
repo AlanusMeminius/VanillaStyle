@@ -2,8 +2,9 @@
 #include <QListWidget>
 
 #include "VanillaStyle/Helper/ItemViewStyle.h"
-#include "VanillaStyle/Theme/Theme.h"
 
+#include "VanillaStyle/Helper/Helper.h"
+#include "VanillaStyle/Theme/Theme.h"
 
 namespace Vanilla
 {
@@ -36,30 +37,29 @@ bool ItemViewStyle::draw(const QStyleOption* option, QPainter* painter, const st
     }
     return true;
 }
+
 void ItemViewStyle::drawPrimitive(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
 {
     if (const auto* opt = qstyleoption_cast<const QStyleOptionViewItem*>(option))
     {
-        const auto& rect = opt->rect;
+        const auto& rect = QRectF(opt->rect);
         const auto row = opt->index.row();
         QColor bgColor;
         if (row % 2 == 0)
         {
-            bgColor = QColor(200, 200, 200);  // 偶数行的背景色为浅灰色
+            bgColor = theme->getColor(opt, Theme::ItemViewEvenRowColor);
         }
         else
         {
-            bgColor = QColor(220, 220, 220);  // 奇数行的背景色为淡灰色
+            bgColor = theme->getColor(opt, Theme::ItemViewOddRowColor);
         }
         if (opt->state.testFlag(QStyle::State_Active) && opt->state.testFlag(QStyle::State_Selected))
         {
-            bgColor = theme->getColor(option, Theme::ButtonBackground);
+            bgColor = theme->getColor(option, Theme::ItemViewSelectedColor);
         }
 
         painter->setRenderHint(QPainter::Antialiasing);
-        painter->setBrush(bgColor);
-        painter->setPen(Qt::NoPen);
-        painter->drawRoundedRect(rect.adjusted(1, 3, -1, -3), 5, 5);
+        Helper::renderRoundRect(painter, rect.adjusted(1, 3, -1, -3), bgColor, 5);
     }
 }
 }  // namespace VanillaStyle

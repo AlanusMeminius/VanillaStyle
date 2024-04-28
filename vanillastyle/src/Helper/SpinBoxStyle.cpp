@@ -6,7 +6,6 @@
 #include "VanillaStyle/Helper/Common.h"
 #include "VanillaStyle/Theme/Theme.h"
 
-
 namespace Vanilla
 {
 bool SpinBoxStyle::draw(const QStyleOptionComplex* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
@@ -29,67 +28,60 @@ bool SpinBoxStyle::draw(const QStyleOptionComplex* option, QPainter* painter, co
         if (const auto upButtonRect = subControlRect(QStyle::CC_SpinBox, option, QStyle::SC_SpinBoxUp, theme, widget); upButtonRect.isValid())
         {
             const auto iconPath = theme->getIconPath(Theme::IconRole::UpArrow);
-            drawUpArrow(iconPath, painter, upButtonRect, QColor(255, 255, 255));
+            const auto svg = theme->getCachedIcon(iconPath, theme->getColor(option, Theme::ColorRole::IndicatorColor));
+            renderSvgFromString(svg, painter, upButtonRect);
         }
         if (const auto downButtonRect = subControlRect(QStyle::CC_SpinBox, option, QStyle::SC_SpinBoxDown, theme, widget); downButtonRect.isValid())
         {
             const auto iconPath = theme->getIconPath(Theme::IconRole::DownArrow);
-            drawDownArrow(iconPath, painter, downButtonRect, QColor(255, 255, 255));
+            const auto svg = theme->getCachedIcon(iconPath, theme->getColor(option, Theme::ColorRole::IndicatorColor));
+            renderSvgFromString(svg, painter, downButtonRect);
         }
     }
     return true;
 }
-QRect SpinBoxStyle::subControlRect(QStyle::ComplexControl control, const QStyleOptionComplex* option, QStyle::SubControl subControl, const std::shared_ptr<Theme>& theme,
-                                   const QWidget* widget) const
+QRect SpinBoxStyle::subControlRect(QStyle::ComplexControl control, const QStyleOptionComplex* option, QStyle::SubControl subControl,
+                                   const std::shared_ptr<Theme>& theme, const QWidget* widget) const
 {
     if (control == QStyle::CC_SpinBox)
     {
-        if (const auto* spinboxOpt = qstyleoption_cast<const QStyleOptionSpinBox*>(option))
+        const auto* opt = qstyleoption_cast<const QStyleOptionSpinBox*>(option);
+        if (!opt)
         {
-            switch (subControl)
+            return {};
+        }
+        const auto padding = theme->getSize(Theme::SizeRole::NormalBorder);
+        const auto& rect = opt->rect;
+        const auto iconSize = theme->getSize(Theme::IconSize);
+
+        switch (subControl)
+        {
+        case QStyle::SC_SpinBoxUp:
+            if (opt->buttonSymbols != QAbstractSpinBox::NoButtons)
             {
-            case QStyle::SC_SpinBoxUp:
-                if (spinboxOpt->buttonSymbols != QAbstractSpinBox::NoButtons)
-                {
-                    const auto iconDimension = pixelMetric(QStyle::PM_ButtonIconSize);
-                    const auto buttonW = iconDimension + 2 * 2;
-                    const auto& totalRect = spinboxOpt->rect;
-                    const auto buttonH = totalRect.height() / 2;
-                    const auto buttonX = totalRect.right() - buttonW;
-                    const auto buttonY = totalRect.top();
-                    return QRect{buttonX, buttonY, buttonW, buttonH};
-                }
-                return {};
-
-            case QStyle::SC_SpinBoxDown:
-                if (spinboxOpt->buttonSymbols != QAbstractSpinBox::NoButtons)
-                {
-                    const auto iconDimension = pixelMetric(QStyle::PM_ButtonIconSize);
-                    const auto buttonW = iconDimension + 2 * 2;
-                    const auto& totalRect = spinboxOpt->rect;
-                    const auto buttonH = totalRect.height() / 2;
-                    const auto buttonX = totalRect.right() - buttonW;
-                    const auto buttonY = totalRect.bottom() + 1 - buttonH;  // cf. Qt documentation.
-                    return QRect{buttonX, buttonY, buttonW, buttonH};
-                }
-
-                return {};
-
-            case QStyle::SC_SpinBoxEditField:
-                if (spinboxOpt->buttonSymbols != QAbstractSpinBox::NoButtons)
-                {
-                    const auto iconDimension = pixelMetric(QStyle::PM_ButtonIconSize);
-                    const auto buttonW = iconDimension + 2 * 2 + 1;
-                    const auto& totalRect = spinboxOpt->rect;
-                    return QRect{totalRect.x(), totalRect.y(), totalRect.width() - buttonW, totalRect.height()};
-                }
-                return spinboxOpt->rect;
-
-            case QStyle::SC_SpinBoxFrame:
-                return option->rect;
-            default:
-                break;
+                return rect.adjusted(rect.width() - iconSize, 0, 0, -rect.height() / 2);
             }
+            return {};
+
+        case QStyle::SC_SpinBoxDown:
+            if (opt->buttonSymbols != QAbstractSpinBox::NoButtons)
+            {
+                return rect.adjusted(rect.width() - iconSize, rect.height() / 2, 0, 0);
+            }
+
+            return {};
+
+        case QStyle::SC_SpinBoxEditField:
+            if (opt->buttonSymbols != QAbstractSpinBox::NoButtons)
+            {
+                return rect.adjusted(0, 0, -iconSize + 2 * padding, 0);
+            }
+            return opt->rect;
+
+        case QStyle::SC_SpinBoxFrame:
+            return option->rect;
+        default:
+            break;
         }
     }
     return {};

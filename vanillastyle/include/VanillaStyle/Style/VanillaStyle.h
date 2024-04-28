@@ -32,9 +32,7 @@ public:
     QColor getCustomColor(Theme::ColorRole role);
     QFont getCustomFont(Theme::TextSizeRole sizeRole);
 
-    // using StyleHintHelper = int (Helper::*)(StyleHint, const QStyleOption*, const QWidget*, QStyleHintReturn*) const;
-    // using SizeFromContentsHelper = QSize (Helper::*)(ContentsType, const QStyleOption*, const QSize&, const QWidget*) const;
-
+private:
     using ControlHelper = std::function<bool(const QStyleOption*, QPainter*, const std::shared_ptr<Theme>&, const QWidget*)>;
     using ComplexHelper = std::function<bool(const QStyleOptionComplex*, QPainter*, const std::shared_ptr<Theme>&, const QWidget*)>;
     using SubElementHelper = std::function<QRect(SubElement, const QStyleOption*, const std::shared_ptr<Theme>&, const QWidget*)>;

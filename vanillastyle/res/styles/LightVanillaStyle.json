@@ -2,52 +2,63 @@
   "name": "Crescent",
   "author": "Alanus",
   "mode": "light",
-  "color": {
+  "color":
+  {
     "backgroundColor": "#FEFBF6",
     "primaryColor": "#322C2B",
+    "indicatorColor": "#0B60B0",
     "textColor": "#0x1890",
     "pressedTextColor": "#344955",
     "hoverTextColor": "#50727B",
     "buttonForeground": "#C08B5C",
     "buttonBackground": "#F6F5F2",
     "buttonHoveredForeground": "#C08C64",
-    "buttonHoveredBackground": "#C08C64",
+    "buttonHoveredBackground": "#39A7FF",
     "buttonPressedForeground": "#C08B5C",
     "buttonPressedBackground": "#F5EEE6",
     "buttonBorderColor": "#00FFFFFF",
     "checkBoxBackground": "#00FFFFFF",
     "checkBoxForeground": "#A4907C",
     "checkBoxCheckedForeground": "#F5EEE6",
-    "checkBoxCheckedBackground": "#8D7B68",
-    "checkBoxHoveredBackground": "#8D7B68",
-    "CheckBoxBorderColor": "#8D7B68",
+    "checkBoxCheckedBackground": "#008D7B68",
+    "checkBoxHoveredBackground": "#00ffffff",
+    "checkBoxBorderColor": "#39A7FF",
+    "checkBoxHoveredBorderColor": "#3876BF",
     "progressBarBackground": "#ad8b73",
     "progressBarForeground": "#7D5A50",
     "progressBarText": "#7D5A50",
     "toggleButtonBackground": "#EEEEEE",
     "toggleButtonForeground": "#FDAF7B",
     "toggleButtonIndicatorColor": "#D1D1D6",
-    "lineEditFocusOutline": "#B5C0D0",
-    "lineEditOutline": "#AF8260",
-    "iconLabelText": "#50727B"
+    "itemViewEvenRowColor": "#c8c8c8",
+    "itemViewOddRowColor": "#dcdcdc",
+    "itemViewSelectedColor": "#B3A492",
+    "lineEditFocusOutline": "#87C4FF",
+    "lineEditOutline": "#87C4FF",
+    "iconLabelText": "#50727B",
+    "comboBoxDropDownBackground": "#CCF5EFE6"
   },
-  "size": {
-    "fontSize": 12,
-    "fontH1": 34,
-    "fontH2": 26,
-    "fontH3": 22,
-    "fontH4": 18,
-    "fontH5": 14,
+  "size":
+  {
+    "fontSize": 14,
+    "fontH1": 32,
+    "fontH2": 24,
+    "fontH3": 19,
+    "fontH4": 16,
+    "fontH5": 13,
+    "fontH6": 11,
     "borderWidth": 2,
     "iconSize": 16,
     "normalRadius": 4,
     "buttonRadius": 4,
     "menuItemRadius": 4
   },
-  "icons": {
+  "icons":
+  {
     "upArrow": ":/VanillaStyle/icons/UpArrow.svg",
     "downArrow": ":/VanillaStyle/icons/DownArrow.svg",
     "progressIndicator": ":/VanillaStyle/icons/Plane.svg"
   },
-  "progressBarMode": "mode1"
+  "progressBarMode": "mode1",
+  "debug": true
 }

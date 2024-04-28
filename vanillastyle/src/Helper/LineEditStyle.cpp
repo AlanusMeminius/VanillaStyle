@@ -2,8 +2,9 @@
 #include <QPainterPath>
 
 #include "VanillaStyle/Helper/LineEditStyle.h"
-#include "VanillaStyle/Theme/Theme.h"
 
+#include "VanillaStyle/Helper/Helper.h"
+#include "VanillaStyle/Theme/Theme.h"
 
 namespace Vanilla
 {
@@ -18,13 +19,14 @@ bool LineEditStyle::draw(const QStyleOption* option, QPainter* painter, const st
     painter->setRenderHints(QPainter::Antialiasing);
     if (opt->lineWidth > 0)
     {
-        const auto radius = theme->getRadius(Theme::ButtonRadius);
+        const auto radius = theme->getSize(Theme::ButtonRadius);
         const auto fgColor = theme->getColor(option, Theme::ColorRole::LineEditOutline);
-        painter->setPen(fgColor);
-        painter->drawRoundedRect(QRectF(opt->rect).adjusted(1, 1, -1, -1), radius, radius);
+        constexpr auto border = 1;
+        Helper::renderRoundBorder(painter, QRectF(opt->rect).adjusted(1, 1, -1, -1), fgColor, border, radius);
     }
     return true;
 }
+
 QRect LineEditStyle::subElementRect(QStyle::SubElement element, const QStyleOption* option, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
 {
     if (element == QStyle::SE_LineEditContents)
@@ -37,4 +39,4 @@ QRect LineEditStyle::subElementRect(QStyle::SubElement element, const QStyleOpti
     }
     return option->rect;
 }
-}  // namespace VanillaStyle
+}  // namespace Vanilla

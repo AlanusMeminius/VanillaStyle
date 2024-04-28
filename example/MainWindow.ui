@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>775</width>
+    <width>744</width>
     <height>936</height>
    </rect>
   </property>
@@ -142,7 +142,7 @@
     <item>
      <widget class="QLabel" name="label_7">
       <property name="text">
-       <string>SwitchButton</string>
+       <string>Button</string>
       </property>
      </widget>
     </item>
@@ -151,6 +151,12 @@
       <layout class="QHBoxLayout" name="horizontalLayout_7">
        <item>
         <widget class="Vanilla::SwitchButton" name="switchBtn" native="true"/>
+       </item>
+       <item>
+        <widget class="Vanilla::ToggleButton" name="toggleBtnfirst" native="true"/>
+       </item>
+       <item>
+        <widget class="Vanilla::ToggleButton" name="toggleBtnSecond" native="true"/>
        </item>
        <item>
         <spacer name="horizontalSpacer">
@@ -169,41 +175,9 @@
      </widget>
     </item>
     <item>
-     <widget class="QLabel" name="label_3">
-      <property name="text">
-       <string>ToggleButton</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QWidget" name="widget_3" native="true">
-      <layout class="QHBoxLayout" name="horizontalLayout_3">
-       <item>
-        <widget class="Vanilla::ToggleButton" name="toggleBtnfirst" native="true"/>
-       </item>
-       <item>
-        <widget class="Vanilla::ToggleButton" name="toggleBtnSecond" native="true"/>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item>
      <widget class="QLabel" name="label_10">
       <property name="text">
-       <string>IconLabel</string>
+       <string>Icon</string>
       </property>
      </widget>
     </item>
@@ -231,36 +205,23 @@
         <widget class="Vanilla::IconLabel" name="iconLabelSecond" native="true"/>
        </item>
        <item>
-        <spacer name="horizontalSpacer_3">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
+        <widget class="Vanilla::IconButton" name="iconBtn">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-         <property name="sizeHint" stdset="0">
+         <property name="minimumSize">
           <size>
-           <width>40</width>
-           <height>20</height>
+           <width>10</width>
+           <height>10</height>
           </size>
          </property>
-        </spacer>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLabel" name="label_11">
-      <property name="text">
-       <string>IconBtn</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QWidget" name="widget_10" native="true">
-      <layout class="QHBoxLayout" name="horizontalLayout_10">
-       <item>
-        <widget class="Vanilla::IconButton" name="iconBtn"/>
+        </widget>
        </item>
        <item>
-        <spacer name="horizontalSpacer_4">
+        <spacer name="horizontalSpacer_3">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
@@ -286,37 +247,31 @@
      <widget class="QWidget" name="widget_5" native="true">
       <layout class="QHBoxLayout" name="horizontalLayout_5">
        <item>
-        <widget class="QLineEdit" name="lineEdit"/>
+        <widget class="QLineEdit" name="lineEdit">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
        </item>
-      </layout>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLabel" name="label_5">
-      <property name="text">
-       <string>SpinBox</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QWidget" name="widget_6" native="true">
-      <layout class="QHBoxLayout" name="horizontalLayout_6">
        <item>
-        <widget class="QSpinBox" name="spinBox"/>
+        <widget class="QWidget" name="widget_6" native="true">
+         <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <item>
+           <widget class="QSpinBox" name="spinBox">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </item>
-      </layout>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLabel" name="label_6">
-      <property name="text">
-       <string>ComboBox</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QWidget" name="widget_4" native="true">
-      <layout class="QHBoxLayout" name="horizontalLayout_4">
        <item>
         <widget class="QComboBox" name="comboBox">
          <item>
@@ -339,6 +294,26 @@
       <item>
        <property name="text">
         <string>Item One</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>New Item</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>New Item</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>New Item</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>New Item</string>
        </property>
       </item>
       <item>

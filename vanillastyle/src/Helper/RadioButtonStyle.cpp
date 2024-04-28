@@ -34,8 +34,8 @@ bool Vanilla::RadioButtonStyle::draw(const QStyleOption* option, QPainter* paint
     if ((theme->flags(option) & Theme::Checked) == Theme::Checked)
     {
         auto margin = theme->getSize(Theme::CheckBoxIndicatorMargin);
-        const auto fgColor = theme->getColor(option, Theme::RadioButtonForeground);
-        Helper::renderEllipse(painter, rect.adjusted(margin, margin, -margin, -margin), fgColor);
+        const auto indicatorColor = theme->getColor(option, Theme::IndicatorColor);
+        Helper::renderEllipse(painter, rect.adjusted(margin, margin, -margin, -margin), indicatorColor);
     }
     return true;
 }

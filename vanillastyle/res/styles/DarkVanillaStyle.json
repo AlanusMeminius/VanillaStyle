@@ -20,16 +20,21 @@
     "checkBoxCheckedForeground": "#F5EEE6",
     "checkBoxCheckedBackground": "#8D7B68",
     "checkBoxHoveredBackground": "#8D7B68",
-    "CheckBoxBorderColor": "#8D7B68",
+    "checkBoxBorderColor": "#8D7B68",
+    "checkBoxHoveredBorderColor": "#8D7B68",
     "progressBarBackground": "#ad8b73",
     "progressBarForeground": "#7D5A50",
     "progressBarText": "#7D5A50",
     "toggleButtonBackground": "#636366",
     "toggleButtonForeground": "#FDAF7B",
     "toggleButtonIndicatorColor": "#AEAEB2",
+    "itemViewEvenRowColor": "#31363F",
+    "itemViewOddRowColor": "#222831",
+    "itemViewSelectedColor": "#B9B4C7",
     "lineEditFocusOutline": "#B5C0D0",
     "lineEditOutline": "#AF8260",
-    "iconLabelText": "#50727B"
+    "iconLabelText": "#50727B",
+    "comboBoxDropDownBackground": "#3C5B6F"
   },
   "size": {
     "fontSize": 12,
@@ -49,5 +54,6 @@
     "downArrow": ":/VanillaStyle/icons/DownArrow.svg",
     "progressIndicator": ":/VanillaStyle/icons/Plane.svg"
   },
-  "progressBarMode": "mode1"
+  "progressBarMode": "mode1",
+  "debug": true
 }

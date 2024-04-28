@@ -11,6 +11,7 @@
 #include "VanillaStyle/Helper/MenuStyle.h"
 #include "VanillaStyle/Helper/SpinBoxStyle.h"
 #include "VanillaStyle/Helper/LineEditStyle.h"
+#include "VanillaStyle/Theme/Utils.h"
 
 namespace Vanilla
 {
@@ -18,14 +19,17 @@ class VanillaStylePrivate
 {
 public:
     explicit VanillaStylePrivate(VanillaStyle* q);
-    void init();
-    void updatePalette();
+    void init() const;
+    void updatePalette() const;
+    void updateFont() const;
+    void configNotifier(const std::string& configPath);
+
 private:
     std::shared_ptr<Theme> theme;
     std::shared_ptr<Helper> helper;
     std::shared_ptr<CheckBoxStyle> checkBoxStyle;
     std::shared_ptr<RadioButtonStyle> radioButtonStyle;
-     std::shared_ptr<ButtonStyle> buttonStyle;
+    std::shared_ptr<ButtonStyle> buttonStyle;
     std::shared_ptr<ProgressBarStyle> progressBarStyle;
     std::shared_ptr<MenuStyle> menuStyle;
     std::shared_ptr<SpinBoxStyle> spinBoxStyle;
@@ -33,8 +37,10 @@ private:
     std::shared_ptr<ComboBoxStyle> comboBoxStyle;
     std::shared_ptr<ItemViewStyle> itemViewStyle;
 
+    std::unique_ptr<ConfigChangeNotifier> configChangeNotifier = nullptr;
+
 private:
     VanillaStyle* const q_ptr;
     Q_DECLARE_PUBLIC(VanillaStyle);
 };
-}  // namespace VanillaStyle
+}  // namespace Vanilla

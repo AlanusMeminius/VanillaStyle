@@ -67,7 +67,7 @@ bool MenuStyle::drawMenuBarItem(const QStyleOption* option, QPainter* painter, c
     const auto& bgColor = QColor(255, 255, 255);
     const auto& fgColor = QColor(12, 12, 12);
     int textFlags = Qt::AlignVCenter | Qt::AlignBaseline | Qt::TextSingleLine | Qt::AlignHCenter;
-    const auto radius = theme->getRadius(Theme::ButtonRadius);
+    const auto radius = theme->getSize(Theme::ButtonRadius);
     painter->setPen(Qt::NoPen);
     painter->setBrush(bgColor);
     painter->setRenderHint(QPainter::Antialiasing, true);
