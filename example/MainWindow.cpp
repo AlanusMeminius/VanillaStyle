@@ -44,11 +44,13 @@ MainWindow::MainWindow(QWidget* parent)
     ui->iconLabelSecond->setIconFirst(false);
 
     ui->iconBtn->setIcon(QIcon(":download.svg"));
-
+    ui->iconBtn->setText("this is a button");
+    // ui->iconBtn->setIconFirst();
+    ui->iconBtn->setButtonBorderColor(Qt::gray);
     ui->radioButton->setChecked(true);
 
-    auto spinner = new Vanilla::Spinner(this);
-    ui->verticalLayout->addWidget(spinner);
+    // auto spinner = new Vanilla::Spinner(this);
+    // ui->verticalLayout->addWidget(spinner);
 
     connect(ui->radioButton, &QRadioButton::toggled, this, &MainWindow::setLightTheme);
     connect(ui->radioButton_2, &QRadioButton::toggled, this, &MainWindow::setDarkTheme);
@@ -85,7 +87,8 @@ void MainWindow::setLightTheme()
     if (QFile(filePath).exists())
     {
         Vanilla::Style::setStyleFromPath(filePath);
-    } else
+    }
+    else
     {
         Vanilla::Style::setDefaultTheme(Vanilla::Light);
     }
@@ -98,7 +101,8 @@ void MainWindow::setDarkTheme()
     if (QFile(filePath).exists())
     {
         Vanilla::Style::setStyleFromPath(filePath);
-    } else
+    }
+    else
     {
         Vanilla::Style::setDefaultTheme(Vanilla::Dark);
     }

@@ -90,6 +90,7 @@ void Theme::initPalette()
     palette.setColor(QPalette::Highlight, styleConfig.color.highlightTextColor);
     palette.setColor(QPalette::ButtonText, styleConfig.color.primaryTextColor);
     palette.setColor(QPalette::ToolTipText, styleConfig.color.primaryTextColor);
+    palette.setColor(QPalette::ColorRole::PlaceholderText, styleConfig.color.primaryTextColor);
 
     QToolTip::setPalette(palette);
 }
