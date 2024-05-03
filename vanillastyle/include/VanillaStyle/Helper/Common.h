@@ -8,15 +8,14 @@ namespace Vanilla
 QImage switchImageColor(const QPixmap& original, const QColor& color);
 QPixmap switchPixColor(const QPixmap& original, const QColor& color);
 
+QPixmap getCachedPixmap(QPixmap const& input, QColor const& color);
+
 QPixmap renderSvgToPixmap(const QString& path, int size, int ratio);
-QIcon createIcon(const QString& path, int size);
 
 void renderSvgFromPath(const QString& path, QPainter* painter, const QRectF& rect);
 void renderSvgFromString(const QString& svg, QPainter* painter, const QRectF& rect);
 
 QString switchSvgColor(const QString& path, const QColor& color);
-
-QPixmap roundedPixmap(QPixmap const& input, double radius);
 
 QImage blurImage(const QImage& original, double sigma);
 QPixmap blurPixmap(QPixmap const& original, double blurRadius, bool extend);

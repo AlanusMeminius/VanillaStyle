@@ -169,6 +169,18 @@ void ToggleButtonPrivate::init()
     setupAnimation();
 }
 
+void ToggleButtonPrivate::setColor()
+{
+    Q_Q( ToggleButton);
+
+    if (auto* customStyle = qobject_cast<VanillaStyle*>(q->style()))
+    {
+        handleColor = customStyle->getCustomColor(Theme::ColorRole::ToggleButtonIndicatorColor);
+        backgroundColor = customStyle->getCustomColor(Theme::ColorRole::ToggleButtonBackground);
+        textColor = customStyle->getCustomColor(Theme::ColorRole::PrimaryText);
+    }
+}
+
 void ToggleButtonPrivate::setCurrentIndex(const int index)
 {
     Q_Q(ToggleButton);
@@ -194,15 +206,7 @@ void ToggleButtonPrivate::setupAnimation()
 void ToggleButtonPrivate::paint(QPainter* painter)
 {
     Q_Q(const ToggleButton);
-    QColor handleColor;
-    QColor backgroundColor;
-    QColor textColor;
-    if (auto* customStyle = qobject_cast<VanillaStyle*>(q->style()))
-    {
-        handleColor = customStyle->getCustomColor(Theme::ColorRole::ToggleButtonIndicatorColor);
-        backgroundColor = customStyle->getCustomColor(Theme::ColorRole::ToggleButtonBackground);
-        textColor = customStyle->getCustomColor(Theme::ColorRole::PrimaryText);
-    }
+    setColor();
     painter->save();
     painter->setRenderHint(QPainter::Antialiasing);
     if (!m_useIcon)
@@ -247,5 +251,7 @@ void ToggleButtonPrivate::paint(QPainter* painter)
     }
     painter->restore();
 }
+
+
 
 }  // namespace VanillaStyle

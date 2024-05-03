@@ -81,13 +81,19 @@ public:
 
     enum SizeRole
     {
+        NormalRadius,
         NormalBorder,
+        NormalPadding,
+        IconSize,
+
+        ButtonTextMargin,
         ButtonBorder,
         CheckBoxBorder,
-        NormalRadius,
+
         ButtonRadius,
+        ItemViewRadius,
+
         MenuItemPadding,
-        IconSize,
         CheckBoxIndicatorMargin,
         CheckBoxSpacing,
         ProgressBarHeight,

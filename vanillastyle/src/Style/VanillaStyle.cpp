@@ -9,11 +9,13 @@
 #include <QScrollBar>
 #include <QMenu>
 #include <QUrl>
+#include <QPixmapCache>
 
 #include "VanillaStyle/Style/VanillaStyle.h"
 #include "VanillaStyle/Theme/Theme.h"
 #include "VanillaStyle_p.h"
 #include "VanillaStyle/Helper/ScrollBarStyle.h"
+
 
 namespace Vanilla
 {
@@ -373,6 +375,7 @@ void VanillaStylePrivate::updatePalette() const
     // set up palette
     const auto palette = theme->standardPalette();
     QApplication::setPalette(palette);
+    QPixmapCache::clear();
 }
 
 void VanillaStylePrivate::updateFont() const

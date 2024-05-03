@@ -1,5 +1,8 @@
 #include "VanillaStyle/Widgets/IconButton.h"
 #include "IconButton_p.h"
+#include "VanillaStyle/Helper/Common.h"
+#include "VanillaStyle/Style/VanillaStyle.h"
+
 #include <QPainter>
 
 namespace Vanilla
@@ -11,11 +14,13 @@ IconButton::IconButton(QWidget* parent)
     Q_D(IconButton);
     d->init();
 }
+
 IconButton::IconButton(const QIcon& icon, QWidget* parent)
     : IconButton(parent)
 {
     setIcon(icon);
 }
+
 IconButton::~IconButton()
 {
     delete d_ptr;
@@ -26,6 +31,13 @@ QSize IconButton::sizeHint() const
     Q_D(const IconButton);
     return d->sizeHint();
 }
+void IconButton::setCustomIconColor(const QColor& color)
+{
+    Q_D(IconButton);
+    d->iconColor = color;
+    d->isCustomIconColor = true;
+}
+
 void IconButton::paintEvent(QPaintEvent* event)
 {
     Q_D(IconButton);
@@ -33,23 +45,28 @@ void IconButton::paintEvent(QPaintEvent* event)
     QPainter painter(this);
     d->paint(&painter);
 }
+
 IconButtonPrivate::IconButtonPrivate(IconButton* q)
     : q_ptr(q)
 {
 }
+
 void IconButtonPrivate::init()
 {
     Q_Q(IconButton);
     q->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 }
+
 QSize IconButtonPrivate::sizeHint() const
 {
     Q_Q(const IconButton);
     return q->iconSize() + QSize(padding * 2, padding * 2);
 }
+
 void IconButtonPrivate::paint(QPainter* painter)
 {
     Q_Q(IconButton);
+    setUpColor();
     const auto opacity = q->isEnabled() ? 1.0 : 0.2;
     painter->setOpacity(opacity);
     const auto rectCenter = q->rect().center();
@@ -58,7 +75,21 @@ void IconButtonPrivate::paint(QPainter* painter)
     const auto iconPoint = rectCenter - QPoint(halfWidth, halfWidth);
     if (const auto pixmap = q->icon().pixmap(q->iconSize()); !pixmap.isNull())
     {
-        painter->drawPixmap(iconPoint, pixmap);
+        const auto colorizePix = getCachedPixmap(pixmap, iconColor);
+        painter->drawPixmap(iconPoint, colorizePix);
+    }
+}
+
+void IconButtonPrivate::setUpColor()
+{
+    Q_Q(IconButton);
+    if (isCustomIconColor)
+    {
+        return;
+    }
+    if (auto* customStyle = qobject_cast<VanillaStyle*>(q->style()))
+    {
+        iconColor = customStyle->getCustomColor(Theme::ColorRole::IndicatorColor);
     }
 }
 

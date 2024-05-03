@@ -17,7 +17,8 @@ bool ScrollBarStyle::drawSlider(const QStyleOption* option, QPainter* painter, c
         return true;
     }
     QRectF rect = opt->rect;
-    QRectF handleRect = centerRectF(rect, rect.width() / 2, rect.height()/ 2);
+    const auto padding = theme->getSize(Theme::NormalPadding);
+    QRectF handleRect = centerRectF(rect, rect.width() - 3 * padding, rect.height());
     painter->setRenderHint(QPainter::Antialiasing, true);
     const auto radius = theme->getSize(Theme::NormalRadius);
     const auto color = theme->getColor(option, Theme::ColorRole::IndicatorColor);

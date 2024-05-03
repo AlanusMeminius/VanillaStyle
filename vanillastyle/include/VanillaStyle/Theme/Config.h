@@ -133,6 +133,7 @@ public:
     int normalRadius{};
     int buttonRadius{};
     int menuItemRadius{};
+    int itemViewRadius{};
     std::string toString()
     {
         nlohmann::json json;
@@ -140,7 +141,7 @@ public:
         return json.dump(4);
     }
     NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Size, fontSize, fontH1, fontH2, fontH3, fontH4, fontH5, fontH6, borderWidth, iconSize, normalRadius,
-                                                buttonRadius);
+                                                buttonRadius, itemViewRadius);
 };
 
 class Icons : public Basic

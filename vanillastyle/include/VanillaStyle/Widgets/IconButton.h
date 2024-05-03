@@ -13,6 +13,7 @@ public:
     explicit IconButton(const QIcon& icon, QWidget* parent = nullptr);
     ~IconButton();
     [[nodiscard]] QSize sizeHint() const override;
+    void setCustomIconColor(const QColor& color);
 
 protected:
     void paintEvent(QPaintEvent* event) override;

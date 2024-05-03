@@ -5,10 +5,57 @@
 #include <QSvgRenderer>
 #include <QPainter>
 #include <QTextStream>
+#include <QPixmapCache>
 #include <array>
+#include <regex>
 
 namespace Vanilla
 {
+
+static void grayscale(const QImage& image, QImage& dest, const QRect& rect = QRect())
+{
+    QRect destRect = rect;
+    QRect srcRect = rect;
+
+    if (rect.isNull())
+    {
+        srcRect = dest.rect();
+        destRect = dest.rect();
+    }
+    if (&image != &dest)
+    {
+        destRect.moveTo(QPoint(0, 0));
+    }
+
+    const auto* data = reinterpret_cast<const unsigned int*>(image.bits());
+    auto* outData = reinterpret_cast<unsigned int*>(dest.bits());
+
+    if (dest.size() == image.size() && image.rect() == srcRect)
+    {
+        // A bit faster loop for grayscaling everything.
+        int pixels = dest.width() * dest.height();
+        for (int i = 0; i < pixels; ++i)
+        {
+            int val = qGray(data[i]);
+            outData[i] = qRgba(val, val, val, qAlpha(data[i]));
+        }
+    }
+    else
+    {
+        int yd = destRect.top();
+        for (int y = srcRect.top(); y <= srcRect.bottom() && y < image.height(); y++)
+        {
+            data = reinterpret_cast<const unsigned int*>(image.scanLine(y));
+            outData = reinterpret_cast<unsigned int*>(dest.scanLine(yd++));
+            int xd = destRect.left();
+            for (int x = srcRect.left(); x <= srcRect.right() && x < image.width(); x++)
+            {
+                int val = qGray(data[x]);
+                outData[xd++] = qRgba(val, val, val, qAlpha(data[x]));
+            }
+        }
+    }
+}
 
 QImage switchImageColor(const QPixmap& original, const QColor& color)
 {
@@ -16,28 +63,61 @@ QImage switchImageColor(const QPixmap& original, const QColor& color)
     {
         return {};
     }
-    const QImage inputImage = original.toImage().convertToFormat(QImage::Format_ARGB32);
-    QImage outputImage(inputImage.size(), inputImage.format());
+    auto inputImage = original.toImage();
+    const auto format = inputImage.hasAlphaChannel() ? QImage::Format_ARGB32_Premultiplied : QImage::Format_RGB32;
+    inputImage = std::move(inputImage).convertToFormat(format);
+
+    auto outputImage = QImage(inputImage.size(), inputImage.format());
     outputImage.setDevicePixelRatio(inputImage.devicePixelRatioF());
 
-    const auto outputAf = color.alphaF();
+    QPainter outputPainter(&outputImage);
+    grayscale(inputImage, outputImage, inputImage.rect());
+    outputPainter.setCompositionMode(QPainter::CompositionMode_Screen);
+    outputPainter.fillRect(inputImage.rect(), color);
+    outputPainter.end();
 
-    for (int x = 0; x < inputImage.width(); ++x)
+    if (inputImage.hasAlphaChannel())
     {
-        for (int y = 0; y < inputImage.height(); ++y)
-        {
-            const auto inputPixel = inputImage.pixel(x, y);
-            const auto outputA = static_cast<int>(qAlpha(inputPixel) * outputAf);
-            const auto outputPixel = qRgba(color.red(), color.green(), color.blue(), outputA);
-            outputImage.setPixel(x, y, outputPixel);
-        }
+        Q_ASSERT(outputImage.format() == QImage::Format_ARGB32_Premultiplied);
+        QPainter maskPainter(&outputImage);
+        maskPainter.setCompositionMode(QPainter::CompositionMode_DestinationIn);
+        maskPainter.drawImage(0, 0, inputImage);
     }
+
     return outputImage;
 }
 
 QPixmap switchPixColor(const QPixmap& original, const QColor& color)
 {
     return QPixmap::fromImage(switchImageColor(original, color));
+}
+
+static QString getPixmapKey(const QPixmap& pixmap, const QColor color)
+{
+    return QString("%1_%2").arg(pixmap.cacheKey(), color.name().toInt());
+}
+
+QPixmap getCachedPixmap(QPixmap const& input, QColor const& color)
+{
+    if (input.isNull())
+    {
+        return {};
+    }
+    const auto& pixmapKey = getPixmapKey(input, color);
+    QPixmap pixmapInCache;
+    if (const auto found = QPixmapCache::find(pixmapKey, &pixmapInCache); !found)
+    {
+        const auto& newPixmap = switchPixColor(input, color);
+        if (const auto flag = QPixmapCache::insert(pixmapKey, newPixmap))
+        {
+            QPixmapCache::find(pixmapKey, &pixmapInCache);
+        }
+    }
+    if (pixmapInCache.isNull())
+    {
+        return input;
+    }
+    return pixmapInCache;
 }
 
 QPixmap renderSvgToPixmap(const QString& path, const int size, const int ratio)
@@ -50,20 +130,6 @@ QPixmap renderSvgToPixmap(const QString& path, const int size, const int ratio)
     renderer.render(&painter, pixmap.rect());
     pixmap.setDevicePixelRatio(ratio);
     return pixmap;
-}
-
-QIcon createIcon(const QString& path, int size)
-{
-    if (path.isEmpty())
-        return {};
-
-    QIcon icon;
-    const std::array<int, 2> ratios{1, 2};
-    for (const auto& ratio : ratios)
-    {
-        icon.addPixmap(renderSvgToPixmap(path, size, ratio));
-    }
-    return icon;
 }
 
 void renderSvgFromPath(const QString& path, QPainter* painter, const QRectF& rect)
@@ -87,29 +153,12 @@ QString switchSvgColor(const QString& path, const QColor& color)
         return {};
     }
     QTextStream in(&file);
-    QString svg = in.readAll();
+    const QString svg = in.readAll();
     file.close();
-    svg.replace("#000000", color.name(QColor::HexRgb));
-    return svg;
-}
-
-QPixmap roundedPixmap(const QPixmap& input, const double radius)
-{
-    if (input.isNull())
-        return {};
-
-    QPixmap result(input.size());
-    result.fill(Qt::transparent);
-    QPainter p(&result);
-    p.setRenderHint(QPainter::Antialiasing, true);
-    p.setBrush(Qt::white);
-    p.setPen(Qt::NoPen);
-    p.drawRoundedRect(result.rect(), radius, radius);
-    p.setCompositionMode(QPainter::CompositionMode_SourceIn);
-    p.drawPixmap(result.rect(), input);
-
-    result.setDevicePixelRatio(input.devicePixelRatio());
-    return result;
+    auto svgString = svg.toStdString();
+    const std::regex rx(R"(fill\s*=\s*\"#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})\")");
+    svgString = std::regex_replace(svgString, rx, std::string("fill=\"") + color.name(QColor::HexRgb).toStdString() + "\"");
+    return QString::fromStdString(svgString);
 }
 
 QImage blurImage(const QImage& original, const double sigma)
@@ -188,8 +237,6 @@ void drawUpArrow(const QString& iconPath, QPainter* painter, const QRect& rect)
 
 void drawDownArrow(const QString& iconPath, QPainter* painter, const QRect& rect)
 {
-    // const auto pixmap = renderSvgToPixmap(iconPath, rect.height(), 2);
-    // painter->drawPixmap(rect, switchPixColor(pixmap, color));
     renderSvgFromPath(iconPath, painter, rect);
 }
 

@@ -9,7 +9,6 @@
 #include "VanillaStyle/Theme/Config.h"
 #include "VanillaStyle/Theme/ConfigManager.h"
 
-
 namespace Vanilla
 {
 Theme::State Theme::state(const QStyleOption* option)
@@ -154,18 +153,24 @@ int Theme::getSize(const SizeRole sizeRole) const
 {
     switch (sizeRole)
     {
+    case NormalRadius:
+        return 5;
+    case NormalBorder:
+        return 1;
+    case NormalPadding:
+        return 3;
     case ButtonBorder:
         return 1;
     case CheckBoxBorder:
         return 2;
-    case MenuItemPadding:
-        return 5;
     case ButtonRadius:
         return 4;
-    case NormalRadius:
-        return 5;
+    case ItemViewRadius:
+        return styleConfig.size.itemViewRadius;
     case IconSize:
         return styleConfig.size.iconSize;
+    case MenuItemPadding:
+        return 5;
     case CheckBoxIndicatorMargin:
         return 4;
     case CheckBoxSpacing:
@@ -404,6 +409,8 @@ QColor Theme::customColor(const ColorRole role) const
         return styleConfig.color.toggleButtonForeground;
     case ToggleButtonIndicatorColor:
         return styleConfig.color.toggleButtonIndicatorColor;
+    case IndicatorColor:
+        return styleConfig.color.indicatorColor;
     default:
         return Qt::white;
     }

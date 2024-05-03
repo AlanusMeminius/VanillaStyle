@@ -59,7 +59,8 @@ void ItemViewStyle::drawPrimitive(const QStyleOption* option, QPainter* painter,
         }
 
         painter->setRenderHint(QPainter::Antialiasing);
-        Helper::renderRoundRect(painter, rect.adjusted(1, 3, -1, -3), bgColor, 5);
+        const auto radius = theme->getSize(Theme::ItemViewRadius);
+        Helper::renderRoundRect(painter, rect.adjusted(1, 3, -1, -3), bgColor, radius);
     }
 }
 }  // namespace VanillaStyle

@@ -16,36 +16,43 @@ IconLabel::IconLabel(QWidget* parent)
     Q_D(IconLabel);
     d->init();
 }
+
 IconLabel::IconLabel(const QIcon& icon, QWidget* parent)
     : IconLabel(parent)
 {
     setIcon(icon);
 }
+
 IconLabel::IconLabel(const QString& label, QWidget* parent)
     : IconLabel(parent)
 {
     setLabel(label);
 }
+
 IconLabel::IconLabel(const QIcon& icon, const QString& label, QWidget* parent)
     : IconLabel(parent)
 {
     setIcon(icon);
     setLabel(label);
 }
+
 IconLabel::~IconLabel()
 {
     delete d_ptr;
 }
+
 QSize IconLabel::sizeHint() const
 {
     Q_D(const IconLabel);
     return d->sizeHint();
 }
+
 const QString& IconLabel::label() const
 {
     Q_D(const IconLabel);
     return d->label;
 }
+
 void IconLabel::setLabel(const QString& label)
 {
     Q_D(IconLabel);
@@ -57,22 +64,26 @@ void IconLabel::setLabel(const QString& label)
         Q_EMIT labelChanged();
     }
 }
+
 const QIcon& IconLabel::icon() const
 {
     Q_D(const IconLabel);
     return d->icon;
 }
+
 void IconLabel::setIcon(const QIcon& icon)
 {
     Q_D(IconLabel);
     d->icon = icon;
     update();
 }
+
 const QSize& IconLabel::iconSize() const
 {
     Q_D(const IconLabel);
     return d->iconSize;
 }
+
 void IconLabel::setIconSize(const QSize& iconSize)
 {
     Q_D(IconLabel);
@@ -98,6 +109,7 @@ IconLabelPrivate::IconLabelPrivate(IconLabel* q)
     : q_ptr(q)
 {
 }
+
 void IconLabelPrivate::init()
 {
     Q_Q(IconLabel);
@@ -113,10 +125,12 @@ void IconLabelPrivate::init()
     }
     iconSize = QSize(size, size);
 }
+
 QSize IconLabelPrivate::sizeHint() const
 {
     return {iconSize.width() + padding + labelWidth, iconSize.height()};
 }
+
 void IconLabelPrivate::paint(QPainter* painter)
 {
     Q_Q(IconLabel);

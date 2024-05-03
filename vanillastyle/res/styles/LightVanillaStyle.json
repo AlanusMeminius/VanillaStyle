@@ -12,10 +12,10 @@
     "hoverTextColor": "#50727B",
     "highlightTextColor": "#322C2B",
 
-    "indicatorColor": "#0B60B0",
+    "indicatorColor": "#008DDA",
 
     "buttonForeground": "#C08B5C",
-    "buttonBackground": "#F6F5F2",
+    "buttonBackground": "#B4D4FF",
     "buttonHoveredForeground": "#C08C64",
     "buttonHoveredBackground": "#39A7FF",
     "buttonPressedForeground": "#C08B5C",
@@ -27,16 +27,16 @@
     "checkBoxCheckedForeground": "#F5EEE6",
     "checkBoxCheckedBackground": "#008D7B68",
     "checkBoxHoveredBackground": "#00ffffff",
-    "checkBoxBorderColor": "#39A7FF",
+    "checkBoxBorderColor": "#03AED2",
     "checkBoxHoveredBorderColor": "#3876BF",
 
-    "progressBarBackground": "#ad8b73",
-    "progressBarForeground": "#7D5A50",
-    "progressBarText": "#7D5A50",
+    "progressBarBackground": "#B4D4FF",
+    "progressBarForeground": "#86B6F6",
+    "progressBarText": "#008DDA",
 
     "toggleButtonBackground": "#EEEEEE",
     "toggleButtonForeground": "#FDAF7B",
-    "toggleButtonIndicatorColor": "#D1D1D6",
+    "toggleButtonIndicatorColor": "#98E4FF",
 
     "itemViewEvenRowColor": "#c8c8c8",
     "itemViewOddRowColor": "#dcdcdc",
@@ -60,7 +60,8 @@
     "iconSize": 16,
     "normalRadius": 4,
     "buttonRadius": 4,
-    "menuItemRadius": 4
+    "menuItemRadius": 4,
+    "itemViewRadius": 8
   },
   "icons":
   {
@@ -68,6 +69,6 @@
     "downArrow": ":/VanillaStyle/icons/DownArrow.svg",
     "progressIndicator": ":/VanillaStyle/icons/Plane.svg"
   },
-  "progressBarMode": "mode1",
+  "progressBarMode": "mode2",
   "debug": true
 }

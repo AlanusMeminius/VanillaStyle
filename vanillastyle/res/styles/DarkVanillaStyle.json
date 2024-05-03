@@ -57,7 +57,8 @@
     "iconSize": 16,
     "normalRadius": 4,
     "buttonRadius": 4,
-    "menuItemRadius": 4
+    "menuItemRadius": 4,
+    "itemViewRadius": 8
   },
   "icons": {
     "upArrow": ":/VanillaStyle/icons/UpArrow.svg",
