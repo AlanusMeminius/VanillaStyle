@@ -24,7 +24,7 @@ public:
         Flag = 0x000000ff,
         Selected = 0x00000100,
         Focus = 0x00000200,
-        Checked = 0x00000300,
+        Checked = 0x00000400,
         FlagBase = 0xf00000,
     };
     Q_DECLARE_FLAGS(StateFlags, State)

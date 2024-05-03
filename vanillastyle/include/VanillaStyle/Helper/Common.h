@@ -29,4 +29,17 @@ QPixmap shadowPixmap(QSize const& size, double borderRadius, double blurRadius, 
 
 void drawUpArrow(const QString& iconPath, QPainter* painter, const QRect& rect);
 void drawDownArrow(const QString& iconPath, QPainter* painter, const QRect& rect);
+
+
+QRect insideMargin(const QRect& rect, int margin);
+QRectF insideMargin(const QRectF& rect, int margin);
+QRect insideMargin(const QRect& rect, int marginWidth, int marginHeight);
+QRectF insideMargin(const QRectF& rect, int marginWidth, int marginHeight);
+
+QRect centerRect(const QRect& rect, const QSize& size) ;
+
+QRect centerRect(const QRect& rect, int width, int height);
+
+QRectF centerRectF(const QRectF& rect, double width, double height);
+
 }  // namespace VanillaStyle

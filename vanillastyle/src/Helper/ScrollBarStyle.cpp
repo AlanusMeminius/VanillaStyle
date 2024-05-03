@@ -17,13 +17,11 @@ bool ScrollBarStyle::drawSlider(const QStyleOption* option, QPainter* painter, c
         return true;
     }
     QRectF rect = opt->rect;
-    QPointF center = rect.center();
-    rect.setHeight(10);
-    rect.setWidth(rect.width() / 2);
-    rect.moveCenter(center);
-    painter->setBrush(Qt::gray);
-    painter->setPen(Qt::NoPen);
-    painter->drawRoundedRect(rect, 3, 3);
+    QRectF handleRect = centerRectF(rect, rect.width() / 2, rect.height()/ 2);
+    painter->setRenderHint(QPainter::Antialiasing, true);
+    const auto radius = theme->getSize(Theme::NormalRadius);
+    const auto color = theme->getColor(option, Theme::ColorRole::IndicatorColor);
+    Helper::renderRoundRect(painter, handleRect, color, radius);
     return true;
 }
 

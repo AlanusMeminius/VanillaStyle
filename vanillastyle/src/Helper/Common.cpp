@@ -193,6 +193,41 @@ void drawDownArrow(const QString& iconPath, QPainter* painter, const QRect& rect
     renderSvgFromPath(iconPath, painter, rect);
 }
 
+QRect insideMargin(const QRect& rect, int margin)
+{
+    return insideMargin(rect, margin, margin);
+}
+
+QRectF insideMargin(const QRectF& rect, int margin)
+{
+    return insideMargin(rect, margin, margin);
+}
+
+QRect insideMargin(const QRect& rect, int marginWidth, int marginHeight)
+{
+    return rect.adjusted(marginWidth, marginHeight, -marginWidth, -marginHeight);
+}
+
+QRectF insideMargin(const QRectF& rect, int marginWidth, int marginHeight)
+{
+    return rect.adjusted(marginWidth, marginHeight, -marginWidth, -marginHeight);
+}
+
+QRect centerRect(const QRect& rect, const QSize& size)
+{
+    return centerRect(rect, size.width(), size.height());
+}
+
+QRect centerRect(const QRect& rect, int width, int height)
+{
+    return {rect.left() + (rect.width() - width) / 2, rect.top() + (rect.height() - height) / 2, width, height};
+}
+
+QRectF centerRectF(const QRectF& rect, double width, double height)
+{
+    return {rect.left() + (rect.width() - width) / 2, rect.top() + (rect.height() - height) / 2, width, height};
+}
+
 template <typename T>
 QImage extendedImage(const T& input, int padding)
 {

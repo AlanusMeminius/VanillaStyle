@@ -6,6 +6,7 @@
 #include <QRadioButton>
 #include <QCheckBox>
 #include <QComboBox>
+#include <QScrollBar>
 #include <QMenu>
 
 #include "VanillaStyle/Style/VanillaStyle.h"
@@ -115,7 +116,6 @@ void VanillaStyle::drawControl(ControlElement element, const QStyleOption* optio
         break;
     case CE_ScrollBarSlider:
         helper = createHelper(d->scrollBarStyle, &ScrollBarStyle::drawSlider);
-        // painter->fillRect(option->rect, QColor("#EC6EAD"));
         break;
     case CE_ScrollBarAddLine:
         helper = createHelper(d->scrollBarStyle, &ScrollBarStyle::drawAddLine);
@@ -274,8 +274,11 @@ void VanillaStyle::polish(QWidget* w)
     }
     if (auto* itemView = qobject_cast<QAbstractItemView*>(w))
     {
+        itemView->setAutoFillBackground(false);
         itemView->setBackgroundRole(QPalette::NoRole);
         itemView->viewport()->setBackgroundRole(QPalette::NoRole);
+        itemView->viewport()->setAutoFillBackground(false);
+        itemView->viewport()->setAttribute(Qt::WA_Hover);
     }
     if (const auto* combox = qobject_cast<QComboBox*>(w))
     {
@@ -287,6 +290,10 @@ void VanillaStyle::polish(QWidget* w)
             container->setAttribute(Qt::WA_OpaquePaintEvent, false);
             container->setProperty("_q_windowsDropShadow", false);
         }
+    }
+    if (qobject_cast<QScrollBar*>(w))
+    {
+        w->setAttribute(Qt::WA_OpaquePaintEvent, false);
     }
 
     if (auto* menu = qobject_cast<QMenu*>(w))
