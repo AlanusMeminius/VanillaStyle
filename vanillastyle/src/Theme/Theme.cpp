@@ -59,9 +59,9 @@ Theme::Theme()
     initFont();
 }
 
-void Theme::setConfig(const std::string& configPath)
+void Theme::setConfig(const QString& configPath)
 {
-    styleConfig = std::move(configManager->getConfig(configPath));
+    styleConfig = configManager->getConfig(configPath);
     auto callback = [this](const ConfigErrorHanler::ErrorCode& error) {
         if (error != ConfigErrorHanler::ErrorCode::NoError)
         {

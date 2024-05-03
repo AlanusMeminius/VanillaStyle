@@ -87,7 +87,7 @@ void MainWindow::setLightTheme()
         Vanilla::Style::setStyleFromPath(filePath);
     } else
     {
-        Vanilla::Style::setStyle(Vanilla::Light);
+        Vanilla::Style::setDefaultTheme(Vanilla::Light);
     }
     setTheme(true);
 }
@@ -100,7 +100,7 @@ void MainWindow::setDarkTheme()
         Vanilla::Style::setStyleFromPath(filePath);
     } else
     {
-        Vanilla::Style::setStyle(Vanilla::Dark);
+        Vanilla::Style::setDefaultTheme(Vanilla::Dark);
     }
     setTheme(false);
 }

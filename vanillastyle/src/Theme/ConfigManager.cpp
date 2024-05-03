@@ -1,5 +1,3 @@
-#include <fstream>
-
 #include <QTextStream>
 #include <QFile>
 
@@ -8,18 +6,19 @@
 namespace Vanilla
 {
 
-StyleConfig ConfigManager::getConfig(const std::string& path, const Mode mode) const
+StyleConfig ConfigManager::getConfig(const QString& path, const Mode mode) const
 {
-    std::ifstream file(path);
-    if (!file.is_open())
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         errorHandler.handleError(ConfigErrorHanler::FileNotFound);
         return defaultConfig(mode);
     }
-    nlohmann::json json;
-    file >> json;
+    std::string jsonStr = file.readAll().toStdString();
+    file.close();
     try
     {
+        nlohmann::json json = nlohmann::json::parse(jsonStr);
         errorHandler.handleError(ConfigErrorHanler::NoError);
         return json.get<StyleConfig>();
     }
@@ -36,11 +35,11 @@ StyleConfig ConfigManager::defaultConfig(const Mode mode)
     if (mode == Light)
     {
         file.setFileName(":/VanillaStyle/styles/LightVanillaStyle.json");
-    } else
+    }
+    else
     {
         file.setFileName(":/VanillaStyle/styles/DarkVanillaStyle.json");
     }
-    // QFile file(":/VanillaStyle/styles/LightVanillaStyle.json");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         return {};

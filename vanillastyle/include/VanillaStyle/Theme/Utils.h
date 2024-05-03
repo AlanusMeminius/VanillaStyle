@@ -11,7 +11,7 @@ class VanillaStyle;
 
 struct ConfigChangeNotifier
 {
-    explicit ConfigChangeNotifier(VanillaStyle* style, const std::string& configPath);
+    explicit ConfigChangeNotifier(VanillaStyle* style, const QString& configPath);
     ~ConfigChangeNotifier();
 
     QFileSystemWatcher watcher;

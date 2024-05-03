@@ -39,7 +39,7 @@ class ConfigManager
 public:
     explicit ConfigManager() = default;
 
-    [[nodiscard]] StyleConfig getConfig(const std::string& path, Mode mode = Light) const;
+    [[nodiscard]] StyleConfig getConfig(const QString& path, Mode mode = Light) const;
     static StyleConfig defaultConfig(Mode mode = Light);
 
     void setErrorHandler(const ConfigErrorHanler::ErrorCallback& callback)

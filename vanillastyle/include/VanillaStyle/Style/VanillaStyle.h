@@ -29,7 +29,8 @@ public:
     void polish(QWidget* w) override;
     bool eventFilter(QObject* obj, QEvent* event) override;
 
-    void setConfigPath(const std::string& path);
+    void setConfigPath(const QString& path);
+    void setMode(Mode mode);
     QColor getCustomColor(Theme::ColorRole role);
     QFont getCustomFont(Theme::TextSizeRole sizeRole);
 

@@ -2,14 +2,15 @@
 #include "Theme/Config.h"
 namespace Vanilla
 {
+class VanillaStyle;
 class Style
 {
 public:
-    static void setStyle(const Mode mode);
-    static void setStyleFromName(const QString& styleName, Mode mode = Light);
-    static void setStyleFromPath(const QString& configPath, Mode mode = Light);
+    static void setDefaultTheme(Mode mode);
+    static void setStyleFromAppDir(const QString& styleName);
+    static void setStyleFromPath(const QString& configPath);
 
 private:
-    static void set(const QString& configPath, Mode mode);
+    static VanillaStyle* getStyle();
 };
 }  // namespace Vanilla

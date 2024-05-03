@@ -5,11 +5,11 @@
 namespace Vanilla
 {
 
-ConfigChangeNotifier::ConfigChangeNotifier(VanillaStyle* style, const std::string& configPath)
+ConfigChangeNotifier::ConfigChangeNotifier(VanillaStyle* style, const QString& configPath)
 {
-    watcher.addPath(QString::fromStdString(configPath));
+    watcher.addPath(configPath);
     QFileSystemWatcher::connect(&watcher, &QFileSystemWatcher::fileChanged, [style](const QString& path) {
-        style->setConfigPath(path.toStdString());
+        style->setConfigPath(path);
     });
 }
 

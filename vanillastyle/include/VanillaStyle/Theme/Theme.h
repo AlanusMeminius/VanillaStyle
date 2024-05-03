@@ -108,8 +108,8 @@ public:
     };
 
     explicit Theme();
-    void setConfig(const std::string& configPath);
-    void setMode(const Mode mode);
+    void setConfig(const QString& configPath);
+    void setMode(Mode mode);
     [[nodiscard]] bool isEnableHotReload() const;
 
     void initPalette();

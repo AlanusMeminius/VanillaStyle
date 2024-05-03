@@ -8,6 +8,7 @@
 #include <QComboBox>
 #include <QScrollBar>
 #include <QMenu>
+#include <QUrl>
 
 #include "VanillaStyle/Style/VanillaStyle.h"
 #include "VanillaStyle/Theme/Theme.h"
@@ -307,11 +308,21 @@ bool VanillaStyle::eventFilter(QObject* obj, QEvent* event)
     return QCommonStyle::eventFilter(obj, event);
 }
 
-void VanillaStyle::setConfigPath(const std::string& path)
+void VanillaStyle::setConfigPath(const QString& path)
 {
     Q_D(VanillaStyle);
     d->theme->setConfig(path);
-    d->configNotifier(path);
+    if (const QUrl filePath(path); !filePath.isRelative())
+    {
+        d->configNotifier(path);
+    }
+    d->updatePalette();
+}
+
+void VanillaStyle::setMode(Mode mode)
+{
+    Q_D(VanillaStyle);
+    d->theme->setMode(mode);
     d->updatePalette();
 }
 
@@ -371,7 +382,7 @@ void VanillaStylePrivate::updateFont() const
     QApplication::setFont(font);
 }
 
-void VanillaStylePrivate::configNotifier(const std::string& configPath)
+void VanillaStylePrivate::configNotifier(const QString& configPath)
 {
     Q_Q(VanillaStyle);
     if (theme->isEnableHotReload())

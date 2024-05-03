@@ -24,7 +24,7 @@ public:
     void init() const;
     void updatePalette() const;
     void updateFont() const;
-    void configNotifier(const std::string& configPath);
+    void configNotifier(const QString& configPath);
 
 private:
     std::shared_ptr<Theme> theme;
