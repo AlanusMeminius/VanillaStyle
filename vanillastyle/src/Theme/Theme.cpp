@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include <QFileInfo>
 #include <QToolTip>
 #include <QPainter>
@@ -63,10 +65,11 @@ Theme::Theme()
 void Theme::setConfig(const QString& configPath)
 {
     styleConfig = configManager->getConfig(configPath);
-    PatchHelper::global().init(styleConfig.patch);
+    update();
     auto callback = [this](const ConfigErrorHanler::ErrorCode& error) {
         if (error != ConfigErrorHanler::ErrorCode::NoError)
         {
+            std::cout << "Config Error: " << error << std::endl;
         }
     };
     configManager->setErrorHandler(callback);
@@ -75,6 +78,11 @@ void Theme::setConfig(const QString& configPath)
 void Theme::setMode(const Mode mode)
 {
     styleConfig = configManager->defaultConfig(mode);
+    update();
+}
+
+void Theme::update()
+{
     PatchHelper::global().init(styleConfig.patch);
     updatePalette();
 }
@@ -421,13 +429,10 @@ QColor Theme::customColor(const ColorRole role) const
     }
 }
 
-QString Theme::checkIconFile(const std::string& path) const
+QString Theme::checkIconFile(const std::string& path)
 {
-    if (const QFileInfo file(QString::fromStdString(path)); file.exists())
-    {
-        return QString::fromStdString(path);
-    }
-    return {};
+    QString filePath = QString::fromStdString(path);
+    return QFileInfo::exists(filePath) ? filePath : QString();
 }
 
 QString Theme::getIconPath(const IconRole role) const
@@ -458,7 +463,7 @@ Theme::ProgressMode Theme::getProgressMode() const
 
 void Theme::setPatchConfig(const std::string& propertyValue)
 {
-    for (const auto patch = styleConfig.patch; const auto& item : patch)
+    for (const auto& item : styleConfig.patch)
     {
         if (item.enable && item.propertyValue == propertyValue)
         {
@@ -479,6 +484,5 @@ QString Theme::getCachedIcon(const QString& path, QColor color)
     iconData.emplace(path, svg);
     return svg;
 }
-
 
 }  // namespace Vanilla

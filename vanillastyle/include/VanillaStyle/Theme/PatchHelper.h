@@ -19,12 +19,15 @@ public:
 
     void patchTheme(const QString& propertyValue, const std::shared_ptr<Theme>& theme);
     const std::shared_ptr<Theme>& getPatchTheme(const QString& propertyName);
-    const std::shared_ptr<Theme>& getPatchTheme(const QWidget* widget, const std::shared_ptr<Theme>& theme);
+    const std::shared_ptr<Theme>& getPatchTheme(const QWidget* widget, const std::shared_ptr<Theme>& originalTheme);
+
+    void clear();
 
 private:
     std::unordered_map<QString, std::shared_ptr<Theme>> m_patchThemes;
     std::unordered_set<QString> widgets;
     std::unordered_set<QString> properties;
+    std::shared_ptr<Theme> defaultTheme = nullptr;
 };
 }
 

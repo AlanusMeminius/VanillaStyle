@@ -118,6 +118,8 @@ public:
     explicit Theme();
     void setConfig(const QString& configPath);
     void setMode(Mode mode);
+
+    void update();
     [[nodiscard]] bool isEnableHotReload() const;
 
     void updatePalette();
@@ -133,7 +135,7 @@ public:
     QColor createColor(StateFlags flags, const QStyleOption* option, ColorRole role) const;
     [[nodiscard]] QColor customColor(ColorRole role) const;
 
-    [[nodiscard]] QString checkIconFile(const std::string& path) const;
+    [[nodiscard]] static QString checkIconFile(const std::string& path) ;
     [[nodiscard]] QString getIconPath(IconRole role) const;
     QString getCachedIcon(const QString&, QColor color);
 

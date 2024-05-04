@@ -20,9 +20,9 @@ void Vanilla::Style::setStyleFromAppDir(const QString& styleName)
 
 void Vanilla::Style::setStyleFromPath(const QString& configPath)
 {
-    const auto style = getStyle();
     if (QFile::exists(configPath))
     {
+        const auto style = getStyle();
         style->setConfigPath(configPath);
         qApp->setStyle(style);
     }

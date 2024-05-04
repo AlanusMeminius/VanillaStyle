@@ -8,7 +8,7 @@
 #include <QComboBox>
 #include <QScrollBar>
 #include <QMenu>
-#include <QUrl>
+#include <QFileInfo>
 #include <QPixmapCache>
 
 #include "VanillaStyle_p.h"
@@ -16,6 +16,7 @@
 #include "VanillaStyle/Theme/Theme.h"
 #include "VanillaStyle/Helper/ScrollBarStyle.h"
 #include "VanillaStyle/Theme/PatchHelper.h"
+
 
 namespace Vanilla
 {
@@ -316,14 +317,14 @@ void VanillaStyle::setConfigPath(const QString& path)
 {
     Q_D(VanillaStyle);
     d->theme->setConfig(path);
-    if (const QUrl filePath(path); !filePath.isRelative())
+    if (const QFileInfo filePath(path); filePath.isAbsolute())
     {
         d->configNotifier(path);
     }
     d->updatePalette();
 }
 
-void VanillaStyle::setMode(Mode mode)
+void VanillaStyle::setMode(const Mode mode)
 {
     Q_D(VanillaStyle);
     d->theme->setMode(mode);
@@ -390,13 +391,7 @@ void VanillaStylePrivate::updateFont() const
 void VanillaStylePrivate::configNotifier(const QString& configPath)
 {
     Q_Q(VanillaStyle);
-    if (theme->isEnableHotReload())
-    {
-        configChangeNotifier = std::make_unique<ConfigChangeNotifier>(q, configPath);
-    }
-    else
-    {
-        configChangeNotifier.reset();
-    }
+    auto notifier = theme->isEnableHotReload() ? std::make_unique<ConfigChangeNotifier>(q, configPath) : nullptr;
+    configChangeNotifier = std::move(notifier);
 }
 }  // namespace Vanilla

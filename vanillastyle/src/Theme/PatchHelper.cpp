@@ -17,16 +17,25 @@ PatchHelper& PatchHelper::global()
 
 void PatchHelper::init(const std::vector<PatchConfig>& patches)
 {
-    widgets.clear();
-    properties.clear();
+    clear();
+    if (patches.empty())
+    {
+        return;
+    }
+    std::vector<QString> widgetStrings;
+    std::vector<QString> propertyStrings;
+
     for (const auto& item : patches)
     {
         if (item.enable)
         {
-            widgets.emplace(QString::fromStdString(item.widgetType));
-            properties.emplace(QString::fromStdString(item.widgetType + ":" + item.propertyValue));
+            widgetStrings.emplace_back(QString::fromStdString(item.widgetType));
+            propertyStrings.emplace_back(QString::fromStdString(item.widgetType + ":" + item.propertyValue));
         }
     }
+
+    widgets.insert(widgetStrings.begin(), widgetStrings.end());
+    properties.insert(propertyStrings.begin(), propertyStrings.end());
 }
 
 void PatchHelper::patchTheme(const QString& propertyValue, const std::shared_ptr<Theme>& theme)
@@ -42,33 +51,34 @@ void PatchHelper::patchTheme(const QString& propertyValue, const std::shared_ptr
 
 const std::shared_ptr<Theme>& PatchHelper::getPatchTheme(const QString& propertyName)
 {
-    if (m_patchThemes.contains(propertyName))
-    {
-        return m_patchThemes.at(propertyName);
-    }
-    static std::shared_ptr<Theme> defaultTheme;
-    return defaultTheme;
+    return m_patchThemes.contains(propertyName) ? m_patchThemes.at(propertyName) : defaultTheme;
 }
 
-const std::shared_ptr<Theme>& PatchHelper::getPatchTheme(const QWidget* widget, const std::shared_ptr<Theme>& theme)
+const std::shared_ptr<Theme>& PatchHelper::getPatchTheme(const QWidget* widget, const std::shared_ptr<Theme>& originalTheme)
 {
     const auto className = widget->metaObject()->className();
     if (!widgets.contains(QString(className)))
     {
-        return theme;
+        return originalTheme;
     }
     const auto propertyValue = getPatchProperty(widget);
     if (propertyValue.isEmpty())
     {
-        return theme;
+        return originalTheme;
     }
     if (properties.contains(QString(className) + ":" + propertyValue))
     {
-        patchTheme(propertyValue, theme);
+        patchTheme(propertyValue, originalTheme);
         return getPatchTheme(propertyValue);
     }
-    return theme;
+    return originalTheme;
 }
 
-
+void PatchHelper::clear()
+{
+    widgets.clear();
+    properties.clear();
+    m_patchThemes.clear();
 }
+
+}  // namespace Vanilla

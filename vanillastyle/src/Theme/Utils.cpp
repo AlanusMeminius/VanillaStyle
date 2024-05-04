@@ -20,11 +20,8 @@ ConfigChangeNotifier::~ConfigChangeNotifier()
 
 QString getPatchProperty(const QWidget* widget)
 {
-    if (const auto p = widget->property("_vanillaStyle_Patch"); p.isValid())
-    {
-        return p.toString();
-    }
-    return {};
+    const auto p = widget->property("_vanillaStyle_Patch");
+    return p.isValid() ? p.toString() : QString();
 }
 
 }  // namespace Vanilla
