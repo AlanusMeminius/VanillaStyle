@@ -20,7 +20,7 @@ ConfigChangeNotifier::~ConfigChangeNotifier()
 
 QString getPatchProperty(const QWidget* widget)
 {
-    if (const auto p = widget->property("vanillaStylePatch"); p.isValid())
+    if (const auto p = widget->property("_vanillaStyle_Patch"); p.isValid())
     {
         return p.toString();
     }

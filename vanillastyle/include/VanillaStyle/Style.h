@@ -1,5 +1,8 @@
 #pragma once
 #include "Theme/Config.h"
+
+#define VANILLA_PATCH_PROPERTY "_vanillaStyle_Patch"
+
 namespace Vanilla
 {
 class VanillaStyle;

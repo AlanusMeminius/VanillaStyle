@@ -36,17 +36,7 @@ MainWindow::MainWindow(QWidget* parent)
     ui->toggleBtnSecond->setItemList(QStringList{"Default", "Account", "Advance"});
     ui->toggleBtnSecond->setColumnWidth(100);
 
-    ui->iconLabelFirst->setIcon(QIcon(":download.svg"));
-    ui->iconLabelFirst->setLabel("Download");
 
-    ui->iconLabelSecond->setIcon(QIcon(":download.svg"));
-    ui->iconLabelSecond->setLabel("Download");
-    ui->iconLabelSecond->setIconFirst(false);
-
-    ui->iconBtn->setIcon(QIcon(":download.svg"));
-    ui->iconBtn->setText("this is a button");
-    // ui->iconBtn->setIconFirst();
-    ui->iconBtn->setButtonBorderColor(Qt::gray);
     ui->radioButton->setChecked(true);
 
     // auto spinner = new Vanilla::Spinner(this);
@@ -65,7 +55,7 @@ MainWindow::MainWindow(QWidget* parent)
         }
     });
 
-    ui->startButton->setProperty("vanillaStylePatch", QVariant("buttonConfigPatch"));
+    ui->startButton->setProperty(VANILLA_PATCH_PROPERTY, QVariant("CleanButtonPatch"));
     ui->startButton->setText("");
     ui->startButton->setIcon(QIcon(":/download.svg"));
     connect(ui->startButton, &QPushButton::clicked, this, &MainWindow::start);

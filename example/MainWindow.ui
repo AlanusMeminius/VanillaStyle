@@ -182,53 +182,6 @@
      </widget>
     </item>
     <item>
-     <widget class="QLabel" name="label_10">
-      <property name="text">
-       <string>Icon</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QWidget" name="widget_9" native="true">
-      <layout class="QHBoxLayout" name="horizontalLayout_9">
-       <item>
-        <widget class="QLabel" name="label_12">
-         <property name="text">
-          <string>IconFirst: </string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="Vanilla::IconLabel" name="iconLabelFirst" native="true">
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>0</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_13">
-         <property name="text">
-          <string>TextFirst: </string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="Vanilla::IconLabel" name="iconLabelSecond" native="true">
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>0</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item>
      <widget class="QWidget" name="widget_5" native="true">
       <layout class="QHBoxLayout" name="horizontalLayout_5">
        <item>
@@ -369,12 +322,6 @@
    <class>Vanilla::SwitchButton</class>
    <extends>QWidget</extends>
    <header>VanillaStyle/Widgets/SwitchButton.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>Vanilla::IconLabel</class>
-   <extends>QWidget</extends>
-   <header>VanillaStyle/Widgets/IconLabel.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

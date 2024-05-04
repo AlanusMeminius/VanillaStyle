@@ -1,5 +1,6 @@
 
 #include <QWidget>
+
 #include "VanillaStyle/Theme/PatchHelper.h"
 #include "VanillaStyle/Helper/Common.h"
 #include "VanillaStyle/Theme/Utils.h"
