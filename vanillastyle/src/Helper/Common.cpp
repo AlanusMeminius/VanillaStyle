@@ -183,9 +183,9 @@ QPixmap getIconPixmap(const QIcon& icon, const QSize& iconSize, const QWidget* w
         return {};
     }
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    return icon.pixmap(getWindow(widget), iconSize, iconMode, iconState);
+    return icon.pixmap(iconSize);
 #else
-    return icon.pixmap(iconSize, widget ? widget->devicePixelRatio() : qApp->devicePixelRatio());
+    return icon.pixmap(iconSize, widget->devicePixelRatio());
 #endif
 }
 

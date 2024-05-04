@@ -56,7 +56,7 @@ Theme::Theme()
     : configManager(std::make_shared<ConfigManager>())
 {
     styleConfig = configManager->defaultConfig();
-    initPalette();
+    updatePalette();
     initFont();
 }
 
@@ -76,6 +76,7 @@ void Theme::setMode(const Mode mode)
 {
     styleConfig = configManager->defaultConfig(mode);
     PatchHelper::global().init(styleConfig.patch);
+    updatePalette();
 }
 
 bool Theme::isEnableHotReload() const
@@ -83,7 +84,7 @@ bool Theme::isEnableHotReload() const
     return styleConfig.debug;
 }
 
-void Theme::initPalette()
+void Theme::updatePalette()
 {
     palette.setColor(QPalette::Window, styleConfig.color.backgroundColor);
     palette.setColor(QPalette::Base, styleConfig.color.backgroundColor);

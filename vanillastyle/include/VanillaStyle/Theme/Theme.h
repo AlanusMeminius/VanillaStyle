@@ -120,7 +120,7 @@ public:
     void setMode(Mode mode);
     [[nodiscard]] bool isEnableHotReload() const;
 
-    void initPalette();
+    void updatePalette();
     void initFont();
     [[nodiscard]] QPalette standardPalette() const;
 

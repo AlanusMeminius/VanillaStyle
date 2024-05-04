@@ -17,6 +17,8 @@ PatchHelper& PatchHelper::global()
 
 void PatchHelper::init(const std::vector<PatchConfig>& patches)
 {
+    widgets.clear();
+    properties.clear();
     for (const auto& item : patches)
     {
         if (item.enable)
