@@ -1,6 +1,7 @@
 #include "VanillaStyle/Helper/Common.h"
 #include "fast_gaussian_blur_template.h"
 
+#include <QWidget>
 #include <QFile>
 #include <QSvgRenderer>
 #include <QPainter>
@@ -8,6 +9,7 @@
 #include <QPixmapCache>
 #include <array>
 #include <regex>
+#include <QtWidgets/QApplication>
 
 namespace Vanilla
 {
@@ -120,6 +122,19 @@ QPixmap getCachedPixmap(QPixmap const& input, QColor const& color)
     return pixmapInCache;
 }
 
+QPixmap getColorizedPixmap(QPixmap const& input, const QWidget* widget, const QColor color)
+{
+    if (input.isNull())
+    {
+        return {};
+    }
+    if (const auto customColor = getQColorProperty(widget, "CustomIconColor"); customColor.isValid())
+    {
+        return getCachedPixmap(input, customColor);
+    }
+    return getCachedPixmap(input, color);
+}
+
 QPixmap renderSvgToPixmap(const QString& path, const int size, const int ratio)
 {
     QSvgRenderer renderer(path);
@@ -159,6 +174,19 @@ QString switchSvgColor(const QString& path, const QColor& color)
     const std::regex rx(R"(fill\s*=\s*\"#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})\")");
     svgString = std::regex_replace(svgString, rx, std::string("fill=\"") + color.name(QColor::HexRgb).toStdString() + "\"");
     return QString::fromStdString(svgString);
+}
+
+QPixmap getIconPixmap(const QIcon& icon, const QSize& iconSize, const QWidget* widget)
+{
+    if (icon.isNull())
+    {
+        return {};
+    }
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    return icon.pixmap(getWindow(widget), iconSize, iconMode, iconState);
+#else
+    return icon.pixmap(iconSize, widget ? widget->devicePixelRatio() : qApp->devicePixelRatio());
+#endif
 }
 
 QImage blurImage(const QImage& original, const double sigma)
@@ -273,6 +301,24 @@ QRect centerRect(const QRect& rect, int width, int height)
 QRectF centerRectF(const QRectF& rect, double width, double height)
 {
     return {rect.left() + (rect.width() - width) / 2, rect.top() + (rect.height() - height) / 2, width, height};
+}
+
+bool checkBoolProperty(const QWidget* widget, const std::string& propertyName)
+{
+    if (const auto p = widget->property(propertyName.c_str()); p.isValid())
+    {
+        return p.toBool();
+    }
+    return false;
+}
+
+QColor getQColorProperty(const QWidget* widget, const std::string& propertyName)
+{
+    if (const auto property = widget->property(propertyName.c_str()); property.isValid())
+    {
+        return  property.value<QColor>();
+    }
+    return {};
 }
 
 template <typename T>

@@ -225,22 +225,6 @@
          </property>
         </widget>
        </item>
-       <item>
-        <widget class="Vanilla::IconButton" name="iconBtn">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>10</width>
-           <height>10</height>
-          </size>
-         </property>
-        </widget>
-       </item>
       </layout>
      </widget>
     </item>
@@ -379,12 +363,6 @@
    <class>Vanilla::ToggleButton</class>
    <extends>QWidget</extends>
    <header>VanillaStyle/Widgets/ToggleButton.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>Vanilla::IconButton</class>
-   <extends>QPushButton</extends>
-   <header>VanillaStyle/Widgets/IconButton.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>

@@ -8,6 +8,8 @@
 #include "VanillaStyle/Theme/Theme.h"
 #include "VanillaStyle/Theme/Config.h"
 #include "VanillaStyle/Theme/ConfigManager.h"
+#include "VanillaStyle/Theme/PatchHelper.h"
+#include "VanillaStyle/Theme/Utils.h"
 
 namespace Vanilla
 {
@@ -61,6 +63,7 @@ Theme::Theme()
 void Theme::setConfig(const QString& configPath)
 {
     styleConfig = configManager->getConfig(configPath);
+    PatchHelper::global().init(styleConfig.patch);
     auto callback = [this](const ConfigErrorHanler::ErrorCode& error) {
         if (error != ConfigErrorHanler::ErrorCode::NoError)
         {
@@ -72,7 +75,7 @@ void Theme::setConfig(const QString& configPath)
 void Theme::setMode(const Mode mode)
 {
     styleConfig = configManager->defaultConfig(mode);
-    initPalette();
+    PatchHelper::global().init(styleConfig.patch);
 }
 
 bool Theme::isEnableHotReload() const
@@ -159,7 +162,7 @@ int Theme::getSize(const SizeRole sizeRole) const
     case NormalBorder:
         return 1;
     case NormalPadding:
-        return 3;
+        return 5;
     case ButtonBorder:
         return 1;
     case CheckBoxBorder:
@@ -452,6 +455,19 @@ Theme::ProgressMode Theme::getProgressMode() const
     return styleConfig.progressBarMode == "mode1" ? ModeOne : ModeTwo;
 }
 
+void Theme::setPatchConfig(const std::string& propertyValue)
+{
+    for (const auto patch = styleConfig.patch; const auto& item : patch)
+    {
+        if (item.enable && item.propertyValue == propertyValue)
+        {
+            auto original = configManager->getJson();
+            original.merge_patch(item.configPatch);
+            styleConfig = original.get<StyleConfig>();
+        }
+    }
+}
+
 QString Theme::getCachedIcon(const QString& path, QColor color)
 {
     if (iconData.contains(path))
@@ -462,5 +478,6 @@ QString Theme::getCachedIcon(const QString& path, QColor color)
     iconData.emplace(path, svg);
     return svg;
 }
+
 
 }  // namespace Vanilla

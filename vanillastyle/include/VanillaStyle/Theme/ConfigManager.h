@@ -39,15 +39,19 @@ class ConfigManager
 public:
     explicit ConfigManager() = default;
 
-    [[nodiscard]] StyleConfig getConfig(const QString& path, Mode mode = Light) const;
-    static StyleConfig defaultConfig(Mode mode = Light);
+    [[nodiscard]] StyleConfig getConfig(const QString& path, Mode mode = Light);
+    StyleConfig defaultConfig(Mode mode = Light);
 
     void setErrorHandler(const ConfigErrorHanler::ErrorCallback& callback)
     {
         errorHandler.setErrorCallback(callback);
     }
 
+    nlohmann::json getJson();
+
 private:
     ConfigErrorHanler errorHandler;
+    std::string configJsonStr;
+    nlohmann::json jsonData;
 };
 }  // namespace Vanilla

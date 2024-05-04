@@ -17,6 +17,7 @@ struct ConfigChangeNotifier
     QFileSystemWatcher watcher;
 };
 
+QString getPatchProperty(const QWidget* widget);
 
 }
 

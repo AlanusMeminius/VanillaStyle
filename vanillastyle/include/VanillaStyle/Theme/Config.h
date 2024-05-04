@@ -159,6 +159,22 @@ public:
     NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Icons, upArrow, downArrow, progressIndicator);
 };
 
+class PatchConfig : public Basic
+{
+public:
+    std::string widgetType;
+    std::string propertyValue;
+    bool enable{};
+    nlohmann::json configPatch;
+    std::string toString()
+    {
+        nlohmann::json json;
+        to_json(json, *this);
+        return json.dump(4);
+    }
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(PatchConfig, widgetType, propertyValue, enable, configPatch);
+};
+
 class StyleConfig : public Basic
 {
 public:
@@ -169,8 +185,8 @@ public:
     Size size;
     Icons icons;
     std::string progressBarMode;
-    bool debug;
-    // Progress
+    bool debug{};
+    std::vector<PatchConfig> patch;
 
     std::string toString()
     {
@@ -179,7 +195,7 @@ public:
         return json.dump(4);
     }
 
-    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(StyleConfig, name, author, mode, color, size, icons, progressBarMode, debug);
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(StyleConfig, name, author, mode, color, size, icons, progressBarMode, debug, patch);
 };
 
 enum Mode

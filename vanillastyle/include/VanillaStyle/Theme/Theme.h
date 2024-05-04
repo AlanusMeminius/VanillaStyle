@@ -5,10 +5,12 @@
 #include <QStyleOption>
 #include <QPalette>
 #include <QFont>
+#include <unordered_set>
 
 namespace Vanilla
 {
 class ConfigManager;
+
 
 class Theme
 {
@@ -136,6 +138,8 @@ public:
     QString getCachedIcon(const QString&, QColor color);
 
     [[nodiscard]] ProgressMode getProgressMode() const;
+
+    void setPatchConfig(const std::string& propertyValue);
 
 private:
     QPalette palette;

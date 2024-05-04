@@ -65,6 +65,9 @@ MainWindow::MainWindow(QWidget* parent)
         }
     });
 
+    ui->startButton->setProperty("vanillaStylePatch", QVariant("buttonConfigPatch"));
+    ui->startButton->setText("");
+    ui->startButton->setIcon(QIcon(":/download.svg"));
     connect(ui->startButton, &QPushButton::clicked, this, &MainWindow::start);
     connect(ui->stopButton, &QPushButton::clicked, this, &MainWindow::stop);
     connect(m_timer, &QTimer::timeout, this, &MainWindow::increaseProgress);
@@ -76,10 +79,12 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
 void MainWindow::setTheme(const bool theme)
 {
     windowAgent->setWindowAttribute(QStringLiteral("blur-effect"), theme ? "light" : "dark");
 }
+
 void MainWindow::setLightTheme()
 {
     // Vanilla::Style::setStyleFromName(QStringLiteral("LightVanillaStyle"));
@@ -94,6 +99,7 @@ void MainWindow::setLightTheme()
     }
     setTheme(true);
 }
+
 void MainWindow::setDarkTheme()
 {
     // Vanilla::Style::setStyleFromName(QStringLiteral("DarkVanillaStyle"));
@@ -108,33 +114,39 @@ void MainWindow::setDarkTheme()
     }
     setTheme(false);
 }
+
 void MainWindow::setAutoTheme()
 {
     const auto theme = styleAgent->systemTheme();
     theme == QWK::StyleAgent::SystemTheme::Dark ? setDarkTheme() : setLightTheme();
 }
+
 void MainWindow::start()
 {
     m_timer->start();
     ui->startButton->setEnabled(false);
     ui->stopButton->setEnabled(true);
 }
+
 void MainWindow::stop()
 {
     m_timer->stop();
     ui->startButton->setEnabled(true);
     ui->stopButton->setEnabled(false);
 }
+
 void MainWindow::increaseProgress()
 {
     const int value = (ui->progressBar->value() + 1) % 101;
     ui->progressBar->setValue(value);
 }
+
 void MainWindow::decreaseProgress()
 {
     const int value = (ui->progressBar->value() + 100) % 101;
     ui->progressBar->setValue(value);
 }
+
 void MainWindow::installWindowAgent()
 {
     windowAgent->setup(this);

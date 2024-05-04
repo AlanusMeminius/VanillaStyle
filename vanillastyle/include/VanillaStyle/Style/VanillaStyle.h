@@ -43,6 +43,7 @@ private:
     template <typename T, typename F>
     auto createHelper(const std::shared_ptr<T>& objectPtr, F fptr) const;
 
+
 private:
     Q_DECLARE_PRIVATE(VanillaStyle);
     Q_DISABLE_COPY(VanillaStyle);

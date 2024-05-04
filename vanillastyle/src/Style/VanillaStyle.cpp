@@ -11,11 +11,11 @@
 #include <QUrl>
 #include <QPixmapCache>
 
+#include "VanillaStyle_p.h"
 #include "VanillaStyle/Style/VanillaStyle.h"
 #include "VanillaStyle/Theme/Theme.h"
-#include "VanillaStyle_p.h"
 #include "VanillaStyle/Helper/ScrollBarStyle.h"
-
+#include "VanillaStyle/Theme/PatchHelper.h"
 
 namespace Vanilla
 {
@@ -86,7 +86,6 @@ void VanillaStyle::drawControl(ControlElement element, const QStyleOption* optio
     Q_D(const VanillaStyle);
 
     ControlHelper helper{nullptr};
-
     switch (element)
     {
     case CE_ShapedFrame:
@@ -94,6 +93,9 @@ void VanillaStyle::drawControl(ControlElement element, const QStyleOption* optio
         break;
     case CE_PushButtonBevel:
         helper = createHelper(d->buttonStyle, &ButtonStyle::drawPushButtonBevel);
+        break;
+    case CE_PushButtonLabel:
+        helper = createHelper(d->buttonStyle, &ButtonStyle::drawPushButtonLabel);
         break;
     case CE_ProgressBarGroove:
         helper = createHelper(d->progressBarStyle, &ProgressBarStyle::drawGroove);
@@ -110,9 +112,9 @@ void VanillaStyle::drawControl(ControlElement element, const QStyleOption* optio
     case CE_MenuItem:
         helper = createHelper(d->menuStyle, &MenuStyle::drawMenuItem);
         break;
-    case CE_PushButtonLabel:
-        helper = createHelper(d->helper, &Helper::drawAlignCenterLabel);
-        break;
+    // case CE_PushButtonLabel:
+    //     helper = createHelper(d->helper, &Helper::drawAlignCenterLabel);
+    //     break;
     case CE_CheckBoxLabel:
     case CE_RadioButtonLabel:
         helper = createHelper(d->helper, &Helper::drawAlignLeftLabel);
@@ -133,12 +135,12 @@ void VanillaStyle::drawControl(ControlElement element, const QStyleOption* optio
     default:
         break;
     }
-
     painter->save();
-    if (!(helper && helper(option, painter, d->theme, widget)))
+    if (!(helper && helper(option, painter,PatchHelper::global().getPatchTheme(widget, d->theme), widget)))
     {
         QCommonStyle::drawControl(element, option, painter, widget);
     }
+    // QCommonStyle::drawControl(element, option, painter, widget);
     painter->restore();
 }
 

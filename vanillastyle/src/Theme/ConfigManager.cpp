@@ -6,7 +6,7 @@
 namespace Vanilla
 {
 
-StyleConfig ConfigManager::getConfig(const QString& path, const Mode mode) const
+StyleConfig ConfigManager::getConfig(const QString& path, const Mode mode)
 {
     QFile file(path);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -18,9 +18,9 @@ StyleConfig ConfigManager::getConfig(const QString& path, const Mode mode) const
     file.close();
     try
     {
-        nlohmann::json json = nlohmann::json::parse(jsonStr);
+        jsonData = nlohmann::json::parse(jsonStr);
         errorHandler.handleError(ConfigErrorHanler::NoError);
-        return json.get<StyleConfig>();
+        return jsonData.get<StyleConfig>();
     }
     catch (nlohmann::json::parse_error& e)
     {
@@ -45,10 +45,15 @@ StyleConfig ConfigManager::defaultConfig(const Mode mode)
         return {};
     }
     QTextStream in(&file);
-    std::string jsonStr = in.readAll().toStdString();
+    configJsonStr = in.readAll().toStdString();
     file.close();
-    const nlohmann::json json = nlohmann::json::parse(jsonStr);
-    return json.get<StyleConfig>();
+    jsonData = nlohmann::json::parse(configJsonStr);
+    return jsonData.get<StyleConfig>();
+}
+
+nlohmann::json ConfigManager::getJson()
+{
+    return jsonData;
 }
 
 }  // namespace Vanilla

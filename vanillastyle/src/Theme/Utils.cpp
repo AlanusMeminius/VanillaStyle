@@ -18,4 +18,13 @@ ConfigChangeNotifier::~ConfigChangeNotifier()
     QFileSystemWatcher::disconnect(&watcher, &QFileSystemWatcher::fileChanged, nullptr, nullptr);
 }
 
+QString getPatchProperty(const QWidget* widget)
+{
+    if (const auto p = widget->property("vanillaStylePatch"); p.isValid())
+    {
+        return p.toString();
+    }
+    return {};
+}
+
 }  // namespace Vanilla
