@@ -21,6 +21,7 @@ private:
     QStringList itemList;
     bool m_useIcon = true;
     bool m_mouseDown = false;
+    bool isCustomIconColor = false;
     int currentIndex = 0;
     int preIndex = 0;
     int offset = 0;
@@ -35,6 +36,8 @@ private:
     QColor handleColor;
     QColor backgroundColor;
     QColor textColor;
+    QColor iconColor;
+    QColor styleIconColor;
 
     QPropertyAnimation handleAnimation;
 

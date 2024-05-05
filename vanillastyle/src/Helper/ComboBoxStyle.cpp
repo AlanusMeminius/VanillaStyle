@@ -60,7 +60,7 @@ QRect ComboBoxStyle::subControlRect(QStyle::ComplexControl control, const QStyle
             return {};
         }
         const auto iconSize = theme->getSize(Theme::IconSize);
-        const auto padding = theme->getSize(Theme::NormalBorder);
+        const auto padding = theme->getSize(Theme::NormalPadding);
         switch (subControl)
         {
         case QStyle::SC_ComboBoxArrow:
@@ -68,7 +68,7 @@ QRect ComboBoxStyle::subControlRect(QStyle::ComplexControl control, const QStyle
             return QRect{opt->rect.right() - iconSize - padding, opt->rect.top(), iconSize, opt->rect.height()};
         }
         case QStyle::SC_ComboBoxEditField:
-            return opt->rect.adjusted(2 * padding, 0, -2 * padding - iconSize, 0);
+            return opt->rect.adjusted(padding, 0, -2 * padding - iconSize, 0);
         case QStyle::SC_ComboBoxFrame:
         case QStyle::SC_ComboBoxListBoxPopup:
             return opt->rect;

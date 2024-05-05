@@ -1,6 +1,8 @@
 #pragma once
 #include "Config.h"
 #include <functional>
+#include <QFile>
+
 
 namespace Vanilla
 {
@@ -34,6 +36,29 @@ private:
     ErrorCallback errorCallback;
 };
 
+template<typename R, typename C>
+R loadConfig(const QString& path, C callback, const ConfigErrorHanler& errorHandler, const Mode mode)
+{
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        errorHandler.handleError(ConfigErrorHanler::FileNotFound);
+        return callback(mode);
+    }
+    QTextStream in(&file);
+    std::string jsonStr = in.readAll().toStdString();
+    file.close();
+    try
+    {
+        return nlohmann::json::parse(jsonStr).get<R>();
+    }
+    catch (nlohmann::json::parse_error& e)
+    {
+        errorHandler.handleError(ConfigErrorHanler::ParseError);
+        return callback(mode);
+    }
+}
+
 class ConfigManager
 {
 public:
@@ -47,7 +72,7 @@ public:
         errorHandler.setErrorCallback(callback);
     }
 
-    nlohmann::json getJson();
+    const nlohmann::json& getJson();
 
 private:
     ConfigErrorHanler errorHandler;

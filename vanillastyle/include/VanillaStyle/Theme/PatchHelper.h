@@ -1,4 +1,6 @@
 #pragma once
+#include "ConfigManager.h"
+
 #include <vector>
 #include <unordered_set>
 
@@ -16,6 +18,8 @@ public:
     static PatchHelper& global();
 
     void init(const std::vector<PatchConfig> & patches);
+    void appendPatch(const std::vector<PatchConfig> & patches);
+    void appendPatch(const QString& patchPath);
 
     void patchTheme(const QString& propertyValue, const std::shared_ptr<Theme>& theme);
     const std::shared_ptr<Theme>& getPatchTheme(const QString& propertyName);
@@ -28,6 +32,9 @@ private:
     std::unordered_set<QString> widgets;
     std::unordered_set<QString> properties;
     std::shared_ptr<Theme> defaultTheme = nullptr;
+
+    ConfigErrorHanler errorHandler;
+
 };
 }
 

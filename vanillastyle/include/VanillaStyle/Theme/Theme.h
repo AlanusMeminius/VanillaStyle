@@ -99,7 +99,10 @@ public:
         CheckBoxIndicatorMargin,
         CheckBoxSpacing,
         ProgressBarHeight,
-        ProgressBarTextMargin
+        ProgressBarTextMargin,
+
+        ScrollBarWidth,
+        SmallRadius
     };
 
     enum IconRole

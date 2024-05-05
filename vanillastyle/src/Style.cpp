@@ -1,6 +1,7 @@
 #include <QApplication>
 #include "VanillaStyle/Style.h"
 #include "VanillaStyle/Style/VanillaStyle.h"
+#include "VanillaStyle/Theme/PatchHelper.h"
 
 #include <QFile>
 #include <iostream>
@@ -31,6 +32,11 @@ void Vanilla::Style::setStyleFromPath(const QString& configPath)
         setDefaultTheme(Light);
         std::cout << "StyleConfigFile not found: " << configPath.toStdString() << std::endl;
     }
+}
+
+void Vanilla::Style::appendPatch(const QString& patchConfigPath)
+{
+    PatchHelper::global().appendPatch(patchConfigPath);
 }
 
 Vanilla::VanillaStyle* Vanilla::Style::getStyle()

@@ -113,9 +113,6 @@ void VanillaStyle::drawControl(ControlElement element, const QStyleOption* optio
     case CE_MenuItem:
         helper = createHelper(d->menuStyle, &MenuStyle::drawMenuItem);
         break;
-    // case CE_PushButtonLabel:
-    //     helper = createHelper(d->helper, &Helper::drawAlignCenterLabel);
-    //     break;
     case CE_CheckBoxLabel:
     case CE_RadioButtonLabel:
         helper = createHelper(d->helper, &Helper::drawAlignLeftLabel);
@@ -141,7 +138,6 @@ void VanillaStyle::drawControl(ControlElement element, const QStyleOption* optio
     {
         QCommonStyle::drawControl(element, option, painter, widget);
     }
-    // QCommonStyle::drawControl(element, option, painter, widget);
     painter->restore();
 }
 

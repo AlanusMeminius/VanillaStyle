@@ -26,6 +26,8 @@ public:
     bool useIcon();
     void setUseIcon(bool isIcon);
 
+    void setIconColor(const QColor& color);
+
     [[nodiscard]] int offset() const;
     void setOffset(int pos);
 

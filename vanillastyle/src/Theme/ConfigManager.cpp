@@ -1,45 +1,22 @@
 #include <QTextStream>
-#include <QFile>
 
 #include "VanillaStyle/Theme/ConfigManager.h"
 
 namespace Vanilla
 {
+static QString LightStyleFilePath = ":/VanillaStyle/styles/LightVanillaStyle.json";
+static QString DarkStyleFilePath = ":/VanillaStyle/styles/DarkVanillaStyle.json";
 
 StyleConfig ConfigManager::getConfig(const QString& path, const Mode mode)
 {
-    QFile file(path);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        errorHandler.handleError(ConfigErrorHanler::FileNotFound);
-        return defaultConfig(mode);
-    }
-    std::string jsonStr = file.readAll().toStdString();
-    file.close();
-    try
-    {
-        jsonData = nlohmann::json::parse(jsonStr);
-        errorHandler.handleError(ConfigErrorHanler::NoError);
-        return jsonData.get<StyleConfig>();
-    }
-    catch (nlohmann::json::parse_error& e)
-    {
-        errorHandler.handleError(ConfigErrorHanler::ParseError);
-        return defaultConfig(mode);
-    }
+    auto returnDefaultConfig = [this](const Mode m) { return defaultConfig(m); };
+    return loadConfig<StyleConfig>(path, returnDefaultConfig, errorHandler, mode);
 }
 
 StyleConfig ConfigManager::defaultConfig(const Mode mode)
 {
     QFile file;
-    if (mode == Light)
-    {
-        file.setFileName(":/VanillaStyle/styles/LightVanillaStyle.json");
-    }
-    else
-    {
-        file.setFileName(":/VanillaStyle/styles/DarkVanillaStyle.json");
-    }
+    file.setFileName(mode == Light ? LightStyleFilePath : DarkStyleFilePath);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         return {};
@@ -51,7 +28,7 @@ StyleConfig ConfigManager::defaultConfig(const Mode mode)
     return jsonData.get<StyleConfig>();
 }
 
-nlohmann::json ConfigManager::getJson()
+const nlohmann::json& ConfigManager::getJson()
 {
     return jsonData;
 }

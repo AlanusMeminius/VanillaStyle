@@ -1,7 +1,6 @@
 #include <QPainter>
 
 #include "VanillaStyle/Helper/ScrollBarStyle.h"
-
 #include "VanillaStyle/Helper/Common.h"
 #include "VanillaStyle/Theme/Theme.h"
 #include "VanillaStyle/Helper/Helper.h"
@@ -16,11 +15,11 @@ bool ScrollBarStyle::drawSlider(const QStyleOption* option, QPainter* painter, c
     {
         return true;
     }
-    QRectF rect = opt->rect;
-    const auto padding = theme->getSize(Theme::NormalPadding);
-    QRectF handleRect = centerRectF(rect, rect.width() - 3 * padding, rect.height());
+    const QRectF rect = opt->rect;
+    const auto scrollBarWidth = theme->getSize(Theme::ScrollBarWidth);
+    const QRectF handleRect = centerRectF(rect, scrollBarWidth, rect.height());
     painter->setRenderHint(QPainter::Antialiasing, true);
-    const auto radius = theme->getSize(Theme::NormalRadius);
+    const auto radius = theme->getSize(Theme::SmallRadius);
     const auto color = theme->getColor(option, Theme::ColorRole::IndicatorColor);
     Helper::renderRoundRect(painter, handleRect, color, radius);
     return true;

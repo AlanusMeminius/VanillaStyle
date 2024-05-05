@@ -6,6 +6,7 @@
 #include "VanillaStyle/Theme/Utils.h"
 #include "VanillaStyle/Theme/Config.h"
 #include "VanillaStyle/Theme/Theme.h"
+#include "VanillaStyle/Theme/ConfigManager.h"
 
 namespace Vanilla
 {
@@ -18,6 +19,11 @@ PatchHelper& PatchHelper::global()
 void PatchHelper::init(const std::vector<PatchConfig>& patches)
 {
     clear();
+    appendPatch(patches);
+}
+
+void PatchHelper::appendPatch(const std::vector<PatchConfig>& patches)
+{
     if (patches.empty())
     {
         return;
@@ -36,6 +42,20 @@ void PatchHelper::init(const std::vector<PatchConfig>& patches)
 
     widgets.insert(widgetStrings.begin(), widgetStrings.end());
     properties.insert(propertyStrings.begin(), propertyStrings.end());
+}
+
+void PatchHelper::appendPatch(const QString& patchPath)
+{
+    if (patchPath.isEmpty())
+    {
+        return;
+    }
+    auto returnDefaultConfig = [this](const Mode) {
+        return std::vector<PatchConfig>{};
+    };
+
+    const auto patches = loadConfig<std::vector<PatchConfig>>(patchPath, returnDefaultConfig, errorHandler, Light);
+    appendPatch(patches);
 }
 
 void PatchHelper::patchTheme(const QString& propertyValue, const std::shared_ptr<Theme>& theme)

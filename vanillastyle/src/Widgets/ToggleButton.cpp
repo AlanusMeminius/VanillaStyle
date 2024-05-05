@@ -1,6 +1,8 @@
 #include "VanillaStyle/Widgets/ToggleButton.h"
 #include "VanillaStyle/Style/VanillaStyle.h"
 #include "ToggleButton_p.h"
+#include "VanillaStyle/Helper/Common.h"
+
 #include <QMouseEvent>
 #include <QPainter>
 #include <QPainterPath>
@@ -55,6 +57,14 @@ void ToggleButton::setUseIcon(const bool isIcon)
     Q_D(ToggleButton);
     d->m_useIcon = isIcon;
 }
+
+void ToggleButton::setIconColor(const QColor& color)
+{
+    Q_D(ToggleButton);
+    d->iconColor = color;
+    d->isCustomIconColor = true;
+}
+
 int ToggleButton::offset() const
 {
     Q_D(const ToggleButton);
@@ -171,10 +181,14 @@ void ToggleButtonPrivate::init()
 
 void ToggleButtonPrivate::setColor()
 {
-    Q_Q( ToggleButton);
+    Q_Q(ToggleButton);
 
     if (auto* customStyle = qobject_cast<VanillaStyle*>(q->style()))
     {
+        if (!isCustomIconColor)
+        {
+            styleIconColor = customStyle->getCustomColor(Theme::ColorRole::IndicatorColor);
+        }
         handleColor = customStyle->getCustomColor(Theme::ColorRole::ToggleButtonIndicatorColor);
         backgroundColor = customStyle->getCustomColor(Theme::ColorRole::ToggleButtonBackground);
         textColor = customStyle->getCustomColor(Theme::ColorRole::PrimaryText);
@@ -230,12 +244,15 @@ void ToggleButtonPrivate::paint(QPainter* painter)
     }
     if (m_useIcon)
     {
-        QRectF iconRectF((columnWidth - iconSize) / 2., padding, iconSize, iconSize);
+        QRect iconRectF((columnWidth - iconSize) / 2, padding, iconSize, iconSize);
         QSvgRenderer grid;
         for (const auto& item : itemList)
         {
-            grid.load(item);
-            grid.render(painter, iconRectF);
+            const auto pixmap = renderSvgToPixmap(item, iconSize, static_cast<int>(q->devicePixelRatio()));
+            if (const auto colorizedPixmap = getColorizedPixmap(pixmap, q, isCustomIconColor ? iconColor : styleIconColor); !colorizedPixmap.isNull())
+            {
+                painter->drawPixmap(iconRectF, colorizedPixmap);
+            }
             iconRectF.translate(columnWidth, 0);
         }
     }
@@ -252,6 +269,4 @@ void ToggleButtonPrivate::paint(QPainter* painter)
     painter->restore();
 }
 
-
-
-}  // namespace VanillaStyle
+}  // namespace Vanilla

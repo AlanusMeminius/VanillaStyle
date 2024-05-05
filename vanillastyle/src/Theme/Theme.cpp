@@ -168,6 +168,8 @@ int Theme::getSize(const SizeRole sizeRole) const
     {
     case NormalRadius:
         return 5;
+    case SmallRadius:
+        return 3;
     case NormalBorder:
         return 1;
     case NormalPadding:
@@ -192,6 +194,8 @@ int Theme::getSize(const SizeRole sizeRole) const
         return 6;
     case ProgressBarTextMargin:
         return 35;
+    case ScrollBarWidth:
+        return 5;
     default:
         return 3;
     }
