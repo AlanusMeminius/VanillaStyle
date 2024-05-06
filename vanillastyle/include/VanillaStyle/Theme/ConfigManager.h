@@ -1,7 +1,10 @@
 #pragma once
-#include "Config.h"
 #include <functional>
+
 #include <QFile>
+#include <QTextStream>
+
+#include "Config.h"
 
 
 namespace Vanilla
