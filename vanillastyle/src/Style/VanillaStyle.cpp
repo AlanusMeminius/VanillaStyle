@@ -180,6 +180,18 @@ int VanillaStyle::pixelMetric(PixelMetric pm, const QStyleOption* option, const 
     case PM_RadioButtonLabelSpacing:
     case PM_CheckBoxLabelSpacing:
         return d->theme->getSize(Theme::CheckBoxSpacing);
+        // Button.
+    case PM_ButtonMargin:
+        return d->theme->getSize(Theme::ButtonTextMargin);
+    case PM_ButtonDefaultIndicator:
+        return d->theme->getSize(Theme::IconSize);
+    case PM_MenuButtonIndicator:
+        return d->theme->getSize(Theme::IconSize);
+    case PM_ButtonShiftHorizontal:
+    case PM_ButtonShiftVertical:
+        return 0;
+    case PM_ButtonIconSize:
+        return d->theme->getSize(Theme::IconSize);
     default:
         break;
     }
@@ -270,7 +282,7 @@ void VanillaStyle::polish(QWidget* w)
     Q_D(VanillaStyle);
 
     QCommonStyle::polish(w);
-    if (qobject_cast<QPushButton*>(w) || qobject_cast<QCheckBox*>(w) || qobject_cast<QRadioButton*>(w))
+    if ((qobject_cast<QPushButton*>(w) != nullptr) || (qobject_cast<QCheckBox*>(w) != nullptr) || (qobject_cast<QRadioButton*>(w) != nullptr))
     {
         w->setAttribute(Qt::WA_Hover);
     }
@@ -284,7 +296,7 @@ void VanillaStyle::polish(QWidget* w)
     }
     if (const auto* combox = qobject_cast<QComboBox*>(w))
     {
-        if (const auto container = qobject_cast<QWidget*>(combox->children().back()))
+        if (auto* const container = qobject_cast<QWidget*>(combox->children().back()))
         {
             container->setBackgroundRole(QPalette::NoRole);
             container->setWindowFlag(Qt::FramelessWindowHint, true);
@@ -293,7 +305,7 @@ void VanillaStyle::polish(QWidget* w)
             container->setProperty("_q_windowsDropShadow", false);
         }
     }
-    if (qobject_cast<QScrollBar*>(w))
+    if (qobject_cast<QScrollBar*>(w) != nullptr)
     {
         w->setAttribute(Qt::WA_OpaquePaintEvent, false);
     }

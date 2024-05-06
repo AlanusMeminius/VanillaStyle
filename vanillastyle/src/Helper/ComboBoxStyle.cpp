@@ -65,10 +65,10 @@ QRect ComboBoxStyle::subControlRect(QStyle::ComplexControl control, const QStyle
         {
         case QStyle::SC_ComboBoxArrow:
         {
-            return QRect{opt->rect.right() - iconSize - padding, opt->rect.top(), iconSize, opt->rect.height()};
+            return QRect{opt->rect.right() - iconSize, opt->rect.top(), iconSize, opt->rect.height()};
         }
         case QStyle::SC_ComboBoxEditField:
-            return opt->rect.adjusted(padding, 0, -2 * padding - iconSize, 0);
+            return opt->rect.adjusted(padding, 0, -iconSize, 0);
         case QStyle::SC_ComboBoxFrame:
         case QStyle::SC_ComboBoxListBoxPopup:
             return opt->rect;

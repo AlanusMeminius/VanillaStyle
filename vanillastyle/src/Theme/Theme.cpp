@@ -269,6 +269,12 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
         }
         break;
     }
+    case LabelBackground:
+        color = styleConfig.color.labelBackground;
+        break;
+    case LabelBorderColor:
+        color = styleConfig.color.labelBorderColor;
+        break;
     case IndicatorColor:
         color = styleConfig.color.indicatorColor;
         break;

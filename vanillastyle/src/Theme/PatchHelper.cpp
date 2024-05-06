@@ -76,8 +76,8 @@ const std::shared_ptr<Theme>& PatchHelper::getPatchTheme(const QString& property
 
 const std::shared_ptr<Theme>& PatchHelper::getPatchTheme(const QWidget* widget, const std::shared_ptr<Theme>& originalTheme)
 {
-    const auto className = widget->metaObject()->className();
-    if (!widgets.contains(QString(className)))
+    const auto className = QString(widget->metaObject()->className());
+    if (!widgets.contains(className))
     {
         return originalTheme;
     }
@@ -86,7 +86,7 @@ const std::shared_ptr<Theme>& PatchHelper::getPatchTheme(const QWidget* widget, 
     {
         return originalTheme;
     }
-    if (properties.contains(QString(className) + ":" + propertyValue))
+    if (properties.contains(className + ":" + propertyValue))
     {
         patchTheme(propertyValue, originalTheme);
         return getPatchTheme(propertyValue);

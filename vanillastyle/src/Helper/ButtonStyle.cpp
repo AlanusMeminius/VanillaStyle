@@ -59,7 +59,8 @@ bool ButtonStyle::drawPushButtonLabel(const QStyleOption* option, QPainter* pain
     const auto isIconWithText = iconWidth > 0 && !isTextEmpty && textWidth > 0;
     const auto isIconFirst = widget->layoutDirection() == Qt::RightToLeft;
     const auto padding = theme->getSize(Theme::NormalPadding);
-    auto rect = QRect(0, 0, iconWidth + textWidth + padding, opt->rect.height());
+    const auto iconPadding = textWidth > 0 ? padding : 0;
+    auto rect = QRect(0, 0, iconWidth + textWidth + iconPadding, opt->rect.height());
     rect.moveCenter(opt->rect.center());
 
     painter->setRenderHints(QPainter::Antialiasing);

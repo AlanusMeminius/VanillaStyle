@@ -39,6 +39,9 @@ public:
         PrimaryText,
         LabelText,
 
+        LabelBackground,
+        LabelBorderColor,
+
         IndicatorColor,
         ButtonForeground,
         ButtonBackground,

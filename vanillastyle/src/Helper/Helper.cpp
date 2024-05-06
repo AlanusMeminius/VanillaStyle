@@ -2,6 +2,7 @@
 
 #include "VanillaStyle/Helper/Helper.h"
 #include "VanillaStyle/Theme/Theme.h"
+#include "VanillaStyle/Theme/Utils.h"
 
 namespace Vanilla
 {
@@ -13,14 +14,27 @@ bool Helper::emptyControl(const QStyleOption*, QPainter*, const std::shared_ptr<
 
 bool Helper::shapedFrame(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
 {
-    if (const bool isComboPopList = widget->inherits("QComboBoxPrivateContainer"); !isComboPopList)
+    if (const bool isComboPopList = widget->inherits("QComboBoxPrivateContainer"); isComboPopList)
     {
+        painter->setRenderHint(QPainter::Antialiasing);
+
+        const auto radius = theme->getSize(Theme::NormalRadius);
+        renderRoundRect(painter, option->rect, theme->getColor(option, Theme::ComboBoxDropDownBackground), radius);
         return true;
     }
-    painter->setRenderHint(QPainter::Antialiasing);
 
-    const auto radius = theme->getSize(Theme::NormalRadius);
-    renderRoundRect(painter, option->rect, theme->getColor(option, Theme::ComboBoxDropDownBackground), radius);
+    // if (const auto classname = QString(widget->metaObject()->className()); classname == "QLabel")
+    // {
+    //     const auto propertyValue = getPatchProperty(widget);
+    //     if (!propertyValue.isEmpty() && propertyValue == "QLabelPatch")
+    //     {
+    //         painter->setRenderHint(QPainter::Antialiasing);
+    //         const auto radius = theme->getSize(Theme::NormalRadius);
+    //         renderRoundBorder(painter, option->rect.adjusted(1, 1, -1, -1), theme->getColor(option, Theme::LabelBorderColor), 1, radius);
+    //         return true;
+    //     }
+    //     return true;
+    // }
 
     return true;
 }

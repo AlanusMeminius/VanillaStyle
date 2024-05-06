@@ -69,6 +69,10 @@ public:
     QColor pressedTextColor;
     QColor hoverTextColor;
 
+    QColor labelBackground;
+    QColor labelForeground;
+    QColor labelBorderColor;
+
     QColor buttonForeground;
     QColor buttonHoveredForeground;
     QColor buttonPressedForeground;
@@ -109,25 +113,25 @@ public:
         return json.dump(4);
     }
     NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Color, backgroundColor, primaryTextColor, highlightTextColor, indicatorColor, textColor, pressedTextColor,
-                                                hoverTextColor, buttonForeground, buttonBackground, buttonHoveredForeground, buttonPressedForeground,
-                                                buttonHoveredBackground, buttonPressedBackground, buttonBorderColor, checkBoxBackground, checkBoxForeground,
-                                                checkBoxCheckedBackground, checkBoxCheckedForeground, checkBoxHoveredBackground, checkBoxBorderColor,
-                                                checkBoxHoveredBorderColor, progressBarBackground, progressBarForeground, progressBarText,
-                                                toggleButtonBackground, toggleButtonForeground, toggleButtonIndicatorColor, itemViewEvenRowColor,
-                                                itemViewOddRowColor, itemViewSelectedColor, lineEditFocusOutline, lineEditOutline, comboBoxDropDownBackground,
-                                                iconLabelText);
+                                                hoverTextColor, labelBackground, labelForeground, labelBorderColor, buttonForeground, buttonBackground,
+                                                buttonHoveredForeground, buttonPressedForeground, buttonHoveredBackground, buttonPressedBackground,
+                                                buttonBorderColor, checkBoxBackground, checkBoxForeground, checkBoxCheckedBackground, checkBoxCheckedForeground,
+                                                checkBoxHoveredBackground, checkBoxBorderColor, checkBoxHoveredBorderColor, progressBarBackground,
+                                                progressBarForeground, progressBarText, toggleButtonBackground, toggleButtonForeground,
+                                                toggleButtonIndicatorColor, itemViewEvenRowColor, itemViewOddRowColor, itemViewSelectedColor,
+                                                lineEditFocusOutline, lineEditOutline, comboBoxDropDownBackground, iconLabelText);
 };
 
 class Size : public Basic
 {
 public:
     int fontSize{};
-    int fontH1;
-    int fontH2;
-    int fontH3;
-    int fontH4;
-    int fontH5;
-    int fontH6;
+    int fontH1{};
+    int fontH2{};
+    int fontH3{};
+    int fontH4{};
+    int fontH5{};
+    int fontH6{};
     int borderWidth{};
     int iconSize{};
     int normalRadius{};

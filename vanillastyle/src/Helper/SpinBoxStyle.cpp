@@ -74,7 +74,7 @@ QRect SpinBoxStyle::subControlRect(QStyle::ComplexControl control, const QStyleO
         case QStyle::SC_SpinBoxEditField:
             if (opt->buttonSymbols != QAbstractSpinBox::NoButtons)
             {
-                return rect.adjusted(0, 0, -iconSize + 2 * padding, 0);
+                return rect.adjusted(0, 0, -iconSize + padding, 0);
             }
             return opt->rect;
 
