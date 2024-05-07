@@ -42,7 +42,9 @@ public:
         LabelBackground,
         LabelBorderColor,
 
+        IconColor,
         IndicatorColor,
+
         ButtonForeground,
         ButtonBackground,
         ButtonBorderColor,
@@ -65,12 +67,14 @@ public:
         ToggleButtonForeground,
         ToggleButtonBorderColor,
         ToggleButtonIndicatorColor,
+        ToggleButtonIconColor,
 
         ItemViewEvenRowColor,
         ItemViewOddRowColor,
         ItemViewSelectedColor,
 
-        ComboBoxDropDownBackground
+        ComboBoxDropDownBackground,
+        ScrollBarSliderColor
     };
 
     enum TextSizeRole

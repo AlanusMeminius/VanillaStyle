@@ -28,7 +28,7 @@ bool SpinBoxStyle::draw(const QStyleOptionComplex* option, QPainter* painter, co
         if (const auto upButtonRect = subControlRect(QStyle::CC_SpinBox, option, QStyle::SC_SpinBoxUp, theme, widget); upButtonRect.isValid())
         {
             const auto iconPath = theme->getIconPath(Theme::IconRole::UpArrow);
-            const auto svg = theme->getCachedIcon(iconPath, theme->getColor(option, Theme::ColorRole::IndicatorColor));
+            const auto svg = theme->getCachedIcon(iconPath, theme->getColor(option, Theme::ColorRole::IconColor));
             renderSvgFromString(svg, painter, upButtonRect);
         }
         if (const auto downButtonRect = subControlRect(QStyle::CC_SpinBox, option, QStyle::SC_SpinBoxDown, theme, widget); downButtonRect.isValid())

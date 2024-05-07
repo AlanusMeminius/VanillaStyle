@@ -187,7 +187,7 @@ void ToggleButtonPrivate::setColor()
     {
         if (!isCustomIconColor)
         {
-            styleIconColor = customStyle->getCustomColor(Theme::ColorRole::IndicatorColor);
+            styleIconColor = customStyle->getCustomColor(Theme::ColorRole::ToggleButtonIconColor);
         }
         handleColor = customStyle->getCustomColor(Theme::ColorRole::ToggleButtonIndicatorColor);
         backgroundColor = customStyle->getCustomColor(Theme::ColorRole::ToggleButtonBackground);

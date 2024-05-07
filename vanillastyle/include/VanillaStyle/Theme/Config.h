@@ -63,8 +63,9 @@ public:
     QColor highlightTextColor;
     QColor primaryTextColor;
 
-    QColor indicatorColor;
+    QColor iconColor;
 
+    QColor indicatorColor;
     QColor textColor;
     QColor pressedTextColor;
     QColor hoverTextColor;
@@ -96,6 +97,7 @@ public:
     QColor toggleButtonBackground;
     QColor toggleButtonForeground;
     QColor toggleButtonIndicatorColor;
+    QColor toggleButtonIconColor;
 
     QColor itemViewEvenRowColor;
     QColor itemViewOddRowColor;
@@ -105,6 +107,8 @@ public:
     QColor lineEditOutline;
 
     QColor comboBoxDropDownBackground;
+
+    QColor scrollBarSliderColor;
     QColor iconLabelText;
     std::string toString()
     {
@@ -112,14 +116,15 @@ public:
         to_json(json, *this);
         return json.dump(4);
     }
-    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Color, backgroundColor, primaryTextColor, highlightTextColor, indicatorColor, textColor, pressedTextColor,
-                                                hoverTextColor, labelBackground, labelForeground, labelBorderColor, buttonForeground, buttonBackground,
-                                                buttonHoveredForeground, buttonPressedForeground, buttonHoveredBackground, buttonPressedBackground,
-                                                buttonBorderColor, checkBoxBackground, checkBoxForeground, checkBoxCheckedBackground, checkBoxCheckedForeground,
-                                                checkBoxHoveredBackground, checkBoxBorderColor, checkBoxHoveredBorderColor, progressBarBackground,
-                                                progressBarForeground, progressBarText, toggleButtonBackground, toggleButtonForeground,
-                                                toggleButtonIndicatorColor, itemViewEvenRowColor, itemViewOddRowColor, itemViewSelectedColor,
-                                                lineEditFocusOutline, lineEditOutline, comboBoxDropDownBackground, iconLabelText);
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Color, backgroundColor, primaryTextColor, highlightTextColor, iconColor, indicatorColor, textColor,
+                                                pressedTextColor, hoverTextColor, labelBackground, labelForeground, labelBorderColor, buttonForeground,
+                                                buttonBackground, buttonHoveredForeground, buttonPressedForeground, buttonHoveredBackground,
+                                                buttonPressedBackground, buttonBorderColor, checkBoxBackground, checkBoxForeground, checkBoxCheckedBackground,
+                                                checkBoxCheckedForeground, checkBoxHoveredBackground, checkBoxBorderColor, checkBoxHoveredBorderColor,
+                                                progressBarBackground, progressBarForeground, progressBarText, toggleButtonBackground, toggleButtonForeground,
+                                                toggleButtonIndicatorColor, toggleButtonIconColor, itemViewEvenRowColor, itemViewOddRowColor,
+                                                itemViewSelectedColor, lineEditFocusOutline, lineEditOutline, comboBoxDropDownBackground, scrollBarSliderColor,
+                                                iconLabelText);
 };
 
 class Size : public Basic
@@ -189,7 +194,7 @@ public:
     Size size;
     Icons icons;
     std::string progressBarMode;
-    bool debug{};
+    bool isEnableHotReload = false;
     std::vector<PatchConfig> patch;
 
     std::string toString()
@@ -199,7 +204,7 @@ public:
         return json.dump(4);
     }
 
-    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(StyleConfig, name, author, mode, color, size, icons, progressBarMode, debug, patch);
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(StyleConfig, name, author, mode, color, size, icons, progressBarMode, isEnableHotReload, patch);
 };
 
 enum Mode

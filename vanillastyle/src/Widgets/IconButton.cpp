@@ -157,7 +157,7 @@ void IconButtonPrivate::setUpStyle()
     }
     if (!isCustomIconColor)
     {
-        iconColor = customStyle->getCustomColor(Theme::ColorRole::IndicatorColor);
+        iconColor = customStyle->getCustomColor(Theme::ColorRole::IconColor);
     }
 
     if (!isCustomFont)

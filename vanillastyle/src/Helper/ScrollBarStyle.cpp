@@ -11,7 +11,7 @@ namespace Vanilla
 bool ScrollBarStyle::drawSlider(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
 {
     const auto* opt = qstyleoption_cast<const QStyleOptionSlider*>(option);
-    if (!opt)
+    if (opt == nullptr)
     {
         return true;
     }
@@ -20,7 +20,7 @@ bool ScrollBarStyle::drawSlider(const QStyleOption* option, QPainter* painter, c
     const QRectF handleRect = centerRectF(rect, scrollBarWidth, rect.height());
     painter->setRenderHint(QPainter::Antialiasing, true);
     const auto radius = theme->getSize(Theme::SmallRadius);
-    const auto color = theme->getColor(option, Theme::ColorRole::IndicatorColor);
+    const auto color = theme->getColor(option, Theme::ColorRole::ScrollBarSliderColor);
     Helper::renderRoundRect(painter, handleRect, color, radius);
     return true;
 }
@@ -28,7 +28,7 @@ bool ScrollBarStyle::drawSlider(const QStyleOption* option, QPainter* painter, c
 bool ScrollBarStyle::drawAddLine(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
 {
     const auto* opt = qstyleoption_cast<const QStyleOptionSlider*>(option);
-    if (!opt)
+    if (opt == nullptr)
     {
         return true;
     }
@@ -46,7 +46,7 @@ bool ScrollBarStyle::drawAddLine(const QStyleOption* option, QPainter* painter, 
 bool ScrollBarStyle::drawSubLine(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
 {
     const auto* opt = qstyleoption_cast<const QStyleOptionSlider*>(option);
-    if (!opt)
+    if (opt == nullptr)
     {
         return true;
     }
@@ -56,7 +56,7 @@ bool ScrollBarStyle::drawSubLine(const QStyleOption* option, QPainter* painter, 
     const auto iconSize = theme->getSize(Theme::IconSize);
     auto iconRect = QRectF(0, 0, iconSize, iconSize);
     iconRect.moveCenter(indicatorRect.center());
-    const auto svg = theme->getCachedIcon(iconPath, theme->getColor(option, Theme::ColorRole::IndicatorColor));
+    const auto svg = theme->getCachedIcon(iconPath, theme->getColor(option, Theme::ColorRole::IconColor));
     renderSvgFromString(svg, painter, iconRect);
     return true;
 }

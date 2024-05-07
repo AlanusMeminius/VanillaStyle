@@ -89,7 +89,7 @@ void Theme::update()
 
 bool Theme::isEnableHotReload() const
 {
-    return styleConfig.debug;
+    return styleConfig.isEnableHotReload;
 }
 
 void Theme::updatePalette()
@@ -270,14 +270,25 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
         break;
     }
     case LabelBackground:
+    {
         color = styleConfig.color.labelBackground;
         break;
+    }
     case LabelBorderColor:
+    {
         color = styleConfig.color.labelBorderColor;
         break;
+    }
+    case IconColor:
+    {
+        color = styleConfig.color.iconColor;
+        break;
+    }
     case IndicatorColor:
+    {
         color = styleConfig.color.indicatorColor;
         break;
+    }
     case ButtonForeground:
     {
         if ((flags & Flag) == Hover)
@@ -317,7 +328,6 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
     }
     case RadioButtonForeground:
     {
-        // color = QColor(253, 164, 3);
         color = styleConfig.color.checkBoxForeground;
         break;
     }
@@ -394,15 +404,25 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
         break;
     }
     case ItemViewSelectedColor:
+    {
         color = styleConfig.color.itemViewSelectedColor;
         break;
+    }
     case ItemViewEvenRowColor:
+    {
         color = styleConfig.color.itemViewEvenRowColor;
         break;
+    }
     case ItemViewOddRowColor:
+    {
         color = styleConfig.color.itemViewOddRowColor;
         break;
-
+    }
+    case ScrollBarSliderColor:
+    {
+        color = styleConfig.color.scrollBarSliderColor;
+        break;
+    }
     case ComboBoxDropDownBackground:
     {
         color = styleConfig.color.comboBoxDropDownBackground;
@@ -432,8 +452,10 @@ QColor Theme::customColor(const ColorRole role) const
         return styleConfig.color.toggleButtonForeground;
     case ToggleButtonIndicatorColor:
         return styleConfig.color.toggleButtonIndicatorColor;
-    case IndicatorColor:
-        return styleConfig.color.indicatorColor;
+    case IconColor:
+        return styleConfig.color.iconColor;
+    case ToggleButtonIconColor:
+        return styleConfig.color.toggleButtonIconColor;
     default:
         return Qt::white;
     }
