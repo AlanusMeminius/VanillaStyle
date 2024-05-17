@@ -16,14 +16,14 @@ bool CheckBoxStyle::draw(const QStyleOption* option, QPainter* painter, const st
 
     painter->setRenderHints(QPainter::Antialiasing);
     const auto rect = QRectF(opt->rect);
-    const auto bgColor = theme->getColor(option, Theme::CheckBoxBackground);
-    const auto borderColor = theme->getColor(option, Theme::CheckBoxBorderColor);
-    const auto border = theme->getSize(Theme::CheckBoxBorder);
+    const auto bgColor = theme->getColor(option, CheckBoxBackground);
+    const auto borderColor = theme->getColor(option, CheckBoxBorderColor);
+    const auto border = theme->getSize(CheckBoxBorder);
     const auto halfBorder = border / 2.;
     const auto margins = QMarginsF(halfBorder, halfBorder, halfBorder, halfBorder);
     const auto buttonRect = border > 0.1 ? rect.marginsRemoved(margins) : rect;
 
-    const auto radius = theme->getSize(Theme::ButtonRadius);
+    const auto radius = theme->getSize(ButtonRadius);
     Helper::renderRoundRect(painter, buttonRect, bgColor, radius);
 
     if (border > 0.1)
@@ -41,7 +41,7 @@ bool CheckBoxStyle::draw(const QStyleOption* option, QPainter* painter, const st
 
 void CheckBoxStyle::drawIndicator(const QStyleOption* option, const QRectF rect, QPainter* painter, const std::shared_ptr<Theme>& theme) const
 {
-    const auto indicatorColor = theme->getColor(option, Theme::IndicatorColor);
+    const auto indicatorColor = theme->getColor(option, IndicatorColor);
 
     painter->setPen(QPen{indicatorColor, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin});
     const auto w = rect.width();

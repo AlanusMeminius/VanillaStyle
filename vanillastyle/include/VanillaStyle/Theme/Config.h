@@ -207,10 +207,6 @@ public:
     NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(StyleConfig, name, author, mode, color, size, icons, progressBarMode, isEnableHotReload, patch);
 };
 
-enum Mode
-{
-    Light,
-    Dark
-};
+
 
 }  // namespace Vanilla

@@ -42,8 +42,8 @@ void SwitchButton::paintEvent(QPaintEvent* event)
     QColor backgroundColor;
     if (auto * customStyle = qobject_cast<VanillaStyle*>(style()))
     {
-        handleColor = customStyle->getCustomColor(Theme::ColorRole::ButtonForeground);
-        backgroundColor = customStyle->getCustomColor(Theme::ColorRole::ButtonBackground);
+        handleColor = customStyle->getCustomColor(ColorRole::ButtonForeground);
+        backgroundColor = customStyle->getCustomColor(ColorRole::ButtonBackground);
     }
     painter.setPen(Qt::NoPen);
     painter.setBrush(handleColor);

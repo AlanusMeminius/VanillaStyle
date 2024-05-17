@@ -31,7 +31,7 @@ bool ItemViewStyle::draw(const QStyleOption* option, QPainter* painter, const st
             Qt::AlignVCenter | Qt::AlignBaseline | Qt::TextSingleLine | (textAlignment.testFlag(Qt::AlignRight) ? Qt::AlignRight : Qt::AlignLeft);
         painter->setFont(opt->font);
         painter->setBrush(Qt::NoBrush);
-        const auto textColor = theme->getColor(option, Theme::PrimaryText);
+        const auto textColor = theme->getColor(option, PrimaryText);
         painter->setPen(textColor);
         painter->drawText(rect.adjusted(5, 0, 0, 0), static_cast<int>(textFlags), elidedText, nullptr);
     }
@@ -47,19 +47,19 @@ void ItemViewStyle::drawPrimitive(const QStyleOption* option, QPainter* painter,
         QColor bgColor;
         if (row % 2 == 0)
         {
-            bgColor = theme->getColor(opt, Theme::ItemViewEvenRowColor);
+            bgColor = theme->getColor(opt, ItemViewEvenRowColor);
         }
         else
         {
-            bgColor = theme->getColor(opt, Theme::ItemViewOddRowColor);
+            bgColor = theme->getColor(opt, ItemViewOddRowColor);
         }
         if (opt->state.testFlag(QStyle::State_Active) && opt->state.testFlag(QStyle::State_Selected))
         {
-            bgColor = theme->getColor(option, Theme::ItemViewSelectedColor);
+            bgColor = theme->getColor(option, ItemViewSelectedColor);
         }
 
         painter->setRenderHint(QPainter::Antialiasing);
-        const auto radius = theme->getSize(Theme::ItemViewRadius);
+        const auto radius = theme->getSize(ItemViewRadius);
         Helper::renderRoundRect(painter, rect.adjusted(1, 3, -1, -3), bgColor, radius);
     }
 }

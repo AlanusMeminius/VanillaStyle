@@ -22,7 +22,6 @@ if (NOT TARGET QWindowKit::Core)
     add_subdirectory(lib/qwindowkit EXCLUDE_FROM_ALL)
 endif ()
 
-
 target_link_libraries(VanillaStyleExample
         PRIVATE
         VanillaStyle

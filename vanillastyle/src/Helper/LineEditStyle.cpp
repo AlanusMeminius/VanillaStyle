@@ -19,8 +19,8 @@ bool LineEditStyle::draw(const QStyleOption* option, QPainter* painter, const st
     painter->setRenderHints(QPainter::Antialiasing);
     if (opt->lineWidth > 0)
     {
-        const auto radius = theme->getSize(Theme::ButtonRadius);
-        const auto fgColor = theme->getColor(option, Theme::ColorRole::LineEditOutline);
+        const auto radius = theme->getSize(ButtonRadius);
+        const auto fgColor = theme->getColor(option, ColorRole::LineEditOutline);
         constexpr auto border = 1;
         Helper::renderRoundBorder(painter, QRectF(opt->rect).adjusted(1, 1, -1, -1), fgColor, border, radius);
     }

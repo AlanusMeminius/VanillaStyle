@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>744</width>
-    <height>936</height>
+    <height>601</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -278,34 +278,52 @@
       </item>
       <item>
        <property name="text">
-        <string>New Item9</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>New Item10</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>New Item12</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>New Item13</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>New Item14</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
         <string>New Item15</string>
        </property>
       </item>
+     </widget>
+    </item>
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>1</number>
+      </property>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Tab 1</string>
+       </attribute>
+       <widget class="QLabel" name="label_7">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>0</y>
+          <width>58</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>tab one</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tab_2">
+       <attribute name="title">
+        <string>Tab 2</string>
+       </attribute>
+       <widget class="QLabel" name="label_10">
+        <property name="geometry">
+         <rect>
+          <x>110</x>
+          <y>0</y>
+          <width>58</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Tab Two</string>
+        </property>
+       </widget>
+      </widget>
      </widget>
     </item>
    </layout>

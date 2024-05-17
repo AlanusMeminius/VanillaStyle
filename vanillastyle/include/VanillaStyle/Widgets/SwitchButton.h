@@ -12,9 +12,9 @@ public:
     ~SwitchButton();
     [[nodiscard]] QSize sizeHint() const override;
 
-signals:
-    void toggled(bool checked);
-    void checked(bool checked);
+
+    Q_SIGNAL void toggled(bool checked);
+    Q_SIGNAL void checked(bool checked);
 
 protected:
     void paintEvent(QPaintEvent* event) override;

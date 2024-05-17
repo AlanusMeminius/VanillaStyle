@@ -25,7 +25,7 @@ private:
     QColor textColor;
     QColor buttonBorderColor;
     QFont textFont;
-    Theme::TextSizeRole textSizeRole = Theme::TextSizeRole::H6;
+    TextSizeRole textSizeRole = TextSizeRole::H6;
 
     bool isIconFirst = false;
     bool isCustomIconColor = false;

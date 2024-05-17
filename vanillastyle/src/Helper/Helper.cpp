@@ -18,8 +18,8 @@ bool Helper::shapedFrame(const QStyleOption* option, QPainter* painter, const st
     {
         painter->setRenderHint(QPainter::Antialiasing);
 
-        const auto radius = theme->getSize(Theme::NormalRadius);
-        renderRoundRect(painter, option->rect, theme->getColor(option, Theme::ComboBoxDropDownBackground), radius);
+        const auto radius = theme->getSize(NormalRadius);
+        renderRoundRect(painter, option->rect, theme->getColor(option, ComboBoxDropDownBackground), radius);
         return true;
     }
 
@@ -29,8 +29,8 @@ bool Helper::shapedFrame(const QStyleOption* option, QPainter* painter, const st
     //     if (!propertyValue.isEmpty() && propertyValue == "QLabelPatch")
     //     {
     //         painter->setRenderHint(QPainter::Antialiasing);
-    //         const auto radius = theme->getSize(Theme::NormalRadius);
-    //         renderRoundBorder(painter, option->rect.adjusted(1, 1, -1, -1), theme->getColor(option, Theme::LabelBorderColor), 1, radius);
+    //         const auto radius = theme->getSize(NormalRadius);
+    //         renderRoundBorder(painter, option->rect.adjusted(1, 1, -1, -1), theme->getColor(option, LabelBorderColor), 1, radius);
     //         return true;
     //     }
     //     return true;
@@ -53,7 +53,7 @@ bool Helper::drawLabel(const QStyleOption* option, QPainter* painter, const std:
         const auto textFlags = flag | Qt::AlignVCenter | Qt::AlignBaseline | Qt::TextSingleLine | Qt::TextHideMnemonic;
         const auto elidedText = opt->fontMetrics.elidedText(opt->text, Qt::ElideRight, rect.width(), Qt::TextSingleLine);
         painter->setBrush(Qt::NoBrush);
-        const auto fgcolor = theme->getColor(option, Theme::LabelText);
+        const auto fgcolor = theme->getColor(option, LabelText);
         painter->setPen(fgcolor);
         painter->drawText(rect, textFlags, elidedText);
     }

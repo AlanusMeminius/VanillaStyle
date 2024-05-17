@@ -24,7 +24,7 @@ public:
     void setIconColor(const QColor& color);
     void setIconFirst();
     void setTextColor(const QColor& textColor);
-    void setTextSizeRole(const Theme::TextSizeRole& textSizeRole);
+    void setTextSizeRole(const TextSizeRole& textSizeRole);
     void setButtonBorderColor(const QColor& color);
 
 protected:

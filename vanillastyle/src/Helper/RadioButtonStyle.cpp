@@ -15,26 +15,26 @@ bool Vanilla::RadioButtonStyle::draw(const QStyleOption* option, QPainter* paint
     painter->setRenderHints(QPainter::Antialiasing);
 
     const auto rect = QRectF(opt->rect);
-    const auto border = theme->getSize(Theme::CheckBoxBorder);
+    const auto border = theme->getSize(CheckBoxBorder);
     const auto halfBorder = border / 2.;
     const auto margins = QMarginsF(halfBorder, halfBorder, halfBorder, halfBorder);
     const auto buttonRect = border > 0.1 ? rect.marginsRemoved(margins) : rect;
 
     // btn background
-    const auto bgColor = theme->getColor(option, Theme::RadioButtonBackground);
+    const auto bgColor = theme->getColor(option, RadioButtonBackground);
     Helper::renderEllipse(painter, buttonRect, bgColor);
 
     // btn border
     if (border > 0.1)
     {
-        const auto borderColor = theme->getColor(option, Theme::CheckBoxBorderColor);
+        const auto borderColor = theme->getColor(option, CheckBoxBorderColor);
         Helper::renderEllipseBorder(painter, buttonRect, borderColor, border);
     }
 
     if ((theme->flags(option) & Theme::Checked) == Theme::Checked)
     {
-        auto margin = theme->getSize(Theme::CheckBoxIndicatorMargin);
-        const auto indicatorColor = theme->getColor(option, Theme::IndicatorColor);
+        auto margin = theme->getSize(CheckBoxIndicatorMargin);
+        const auto indicatorColor = theme->getColor(option, IndicatorColor);
         Helper::renderEllipse(painter, rect.adjusted(margin, margin, -margin, -margin), indicatorColor);
     }
     return true;
@@ -46,12 +46,12 @@ QRect Vanilla::RadioButtonStyle::subElementRect(QStyle::SubElement element, cons
     Q_UNUSED(widget);
     if (element == QStyle::SE_RadioButtonIndicator)
     {
-        const auto indicatorSize = theme->getSize(Theme::IconSize);
+        const auto indicatorSize = theme->getSize(IconSize);
         const auto indicatorY = option->rect.y() + (option->rect.height() - indicatorSize) / 2;
         return QRect{option->rect.x(), indicatorY, indicatorSize, indicatorSize};
     }
     // SE_RadioButtonContents
-    const auto indicatorSize = theme->getSize(Theme::IconSize);
-    const auto border = theme->getSize(Theme::CheckBoxSpacing);
+    const auto indicatorSize = theme->getSize(IconSize);
+    const auto border = theme->getSize(CheckBoxSpacing);
     return option->rect.marginsRemoved({indicatorSize + border, 0, 0, 0});
 }

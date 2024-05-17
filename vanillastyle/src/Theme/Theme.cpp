@@ -488,7 +488,7 @@ QString Theme::getIconPath(const IconRole role) const
     }
 }
 
-Theme::ProgressMode Theme::getProgressMode() const
+ProgressMode Theme::getProgressMode() const
 {
     return styleConfig.progressBarMode == "mode1" ? ModeOne : ModeTwo;
 }

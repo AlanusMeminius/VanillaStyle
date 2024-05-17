@@ -1,7 +1,8 @@
 #pragma once
 
 #include "VanillaStyle/Helper/Helper.h"
-#include "VanillaStyle/Theme/Theme.h"
+#include "VanillaStyle/Theme/Mode.h"
+// #include "VanillaStyle/Theme/Theme.h"
 
 #include <QCommonStyle>
 #include <QPainter>
@@ -31,8 +32,8 @@ public:
 
     void setConfigPath(const QString& path);
     void setMode(Mode mode);
-    QColor getCustomColor(Theme::ColorRole role);
-    QFont getCustomFont(Theme::TextSizeRole sizeRole);
+    QColor getCustomColor(ColorRole role);
+    QFont getCustomFont(TextSizeRole sizeRole);
 
 private:
     using ControlHelper = std::function<bool(const QStyleOption*, QPainter*, const std::shared_ptr<Theme>&, const QWidget*)>;

@@ -5,7 +5,7 @@
 #include <QTextStream>
 
 #include "Config.h"
-
+#include "Theme.h"
 
 namespace Vanilla
 {

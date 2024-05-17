@@ -21,21 +21,21 @@ bool ButtonStyle::drawPushButtonBevel(const QStyleOption* option, QPainter* pain
     painter->setRenderHints(QPainter::Antialiasing);
 
     const auto rect = QRectF(optionButton->rect);
-    const auto border = theme->getSize(Theme::ButtonBorder);
-    const auto radius = theme->getSize(Theme::ButtonRadius);
+    const auto border = theme->getSize(ButtonBorder);
+    const auto radius = theme->getSize(ButtonRadius);
 
     const auto halfBorder = border / 2.;
     const auto margins = QMarginsF(halfBorder, halfBorder, halfBorder, halfBorder);
     const auto buttonRect = border > 0.1 ? rect.marginsRemoved(margins) : rect;
 
     // draw background
-    const auto bgColor = theme->getColor(option, Theme::ButtonBackground);
+    const auto bgColor = theme->getColor(option, ButtonBackground);
     Helper::renderRoundRect(painter, buttonRect, bgColor, radius);
 
     // draw border
     if (border > 0.1)
     {
-        const auto borderColor = theme->getColor(option, Theme::ButtonBorderColor);
+        const auto borderColor = theme->getColor(option, ButtonBorderColor);
         Helper::renderRoundBorder(painter, buttonRect, borderColor, border, radius);
     }
     return true;
@@ -49,7 +49,7 @@ bool ButtonStyle::drawPushButtonLabel(const QStyleOption* option, QPainter* pain
         return true;
     }
 
-    const auto fgColor = theme->getColor(option, Theme::ButtonForeground);
+    const auto fgColor = theme->getColor(option, ButtonForeground);
     const auto pixmap = getIconPixmap(opt->icon, opt->iconSize, widget);
     const auto colorizedPixmap = getColorizedPixmap(pixmap, widget, fgColor);
     const auto pixmapPixelRatio = colorizedPixmap.devicePixelRatio();
@@ -58,7 +58,7 @@ bool ButtonStyle::drawPushButtonLabel(const QStyleOption* option, QPainter* pain
     const auto isTextEmpty = opt->text.isEmpty();
     const auto isIconWithText = iconWidth > 0 && !isTextEmpty && textWidth > 0;
     const auto isIconFirst = widget->layoutDirection() == Qt::RightToLeft;
-    const auto padding = theme->getSize(Theme::NormalPadding);
+    const auto padding = theme->getSize(NormalPadding);
     const auto iconPadding = textWidth > 0 ? padding : 0;
     auto rect = QRect(0, 0, iconWidth + textWidth + iconPadding, opt->rect.height());
     rect.moveCenter(opt->rect.center());
@@ -90,7 +90,7 @@ bool ButtonStyle::drawPushButtonLabel(const QStyleOption* option, QPainter* pain
         constexpr auto textFlags = Qt::AlignCenter | Qt::AlignVCenter | Qt::AlignBaseline | Qt::TextSingleLine | Qt::TextHideMnemonic;
         const auto elidedText = opt->fontMetrics.elidedText(opt->text, Qt::ElideRight, rect.width(), Qt::TextSingleLine);
         painter->setBrush(Qt::NoBrush);
-        const auto fgcolor = theme->getColor(option, Theme::LabelText);
+        const auto fgcolor = theme->getColor(option, LabelText);
         painter->setPen(fgcolor);
         const auto textTect = centerRect(textOuterRect, textWidth, rect.height());
         painter->drawText(textTect, textFlags, elidedText);

@@ -12,10 +12,10 @@ namespace Vanilla
 {
 bool MenuStyle::drawPrimitive(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
 {
-    //        const auto radius = d->m_theme->getRadius(Theme::ButtonRadius);
+    //        const auto radius = d->m_theme->getRadius(ButtonRadius);
     const auto radius = 5;
     const auto bgColor = QColor(245, 245, 245);
-    const auto border = theme->getSize(Theme::ButtonBorder);
+    const auto border = theme->getSize(ButtonBorder);
     painter->setRenderHint(QPainter::Antialiasing);
     const auto totalRect = option->rect;
     const auto shadowPadding = 2;
@@ -67,7 +67,7 @@ bool MenuStyle::drawMenuBarItem(const QStyleOption* option, QPainter* painter, c
     const auto& bgColor = QColor(255, 255, 255);
     const auto& fgColor = QColor(12, 12, 12);
     int textFlags = Qt::AlignVCenter | Qt::AlignBaseline | Qt::TextSingleLine | Qt::AlignHCenter;
-    const auto radius = theme->getSize(Theme::ButtonRadius);
+    const auto radius = theme->getSize(ButtonRadius);
     painter->setPen(Qt::NoPen);
     painter->setBrush(bgColor);
     painter->setRenderHint(QPainter::Antialiasing, true);
@@ -84,7 +84,7 @@ bool MenuStyle::drawMenuItem(const QStyleOption* option, QPainter* painter, cons
     {
         return true;
     }
-    const auto padding = theme->getSize(Theme::MenuItemPadding);
+    const auto padding = theme->getSize(MenuItemPadding);
 
     if (opt->menuItemType == QStyleOptionMenuItem::Separator)
     {
@@ -99,8 +99,8 @@ bool MenuStyle::drawMenuItem(const QStyleOption* option, QPainter* painter, cons
 
         // Foreground.
         const auto fgRect = bgRect.marginsRemoved(QMargins{ padding, 0, padding, 0 });
-        const auto arrowWidth = theme->getSize(Theme::IconSize);
-        const auto& fgColor = theme->getColor(opt, Theme::ColorRole::PrimaryText);
+        const auto arrowWidth = theme->getSize(IconSize);
+        const auto& fgColor = theme->getColor(opt, ColorRole::PrimaryText);
         constexpr int textFlags = Qt::AlignVCenter | Qt::AlignBaseline | Qt::TextSingleLine | Qt::TextShowMnemonic | Qt::AlignLeft;
         const auto& fm = opt->fontMetrics;
 

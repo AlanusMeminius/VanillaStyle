@@ -18,7 +18,7 @@ bool ComboBoxStyle::draw(const QStyleOptionComplex* option, QPainter* painter, c
     {
         painter->setRenderHints(QPainter::Antialiasing);
         const auto rect = opt->rect;
-        Helper::renderRoundRect(painter, rect, theme->getColor(opt, Theme::ColorRole::LineEditOutline), 5);
+        Helper::renderRoundRect(painter, rect, theme->getColor(opt, ColorRole::LineEditOutline), 5);
         drawIndicator(opt, painter, theme, widget);
         return true;
     }
@@ -26,7 +26,7 @@ bool ComboBoxStyle::draw(const QStyleOptionComplex* option, QPainter* painter, c
     {
         painter->setRenderHints(QPainter::Antialiasing);
         const auto rect = opt->rect.adjusted(1, 1, -1, -1);
-        const auto fgColor = theme->getColor(opt, Theme::ColorRole::LineEditOutline);
+        const auto fgColor = theme->getColor(opt, ColorRole::LineEditOutline);
         Helper::renderRoundBorder(painter, rect, fgColor, 1, 5);
         drawIndicator(opt, painter, theme, widget);
         return true;
@@ -39,11 +39,11 @@ bool ComboBoxStyle::drawIndicator(const QStyleOptionComplex* option, QPainter* p
     const auto indicatorRect = subControlRect(QStyle::CC_ComboBox, option, QStyle::SC_ComboBoxArrow, theme, widget);
     if (indicatorRect.isValid())
     {
-        const auto iconPath = theme->getIconPath(Theme::IconRole::DownArrow);
-        const auto iconSize = theme->getSize(Theme::IconSize);
+        const auto iconPath = theme->getIconPath(IconRole::DownArrow);
+        const auto iconSize = theme->getSize(IconSize);
         auto iconRect = QRectF(0, 0, iconSize, iconSize);
         iconRect.moveCenter(indicatorRect.center());
-        const auto svg = theme->getCachedIcon(iconPath, theme->getColor(option, Theme::ColorRole::IndicatorColor));
+        const auto svg = theme->getCachedIcon(iconPath, theme->getColor(option, ColorRole::IndicatorColor));
         renderSvgFromString(svg, painter, iconRect);
     }
     return true;
@@ -59,8 +59,8 @@ QRect ComboBoxStyle::subControlRect(QStyle::ComplexControl control, const QStyle
         {
             return {};
         }
-        const auto iconSize = theme->getSize(Theme::IconSize);
-        const auto padding = theme->getSize(Theme::NormalPadding);
+        const auto iconSize = theme->getSize(IconSize);
+        const auto padding = theme->getSize(NormalPadding);
         switch (subControl)
         {
         case QStyle::SC_ComboBoxArrow:

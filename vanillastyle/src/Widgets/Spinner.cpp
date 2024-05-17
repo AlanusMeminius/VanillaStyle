@@ -87,7 +87,7 @@ void SpinnerPrivate::updateColor()
     Q_Q(Spinner);
     if (auto* customStyle = qobject_cast<VanillaStyle*>(q->style()))
     {
-        m_color = customStyle->getCustomColor(Theme::ColorRole::ButtonForeground);
+        m_color = customStyle->getCustomColor(ColorRole::ButtonForeground);
     }
     else
     {

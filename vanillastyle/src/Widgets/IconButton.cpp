@@ -57,7 +57,7 @@ void IconButton::setTextColor(const QColor& textColor)
     d->isCustomTextColor = true;
 }
 
-void IconButton::setTextSizeRole(const Theme::TextSizeRole& textSizeRole)
+void IconButton::setTextSizeRole(const TextSizeRole& textSizeRole)
 {
     Q_D(IconButton);
     d->textSizeRole = textSizeRole;
@@ -157,7 +157,7 @@ void IconButtonPrivate::setUpStyle()
     }
     if (!isCustomIconColor)
     {
-        iconColor = customStyle->getCustomColor(Theme::ColorRole::IconColor);
+        iconColor = customStyle->getCustomColor(ColorRole::IconColor);
     }
 
     if (!isCustomFont)
@@ -171,7 +171,7 @@ void IconButtonPrivate::setUpStyle()
 
     if (!isCustomTextColor)
     {
-        textColor = customStyle->getCustomColor(Theme::ColorRole::LabelText);
+        textColor = customStyle->getCustomColor(ColorRole::LabelText);
     }
     else
     {

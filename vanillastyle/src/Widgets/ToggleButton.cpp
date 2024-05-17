@@ -187,11 +187,11 @@ void ToggleButtonPrivate::setColor()
     {
         if (!isCustomIconColor)
         {
-            styleIconColor = customStyle->getCustomColor(Theme::ColorRole::ToggleButtonIconColor);
+            styleIconColor = customStyle->getCustomColor(ColorRole::ToggleButtonIconColor);
         }
-        handleColor = customStyle->getCustomColor(Theme::ColorRole::ToggleButtonIndicatorColor);
-        backgroundColor = customStyle->getCustomColor(Theme::ColorRole::ToggleButtonBackground);
-        textColor = customStyle->getCustomColor(Theme::ColorRole::PrimaryText);
+        handleColor = customStyle->getCustomColor(ColorRole::ToggleButtonIndicatorColor);
+        backgroundColor = customStyle->getCustomColor(ColorRole::ToggleButtonBackground);
+        textColor = customStyle->getCustomColor(ColorRole::PrimaryText);
     }
 }
 

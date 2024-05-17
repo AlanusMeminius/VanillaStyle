@@ -1,5 +1,5 @@
 #pragma once
-#include "Theme/Config.h"
+#include "Theme/Mode.h"
 
 #define VANILLA_PATCH_PROPERTY "_vanillaStyle_Patch"
 

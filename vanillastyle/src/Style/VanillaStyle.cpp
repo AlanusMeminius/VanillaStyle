@@ -176,22 +176,22 @@ int VanillaStyle::pixelMetric(PixelMetric pm, const QStyleOption* option, const 
     case PM_ExclusiveIndicatorWidth:
     case PM_IndicatorHeight:
     case PM_ExclusiveIndicatorHeight:
-        return d->theme->getSize(Theme::IconSize);
+        return d->theme->getSize(IconSize);
     case PM_RadioButtonLabelSpacing:
     case PM_CheckBoxLabelSpacing:
-        return d->theme->getSize(Theme::CheckBoxSpacing);
+        return d->theme->getSize(CheckBoxSpacing);
         // Button.
     case PM_ButtonMargin:
-        return d->theme->getSize(Theme::ButtonTextMargin);
+        return d->theme->getSize(ButtonTextMargin);
     case PM_ButtonDefaultIndicator:
-        return d->theme->getSize(Theme::IconSize);
+        return d->theme->getSize(IconSize);
     case PM_MenuButtonIndicator:
-        return d->theme->getSize(Theme::IconSize);
+        return d->theme->getSize(IconSize);
     case PM_ButtonShiftHorizontal:
     case PM_ButtonShiftVertical:
         return 0;
     case PM_ButtonIconSize:
-        return d->theme->getSize(Theme::IconSize);
+        return d->theme->getSize(IconSize);
     default:
         break;
     }
@@ -339,13 +339,13 @@ void VanillaStyle::setMode(const Mode mode)
     d->updatePalette();
 }
 
-QColor VanillaStyle::getCustomColor(const Theme::ColorRole role)
+QColor VanillaStyle::getCustomColor(ColorRole role)
 {
     Q_D(VanillaStyle);
     return d->theme->customColor(role);
 }
 
-QFont VanillaStyle::getCustomFont(Theme::TextSizeRole sizeRole)
+QFont VanillaStyle::getCustomFont(TextSizeRole sizeRole)
 {
     Q_D(VanillaStyle);
     return d->theme->getFont(sizeRole);
@@ -392,7 +392,7 @@ void VanillaStylePrivate::updatePalette() const
 void VanillaStylePrivate::updateFont() const
 {
     // set up font
-    const auto font = theme->getFont(Theme::TextSizeRole::Default);
+    const auto font = theme->getFont(TextSizeRole::Default);
     QApplication::setFont(font);
 }
 

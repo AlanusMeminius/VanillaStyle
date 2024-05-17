@@ -139,8 +139,8 @@ void IconLabelPrivate::paint(QPainter* painter)
     QFont font = q->font();
     if (auto* customStyle = qobject_cast<VanillaStyle*>(q->style()))
     {
-        textColor = customStyle->getCustomColor(Theme::ColorRole::LabelText);
-        font = customStyle->getCustomFont(Theme::TextSizeRole::H6);
+        textColor = customStyle->getCustomColor(ColorRole::LabelText);
+        font = customStyle->getCustomFont(TextSizeRole::H6);
     }
     const QFontMetrics fm(font);
     labelWidth = fm.horizontalAdvance(label);

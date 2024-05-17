@@ -19,7 +19,7 @@ bool SpinBoxStyle::draw(const QStyleOptionComplex* option, QPainter* painter, co
 
     // 画边框
     const auto spinBoxRect = opt->rect.adjusted(1, 1, -1, -1);
-    painter->setPen(theme->getColor(opt, Theme::ColorRole::LineEditOutline));
+    painter->setPen(theme->getColor(opt, ColorRole::LineEditOutline));
     painter->drawRoundedRect(spinBoxRect, 5, 5);
 
     // 画箭头
@@ -27,14 +27,14 @@ bool SpinBoxStyle::draw(const QStyleOptionComplex* option, QPainter* painter, co
     {
         if (const auto upButtonRect = subControlRect(QStyle::CC_SpinBox, option, QStyle::SC_SpinBoxUp, theme, widget); upButtonRect.isValid())
         {
-            const auto iconPath = theme->getIconPath(Theme::IconRole::UpArrow);
-            const auto svg = theme->getCachedIcon(iconPath, theme->getColor(option, Theme::ColorRole::IconColor));
+            const auto iconPath = theme->getIconPath(IconRole::UpArrow);
+            const auto svg = theme->getCachedIcon(iconPath, theme->getColor(option, ColorRole::IconColor));
             renderSvgFromString(svg, painter, upButtonRect);
         }
         if (const auto downButtonRect = subControlRect(QStyle::CC_SpinBox, option, QStyle::SC_SpinBoxDown, theme, widget); downButtonRect.isValid())
         {
-            const auto iconPath = theme->getIconPath(Theme::IconRole::DownArrow);
-            const auto svg = theme->getCachedIcon(iconPath, theme->getColor(option, Theme::ColorRole::IndicatorColor));
+            const auto iconPath = theme->getIconPath(IconRole::DownArrow);
+            const auto svg = theme->getCachedIcon(iconPath, theme->getColor(option, ColorRole::IndicatorColor));
             renderSvgFromString(svg, painter, downButtonRect);
         }
     }
@@ -50,9 +50,9 @@ QRect SpinBoxStyle::subControlRect(QStyle::ComplexControl control, const QStyleO
         {
             return {};
         }
-        const auto padding = theme->getSize(Theme::SizeRole::NormalBorder);
+        const auto padding = theme->getSize(SizeRole::NormalBorder);
         const auto& rect = opt->rect;
-        const auto iconSize = theme->getSize(Theme::IconSize);
+        const auto iconSize = theme->getSize(IconSize);
 
         switch (subControl)
         {

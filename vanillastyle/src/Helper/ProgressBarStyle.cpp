@@ -19,15 +19,15 @@ bool ProgressBarStyle::drawGroove(const QStyleOption* option, QPainter* painter,
     painter->setRenderHint(QPainter::Antialiasing);
     const auto rect = QRectF(opt->rect);
 
-    const QColor bgColor = theme->getColor(option, Theme::ProgressBarBackground);
-    if (const auto mode = theme->getProgressMode(); mode == Theme::ModeOne)
+    const QColor bgColor = theme->getColor(option, ProgressBarBackground);
+    if (const auto mode = theme->getProgressMode(); mode == ModeOne)
     {
         painter->setPen(QPen(bgColor, 2, Qt::DashLine));
         painter->drawLine(QPointF(rect.left(), rect.center().y()), QPointF(rect.right() - rect.height() / 2, rect.center().y()));
     }
-    else if (mode == Theme::ModeTwo)
+    else if (mode == ModeTwo)
     {
-        const auto progressHeight = theme->getSize(Theme::ProgressBarHeight);
+        const auto progressHeight = theme->getSize(ProgressBarHeight);
         auto modeTwoRect = rect;
         modeTwoRect.setHeight(progressHeight);
         modeTwoRect.moveCenter(rect.center());
@@ -51,12 +51,12 @@ bool ProgressBarStyle::drawContents(const QStyleOption* option, QPainter* painte
     {
         painter->setRenderHint(QPainter::Antialiasing);
         const auto rect = opt->rect;
-        const QColor fgColor = theme->getColor(option, Theme::ProgressBarForeground);
+        const QColor fgColor = theme->getColor(option, ProgressBarForeground);
         const auto mode = theme->getProgressMode();
         const auto percentage = 1 - static_cast<double>(value) / static_cast<double>(range);
         const auto progressQRect = rect.adjusted(0, 0, -static_cast<int>(rect.width() * percentage), 0);
         const auto progressRect = QRectF(progressQRect);
-        if (mode == Theme::ModeOne)
+        if (mode == ModeOne)
         {
             painter->setPen(QPen(fgColor, 2, Qt::SolidLine));
             const double indicatorSize = progressRect.height();
@@ -66,16 +66,16 @@ bool ProgressBarStyle::drawContents(const QStyleOption* option, QPainter* painte
 
             const auto topRightPoint = QPointF(progressRect.right() - indicatorSize, progressRect.center().y() - indicatorSize / 2);
             const auto planeRect = QRectF(topRightPoint, QSizeF(indicatorSize, indicatorSize));
-            const auto path = theme->getIconPath(Theme::IconRole::ProgressIndicator);
+            const auto path = theme->getIconPath(IconRole::ProgressIndicator);
             if (path.isEmpty())
             {
                 return true;
             }
             renderSvgFromPath(path, painter, planeRect);
         }
-        else if (mode == Theme::ModeTwo)
+        else if (mode == ModeTwo)
         {
-            const auto progressHeight = theme->getSize(Theme::ProgressBarHeight);
+            const auto progressHeight = theme->getSize(ProgressBarHeight);
             const double indicatorSize = progressRect.height() / 2;
             const auto margin = (progressRect.height() - progressHeight) / 2;
             const auto radius = progressHeight / 3;
@@ -101,7 +101,7 @@ bool ProgressBarStyle::drawLabel(const QStyleOption* option, QPainter* painter, 
         return true;
     }
     const QPen oldPen = painter->pen();
-    const QColor tColor = theme->getColor(option, Theme::ProgressBarText);
+    const QColor tColor = theme->getColor(option, ProgressBarText);
     painter->setPen(tColor);
     painter->drawText(opt->rect, Qt::AlignRight | Qt::AlignVCenter | Qt::TextSingleLine, opt->text);
     painter->setPen(oldPen);
@@ -120,12 +120,12 @@ QRect ProgressBarStyle::subElementRect(QStyle::SubElement subElement, const QSty
         }
         else if (subElement == QStyle::SE_ProgressBarContents)
         {
-            const auto textWidth = theme->getSize(Theme::ProgressBarTextMargin);
+            const auto textWidth = theme->getSize(ProgressBarTextMargin);
             return progressBarOption->rect.adjusted(0, 0, -textWidth, 0);
         }
         else if (subElement == QStyle::SE_ProgressBarGroove)
         {
-            const auto textWidth = theme->getSize(Theme::ProgressBarTextMargin);
+            const auto textWidth = theme->getSize(ProgressBarTextMargin);
             return progressBarOption->rect.adjusted(0, 0, -textWidth, 0);
         }
     }

@@ -16,11 +16,11 @@ bool ScrollBarStyle::drawSlider(const QStyleOption* option, QPainter* painter, c
         return true;
     }
     const QRectF rect = opt->rect;
-    const auto scrollBarWidth = theme->getSize(Theme::ScrollBarWidth);
+    const auto scrollBarWidth = theme->getSize(ScrollBarWidth);
     const QRectF handleRect = centerRectF(rect, scrollBarWidth, rect.height());
     painter->setRenderHint(QPainter::Antialiasing, true);
-    const auto radius = theme->getSize(Theme::SmallRadius);
-    const auto color = theme->getColor(option, Theme::ColorRole::ScrollBarSliderColor);
+    const auto radius = theme->getSize(SmallRadius);
+    const auto color = theme->getColor(option, ColorRole::ScrollBarSliderColor);
     Helper::renderRoundRect(painter, handleRect, color, radius);
     return true;
 }
@@ -34,11 +34,11 @@ bool ScrollBarStyle::drawAddLine(const QStyleOption* option, QPainter* painter, 
     }
     painter->setRenderHint(QPainter::Antialiasing);
     const auto indicatorRect = QRectF(opt->rect);
-    const auto iconPath = theme->getIconPath(Theme::IconRole::DownArrow);
-    const auto iconSize = theme->getSize(Theme::IconSize);
+    const auto iconPath = theme->getIconPath(IconRole::DownArrow);
+    const auto iconSize = theme->getSize(IconSize);
     auto iconRect = QRectF(0, 0, iconSize, iconSize);
     iconRect.moveCenter(indicatorRect.center());
-    const auto svg = theme->getCachedIcon(iconPath, theme->getColor(option, Theme::ColorRole::IndicatorColor));
+    const auto svg = theme->getCachedIcon(iconPath, theme->getColor(option, ColorRole::IndicatorColor));
     renderSvgFromString(svg, painter, iconRect);
     return true;
 }
@@ -52,11 +52,11 @@ bool ScrollBarStyle::drawSubLine(const QStyleOption* option, QPainter* painter, 
     }
     painter->setRenderHint(QPainter::Antialiasing);
     const auto indicatorRect = QRectF(opt->rect);
-    const auto iconPath = theme->getIconPath(Theme::IconRole::UpArrow);
-    const auto iconSize = theme->getSize(Theme::IconSize);
+    const auto iconPath = theme->getIconPath(IconRole::UpArrow);
+    const auto iconSize = theme->getSize(IconSize);
     auto iconRect = QRectF(0, 0, iconSize, iconSize);
     iconRect.moveCenter(indicatorRect.center());
-    const auto svg = theme->getCachedIcon(iconPath, theme->getColor(option, Theme::ColorRole::IconColor));
+    const auto svg = theme->getCachedIcon(iconPath, theme->getColor(option, ColorRole::IconColor));
     renderSvgFromString(svg, painter, iconRect);
     return true;
 }
