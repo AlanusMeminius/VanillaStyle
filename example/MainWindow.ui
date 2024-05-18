@@ -284,46 +284,22 @@
      </widget>
     </item>
     <item>
-     <widget class="QTabWidget" name="tabWidget">
-      <property name="currentIndex">
-       <number>1</number>
-      </property>
-      <widget class="QWidget" name="tab">
-       <attribute name="title">
-        <string>Tab 1</string>
-       </attribute>
-       <widget class="QLabel" name="label_7">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>0</y>
-          <width>58</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>tab one</string>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QWidget" name="tab_2">
-       <attribute name="title">
-        <string>Tab 2</string>
-       </attribute>
-       <widget class="QLabel" name="label_10">
-        <property name="geometry">
-         <rect>
-          <x>110</x>
-          <y>0</y>
-          <width>58</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Tab Two</string>
-        </property>
-       </widget>
-      </widget>
+     <widget class="QTableWidget" name="tableWidget">
+      <column>
+       <property name="text">
+        <string>New Column</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>New Column</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>New Column</string>
+       </property>
+      </column>
      </widget>
     </item>
    </layout>

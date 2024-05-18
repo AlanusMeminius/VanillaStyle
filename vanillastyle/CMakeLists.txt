@@ -1,9 +1,22 @@
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Widgets Svg)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Widgets Svg)
 
-if (NOT TARGET nlohmann_json)
-    add_subdirectory(lib/json)
-endif ()
+include(FetchContent)
+
+FetchContent_Declare(
+        json
+        GIT_REPOSITORY https://github.com/nlohmann/json
+        GIT_TAG v3.11.3
+)
+FetchContent_MakeAvailable(json)
+
+FetchContent_Declare(
+        fgblur
+        GIT_REPOSITORY https://github.com/bfraboni/FastGaussianBlur.git
+        GIT_TAG        main
+)
+FetchContent_MakeAvailable(fgblur)
+#include_directories(${fgblur_SOURCE_DIR})
 
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
@@ -27,7 +40,6 @@ set(RESOURCES
 set(LIBRAY_NAME VanillaStyle)
 
 add_library(${LIBRAY_NAME} SHARED)
-
 target_sources(
         ${LIBRAY_NAME}
         PRIVATE
@@ -51,7 +63,7 @@ target_include_directories(
         $<INSTALL_INTERFACE:include>
         $<BUILD_INTERFACE:${INCLUDE_DIR}>
         PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/lib/FastGaussianBlur
+        ${fgblur_SOURCE_DIR}
 )
 
 set_target_properties(
@@ -66,8 +78,8 @@ set_target_properties(
         DEBUG_POSTFIX _debug
 )
 
-install(TARGETS VanillaStyle
-        EXPORT VanillaStyleTargets
+install(TARGETS ${LIBRAY_NAME}
+        EXPORT ${LIBRAY_NAME}Targets
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib
         RUNTIME DESTINATION bin
@@ -76,14 +88,7 @@ install(TARGETS VanillaStyle
 
 # install headers
 install(DIRECTORY include/ DESTINATION include)
-install(DIRECTORY lib/FastGaussianBlur DESTINATION include)
-
-# add configuration file
-install(EXPORT VanillaStyleTargets
-        FILE VanillaStyleTargets.cmake
-        NAMESPACE VanillaStyle::
-        DESTINATION lib/cmake/VanillaStyle
-)
+install(DIRECTORY ${fgblur_SOURCE_DIR}/ DESTINATION include)
 
 include(CMakePackageConfigHelpers)
 
@@ -94,24 +99,25 @@ write_basic_package_version_file(
         COMPATIBILITY AnyNewerVersion
 )
 
-# install cmake target files
-export(EXPORT VanillaStyleTargets
-        FILE ${CMAKE_CURRENT_BINARY_DIR}/VanillaStyleTargets.cmake
-        NAMESPACE VanillaStyle::
+# export cmake target files
+export(EXPORT ${LIBRAY_NAME}Targets
+        FILE ${CMAKE_CURRENT_BINARY_DIR}/${LIBRAY_NAME}Targets.cmake
 )
 
-# install cmake files
-set(PACKAGE_VanillaStyle_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
-set(PACKAGE_JSON_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib/json/include/nlohmann)
+configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/${LIBRAY_NAME}Config.cmake.in
+        ${CMAKE_CURRENT_BINARY_DIR}/${LIBRAY_NAME}Config.cmake
+        INSTALL_DESTINATION lib/cmake/${LIBRAY_NAME}
+)
 
-configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/VanillaStyleConfig.cmake.in
-        ${CMAKE_CURRENT_BINARY_DIR}/VanillaStyleConfig.cmake
-        INSTALL_DESTINATION lib/cmake/VanillaStyle
+install(EXPORT ${LIBRAY_NAME}Targets
+        FILE ${LIBRAY_NAME}Targets.cmake
+        NAMESPACE ${LIBRAY_NAME}::
+        DESTINATION lib/cmake/${LIBRAY_NAME}
 )
 
 # Install version and config files
 install(FILES
-        ${CMAKE_CURRENT_BINARY_DIR}/VanillaStyleConfig.cmake
-        ${CMAKE_CURRENT_BINARY_DIR}/VanillaStyleConfigVersion.cmake
-        DESTINATION lib/cmake/VanillaStyle
+        ${CMAKE_CURRENT_BINARY_DIR}/${LIBRAY_NAME}Config.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/${LIBRAY_NAME}ConfigVersion.cmake
+        DESTINATION lib/cmake/${LIBRAY_NAME}
 )
