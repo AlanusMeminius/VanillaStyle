@@ -75,6 +75,7 @@ set_target_properties(
         PROJECT_LABEL ${LIBRARY_NAME}
         SOVERSION ${PROJECT_VERSION_MAJOR}
         VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
+        IMPORTED_CONFIGURATIONS "RELEASE;DEBUG"
         DEBUG_POSTFIX _debug
 )
 
@@ -94,7 +95,7 @@ include(CMakePackageConfigHelpers)
 
 # add version file
 write_basic_package_version_file(
-        ${CMAKE_BINARY_DIR}/cmake/${LIBRARY_NAME}ConfigVersion.cmake
+        ${CMAKE_BINARY_DIR}/${LIBRARY_NAME}ConfigVersion.cmake
         VERSION ${PROJECT_VERSION}
         COMPATIBILITY AnyNewerVersion
 )
@@ -103,13 +104,9 @@ write_basic_package_version_file(
 export(EXPORT ${LIBRARY_NAME}Targets
         FILE ${CMAKE_BINARY_DIR}/${LIBRARY_NAME}Targets.cmake
 )
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/${LIBRARY_NAME}Config.cmake.in
-        ${CMAKE_BINARY_DIR}/${LIBRARY_NAME}Config.cmake
-        COPYONLY
-)
 
 configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/${LIBRARY_NAME}Config.cmake.in
-        ${CMAKE_CURRENT_BINARY_DIR}/cmake/${LIBRARY_NAME}Config.cmake
+        ${CMAKE_BINARY_DIR}/${LIBRARY_NAME}Config.cmake
         INSTALL_DESTINATION lib/cmake/${LIBRARY_NAME}
 )
 
@@ -121,7 +118,7 @@ install(EXPORT ${LIBRARY_NAME}Targets
 
 # Install version and config files
 install(FILES
-        ${CMAKE_BINARY_DIR}/cmake/${LIBRARY_NAME}Config.cmake
-        ${CMAKE_BINARY_DIR}/cmake/${LIBRARY_NAME}ConfigVersion.cmake
+        ${CMAKE_BINARY_DIR}/${LIBRARY_NAME}Config.cmake
+        ${CMAKE_BINARY_DIR}/${LIBRARY_NAME}ConfigVersion.cmake
         DESTINATION lib/cmake/${LIBRARY_NAME}
 )
