@@ -1,12 +1,13 @@
 #pragma once
 
 #include <QWidget>
+#include "VanillaStyle/vglobal.h"
 
 namespace Vanilla
 {
 
 class ToggleButtonPrivate;
-class ToggleButton : public QWidget
+class VANILLA_EXPORT ToggleButton : public QWidget
 {
     Q_OBJECT
     Q_PROPERTY(int offset READ offset WRITE setOffset)

@@ -13,7 +13,7 @@ namespace Vanilla
 {
 class Theme;
 
-class SpinBoxStyle
+class VANILLA_EXPORT SpinBoxStyle
 {
 public:
     bool draw(const QStyleOptionComplex* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const;

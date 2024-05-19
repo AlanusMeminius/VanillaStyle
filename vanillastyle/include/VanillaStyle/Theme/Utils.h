@@ -9,7 +9,7 @@ namespace Vanilla
 {
 class VanillaStyle;
 
-struct ConfigChangeNotifier
+struct VANILLA_EXPORT ConfigChangeNotifier
 {
     explicit ConfigChangeNotifier(VanillaStyle* style, const QString& configPath);
     ~ConfigChangeNotifier();

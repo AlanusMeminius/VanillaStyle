@@ -11,7 +11,7 @@ namespace Vanilla
 {
 class Theme;
 class PatchConfig;
-class PatchHelper
+class VANILLA_EXPORT PatchHelper
 {
 public:
 

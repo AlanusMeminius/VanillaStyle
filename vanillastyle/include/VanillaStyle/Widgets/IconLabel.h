@@ -1,12 +1,13 @@
 #pragma once
 #include <QWidget>
 #include <QString>
+#include "VanillaStyle/vglobal.h"
 
 namespace Vanilla
 {
 
 class IconLabelPrivate;
-class IconLabel : public QWidget
+class VANILLA_EXPORT IconLabel : public QWidget
 {
     Q_OBJECT
     Q_PROPERTY(QString label READ label WRITE setLabel NOTIFY labelChanged)

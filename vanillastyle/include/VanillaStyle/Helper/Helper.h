@@ -8,7 +8,7 @@ namespace Vanilla
 {
 class Theme;
 
-class Helper
+class VANILLA_EXPORT Helper
 {
 public:
     bool emptyControl(const QStyleOption*, QPainter*, const std::shared_ptr<Theme>&, const QWidget*) const;

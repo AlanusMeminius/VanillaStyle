@@ -13,7 +13,7 @@ namespace Vanilla
 {
 class Theme;
 
-class ProgressBarStyle
+class VANILLA_EXPORT ProgressBarStyle
 {
 public:
     bool drawGroove(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const;

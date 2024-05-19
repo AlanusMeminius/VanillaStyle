@@ -10,7 +10,7 @@ namespace Vanilla
 {
 class Theme;
 
-class ButtonStyle
+class VANILLA_EXPORT ButtonStyle
 {
 public:
     bool drawPushButtonBevel(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget = nullptr) const;

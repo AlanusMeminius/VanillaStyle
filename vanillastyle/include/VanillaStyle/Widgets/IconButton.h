@@ -4,13 +4,13 @@
 #include <QFont>
 
 #include "VanillaStyle/Theme/Theme.h"
-
+#include "VanillaStyle/vglobal.h"
 
 namespace Vanilla
 {
 
 class IconButtonPrivate;
-class IconButton : public QAbstractButton
+class VANILLA_EXPORT IconButton : public QAbstractButton
 {
     Q_OBJECT
 public:

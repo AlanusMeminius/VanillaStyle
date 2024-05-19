@@ -11,7 +11,7 @@ namespace Vanilla {
 
 class Theme;
 
-class ScrollBarStyle {
+class VANILLA_EXPORT ScrollBarStyle {
 public:
     bool drawSlider(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const;
     bool drawAddLine(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const;

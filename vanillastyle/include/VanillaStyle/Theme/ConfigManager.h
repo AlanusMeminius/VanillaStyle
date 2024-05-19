@@ -6,11 +6,13 @@
 
 #include "Config.h"
 #include "Theme.h"
+#include "VanillaStyle/vglobal.h"
+
 
 namespace Vanilla
 {
 
-class ConfigErrorHanler
+class VANILLA_EXPORT ConfigErrorHanler
 {
 public:
     enum ErrorCode
@@ -62,7 +64,7 @@ R loadConfig(const QString& path, C callback, const ConfigErrorHanler& errorHand
     }
 }
 
-class ConfigManager
+class VANILLA_EXPORT ConfigManager
 {
 public:
     explicit ConfigManager() = default;

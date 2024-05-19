@@ -1,12 +1,13 @@
 #pragma once
 #include "Theme/Mode.h"
+#include "vglobal.h"
 
 #define VANILLA_PATCH_PROPERTY "_vanillaStyle_Patch"
 
 namespace Vanilla
 {
 class VanillaStyle;
-class Style
+class VANILLA_EXPORT Style
 {
 public:
     static void setDefaultTheme(Mode mode);

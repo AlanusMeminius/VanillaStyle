@@ -39,7 +39,8 @@ set(RESOURCES
 )
 set(LIBRARY_NAME VanillaStyle)
 
-add_library(${LIBRARY_NAME} SHARED)
+add_library(${LIBRARY_NAME} SHARED
+        include/VanillaStyle/vanillastyle_global.h)
 target_sources(
         ${LIBRARY_NAME}
         PRIVATE
@@ -79,6 +80,8 @@ set_target_properties(
         DEBUG_POSTFIX _debug
         WINDOWS_EXPORT_ALL_SYMBOLS ON
 )
+
+target_compile_definitions(${LIBRARY_NAME} PRIVATE VANILLA_EXPORT)
 
 install(TARGETS ${LIBRARY_NAME}
         EXPORT ${LIBRARY_NAME}Targets

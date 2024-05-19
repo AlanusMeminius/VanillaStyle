@@ -11,7 +11,7 @@ class QWidget;
 namespace Vanilla
 {
 class Theme;
-class RadioButtonStyle
+class VANILLA_EXPORT RadioButtonStyle
 {
 public:
     bool draw(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget = nullptr) const;

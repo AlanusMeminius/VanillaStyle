@@ -13,7 +13,7 @@ namespace Vanilla
 {
 class Theme;
 
-class LineEditStyle
+class VANILLA_EXPORT LineEditStyle
 {
 public:
     bool draw(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const;

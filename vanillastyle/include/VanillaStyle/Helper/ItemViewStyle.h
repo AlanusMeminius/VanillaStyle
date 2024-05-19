@@ -9,7 +9,7 @@ class QWidget;
 namespace Vanilla
 {
 class Theme;
-class ItemViewStyle
+class VANILLA_EXPORT ItemViewStyle
 {
 public:
     bool draw(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const;

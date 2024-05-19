@@ -3,11 +3,12 @@
 #include <QPainter>
 #include <QTimer>
 #include <QColor>
+#include "VanillaStyle/vglobal.h"
 
 namespace Vanilla
 {
 class SpinnerPrivate;
-class Spinner : public QWidget
+class VANILLA_EXPORT Spinner : public QWidget
 {
     Q_OBJECT
     Q_PROPERTY(int delta READ getDelta WRITE setDelta NOTIFY deltaChanged)

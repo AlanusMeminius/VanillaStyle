@@ -1,19 +1,20 @@
 #pragma once
 
-#include "Config.h"
-#include "Mode.h"
-
 #include <QStyleOption>
 #include <QPalette>
 #include <QFont>
 #include <unordered_set>
+
+#include "Config.h"
+#include "Mode.h"
+#include "VanillaStyle/vglobal.h"
 
 namespace Vanilla
 {
 class ConfigManager;
 
 
-class Theme
+class VANILLA_EXPORT Theme
 {
 public:
     enum State

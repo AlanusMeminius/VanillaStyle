@@ -4,7 +4,7 @@
 namespace Vanilla
 {
 
-class MenuEventFilter : public QObject {
+class VANILLA_EXPORT MenuEventFilter : public QObject {
 public:
     explicit MenuEventFilter(QMenu* menu);
 

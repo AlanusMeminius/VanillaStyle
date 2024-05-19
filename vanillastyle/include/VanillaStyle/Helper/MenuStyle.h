@@ -13,7 +13,7 @@ class QMenu;
 namespace Vanilla
 {
 class Theme;
-class MenuStyle
+class VANILLA_EXPORT MenuStyle
 {
 public:
     bool drawPrimitive(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget = nullptr) const;

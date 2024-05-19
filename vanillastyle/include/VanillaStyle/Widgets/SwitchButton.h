@@ -1,10 +1,11 @@
 #pragma once
 #include <QWidget>
+#include "VanillaStyle/vglobal.h"
 
 namespace Vanilla
 {
 class SwitchButtonPrivate;
-class SwitchButton : public QWidget
+class VANILLA_EXPORT SwitchButton : public QWidget
 {
     Q_OBJECT
 public:

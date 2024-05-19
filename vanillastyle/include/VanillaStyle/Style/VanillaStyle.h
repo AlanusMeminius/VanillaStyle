@@ -10,7 +10,7 @@
 namespace Vanilla
 {
 class VanillaStylePrivate;
-class VanillaStyle : public QCommonStyle
+class VANILLA_EXPORT VanillaStyle : public QCommonStyle
 {
     Q_OBJECT
 public:
