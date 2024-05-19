@@ -1,5 +1,6 @@
 #pragma once
 #include <QMenu>
+#include "VanillaStyle/vglobal.h"
 
 namespace Vanilla
 {

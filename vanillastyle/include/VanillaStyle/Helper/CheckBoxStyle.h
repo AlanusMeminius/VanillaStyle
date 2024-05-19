@@ -1,10 +1,14 @@
 #pragma once
-#include "VanillaStyle/Theme/Theme.h"
-#include "Helper.h"
+
+#include "VanillaStyle/vglobal.h"
+
+class QPainter;
+class QStyleOption;
+class QWidget;
 
 namespace Vanilla
 {
-
+class Theme;
 class VANILLA_EXPORT CheckBoxStyle
 {
 public:

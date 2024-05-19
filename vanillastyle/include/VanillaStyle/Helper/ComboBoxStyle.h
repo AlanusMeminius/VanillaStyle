@@ -3,6 +3,8 @@
 #include <QStyle>
 #include <memory>
 
+#include "VanillaStyle/vglobal.h"
+
 class QComboBox;
 class QPainter;
 class QStyleOptionComplex;

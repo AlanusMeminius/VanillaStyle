@@ -16,7 +16,6 @@ FetchContent_Declare(
         GIT_TAG        main
 )
 FetchContent_MakeAvailable(fgblur)
-#include_directories(${fgblur_SOURCE_DIR})
 
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
@@ -39,8 +38,7 @@ set(RESOURCES
 )
 set(LIBRARY_NAME VanillaStyle)
 
-add_library(${LIBRARY_NAME} SHARED
-        include/VanillaStyle/vanillastyle_global.h)
+add_library(${LIBRARY_NAME} SHARED)
 target_sources(
         ${LIBRARY_NAME}
         PRIVATE
@@ -81,7 +79,7 @@ set_target_properties(
         WINDOWS_EXPORT_ALL_SYMBOLS ON
 )
 
-target_compile_definitions(${LIBRARY_NAME} PRIVATE VANILLA_EXPORT)
+target_compile_definitions(${LIBRARY_NAME} PRIVATE VANILLA_LIBRARY)
 
 install(TARGETS ${LIBRARY_NAME}
         EXPORT ${LIBRARY_NAME}Targets

@@ -5,6 +5,8 @@
 #include <QRect>
 #include <QStyle>
 
+#include "VanillaStyle/vglobal.h"
+
 class QPainter;
 class QStyleOption;
 class QWidget;

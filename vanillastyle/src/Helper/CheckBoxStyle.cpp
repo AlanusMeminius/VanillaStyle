@@ -2,6 +2,8 @@
 #include <QPainterPath>
 
 #include "VanillaStyle/Helper/CheckBoxStyle.h"
+
+#include "VanillaStyle/Helper/Helper.h"
 #include "VanillaStyle/Theme/Theme.h"
 
 namespace Vanilla

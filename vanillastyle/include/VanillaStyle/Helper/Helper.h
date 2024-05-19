@@ -1,8 +1,10 @@
 #pragma once
+#include <memory>
+
 #include <QStyleOption>
 #include <QPainter>
 
-#include <memory>
+#include "VanillaStyle/vglobal.h"
 
 namespace Vanilla
 {
