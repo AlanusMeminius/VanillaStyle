@@ -42,7 +42,7 @@ private:
 };
 
 template<typename R, typename C>
-R loadConfig(const QString& path, C callback, const ConfigErrorHanler& errorHandler, const Mode mode)
+VANILLA_EXPORT R loadConfig(const QString& path, C callback, const ConfigErrorHanler& errorHandler, const Mode mode)
 {
     QFile file(path);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
