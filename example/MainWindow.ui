@@ -1,142 +1,324 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
-    <class>MainWindow</class>
-    <widget class="QMainWindow" name="MainWindow">
-        <property name="geometry">
-            <rect>
-                <x>0</x>
-                <y>0</y>
-                <width>800</width>
-                <height>600</height>
-            </rect>
-        </property>
-        <property name="windowTitle">
-            <string>MainWindow</string>
-        </property>
-        <widget class="QWidget" name="centralwidget">
-            <layout class="QVBoxLayout" name="verticalLayout">
-                <item>
-                    <widget class="QLabel" name="label">
-                        <property name="text">
-                            <string>Example application style with QStyle-derived class</string>
-                        </property>
-                    </widget>
-                </item>
-                <item>
-                    <widget class="QWidget" name="widget" native="true">
-                        <layout class="QHBoxLayout" name="horizontalLayout">
-                            <item>
-                                <widget class="QCheckBox" name="darkModeCheckBox">
-                                    <property name="text">
-                                        <string>Dark mode</string>
-                                    </property>
-                                    <property name="checked">
-                                        <bool>true</bool>
-                                    </property>
-                                </widget>
-                            </item>
-                            <item>
-                                <widget class="QCheckBox" name="checkBox">
-                                    <property name="text">
-                                        <string>Another checkbox</string>
-                                    </property>
-                                </widget>
-                            </item>
-                        </layout>
-                    </widget>
-                </item>
-                <item>
-                    <widget class="QWidget" name="widget_2" native="true">
-                        <layout class="QHBoxLayout" name="horizontalLayout_2">
-                            <item>
-                                <widget class="QPushButton" name="startButton">
-                                    <property name="text">
-                                        <string>Start</string>
-                                    </property>
-                                </widget>
-                            </item>
-                            <item>
-                                <widget class="QPushButton" name="stopButton">
-                                    <property name="enabled">
-                                        <bool>false</bool>
-                                    </property>
-                                    <property name="text">
-                                        <string>Stop</string>
-                                    </property>
-                                </widget>
-                            </item>
-                        </layout>
-                    </widget>
-                </item>
-                <item>
-                    <widget class="QProgressBar" name="progressBar">
-                        <property name="value">
-                            <number>0</number>
-                        </property>
-                    </widget>
-                </item>
-                <item>
-                    <widget class="QWidget" name="widget_3" native="true">
-                        <layout class="QHBoxLayout" name="horizontalLayout_3" />
-                    </widget>
-                </item>
-                <item>
-                    <widget class="QWidget" name="widget_4" native="true">
-                        <layout class="QHBoxLayout" name="horizontalLayout_4">
-                            <item>
-                                <widget class="QPushButton" name="openColorDialog">
-                                    <property name="text">
-                                        <string>Open ColorDialog</string>
-                                    </property>
-                                </widget>
-                            </item>
-                            <item>
-                                <widget class="QPushButton" name="changeBg">
-                                    <property name="text">
-                                        <string>Change Background</string>
-                                    </property>
-                                </widget>
-                            </item>
-                        </layout>
-                    </widget>
-                </item>
-                <item>
-                    <widget class="QWidget" name="widget_5" native="true">
-                        <layout class="QHBoxLayout" name="horizontalLayout_5">
-                            <item>
-                                <widget class="QLineEdit" name="lineEdit" />
-                            </item>
-                        </layout>
-                    </widget>
-                </item>
-                <item>
-                    <widget class="QWidget" name="widget_6" native="true">
-                        <layout class="QHBoxLayout" name="horizontalLayout_6">
-                            <item>
-                                <widget class="QSpinBox" name="spinBox" />
-                            </item>
-                            <item>
-                                <widget class="QComboBox" name="comboBox" />
-                            </item>
-                        </layout>
-                    </widget>
-                </item>
-                <item>
-                    <spacer name="verticalSpacer">
-                        <property name="orientation">
-                            <enum>Qt::Vertical</enum>
-                        </property>
-                        <property name="sizeHint" stdset="0">
-                            <size>
-                                <width>20</width>
-                                <height>219</height>
-                            </size>
-                        </property>
-                    </spacer>
-                </item>
-            </layout>
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>744</width>
+    <height>601</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="leftMargin">
+     <number>20</number>
+    </property>
+    <property name="topMargin">
+     <number>20</number>
+    </property>
+    <property name="rightMargin">
+     <number>20</number>
+    </property>
+    <item>
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Example application style with QStyle-derived class</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="widget_8" native="true">
+      <layout class="QHBoxLayout" name="horizontalLayout_8">
+       <item>
+        <widget class="QLabel" name="label_9">
+         <property name="text">
+          <string>RadioButton:</string>
+         </property>
         </widget>
-    </widget>
-    <resources />
-    <connections />
+       </item>
+       <item>
+        <widget class="QRadioButton" name="radioButton">
+         <property name="text">
+          <string>Light</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="radioButton_2">
+         <property name="text">
+          <string>Dark</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="radioButton_3">
+         <property name="text">
+          <string>Auto</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton">
+         <property name="text">
+          <string>Refresh</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="widget" native="true">
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLabel" name="label_8">
+         <property name="text">
+          <string>CheckBox:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="darkModeCheckBox">
+         <property name="text">
+          <string>Checkbox</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="checkBox">
+         <property name="text">
+          <string>Another checkbox</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="widget_2" native="true">
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>ProgressBar:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="startButton">
+         <property name="text">
+          <string>Start</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="stopButton">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>Stop</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QProgressBar" name="progressBar">
+      <property name="value">
+       <number>0</number>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="widget_7" native="true">
+      <layout class="QHBoxLayout" name="horizontalLayout_7">
+       <item>
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>SwitchButton: </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="Vanilla::SwitchButton" name="switchBtn" native="true"/>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="widget_3" native="true">
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>ToggleButtonOnlyIcon: </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="Vanilla::ToggleButton" name="toggleBtnfirst" native="true"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_6">
+         <property name="text">
+          <string>ToggleButtonOnlyText: </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="Vanilla::ToggleButton" name="toggleBtnSecond" native="true"/>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="widget_5" native="true">
+      <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <item>
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>LineEdit:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="widget_6" native="true">
+         <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <item>
+           <widget class="QSpinBox" name="spinBox">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="comboBox">
+         <item>
+          <property name="text">
+           <string>Item one</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Item two</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QListWidget" name="listWidget">
+      <item>
+       <property name="text">
+        <string>New Item1</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>New Item2</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>New Item3</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>New Item4</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>New Item5</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>New Item6</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>New Item7</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>New Item8</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>New Item15</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+    <item>
+     <widget class="QTableWidget" name="tableWidget">
+      <column>
+       <property name="text">
+        <string>New Column</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>New Column</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>New Column</string>
+       </property>
+      </column>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Vanilla::ToggleButton</class>
+   <extends>QWidget</extends>
+   <header>VanillaStyle/Widgets/ToggleButton.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Vanilla::SwitchButton</class>
+   <extends>QWidget</extends>
+   <header>VanillaStyle/Widgets/SwitchButton.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
 </ui>

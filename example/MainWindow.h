@@ -4,43 +4,46 @@
 
 #include <QMainWindow>
 
-
 QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
+namespace Ui
+{
+class MainWindow;
+}
 QT_END_NAMESPACE
 
 namespace QWK
 {
 class WidgetWindowAgent;
+class StyleAgent;
 }  // namespace QWK
 
-
-class MainWindow : public QMainWindow {
-Q_OBJECT
+class MainWindow : public QMainWindow
+{
+    Q_OBJECT
 
 public:
-    enum Theme
-    {
-        Dark,
-        Light,
-    };
-    Q_ENUM(Theme)
+    explicit MainWindow(QWidget* parent = nullptr);
+    ~MainWindow();
 
-    explicit MainWindow(QWidget *parent = nullptr);
-    ~MainWindow() override;
-
+    void setTheme(bool theme);
+    void setLightTheme();
+    void setDarkTheme();
     void start();
     void stop();
 
     void increaseProgress();
     void decreaseProgress();
 
+    Q_SLOT void setAutoTheme();
+
 private:
-    Ui::MainWindow *ui;
-    QTimer *m_timer;
     void installWindowAgent();
+
+private:
+    Ui::MainWindow* ui;
+    QTimer* m_timer;
     QWK::WidgetWindowAgent* windowAgent;
+    QWK::StyleAgent* styleAgent;
 };
 
-
-#endif //MAINWINDOW_H
+#endif  // MAINWINDOW_H

@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/VanillaStyle">
+        <file>fonts/Roboto/Roboto-Bold.ttf</file>
+        <file>fonts/Roboto/Roboto-BoldItalic.ttf</file>
+        <file>fonts/Roboto/Roboto-Italic.ttf</file>
+        <file>fonts/Roboto/Roboto-Regular.ttf</file>
+    </qresource>
+</RCC>
