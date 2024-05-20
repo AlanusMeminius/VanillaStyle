@@ -30,7 +30,7 @@ install(DIRECTORY include/ DESTINATION include)
 
 install(EXPORT "${PROJECT_NAME}Targets"
         FILE "${PROJECT_NAME}Targets.cmake"
-        NAMESPACE ${namespace}::
+        NAMESPACE ${PROJECT_NAME}::
         DESTINATION cmake
 )
 
