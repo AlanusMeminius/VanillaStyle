@@ -44,6 +44,8 @@
     "lineEditFocusOutline": "#B5C0D0",
     "lineEditOutline": "#AF8260",
     "iconLabelText": "#50727B",
+    "menuBackground" : "#CCF5EFE6",
+    "menuSeparatorColor": "#CCF5EFE6",
     "comboBoxDropDownBackground": "#3C5B6F"
   },
   "size": {

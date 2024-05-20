@@ -16,10 +16,10 @@ bool ScrollBarStyle::drawSlider(const QStyleOption* option, QPainter* painter, c
         return true;
     }
     const QRectF rect = opt->rect;
-    const auto scrollBarWidth = theme->getSize(ScrollBarWidth);
+    const auto scrollBarWidth = theme->getSize(SizeRole::ScrollBarWidth);
     const QRectF handleRect = centerRectF(rect, scrollBarWidth, rect.height());
     painter->setRenderHint(QPainter::Antialiasing, true);
-    const auto radius = theme->getSize(SmallRadius);
+    const auto radius = theme->getSize(SizeRole::SmallRadius);
     const auto color = theme->getColor(option, ColorRole::ScrollBarSliderColor);
     Helper::renderRoundRect(painter, handleRect, color, radius);
     return true;
@@ -35,7 +35,7 @@ bool ScrollBarStyle::drawAddLine(const QStyleOption* option, QPainter* painter, 
     painter->setRenderHint(QPainter::Antialiasing);
     const auto indicatorRect = QRectF(opt->rect);
     const auto iconPath = theme->getIconPath(IconRole::DownArrow);
-    const auto iconSize = theme->getSize(IconSize);
+    const auto iconSize = theme->getSize(SizeRole::IconSize);
     auto iconRect = QRectF(0, 0, iconSize, iconSize);
     iconRect.moveCenter(indicatorRect.center());
     const auto svg = theme->getCachedIcon(iconPath, theme->getColor(option, ColorRole::IndicatorColor));
@@ -53,7 +53,7 @@ bool ScrollBarStyle::drawSubLine(const QStyleOption* option, QPainter* painter, 
     painter->setRenderHint(QPainter::Antialiasing);
     const auto indicatorRect = QRectF(opt->rect);
     const auto iconPath = theme->getIconPath(IconRole::UpArrow);
-    const auto iconSize = theme->getSize(IconSize);
+    const auto iconSize = theme->getSize(SizeRole::IconSize);
     auto iconRect = QRectF(0, 0, iconSize, iconSize);
     iconRect.moveCenter(indicatorRect.center());
     const auto svg = theme->getCachedIcon(iconPath, theme->getColor(option, ColorRole::IconColor));

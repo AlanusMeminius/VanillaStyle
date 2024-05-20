@@ -40,7 +40,7 @@ bool ComboBoxStyle::drawIndicator(const QStyleOptionComplex* option, QPainter* p
     if (indicatorRect.isValid())
     {
         const auto iconPath = theme->getIconPath(IconRole::DownArrow);
-        const auto iconSize = theme->getSize(IconSize);
+        const auto iconSize = theme->getSize(SizeRole::IconSize);
         auto iconRect = QRectF(0, 0, iconSize, iconSize);
         iconRect.moveCenter(indicatorRect.center());
         const auto svg = theme->getCachedIcon(iconPath, theme->getColor(option, ColorRole::IndicatorColor));
@@ -59,8 +59,8 @@ QRect ComboBoxStyle::subControlRect(QStyle::ComplexControl control, const QStyle
         {
             return {};
         }
-        const auto iconSize = theme->getSize(IconSize);
-        const auto padding = theme->getSize(NormalPadding);
+        const auto iconSize = theme->getSize(SizeRole::IconSize);
+        const auto padding = theme->getSize(SizeRole::NormalPadding);
         switch (subControl)
         {
         case QStyle::SC_ComboBoxArrow:

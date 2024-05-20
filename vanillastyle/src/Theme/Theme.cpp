@@ -166,35 +166,35 @@ int Theme::getSize(const SizeRole sizeRole) const
 {
     switch (sizeRole)
     {
-    case NormalRadius:
+    case SizeRole::NormalRadius:
         return 5;
-    case SmallRadius:
+    case SizeRole::SmallRadius:
         return 3;
-    case NormalBorder:
+    case SizeRole::NormalBorder:
         return 1;
-    case NormalPadding:
+    case SizeRole::NormalPadding:
         return 5;
-    case ButtonBorder:
+    case SizeRole::ButtonBorder:
         return 1;
-    case CheckBoxBorder:
+    case SizeRole::CheckBoxBorder:
         return 2;
-    case ButtonRadius:
+    case SizeRole::ButtonRadius:
         return 4;
-    case ItemViewRadius:
+    case SizeRole::ItemViewRadius:
         return styleConfig.size.itemViewRadius;
-    case IconSize:
+    case SizeRole::IconSize:
         return styleConfig.size.iconSize;
-    case MenuItemPadding:
+    case SizeRole::MenuItemPadding:
         return 5;
-    case CheckBoxIndicatorMargin:
+    case SizeRole::CheckBoxIndicatorMargin:
         return 4;
-    case CheckBoxSpacing:
+    case SizeRole::CheckBoxSpacing:
         return 5;
-    case ProgressBarHeight:
+    case SizeRole::ProgressBarHeight:
         return 6;
-    case ProgressBarTextMargin:
+    case SizeRole::ProgressBarTextMargin:
         return 35;
-    case ScrollBarWidth:
+    case SizeRole::ScrollBarWidth:
         return 5;
     default:
         return 3;
@@ -205,22 +205,22 @@ QFont Theme::getFont(const TextSizeRole sizeRole)
 {
     switch (sizeRole)
     {
-    case H6:
+    case TextSizeRole::H6:
         fontH6.setPixelSize(styleConfig.size.fontH6);
         return fontH6;
-    case H5:
+    case TextSizeRole::H5:
         fontH5.setPixelSize(styleConfig.size.fontH5);
         return fontH5;
-    case H4:
+    case TextSizeRole::H4:
         fontH4.setPixelSize(styleConfig.size.fontH4);
         return fontH4;
-    case H3:
+    case TextSizeRole::H3:
         fontH3.setPixelSize(styleConfig.size.fontH3);
         return fontH3;
-    case H2:
+    case TextSizeRole::H2:
         fontH2.setPixelSize(styleConfig.size.fontH2);
         return fontH2;
-    case H1:
+    case TextSizeRole::H1:
         fontH1.setPixelSize(styleConfig.size.fontH1);
         return fontH1;
     default:
@@ -244,12 +244,12 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
     QColor color = option->palette.color(QPalette::Base);
     switch (role)
     {
-    case PrimaryText:
+    case ColorRole::PrimaryText:
     {
         color = styleConfig.color.primaryTextColor;
         break;
     }
-    case LabelText:
+    case ColorRole::LabelText:
     {
         if ((flags & Flag) == Disabled)
         {
@@ -269,27 +269,27 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
         }
         break;
     }
-    case LabelBackground:
+    case ColorRole::LabelBackground:
     {
         color = styleConfig.color.labelBackground;
         break;
     }
-    case LabelBorderColor:
+    case ColorRole::LabelBorderColor:
     {
         color = styleConfig.color.labelBorderColor;
         break;
     }
-    case IconColor:
+    case ColorRole::IconColor:
     {
         color = styleConfig.color.iconColor;
         break;
     }
-    case IndicatorColor:
+    case ColorRole::IndicatorColor:
     {
         color = styleConfig.color.indicatorColor;
         break;
     }
-    case ButtonForeground:
+    case ColorRole::ButtonForeground:
     {
         if ((flags & Flag) == Hover)
         {
@@ -305,7 +305,7 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
         }
         break;
     }
-    case ButtonBackground:
+    case ColorRole::ButtonBackground:
     {
         if ((flags & Flag) == Hover)
         {
@@ -321,22 +321,22 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
         }
         break;
     }
-    case ButtonBorderColor:
+    case ColorRole::ButtonBorderColor:
     {
         color = styleConfig.color.buttonBorderColor;
         break;
     }
-    case RadioButtonForeground:
+    case ColorRole::RadioButtonForeground:
     {
         color = styleConfig.color.checkBoxForeground;
         break;
     }
-    case CheckBoxForeground:
+    case ColorRole::CheckBoxForeground:
     {
         color = styleConfig.color.checkBoxCheckedForeground;
         break;
     }
-    case RadioButtonBackground:
+    case ColorRole::RadioButtonBackground:
     {
         if ((flags & Checked) != Checked && (flags & Flag) == Hover)
         {
@@ -348,7 +348,7 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
         }
         break;
     }
-    case CheckBoxBackground:
+    case ColorRole::CheckBoxBackground:
     {
         if ((flags & Checked) == Checked)
         {
@@ -364,7 +364,7 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
         }
         break;
     }
-    case CheckBoxBorderColor:
+    case ColorRole::CheckBoxBorderColor:
     {
         if ((flags & Checked) != Checked && (flags & Flag) == Hover)
         {
@@ -376,22 +376,22 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
         }
         break;
     }
-    case ProgressBarForeground:
+    case ColorRole::ProgressBarForeground:
     {
         color = styleConfig.color.progressBarForeground;
         break;
     }
-    case ProgressBarBackground:
+    case ColorRole::ProgressBarBackground:
     {
         color = styleConfig.color.progressBarBackground;
         break;
     }
-    case ProgressBarText:
+    case ColorRole::ProgressBarText:
     {
         color = styleConfig.color.progressBarText;
         break;
     }
-    case LineEditOutline:
+    case ColorRole::LineEditOutline:
     {
         if ((flags & Flag) == Focus)
         {
@@ -403,27 +403,37 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
         }
         break;
     }
-    case ItemViewSelectedColor:
+    case ColorRole::ItemViewSelectedColor:
     {
         color = styleConfig.color.itemViewSelectedColor;
         break;
     }
-    case ItemViewEvenRowColor:
+    case ColorRole::ItemViewEvenRowColor:
     {
         color = styleConfig.color.itemViewEvenRowColor;
         break;
     }
-    case ItemViewOddRowColor:
+    case ColorRole::ItemViewOddRowColor:
     {
         color = styleConfig.color.itemViewOddRowColor;
         break;
     }
-    case ScrollBarSliderColor:
+    case ColorRole::ScrollBarSliderColor:
     {
         color = styleConfig.color.scrollBarSliderColor;
         break;
     }
-    case ComboBoxDropDownBackground:
+    case ColorRole::MenuBackground:
+    {
+        color = styleConfig.color.menuBackground;
+        break;
+    }
+    case ColorRole::MenuSeparatorColor:
+    {
+        color = styleConfig.color.menuSeparatorColor;
+        break;
+    }
+    case ColorRole::ComboBoxDropDownBackground:
     {
         color = styleConfig.color.comboBoxDropDownBackground;
         break;
@@ -438,23 +448,23 @@ QColor Theme::customColor(const ColorRole role) const
 {
     switch (role)
     {
-    case PrimaryText:
+    case ColorRole::PrimaryText:
         return styleConfig.color.textColor;
-    case ButtonForeground:
+    case ColorRole::ButtonForeground:
         return styleConfig.color.buttonForeground;
-    case ButtonBackground:
+    case ColorRole::ButtonBackground:
         return styleConfig.color.buttonBackground;
-    case LabelText:
+    case ColorRole::LabelText:
         return styleConfig.color.iconLabelText;
-    case ToggleButtonBackground:
+    case ColorRole::ToggleButtonBackground:
         return styleConfig.color.toggleButtonBackground;
-    case ToggleButtonForeground:
+    case ColorRole::ToggleButtonForeground:
         return styleConfig.color.toggleButtonForeground;
-    case ToggleButtonIndicatorColor:
+    case ColorRole::ToggleButtonIndicatorColor:
         return styleConfig.color.toggleButtonIndicatorColor;
-    case IconColor:
+    case ColorRole::IconColor:
         return styleConfig.color.iconColor;
-    case ToggleButtonIconColor:
+    case ColorRole::ToggleButtonIconColor:
         return styleConfig.color.toggleButtonIconColor;
     default:
         return Qt::white;
@@ -471,15 +481,15 @@ QString Theme::getIconPath(const IconRole role) const
 {
     switch (role)
     {
-    case UpArrow:
+    case IconRole::UpArrow:
     {
         return checkIconFile(styleConfig.icons.upArrow);
     }
-    case DownArrow:
+    case IconRole::DownArrow:
     {
         return checkIconFile(styleConfig.icons.downArrow);
     }
-    case ProgressIndicator:
+    case IconRole::ProgressIndicator:
     {
         return checkIconFile(styleConfig.icons.progressIndicator);
     }
@@ -490,7 +500,7 @@ QString Theme::getIconPath(const IconRole role) const
 
 ProgressMode Theme::getProgressMode() const
 {
-    return styleConfig.progressBarMode == "mode1" ? ModeOne : ModeTwo;
+    return styleConfig.progressBarMode == "mode1" ? ProgressMode::ModeOne : ProgressMode::ModeTwo;
 }
 
 void Theme::setPatchConfig(const std::string& propertyValue)

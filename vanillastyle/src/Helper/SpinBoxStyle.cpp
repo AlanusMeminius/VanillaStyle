@@ -52,7 +52,7 @@ QRect SpinBoxStyle::subControlRect(QStyle::ComplexControl control, const QStyleO
         }
         const auto padding = theme->getSize(SizeRole::NormalBorder);
         const auto& rect = opt->rect;
-        const auto iconSize = theme->getSize(IconSize);
+        const auto iconSize = theme->getSize(SizeRole::IconSize);
 
         switch (subControl)
         {

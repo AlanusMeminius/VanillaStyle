@@ -17,7 +17,6 @@
 #include "VanillaStyle/Helper/ScrollBarStyle.h"
 #include "VanillaStyle/Theme/PatchHelper.h"
 
-
 namespace Vanilla
 {
 VanillaStyle::VanillaStyle()
@@ -56,6 +55,7 @@ void VanillaStyle::drawPrimitive(PrimitiveElement pe, const QStyleOption* option
     case PE_FrameLineEdit:
     case PE_IndicatorColumnViewArrow:
     case PE_IndicatorItemViewItemDrop:
+    // case PE_IndicatorItemViewItemCheck:
         helper = createHelper(d->helper, &Helper::emptyControl);
         break;
     case PE_IndicatorRadioButton:
@@ -128,13 +128,15 @@ void VanillaStyle::drawControl(ControlElement element, const QStyleOption* optio
         break;
     case CE_ScrollBarAddPage:
     case CE_ScrollBarSubPage:
+    case CE_HeaderSection:
+    case CE_HeaderEmptyArea:
         helper = createHelper(d->helper, &Helper::emptyControl);
         break;
     default:
         break;
     }
     painter->save();
-    if (!(helper && helper(option, painter,PatchHelper::global().getPatchTheme(widget, d->theme), widget)))
+    if (!(helper && helper(option, painter, PatchHelper::global().getPatchTheme(widget, d->theme), widget)))
     {
         QCommonStyle::drawControl(element, option, painter, widget);
     }
@@ -176,22 +178,21 @@ int VanillaStyle::pixelMetric(PixelMetric pm, const QStyleOption* option, const 
     case PM_ExclusiveIndicatorWidth:
     case PM_IndicatorHeight:
     case PM_ExclusiveIndicatorHeight:
-        return d->theme->getSize(IconSize);
+        return d->theme->getSize(SizeRole::IconSize);
     case PM_RadioButtonLabelSpacing:
     case PM_CheckBoxLabelSpacing:
-        return d->theme->getSize(CheckBoxSpacing);
+        return d->theme->getSize(SizeRole::CheckBoxSpacing);
         // Button.
     case PM_ButtonMargin:
-        return d->theme->getSize(ButtonTextMargin);
+        return d->theme->getSize(SizeRole::ButtonTextMargin);
     case PM_ButtonDefaultIndicator:
-        return d->theme->getSize(IconSize);
     case PM_MenuButtonIndicator:
-        return d->theme->getSize(IconSize);
+        return d->theme->getSize(SizeRole::IconSize);
     case PM_ButtonShiftHorizontal:
     case PM_ButtonShiftVertical:
         return 0;
     case PM_ButtonIconSize:
-        return d->theme->getSize(IconSize);
+        return d->theme->getSize(SizeRole::IconSize);
     default:
         break;
     }

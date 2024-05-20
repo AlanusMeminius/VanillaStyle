@@ -19,9 +19,8 @@ class VANILLA_EXPORT MenuStyle
 {
 public:
     bool drawPrimitive(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget = nullptr) const;
-    bool drawMenuBarItem(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget = nullptr) const;
     bool drawMenuItem(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget = nullptr) const;
-    void drawMenuSeparator(QPainter* painter, const QRect& rect, QColor const& color, int thickness) const;
+    void drawMenuSeparator(QPainter* painter, const QRect& rect, QColor const& color, int padding) const;
     void eventFilter(QMenu* obj) const;
 };
 

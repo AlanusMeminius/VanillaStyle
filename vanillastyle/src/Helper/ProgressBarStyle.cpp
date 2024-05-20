@@ -19,15 +19,15 @@ bool ProgressBarStyle::drawGroove(const QStyleOption* option, QPainter* painter,
     painter->setRenderHint(QPainter::Antialiasing);
     const auto rect = QRectF(opt->rect);
 
-    const QColor bgColor = theme->getColor(option, ProgressBarBackground);
-    if (const auto mode = theme->getProgressMode(); mode == ModeOne)
+    const QColor bgColor = theme->getColor(option, ColorRole::ProgressBarBackground);
+    if (const auto mode = theme->getProgressMode(); mode == ProgressMode::ModeOne)
     {
         painter->setPen(QPen(bgColor, 2, Qt::DashLine));
         painter->drawLine(QPointF(rect.left(), rect.center().y()), QPointF(rect.right() - rect.height() / 2, rect.center().y()));
     }
-    else if (mode == ModeTwo)
+    else if (mode == ProgressMode::ModeTwo)
     {
-        const auto progressHeight = theme->getSize(ProgressBarHeight);
+        const auto progressHeight = theme->getSize(SizeRole::ProgressBarHeight);
         auto modeTwoRect = rect;
         modeTwoRect.setHeight(progressHeight);
         modeTwoRect.moveCenter(rect.center());
@@ -51,12 +51,12 @@ bool ProgressBarStyle::drawContents(const QStyleOption* option, QPainter* painte
     {
         painter->setRenderHint(QPainter::Antialiasing);
         const auto rect = opt->rect;
-        const QColor fgColor = theme->getColor(option, ProgressBarForeground);
+        const QColor fgColor = theme->getColor(option, ColorRole::ProgressBarForeground);
         const auto mode = theme->getProgressMode();
         const auto percentage = 1 - static_cast<double>(value) / static_cast<double>(range);
         const auto progressQRect = rect.adjusted(0, 0, -static_cast<int>(rect.width() * percentage), 0);
         const auto progressRect = QRectF(progressQRect);
-        if (mode == ModeOne)
+        if (mode == ProgressMode::ModeOne)
         {
             painter->setPen(QPen(fgColor, 2, Qt::SolidLine));
             const double indicatorSize = progressRect.height();
@@ -73,9 +73,9 @@ bool ProgressBarStyle::drawContents(const QStyleOption* option, QPainter* painte
             }
             renderSvgFromPath(path, painter, planeRect);
         }
-        else if (mode == ModeTwo)
+        else if (mode == ProgressMode::ModeTwo)
         {
-            const auto progressHeight = theme->getSize(ProgressBarHeight);
+            const auto progressHeight = theme->getSize(SizeRole::ProgressBarHeight);
             const double indicatorSize = progressRect.height() / 2;
             const auto margin = (progressRect.height() - progressHeight) / 2;
             const auto radius = progressHeight / 3;
@@ -101,7 +101,7 @@ bool ProgressBarStyle::drawLabel(const QStyleOption* option, QPainter* painter, 
         return true;
     }
     const QPen oldPen = painter->pen();
-    const QColor tColor = theme->getColor(option, ProgressBarText);
+    const QColor tColor = theme->getColor(option, ColorRole::ProgressBarText);
     painter->setPen(tColor);
     painter->drawText(opt->rect, Qt::AlignRight | Qt::AlignVCenter | Qt::TextSingleLine, opt->text);
     painter->setPen(oldPen);
@@ -120,12 +120,12 @@ QRect ProgressBarStyle::subElementRect(QStyle::SubElement subElement, const QSty
         }
         else if (subElement == QStyle::SE_ProgressBarContents)
         {
-            const auto textWidth = theme->getSize(ProgressBarTextMargin);
+            const auto textWidth = theme->getSize(SizeRole::ProgressBarTextMargin);
             return progressBarOption->rect.adjusted(0, 0, -textWidth, 0);
         }
         else if (subElement == QStyle::SE_ProgressBarGroove)
         {
-            const auto textWidth = theme->getSize(ProgressBarTextMargin);
+            const auto textWidth = theme->getSize(SizeRole::ProgressBarTextMargin);
             return progressBarOption->rect.adjusted(0, 0, -textWidth, 0);
         }
     }

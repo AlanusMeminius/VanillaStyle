@@ -9,7 +9,7 @@ enum Mode
 };
 
 
-enum ColorRole
+enum class ColorRole
 {
     PrimaryText,
     LabelText,
@@ -49,10 +49,12 @@ enum ColorRole
     ItemViewSelectedColor,
 
     ComboBoxDropDownBackground,
-    ScrollBarSliderColor
+    ScrollBarSliderColor,
+    MenuBackground,
+    MenuSeparatorColor
 };
 
-enum TextSizeRole
+enum class TextSizeRole
 {
     Default,
     H1,
@@ -63,7 +65,7 @@ enum TextSizeRole
     H6
 };
 
-enum SizeRole
+enum class SizeRole
 {
     NormalRadius,
     NormalBorder,
@@ -87,14 +89,14 @@ enum SizeRole
     SmallRadius
 };
 
-enum IconRole
+enum class IconRole
 {
     UpArrow,
     DownArrow,
     ProgressIndicator,
 };
 
-enum ProgressMode
+enum class ProgressMode
 {
     ModeOne,
     ModeTwo

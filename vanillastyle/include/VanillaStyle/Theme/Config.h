@@ -110,6 +110,9 @@ public:
 
     QColor scrollBarSliderColor;
     QColor iconLabelText;
+    QColor menuBackground;
+    QColor menuSeparatorColor;
+
     std::string toString()
     {
         nlohmann::json json;
@@ -124,7 +127,7 @@ public:
                                                 progressBarBackground, progressBarForeground, progressBarText, toggleButtonBackground, toggleButtonForeground,
                                                 toggleButtonIndicatorColor, toggleButtonIconColor, itemViewEvenRowColor, itemViewOddRowColor,
                                                 itemViewSelectedColor, lineEditFocusOutline, lineEditOutline, comboBoxDropDownBackground, scrollBarSliderColor,
-                                                iconLabelText);
+                                                iconLabelText, menuBackground, menuSeparatorColor);
 };
 
 class Size : public Basic
@@ -206,7 +209,5 @@ public:
 
     NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(StyleConfig, name, author, mode, color, size, icons, progressBarMode, isEnableHotReload, patch);
 };
-
-
 
 }  // namespace Vanilla

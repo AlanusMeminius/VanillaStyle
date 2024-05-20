@@ -18,8 +18,8 @@ bool Helper::shapedFrame(const QStyleOption* option, QPainter* painter, const st
     {
         painter->setRenderHint(QPainter::Antialiasing);
 
-        const auto radius = theme->getSize(NormalRadius);
-        renderRoundRect(painter, option->rect, theme->getColor(option, ComboBoxDropDownBackground), radius);
+        const auto radius = theme->getSize(SizeRole::NormalRadius);
+        renderRoundRect(painter, option->rect, theme->getColor(option, ColorRole::ComboBoxDropDownBackground), radius);
         return true;
     }
 
@@ -53,7 +53,7 @@ bool Helper::drawLabel(const QStyleOption* option, QPainter* painter, const std:
         const auto textFlags = flag | Qt::AlignVCenter | Qt::AlignBaseline | Qt::TextSingleLine | Qt::TextHideMnemonic;
         const auto elidedText = opt->fontMetrics.elidedText(opt->text, Qt::ElideRight, rect.width(), Qt::TextSingleLine);
         painter->setBrush(Qt::NoBrush);
-        const auto fgcolor = theme->getColor(option, LabelText);
+        const auto fgcolor = theme->getColor(option, ColorRole::LabelText);
         painter->setPen(fgcolor);
         painter->drawText(rect, textFlags, elidedText);
     }

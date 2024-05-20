@@ -63,6 +63,15 @@ MainWindow::MainWindow(QWidget* parent)
     connect(m_timer, &QTimer::timeout, this, &MainWindow::increaseProgress);
 
     connect(ui->pushButton, &QPushButton::clicked, this, &MainWindow::setAutoTheme);
+
+    ui->tableWidget->setRowCount(3);
+    ui->tableWidget->setItem(0,0, new QTableWidgetItem("table 1"));
+    ui->tableWidget->setItem(0,1, new QTableWidgetItem("table 1"));
+    ui->tableWidget->setItem(1,0, new QTableWidgetItem("table 1"));
+    ui->tableWidget->setItem(1,1, new QTableWidgetItem("table 1"));
+    ui->tableWidget->setItem(2,0, new QTableWidgetItem("table 1"));
+    ui->tableWidget->setItem(2,1, new QTableWidgetItem("table 1"));
+    ui->tableWidget->setShowGrid(false);
 }
 
 MainWindow::~MainWindow()
