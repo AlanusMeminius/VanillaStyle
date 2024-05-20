@@ -2,9 +2,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "VanillaStyle/Style/VanillaStyle.h"
-#include "extern/qwindowkit/src/core/style/styleagent.h"
-
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
@@ -17,6 +14,7 @@ QT_END_NAMESPACE
 namespace QWK
 {
 class WidgetWindowAgent;
+class StyleAgent;
 }  // namespace QWK
 
 class MainWindow : public QMainWindow
@@ -39,14 +37,13 @@ public:
     Q_SLOT void setAutoTheme();
 
 private:
+    void installWindowAgent();
+
+private:
     Ui::MainWindow* ui;
     QTimer* m_timer;
-    void installWindowAgent();
     QWK::WidgetWindowAgent* windowAgent;
     QWK::StyleAgent* styleAgent;
-
-    // protected:
-    // void paintEvent(QPaintEvent* event) override;
 };
 
 #endif  // MAINWINDOW_H

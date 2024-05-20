@@ -1,8 +1,0 @@
-<RCC>
-    <qresource prefix="/VanillaStyle">
-        <file>icons/Plane.svg</file>
-        <file>icons/Airplane.svg</file>
-        <file>icons/DownArrow.svg</file>
-        <file>icons/UpArrow.svg</file>
-    </qresource>
-</RCC>
