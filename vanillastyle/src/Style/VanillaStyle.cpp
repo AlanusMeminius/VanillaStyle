@@ -55,7 +55,7 @@ void VanillaStyle::drawPrimitive(PrimitiveElement pe, const QStyleOption* option
     case PE_FrameLineEdit:
     case PE_IndicatorColumnViewArrow:
     case PE_IndicatorItemViewItemDrop:
-    // case PE_IndicatorItemViewItemCheck:
+    case PE_PanelItemViewRow:
         helper = createHelper(d->helper, &Helper::emptyControl);
         break;
     case PE_IndicatorRadioButton:

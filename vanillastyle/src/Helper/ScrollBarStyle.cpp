@@ -15,14 +15,24 @@ bool ScrollBarStyle::drawSlider(const QStyleOption* option, QPainter* painter, c
     {
         return true;
     }
-    const QRectF rect = opt->rect;
-    const auto scrollBarWidth = theme->getSize(SizeRole::ScrollBarWidth);
-    const QRectF handleRect = centerRectF(rect, scrollBarWidth, rect.height());
     painter->setRenderHint(QPainter::Antialiasing, true);
+    const QRectF rect = opt->rect;
     const auto radius = theme->getSize(SizeRole::SmallRadius);
     const auto color = theme->getColor(option, ColorRole::ScrollBarSliderColor);
-    Helper::renderRoundRect(painter, handleRect, color, radius);
-    return true;
+    const auto scrollBarWidth = theme->getSize(SizeRole::ScrollBarWidth);
+    if (opt->orientation == Qt::Horizontal)
+    {
+        const QRectF handleRect = centerRectF(rect, rect.width(), scrollBarWidth);
+        Helper::renderRoundRect(painter, handleRect, color, radius);
+        return true;
+    }
+    else
+    {
+        const QRectF handleRect = centerRectF(rect, scrollBarWidth, rect.height());
+        Helper::renderRoundRect(painter, handleRect, color, radius);
+        return true;
+    }
+
 }
 
 bool ScrollBarStyle::drawAddLine(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
@@ -34,7 +44,7 @@ bool ScrollBarStyle::drawAddLine(const QStyleOption* option, QPainter* painter, 
     }
     painter->setRenderHint(QPainter::Antialiasing);
     const auto indicatorRect = QRectF(opt->rect);
-    const auto iconPath = theme->getIconPath(IconRole::DownArrow);
+    const auto iconPath = theme->getIconPath(opt->orientation == Qt::Horizontal ? IconRole::RightArrow : IconRole::DownArrow);
     const auto iconSize = theme->getSize(SizeRole::IconSize);
     auto iconRect = QRectF(0, 0, iconSize, iconSize);
     iconRect.moveCenter(indicatorRect.center());
@@ -52,7 +62,7 @@ bool ScrollBarStyle::drawSubLine(const QStyleOption* option, QPainter* painter, 
     }
     painter->setRenderHint(QPainter::Antialiasing);
     const auto indicatorRect = QRectF(opt->rect);
-    const auto iconPath = theme->getIconPath(IconRole::UpArrow);
+    const auto iconPath = theme->getIconPath(opt->orientation == Qt::Horizontal ? IconRole::LeftArrow : IconRole::UpArrow);
     const auto iconSize = theme->getSize(SizeRole::IconSize);
     auto iconRect = QRectF(0, 0, iconSize, iconSize);
     iconRect.moveCenter(indicatorRect.center());

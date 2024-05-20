@@ -489,6 +489,14 @@ QString Theme::getIconPath(const IconRole role) const
     {
         return checkIconFile(styleConfig.icons.downArrow);
     }
+    case IconRole::LeftArrow:
+    {
+        return checkIconFile(styleConfig.icons.leftArrow);
+    }
+    case IconRole::RightArrow:
+    {
+        return checkIconFile(styleConfig.icons.rightArrow);
+    }
     case IconRole::ProgressIndicator:
     {
         return checkIconFile(styleConfig.icons.progressIndicator);

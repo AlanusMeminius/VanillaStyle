@@ -93,6 +93,8 @@ enum class IconRole
 {
     UpArrow,
     DownArrow,
+    LeftArrow,
+    RightArrow,
     ProgressIndicator,
 };
 

@@ -236,6 +236,12 @@
     </item>
     <item>
      <widget class="QListWidget" name="listWidget">
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOn</enum>
+      </property>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOn</enum>
+      </property>
       <item>
        <property name="text">
         <string>New Item1</string>

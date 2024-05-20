@@ -162,13 +162,15 @@ public:
     std::string upArrow;
     std::string downArrow;
     std::string progressIndicator;
+    std::string leftArrow;
+    std::string rightArrow;
     std::string toString()
     {
         nlohmann::json json;
         to_json(json, *this);
         return json.dump(4);
     }
-    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Icons, upArrow, downArrow, progressIndicator);
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Icons, upArrow, downArrow, leftArrow, rightArrow, progressIndicator);
 };
 
 class PatchConfig : public Basic

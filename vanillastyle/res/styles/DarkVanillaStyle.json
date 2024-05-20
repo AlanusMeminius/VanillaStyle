@@ -65,6 +65,8 @@
   "icons": {
     "upArrow": ":/VanillaStyle/icons/UpArrow.svg",
     "downArrow": ":/VanillaStyle/icons/DownArrow.svg",
+    "rightArrow": ":/VanillaStyle/icons/RightArrow.svg",
+    "leftArrow": ":/VanillaStyle/icons/LeftArrow.svg",
     "progressIndicator": ":/VanillaStyle/icons/Plane.svg"
   },
   "progressBarMode": "mode1",
