@@ -61,7 +61,6 @@ set_target_properties(
         IMPORTED_CONFIGURATIONS "RELEASE;DEBUG"
         DEBUG_POSTFIX _debug
         WINDOWS_EXPORT_ALL_SYMBOLS ON
-        PUBLIC_HEADER "${HEADER}"
 )
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE VANILLA_LIBRARY)
