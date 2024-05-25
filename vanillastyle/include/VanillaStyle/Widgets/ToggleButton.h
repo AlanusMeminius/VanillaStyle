@@ -29,6 +29,9 @@ public:
 
     void setIconColor(const QColor& color);
 
+    void setEnableBackground(bool enable);
+    [[nodiscard]] bool enableBackground() const;
+
     [[nodiscard]] int offset() const;
     void setOffset(int pos);
 

@@ -27,6 +27,7 @@ private:
     void paintText(QPainter* painter, QRectF& rect);
     void setColor();
     void checkMode();
+    void getMaxLenStr(const QStringList& list);
 
 private:
     QStringList itemList;
@@ -35,14 +36,16 @@ private:
     ButtonMode mode = IconOnly;
     bool m_mouseDown = false;
     bool isCustomIconColor = false;
+    bool enableBackground = true;
     int currentIndex = 0;
     int preIndex = 0;
     int offset = 0;
     int radius = 6;
     int handleRadius = 5;
+    int padding = 5;
+    int textWidth = 0;
     int rowHeight = 28;
     int columnWidth = 70;
-    int padding = 5;
     int handlePadding = 2;
     int handleSize = rowHeight - handlePadding * 2;
     int iconSize = rowHeight - padding * 2;

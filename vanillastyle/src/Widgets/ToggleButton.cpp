@@ -73,6 +73,18 @@ void ToggleButton::setIconColor(const QColor& color)
     d->isCustomIconColor = true;
 }
 
+void ToggleButton::setEnableBackground(bool enable)
+{
+    Q_D(ToggleButton);
+    d->enableBackground = enable;
+}
+
+bool ToggleButton::enableBackground() const
+{
+    Q_D(const ToggleButton);
+    return d->enableBackground;
+}
+
 int ToggleButton::offset() const
 {
     Q_D(const ToggleButton);
@@ -232,6 +244,22 @@ void ToggleButtonPrivate::checkMode()
     {
         mode = IconWithText;
         itemSize = static_cast<int>(iconList.size());
+        getMaxLenStr(itemList);
+    }
+}
+
+void ToggleButtonPrivate::getMaxLenStr(const QStringList& list)
+{
+    Q_Q(ToggleButton);
+
+    const auto maxElem = std::max_element(list.begin(), list.end(), [](const QString& a, const QString& b) {
+        return a.size() < b.size();
+    });
+    if (maxElem != list.end())
+    {
+        const auto& text = *maxElem;
+        const auto fm = QFontMetrics(q->font());
+        textWidth = fm.horizontalAdvance(text);
     }
 }
 
@@ -271,11 +299,13 @@ void ToggleButtonPrivate::paint(QPainter* painter)
     painter->setRenderHint(QPainter::Antialiasing);
     painter->setPen(Qt::NoPen);
     // draw background
-    QPainterPath background;
-    const QRectF backgroundRect(0, 0, sizeHint().width(), rowHeight);
-    background.addRoundedRect(backgroundRect, radius, radius);
-    painter->fillPath(background, QBrush(backgroundColor));
-
+    if (enableBackground)
+    {
+        QPainterPath background;
+        const QRectF backgroundRect(0, 0, sizeHint().width(), rowHeight);
+        background.addRoundedRect(backgroundRect, radius, radius);
+        painter->fillPath(background, QBrush(backgroundColor));
+    }
     // draw handle
     QPainterPath handlePath;
     const QRectF handleRect(offset + handlePadding, handlePadding, columnWidth - 2 * handlePadding, handleSize);
@@ -299,9 +329,10 @@ void ToggleButtonPrivate::paint(QPainter* painter)
     }
     case IconWithText:
     {
-        QRect iconRect(columnWidth / 2 - 2 * iconSize, padding, iconSize, iconSize);
+        const auto iconWithTextWidth = iconSize + textWidth + padding;
+        QRect iconRect((columnWidth - iconWithTextWidth) / 2, padding, iconSize, iconSize);
+        QRectF textRect(iconRect.right(), 0, iconWithTextWidth, rowHeight);
         paintIcon(painter, iconRect);
-        QRectF textRect(2 * padding + iconSize, 0, columnWidth - iconSize - 2 * padding, rowHeight);
         paintText(painter, textRect);
         break;
     }
