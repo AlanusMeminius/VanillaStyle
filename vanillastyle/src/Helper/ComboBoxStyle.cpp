@@ -14,22 +14,21 @@ bool ComboBoxStyle::draw(const QStyleOptionComplex* option, QPainter* painter, c
     {
         return true;
     }
+    painter->setRenderHints(QPainter::Antialiasing);
     if (opt->editable)
     {
-        painter->setRenderHints(QPainter::Antialiasing);
         const auto rect = opt->rect;
         Helper::renderRoundRect(painter, rect, theme->getColor(opt, ColorRole::LineEditOutline), 5);
         drawIndicator(opt, painter, theme, widget);
-        return true;
     }
     else
     {
-        painter->setRenderHints(QPainter::Antialiasing);
-        const auto rect = opt->rect.adjusted(1, 1, -1, -1);
+        const auto rect = QRectF(opt->rect).adjusted(1, 1, -1, -1);
         const auto fgColor = theme->getColor(opt, ColorRole::LineEditOutline);
-        Helper::renderRoundBorder(painter, rect, fgColor, 1, 5);
+        const auto bgColor = theme->getColor(opt, ColorRole::LineEditBackground);
+        Helper::renderRoundRect(painter, rect, bgColor, 5);
+        Helper::renderRoundBorder(painter, rect, fgColor, 1.5, 5);
         drawIndicator(opt, painter, theme, widget);
-        return true;
     }
     return true;
 }

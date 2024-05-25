@@ -37,6 +37,7 @@ enum class ColorRole
     ProgressBarText,
 
     LineEditOutline,
+    LineEditBackground,
 
     ToggleButtonBackground,
     ToggleButtonForeground,

@@ -393,13 +393,25 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
     }
     case ColorRole::LineEditOutline:
     {
-        if ((flags & Flag) == Focus)
+        if ((flags & Focus) != Focus)
         {
             color = styleConfig.color.lineEditFocusOutline;
         }
         else
         {
             color = styleConfig.color.lineEditOutline;
+        }
+        break;
+    }
+        case ColorRole::LineEditBackground:
+    {
+        if ((flags & Focus) != Focus)
+        {
+            color = styleConfig.color.lineEditFocusBackground;
+        }
+        else
+        {
+            color = styleConfig.color.lineEditBackground;
         }
         break;
     }

@@ -112,6 +112,8 @@ public:
     QColor iconLabelText;
     QColor menuBackground;
     QColor menuSeparatorColor;
+    QColor lineEditFocusBackground;
+    QColor lineEditBackground;
 
     std::string toString()
     {
@@ -127,7 +129,7 @@ public:
                                                 progressBarBackground, progressBarForeground, progressBarText, toggleButtonBackground, toggleButtonForeground,
                                                 toggleButtonIndicatorColor, toggleButtonIconColor, itemViewEvenRowColor, itemViewOddRowColor,
                                                 itemViewSelectedColor, lineEditFocusOutline, lineEditOutline, comboBoxDropDownBackground, scrollBarSliderColor,
-                                                iconLabelText, menuBackground, menuSeparatorColor);
+                                                iconLabelText, menuBackground, menuSeparatorColor, lineEditFocusBackground, lineEditBackground);
 };
 
 class Size : public Basic
