@@ -331,7 +331,7 @@ void ToggleButtonPrivate::paint(QPainter* painter)
     {
         const auto iconWithTextWidth = iconSize + textWidth + padding;
         QRect iconRect((columnWidth - iconWithTextWidth) / 2, padding, iconSize, iconSize);
-        QRectF textRect(iconRect.right(), 0, iconWithTextWidth, rowHeight);
+        QRectF textRect(iconRect.right() + 2 * padding, 0, iconWithTextWidth, rowHeight);
         paintIcon(painter, iconRect);
         paintText(painter, textRect);
         break;
@@ -362,7 +362,8 @@ void ToggleButtonPrivate::paintText(QPainter* painter, QRectF& rect)
     for (const auto& item : itemList)
     {
         painter->setPen(textColor);
-        painter->drawText(rect, Qt::AlignVCenter | Qt::AlignHCenter, item);
+        const int flag = (mode == IconWithText) ? (Qt::AlignVCenter | Qt::AlignLeft) : Qt::AlignCenter;
+        painter->drawText(rect, flag, item);
         rect.translate(columnWidth, 0);
     }
 }
