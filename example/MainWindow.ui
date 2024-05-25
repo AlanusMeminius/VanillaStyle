@@ -182,6 +182,9 @@
      </widget>
     </item>
     <item>
+     <widget class="Vanilla::ToggleButton" name="iconWithText" native="true"/>
+    </item>
+    <item>
      <widget class="QWidget" name="widget_5" native="true">
       <layout class="QHBoxLayout" name="horizontalLayout_5">
        <item>

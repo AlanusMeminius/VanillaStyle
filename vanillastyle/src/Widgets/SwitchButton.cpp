@@ -17,21 +17,18 @@ SwitchButton::SwitchButton(QWidget* parent)
     Q_D(SwitchButton);
     d->init();
 }
+
 SwitchButton::~SwitchButton()
 {
     delete d_ptr;
 }
+
 QSize SwitchButton::sizeHint() const
 {
     Q_D(const SwitchButton);
     return d->sizeHint();
 }
-// int SwitchButton::handlePosition() const
-//{
-// }
-// void SwitchButton::setHandlePosition(int pos)
-//{
-// }
+
 void SwitchButton::paintEvent(QPaintEvent* event)
 {
     Q_UNUSED(event)
@@ -55,6 +52,7 @@ void SwitchButton::paintEvent(QPaintEvent* event)
     handle.addEllipse(d->margin + d->handleSize * handlePosition, d->margin, d->handleSize, d->handleSize);
     painter.fillPath(handle, QBrush(backgroundColor));
 }
+
 void SwitchButton::mousePressEvent(QMouseEvent* event)
 {
     Q_D(SwitchButton);
@@ -67,6 +65,7 @@ void SwitchButton::mousePressEvent(QMouseEvent* event)
         event->ignore();
     }
 }
+
 void SwitchButton::mouseReleaseEvent(QMouseEvent* event)
 {
     Q_D(SwitchButton);
@@ -81,6 +80,7 @@ void SwitchButton::mouseReleaseEvent(QMouseEvent* event)
         event->ignore();
     }
 }
+
 void SwitchButton::keyPressEvent(QKeyEvent* event)
 {
     Q_D(SwitchButton);
@@ -99,6 +99,7 @@ SwitchButtonPrivate::SwitchButtonPrivate(SwitchButton* q)
     : q_ptr(q)
 {
 }
+
 void SwitchButtonPrivate::init()
 {
     Q_Q(SwitchButton);
@@ -110,6 +111,7 @@ void SwitchButtonPrivate::init()
     q->setAttribute(Qt::WA_Hover);
     setupAnimation();
 }
+
 void SwitchButtonPrivate::setChecked(const bool checked)
 {
     Q_Q(SwitchButton);
@@ -122,10 +124,12 @@ void SwitchButtonPrivate::setChecked(const bool checked)
     startAnimation();
     emit q->toggled(checked);
 }
+
 bool SwitchButtonPrivate::isChecked() const
 {
     return m_checked;
 }
+
 void SwitchButtonPrivate::toggle()
 {
     setChecked(!m_checked);
@@ -135,6 +139,7 @@ QSize SwitchButtonPrivate::sizeHint() const
 {
     return {width, height};
 }
+
 void SwitchButtonPrivate::setupAnimation()
 {
     Q_Q(SwitchButton);
@@ -147,6 +152,7 @@ void SwitchButtonPrivate::setupAnimation()
         q->update();
     });
 }
+
 void SwitchButtonPrivate::startAnimation()
 {
     const auto currentPosition = handleAnimation.currentValue();

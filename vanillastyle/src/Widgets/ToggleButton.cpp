@@ -26,10 +26,12 @@ ToggleButton::ToggleButton(const QStringList& list, QWidget* parent)
     Q_D(ToggleButton);
     d->itemList = list;
 }
+
 ToggleButton::~ToggleButton()
 {
     delete d_ptr;
 }
+
 QSize ToggleButton::sizeHint() const
 {
     Q_D(const ToggleButton);
@@ -40,22 +42,28 @@ void ToggleButton::setItemList(const QStringList& list)
 {
     Q_D(ToggleButton);
     d->itemList = list;
+    d->checkMode();
     setSize();
 }
+
 const QStringList& ToggleButton::itemList() const
 {
     Q_D(const ToggleButton);
     return d->itemList;
 }
-bool ToggleButton::useIcon()
+
+void ToggleButton::setIconList(const QStringList& list)
 {
     Q_D(ToggleButton);
-    return d->m_useIcon;
+    d->iconList = list;
+    d->checkMode();
+    setSize();
 }
-void ToggleButton::setUseIcon(const bool isIcon)
+
+const QStringList& ToggleButton::iconList() const
 {
-    Q_D(ToggleButton);
-    d->m_useIcon = isIcon;
+    Q_D(const ToggleButton);
+    return d->iconList;
 }
 
 void ToggleButton::setIconColor(const QColor& color)
@@ -70,6 +78,7 @@ int ToggleButton::offset() const
     Q_D(const ToggleButton);
     return d->offset;
 }
+
 void ToggleButton::setOffset(const int pos)
 {
     Q_D(ToggleButton);
@@ -82,23 +91,27 @@ int ToggleButton::columnWidth() const
     Q_D(const ToggleButton);
     return d->columnWidth;
 }
+
 void ToggleButton::setColumnWidth(const int width)
 {
     Q_D(ToggleButton);
     d->columnWidth = width;
     setSize();
 }
+
 int ToggleButton::rowHeight() const
 {
     Q_D(const ToggleButton);
     return d->rowHeight;
 }
+
 void ToggleButton::setRowHeight(const int height)
 {
     Q_D(ToggleButton);
     d->rowHeight = height;
     update();
 }
+
 int ToggleButton::currentIndex() const
 {
     Q_D(const ToggleButton);
@@ -124,6 +137,7 @@ void ToggleButton::mousePressEvent(QMouseEvent* event)
         event->ignore();
     }
 }
+
 void ToggleButton::mouseReleaseEvent(QMouseEvent* event)
 {
     Q_D(ToggleButton);
@@ -135,7 +149,7 @@ void ToggleButton::mouseReleaseEvent(QMouseEvent* event)
 #else
         const auto index = event->pos().x() / d->columnWidth;
 #endif
-        if (index < static_cast<int>(d->itemList.size()))
+        if (index < d->itemSize)
         {
             d->setCurrentIndex(index);
             emit currentItemChanged(index);
@@ -147,12 +161,15 @@ void ToggleButton::mouseReleaseEvent(QMouseEvent* event)
         event->ignore();
     }
 }
+
 void ToggleButton::setSize()
 {
     Q_D(ToggleButton);
-    setFixedWidth(d->columnWidth * static_cast<int>(d->itemList.size()));
+
+    setFixedWidth(d->columnWidth * d->itemSize);
     update();
 }
+
 void ToggleButton::paintEvent(QPaintEvent* event)
 {
     Q_UNUSED(event)
@@ -163,7 +180,7 @@ void ToggleButton::paintEvent(QPaintEvent* event)
 
 QSize ToggleButtonPrivate::sizeHint() const
 {
-    return {columnWidth * static_cast<int>(itemList.size()), rowHeight};
+    return {columnWidth * itemSize, rowHeight};
 }
 
 ToggleButtonPrivate::ToggleButtonPrivate(ToggleButton* q)
@@ -195,6 +212,29 @@ void ToggleButtonPrivate::setColor()
     }
 }
 
+void ToggleButtonPrivate::checkMode()
+{
+    if (itemList.empty() && iconList.empty())
+    {
+        return;
+    }
+    if (itemList.empty() && !iconList.empty())
+    {
+        mode = IconOnly;
+        itemSize = static_cast<int>(iconList.size());
+    }
+    else if (iconList.empty() && !itemList.empty())
+    {
+        mode = TextOnly;
+        itemSize = static_cast<int>(itemList.size());
+    }
+    else if (!iconList.empty() && !itemList.empty())
+    {
+        mode = IconWithText;
+        itemSize = static_cast<int>(iconList.size());
+    }
+}
+
 void ToggleButtonPrivate::setCurrentIndex(const int index)
 {
     Q_Q(ToggleButton);
@@ -207,6 +247,7 @@ void ToggleButtonPrivate::setCurrentIndex(const int index)
         handleAnimation.start();
     }
 }
+
 void ToggleButtonPrivate::setupAnimation()
 {
     Q_Q(ToggleButton);
@@ -220,53 +261,79 @@ void ToggleButtonPrivate::setupAnimation()
 void ToggleButtonPrivate::paint(QPainter* painter)
 {
     Q_Q(const ToggleButton);
-    setColor();
-    painter->save();
-    painter->setRenderHint(QPainter::Antialiasing);
-    if (!m_useIcon)
-    {
-        painter->setPen(Qt::NoPen);
-        QPainterPath background;
-        const QRectF backgroundRect(0, 0, sizeHint().width(), rowHeight);
-        background.addRoundedRect(backgroundRect, radius, radius);
-        painter->fillPath(background, QBrush(backgroundColor));
-    }
-
-    QPainterPath handlePath;
-    const QRectF handleRect(offset + handlePadding, handlePadding, columnWidth - 2 * handlePadding, handleSize);
-    handlePath.addRoundedRect(handleRect, radius, radius);
-
-    painter->fillPath(handlePath, QBrush(handleColor));
-
-    if (itemList.empty())
+    if (itemList.empty() && iconList.empty())
     {
         return;
     }
-    if (m_useIcon)
+
+    setColor();
+    painter->save();
+    painter->setRenderHint(QPainter::Antialiasing);
+    painter->setPen(Qt::NoPen);
+    // draw background
+    QPainterPath background;
+    const QRectF backgroundRect(0, 0, sizeHint().width(), rowHeight);
+    background.addRoundedRect(backgroundRect, radius, radius);
+    painter->fillPath(background, QBrush(backgroundColor));
+
+    // draw handle
+    QPainterPath handlePath;
+    const QRectF handleRect(offset + handlePadding, handlePadding, columnWidth - 2 * handlePadding, handleSize);
+    handlePath.addRoundedRect(handleRect, handleRadius, handleRadius);
+
+    painter->fillPath(handlePath, QBrush(handleColor));
+
+    switch (mode)
     {
-        QRect iconRectF((columnWidth - iconSize) / 2, padding, iconSize, iconSize);
-        QSvgRenderer grid;
-        for (const auto& item : itemList)
-        {
-            const auto pixmap = renderSvgToPixmap(item, iconSize, static_cast<int>(q->devicePixelRatio()));
-            if (const auto colorizedPixmap = getColorizedPixmap(pixmap, q, isCustomIconColor ? iconColor : styleIconColor); !colorizedPixmap.isNull())
-            {
-                painter->drawPixmap(iconRectF, colorizedPixmap);
-            }
-            iconRectF.translate(columnWidth, 0);
-        }
+    case IconOnly:
+    {
+        QRect iconRect((columnWidth - iconSize) / 2, padding, iconSize, iconSize);
+        paintIcon(painter, iconRect);
+        break;
     }
-    else
+    case TextOnly:
     {
         QRectF textRect(0, 0, columnWidth, rowHeight);
-        for (const auto& item : itemList)
-        {
-            painter->setPen(textColor);
-            painter->drawText(textRect, Qt::AlignVCenter | Qt::AlignHCenter, item);
-            textRect.translate(columnWidth, 0);
-        }
+        paintText(painter, textRect);
+        break;
     }
+    case IconWithText:
+    {
+        QRect iconRect(columnWidth / 2 - 2 * iconSize, padding, iconSize, iconSize);
+        paintIcon(painter, iconRect);
+        QRectF textRect(2 * padding + iconSize, 0, columnWidth - iconSize - 2 * padding, rowHeight);
+        paintText(painter, textRect);
+        break;
+    }
+    }
+
     painter->restore();
+}
+
+void ToggleButtonPrivate::paintIcon(QPainter* painter, QRect& rect)
+{
+    Q_Q(const ToggleButton);
+    QSvgRenderer grid;
+    for (const auto& item : iconList)
+    {
+        const auto pixmap = renderSvgToPixmap(item, iconSize, static_cast<int>(q->devicePixelRatio()));
+        if (const auto colorizedPixmap = getColorizedPixmap(pixmap, q, isCustomIconColor ? iconColor : styleIconColor); !colorizedPixmap.isNull())
+        {
+            painter->drawPixmap(rect, colorizedPixmap);
+        }
+        rect.translate(columnWidth, 0);
+    }
+}
+
+void ToggleButtonPrivate::paintText(QPainter* painter, QRectF& rect)
+{
+    Q_Q(const ToggleButton);
+    for (const auto& item : itemList)
+    {
+        painter->setPen(textColor);
+        painter->drawText(rect, Qt::AlignVCenter | Qt::AlignHCenter, item);
+        rect.translate(columnWidth, 0);
+    }
 }
 
 }  // namespace Vanilla

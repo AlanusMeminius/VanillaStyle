@@ -205,3 +205,4 @@ gen
 /.DS_Store
 /lib/src/.DS_Store
 .DS_Store
+/.cache

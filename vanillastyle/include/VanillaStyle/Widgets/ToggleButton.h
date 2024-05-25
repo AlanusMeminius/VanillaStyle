@@ -24,8 +24,8 @@ public:
     void setItemList(const QStringList& list);
     [[nodiscard]] const QStringList& itemList() const;
 
-    bool useIcon();
-    void setUseIcon(bool isIcon);
+    void setIconList(const QStringList& list);
+    [[nodiscard]] const QStringList& iconList() const;
 
     void setIconColor(const QColor& color);
 

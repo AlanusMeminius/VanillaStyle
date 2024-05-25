@@ -29,13 +29,16 @@ MainWindow::MainWindow(QWidget* parent)
     m_timer->setInterval(100);
 
     ui->progressBar->setValue(0);
-    ui->toggleBtnfirst->setItemList(QStringList{":grid.svg", ":list.svg", ":download.svg"});
+    ui->toggleBtnfirst->setIconList(QStringList{":grid.svg", ":list.svg", ":download.svg"});
     ui->toggleBtnfirst->setColumnWidth(50);
 
-    ui->toggleBtnSecond->setUseIcon(false);
+    // ui->toggleBtnSecond->setUseIcon(false);
     ui->toggleBtnSecond->setItemList(QStringList{"Default", "Account", "Advance"});
     ui->toggleBtnSecond->setColumnWidth(100);
 
+    ui->iconWithText->setIconList(QStringList{":grid.svg", ":list.svg", ":download.svg"});
+    ui->iconWithText->setItemList(QStringList{"Default", "Account", "Advance"});
+    ui->iconWithText->setColumnWidth(110);
 
     ui->radioButton->setChecked(true);
 
