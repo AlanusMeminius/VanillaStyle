@@ -82,7 +82,7 @@ enum class SizeRole
 
     MenuItemPadding,
     CheckBoxIndicatorMargin,
-    CheckBoxSpacing,
+    CheckBoxPadding,
     ProgressBarHeight,
     ProgressBarTextMargin,
 

@@ -32,6 +32,8 @@ public:
     void setEnableBackground(bool enable);
     [[nodiscard]] bool enableBackground() const;
 
+    void setVertical();
+
     [[nodiscard]] int offset() const;
     void setOffset(int pos);
 

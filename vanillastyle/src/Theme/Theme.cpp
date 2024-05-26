@@ -167,35 +167,35 @@ int Theme::getSize(const SizeRole sizeRole) const
     switch (sizeRole)
     {
     case SizeRole::NormalRadius:
-        return 5;
+        return styleConfig.size.normalRadius;
     case SizeRole::SmallRadius:
-        return 3;
+        return styleConfig.size.smallRadius;
     case SizeRole::NormalBorder:
-        return 1;
+        return styleConfig.size.normalBorder;
     case SizeRole::NormalPadding:
-        return 5;
+        return styleConfig.size.normalPadding;
     case SizeRole::ButtonBorder:
-        return 1;
+        return styleConfig.size.buttonBorder;
     case SizeRole::CheckBoxBorder:
-        return 2;
+        return styleConfig.size.checkBoxBorder;
     case SizeRole::ButtonRadius:
-        return 4;
+        return styleConfig.size.buttonRadius;
     case SizeRole::ItemViewRadius:
         return styleConfig.size.itemViewRadius;
     case SizeRole::IconSize:
         return styleConfig.size.iconSize;
     case SizeRole::MenuItemPadding:
-        return 5;
+        return styleConfig.size.menuItemPadding;
     case SizeRole::CheckBoxIndicatorMargin:
-        return 4;
-    case SizeRole::CheckBoxSpacing:
-        return 5;
+        return styleConfig.size.checkBoxIndicatorMargin;
+    case SizeRole::CheckBoxPadding:
+        return styleConfig.size.checkBoxPadding;
     case SizeRole::ProgressBarHeight:
-        return 6;
+        return styleConfig.size.progressBarHeight;
     case SizeRole::ProgressBarTextMargin:
-        return 35;
+        return styleConfig.size.progressBarTextMargin;
     case SizeRole::ScrollBarWidth:
-        return 5;
+        return styleConfig.size.scrollBarWidth;
     default:
         return 3;
     }

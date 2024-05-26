@@ -142,20 +142,38 @@ public:
     int fontH4{};
     int fontH5{};
     int fontH6{};
-    int borderWidth{};
-    int iconSize{};
-    int normalRadius{};
-    int buttonRadius{};
-    int menuItemRadius{};
+
+    int iconSize{16};
+
+    int normalRadius{5};
+    int smallRadius{3};
+    int buttonRadius{4};
     int itemViewRadius{};
+
+    int normalBorder{1};
+    int buttonBorder{1};
+    int checkBoxBorder{2};
+
+    int normalPadding{5};
+    int checkBoxPadding{5};
+    int menuItemPadding{5};
+    int checkBoxIndicatorMargin{4};
+    int progressBarTextMargin{35};
+    int progressBarHeight{6};
+
+    int scrollBarWidth{5};
+    int menuItemRadius{};
+
     std::string toString()
     {
         nlohmann::json json;
         to_json(json, *this);
         return json.dump(4);
     }
-    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Size, fontSize, fontH1, fontH2, fontH3, fontH4, fontH5, fontH6, borderWidth, iconSize, normalRadius,
-                                                buttonRadius, itemViewRadius);
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Size, fontSize, fontH1, fontH2, fontH3, fontH4, fontH5, fontH6, iconSize, normalRadius, smallRadius,
+                                                buttonRadius, itemViewRadius, normalBorder, buttonBorder, checkBoxBorder, normalPadding, checkBoxPadding,
+                                                menuItemPadding, checkBoxIndicatorMargin, progressBarHeight, progressBarTextMargin, scrollBarWidth,
+                                                menuItemRadius);
 };
 
 class Icons : public Basic

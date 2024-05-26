@@ -181,7 +181,7 @@ int VanillaStyle::pixelMetric(PixelMetric pm, const QStyleOption* option, const 
         return d->theme->getSize(SizeRole::IconSize);
     case PM_RadioButtonLabelSpacing:
     case PM_CheckBoxLabelSpacing:
-        return d->theme->getSize(SizeRole::CheckBoxSpacing);
+        return d->theme->getSize(SizeRole::CheckBoxPadding);
         // Button.
     case PM_ButtonMargin:
         return d->theme->getSize(SizeRole::ButtonTextMargin);

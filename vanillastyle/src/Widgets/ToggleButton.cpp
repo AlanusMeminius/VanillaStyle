@@ -85,6 +85,12 @@ bool ToggleButton::enableBackground() const
     return d->enableBackground;
 }
 
+void ToggleButton::setVertical()
+{
+    Q_D(ToggleButton);
+    d->isVertical = true;
+}
+
 int ToggleButton::offset() const
 {
     Q_D(const ToggleButton);
@@ -121,6 +127,8 @@ void ToggleButton::setRowHeight(const int height)
 {
     Q_D(ToggleButton);
     d->rowHeight = height;
+    d->handleSize = d->getHandleSize();
+    // d->iconSize = d->getIconSize();
     update();
 }
 
@@ -157,9 +165,9 @@ void ToggleButton::mouseReleaseEvent(QMouseEvent* event)
     {
         d->m_mouseDown = false;
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
-        const auto index = qIntCast(event->position().x()) / d->columnWidth;
+        const auto index = d->isVertical ? qIntCast(event->position().y()) / d->rowHeight : qIntCast(event->position().x()) / d->columnWidth;
 #else
-        const auto index = event->pos().x() / d->columnWidth;
+        const auto index = d->isVertical ? event->pos().y() / d->rowHeight : event->pos().x() / d->columnWidth;
 #endif
         if (index < d->itemSize)
         {
@@ -178,7 +186,14 @@ void ToggleButton::setSize()
 {
     Q_D(ToggleButton);
 
-    setFixedWidth(d->columnWidth * d->itemSize);
+    if (d->isVertical)
+    {
+        setFixedHeight(d->rowHeight * d->itemSize);
+    }
+    else
+    {
+        setFixedWidth(d->columnWidth * d->itemSize);
+    }
     update();
 }
 
@@ -192,6 +207,10 @@ void ToggleButton::paintEvent(QPaintEvent* event)
 
 QSize ToggleButtonPrivate::sizeHint() const
 {
+    if (isVertical)
+    {
+        return {columnWidth, itemSize * rowHeight};
+    }
     return {columnWidth * itemSize, rowHeight};
 }
 
@@ -270,8 +289,10 @@ void ToggleButtonPrivate::setCurrentIndex(const int index)
     {
         preIndex = currentIndex;
         currentIndex = index;
-        handleAnimation.setStartValue(preIndex * columnWidth);
-        handleAnimation.setEndValue(currentIndex * columnWidth);
+        const auto startValue = isVertical ? preIndex * rowHeight : preIndex * columnWidth;
+        const auto endValue = isVertical ? currentIndex * rowHeight : currentIndex * columnWidth;
+        handleAnimation.setStartValue(startValue);
+        handleAnimation.setEndValue(endValue);
         handleAnimation.start();
     }
 }
@@ -302,13 +323,14 @@ void ToggleButtonPrivate::paint(QPainter* painter)
     if (enableBackground)
     {
         QPainterPath background;
-        const QRectF backgroundRect(0, 0, sizeHint().width(), rowHeight);
+        const QRectF backgroundRect(0, 0, sizeHint().width(), sizeHint().height());
         background.addRoundedRect(backgroundRect, radius, radius);
         painter->fillPath(background, QBrush(backgroundColor));
     }
     // draw handle
     QPainterPath handlePath;
-    const QRectF handleRect(offset + handlePadding, handlePadding, columnWidth - 2 * handlePadding, handleSize);
+    const auto topLeft = isVertical ? QPointF(handlePadding, offset + handlePadding) : QPointF(offset + handlePadding, handlePadding);
+    const QRectF handleRect(topLeft, QSizeF(columnWidth - 2 * handlePadding, handleSize));
     handlePath.addRoundedRect(handleRect, handleRadius, handleRadius);
 
     painter->fillPath(handlePath, QBrush(handleColor));
@@ -317,7 +339,7 @@ void ToggleButtonPrivate::paint(QPainter* painter)
     {
     case IconOnly:
     {
-        QRect iconRect((columnWidth - iconSize) / 2, padding, iconSize, iconSize);
+        QRect iconRect((columnWidth - iconSize) / 2, (rowHeight - iconSize) / 2, iconSize, iconSize);
         paintIcon(painter, iconRect);
         break;
     }
@@ -330,7 +352,7 @@ void ToggleButtonPrivate::paint(QPainter* painter)
     case IconWithText:
     {
         const auto iconWithTextWidth = iconSize + textWidth + padding;
-        QRect iconRect((columnWidth - iconWithTextWidth) / 2, padding, iconSize, iconSize);
+        QRect iconRect((columnWidth - iconWithTextWidth) / 2, (rowHeight - iconSize) / 2, iconSize, iconSize);
         QRectF textRect(iconRect.right() + 2 * padding, 0, iconWithTextWidth, rowHeight);
         paintIcon(painter, iconRect);
         paintText(painter, textRect);
@@ -352,7 +374,8 @@ void ToggleButtonPrivate::paintIcon(QPainter* painter, QRect& rect)
         {
             painter->drawPixmap(rect, colorizedPixmap);
         }
-        rect.translate(columnWidth, 0);
+        const auto translatePoint = isVertical ? QPoint(0, rowHeight) : QPoint(columnWidth, 0);
+        rect.translate(translatePoint);
     }
 }
 
@@ -364,7 +387,8 @@ void ToggleButtonPrivate::paintText(QPainter* painter, QRectF& rect)
         painter->setPen(textColor);
         const int flag = (mode == IconWithText) ? (Qt::AlignVCenter | Qt::AlignLeft) : Qt::AlignCenter;
         painter->drawText(rect, flag, item);
-        rect.translate(columnWidth, 0);
+        const auto translatePoint = isVertical ? QPoint(0, rowHeight) : QPoint(columnWidth, 0);
+        rect.translate(translatePoint);
     }
 }
 
