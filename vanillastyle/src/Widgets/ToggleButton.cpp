@@ -261,7 +261,7 @@ void ToggleButtonPrivate::getMaxLenStr(const QStringList& list)
 {
     Q_Q(ToggleButton);
 
-    const auto maxElem = std::ranges::max_element(list.begin(), list.end(), [](const QString& a, const QString& b) {
+    const auto maxElem = std::max_element(list.begin(), list.end(), [](const QString& a, const QString& b) {
         return a.size() < b.size();
     });
     if (maxElem != list.end())
