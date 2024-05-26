@@ -182,7 +182,11 @@
      </widget>
     </item>
     <item>
-     <widget class="Vanilla::ToggleButton" name="iconWithText" native="true"/>
+     <widget class="Vanilla::ToggleButton" name="iconWithText" native="true">
+      <property name="_vanillaStyle_Patch" stdset="0">
+       <string notr="true">CustomToggleButtonPatch</string>
+      </property>
+     </widget>
     </item>
     <item>
      <widget class="QWidget" name="widget_5" native="true">

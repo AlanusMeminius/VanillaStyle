@@ -14,9 +14,6 @@ class PatchConfig;
 class VANILLA_EXPORT PatchHelper
 {
 public:
-
-    static PatchHelper& global();
-
     void init(const std::vector<PatchConfig> & patches);
     void appendPatch(const std::vector<PatchConfig> & patches);
     void appendPatch(const QString& patchPath);

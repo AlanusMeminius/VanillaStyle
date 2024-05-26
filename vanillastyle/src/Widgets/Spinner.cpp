@@ -87,7 +87,7 @@ void SpinnerPrivate::updateColor()
     Q_Q(Spinner);
     if (auto* customStyle = qobject_cast<VanillaStyle*>(q->style()))
     {
-        m_color = customStyle->getCustomColor(ColorRole::ButtonForeground);
+        m_color = customStyle->getColor(q, ColorRole::ButtonForeground);
     }
     else
     {
@@ -106,7 +106,7 @@ void SpinnerPrivate::paint(QPainter* painter)
 {
     Q_Q(Spinner);
     painter->setRenderHint(QPainter::Antialiasing);
-    const auto translateDistance = QPoint(q->width() /2, q->height() / 2);
+    const auto translateDistance = QPoint(q->width() / 2, q->height() / 2);
     painter->translate(translateDistance);
     const auto miniSide = std::min(q->width(), q->height());
     painter->scale(miniSide / 100., miniSide / 100.);

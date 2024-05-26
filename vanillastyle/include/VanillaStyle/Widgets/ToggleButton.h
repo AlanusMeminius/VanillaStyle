@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QWidget>
+
 #include "VanillaStyle/vglobal.h"
 
 namespace Vanilla

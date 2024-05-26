@@ -75,6 +75,11 @@ void Theme::setConfig(const QString& configPath)
     configManager->setErrorHandler(callback);
 }
 
+void Theme::setPatchHelper(const std::shared_ptr<PatchHelper>& helper)
+{
+    patchHelper = helper;
+}
+
 void Theme::setMode(const Mode mode)
 {
     styleConfig = configManager->defaultConfig(mode);
@@ -83,7 +88,7 @@ void Theme::setMode(const Mode mode)
 
 void Theme::update()
 {
-    PatchHelper::global().init(styleConfig.patch);
+    patchHelper->init(styleConfig.patch);
     updatePalette();
 }
 
@@ -164,38 +169,39 @@ QPalette Theme::standardPalette() const
 
 int Theme::getSize(const SizeRole sizeRole) const
 {
+    const auto& config = styleConfig.size;
     switch (sizeRole)
     {
     case SizeRole::NormalRadius:
-        return styleConfig.size.normalRadius;
+        return config.normalRadius;
     case SizeRole::SmallRadius:
-        return styleConfig.size.smallRadius;
+        return config.smallRadius;
     case SizeRole::NormalBorder:
-        return styleConfig.size.normalBorder;
+        return config.normalBorder;
     case SizeRole::NormalPadding:
-        return styleConfig.size.normalPadding;
+        return config.normalPadding;
     case SizeRole::ButtonBorder:
-        return styleConfig.size.buttonBorder;
+        return config.buttonBorder;
     case SizeRole::CheckBoxBorder:
-        return styleConfig.size.checkBoxBorder;
+        return config.checkBoxBorder;
     case SizeRole::ButtonRadius:
-        return styleConfig.size.buttonRadius;
+        return config.buttonRadius;
     case SizeRole::ItemViewRadius:
-        return styleConfig.size.itemViewRadius;
+        return config.itemViewRadius;
     case SizeRole::IconSize:
-        return styleConfig.size.iconSize;
+        return config.iconSize;
     case SizeRole::MenuItemPadding:
-        return styleConfig.size.menuItemPadding;
+        return config.menuItemPadding;
     case SizeRole::CheckBoxIndicatorMargin:
-        return styleConfig.size.checkBoxIndicatorMargin;
+        return config.checkBoxIndicatorMargin;
     case SizeRole::CheckBoxPadding:
-        return styleConfig.size.checkBoxPadding;
+        return config.checkBoxPadding;
     case SizeRole::ProgressBarHeight:
-        return styleConfig.size.progressBarHeight;
+        return config.progressBarHeight;
     case SizeRole::ProgressBarTextMargin:
-        return styleConfig.size.progressBarTextMargin;
+        return config.progressBarTextMargin;
     case SizeRole::ScrollBarWidth:
-        return styleConfig.size.scrollBarWidth;
+        return config.scrollBarWidth;
     default:
         return 3;
     }
@@ -203,28 +209,29 @@ int Theme::getSize(const SizeRole sizeRole) const
 
 QFont Theme::getFont(const TextSizeRole sizeRole)
 {
+    const auto& config = styleConfig.size;
     switch (sizeRole)
     {
     case TextSizeRole::H6:
-        fontH6.setPixelSize(styleConfig.size.fontH6);
+        fontH6.setPixelSize(config.fontH6);
         return fontH6;
     case TextSizeRole::H5:
-        fontH5.setPixelSize(styleConfig.size.fontH5);
+        fontH5.setPixelSize(config.fontH5);
         return fontH5;
     case TextSizeRole::H4:
-        fontH4.setPixelSize(styleConfig.size.fontH4);
+        fontH4.setPixelSize(config.fontH4);
         return fontH4;
     case TextSizeRole::H3:
-        fontH3.setPixelSize(styleConfig.size.fontH3);
+        fontH3.setPixelSize(config.fontH3);
         return fontH3;
     case TextSizeRole::H2:
-        fontH2.setPixelSize(styleConfig.size.fontH2);
+        fontH2.setPixelSize(config.fontH2);
         return fontH2;
     case TextSizeRole::H1:
-        fontH1.setPixelSize(styleConfig.size.fontH1);
+        fontH1.setPixelSize(config.fontH1);
         return fontH1;
     default:
-        fontRegular.setPixelSize(styleConfig.size.fontSize);
+        fontRegular.setPixelSize(config.fontSize);
         return fontRegular;
     }
 }
@@ -242,11 +249,12 @@ QColor Theme::createColor(const State state, const QStyleOption* option, const C
 QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRole role) const
 {
     QColor color = option->palette.color(QPalette::Base);
+    const auto& config = styleConfig.color;
     switch (role)
     {
     case ColorRole::PrimaryText:
     {
-        color = styleConfig.color.primaryTextColor;
+        color = config.primaryTextColor;
         break;
     }
     case ColorRole::LabelText:
@@ -257,51 +265,51 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
         }
         else if ((flags & Flag) == Hover)
         {
-            color = styleConfig.color.hoverTextColor;
+            color = config.hoverTextColor;
         }
         else if ((flags & Flag) == Press)
         {
-            color = styleConfig.color.pressedTextColor;
+            color = config.pressedTextColor;
         }
         else
         {
-            color = styleConfig.color.textColor;
+            color = config.textColor;
         }
         break;
     }
     case ColorRole::LabelBackground:
     {
-        color = styleConfig.color.labelBackground;
+        color = config.labelBackground;
         break;
     }
     case ColorRole::LabelBorderColor:
     {
-        color = styleConfig.color.labelBorderColor;
+        color = config.labelBorderColor;
         break;
     }
     case ColorRole::IconColor:
     {
-        color = styleConfig.color.iconColor;
+        color = config.iconColor;
         break;
     }
     case ColorRole::IndicatorColor:
     {
-        color = styleConfig.color.indicatorColor;
+        color = config.indicatorColor;
         break;
     }
     case ColorRole::ButtonForeground:
     {
         if ((flags & Flag) == Hover)
         {
-            color = styleConfig.color.buttonHoveredForeground;
+            color = config.buttonHoveredForeground;
         }
         else if ((flags & Flag) == Press)
         {
-            color = styleConfig.color.buttonPressedForeground;
+            color = config.buttonPressedForeground;
         }
         else
         {
-            color = styleConfig.color.buttonForeground;
+            color = config.buttonForeground;
         }
         break;
     }
@@ -309,42 +317,42 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
     {
         if ((flags & Flag) == Hover)
         {
-            color = styleConfig.color.buttonHoveredBackground;
+            color = config.buttonHoveredBackground;
         }
         else if ((flags & Flag) == Press)
         {
-            color = styleConfig.color.buttonPressedBackground;
+            color = config.buttonPressedBackground;
         }
         else
         {
-            color = styleConfig.color.buttonBackground;
+            color = config.buttonBackground;
         }
         break;
     }
     case ColorRole::ButtonBorderColor:
     {
-        color = styleConfig.color.buttonBorderColor;
+        color = config.buttonBorderColor;
         break;
     }
     case ColorRole::RadioButtonForeground:
     {
-        color = styleConfig.color.checkBoxForeground;
+        color = config.checkBoxForeground;
         break;
     }
     case ColorRole::CheckBoxForeground:
     {
-        color = styleConfig.color.checkBoxCheckedForeground;
+        color = config.checkBoxCheckedForeground;
         break;
     }
     case ColorRole::RadioButtonBackground:
     {
         if ((flags & Checked) != Checked && (flags & Flag) == Hover)
         {
-            color = styleConfig.color.checkBoxHoveredBackground;
+            color = config.checkBoxHoveredBackground;
         }
         else
         {
-            color = styleConfig.color.checkBoxBackground;
+            color = config.checkBoxBackground;
         }
         break;
     }
@@ -352,15 +360,15 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
     {
         if ((flags & Checked) == Checked)
         {
-            color = styleConfig.color.checkBoxCheckedBackground;
+            color = config.checkBoxCheckedBackground;
         }
         else if ((flags & Checked) != Checked && (flags & Flag) == Hover)
         {
-            color = styleConfig.color.checkBoxHoveredBackground;
+            color = config.checkBoxHoveredBackground;
         }
         else
         {
-            color = styleConfig.color.checkBoxBackground;
+            color = config.checkBoxBackground;
         }
         break;
     }
@@ -368,86 +376,86 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
     {
         if ((flags & Checked) != Checked && (flags & Flag) == Hover)
         {
-            color = styleConfig.color.checkBoxHoveredBorderColor;
+            color = config.checkBoxHoveredBorderColor;
         }
         else
         {
-            color = styleConfig.color.checkBoxBorderColor;
+            color = config.checkBoxBorderColor;
         }
         break;
     }
     case ColorRole::ProgressBarForeground:
     {
-        color = styleConfig.color.progressBarForeground;
+        color = config.progressBarForeground;
         break;
     }
     case ColorRole::ProgressBarBackground:
     {
-        color = styleConfig.color.progressBarBackground;
+        color = config.progressBarBackground;
         break;
     }
     case ColorRole::ProgressBarText:
     {
-        color = styleConfig.color.progressBarText;
+        color = config.progressBarText;
         break;
     }
     case ColorRole::LineEditOutline:
     {
         if ((flags & Focus) != Focus)
         {
-            color = styleConfig.color.lineEditFocusOutline;
+            color = config.lineEditFocusOutline;
         }
         else
         {
-            color = styleConfig.color.lineEditOutline;
+            color = config.lineEditOutline;
         }
         break;
     }
-        case ColorRole::LineEditBackground:
+    case ColorRole::LineEditBackground:
     {
         if ((flags & Focus) != Focus)
         {
-            color = styleConfig.color.lineEditFocusBackground;
+            color = config.lineEditFocusBackground;
         }
         else
         {
-            color = styleConfig.color.lineEditBackground;
+            color = config.lineEditBackground;
         }
         break;
     }
     case ColorRole::ItemViewSelectedColor:
     {
-        color = styleConfig.color.itemViewSelectedColor;
+        color = config.itemViewSelectedColor;
         break;
     }
     case ColorRole::ItemViewEvenRowColor:
     {
-        color = styleConfig.color.itemViewEvenRowColor;
+        color = config.itemViewEvenRowColor;
         break;
     }
     case ColorRole::ItemViewOddRowColor:
     {
-        color = styleConfig.color.itemViewOddRowColor;
+        color = config.itemViewOddRowColor;
         break;
     }
     case ColorRole::ScrollBarSliderColor:
     {
-        color = styleConfig.color.scrollBarSliderColor;
+        color = config.scrollBarSliderColor;
         break;
     }
     case ColorRole::MenuBackground:
     {
-        color = styleConfig.color.menuBackground;
+        color = config.menuBackground;
         break;
     }
     case ColorRole::MenuSeparatorColor:
     {
-        color = styleConfig.color.menuSeparatorColor;
+        color = config.menuSeparatorColor;
         break;
     }
     case ColorRole::ComboBoxDropDownBackground:
     {
-        color = styleConfig.color.comboBoxDropDownBackground;
+        color = config.comboBoxDropDownBackground;
         break;
     }
     default:
@@ -458,26 +466,27 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
 
 QColor Theme::customColor(const ColorRole role) const
 {
+    const auto& config = styleConfig.color;
     switch (role)
     {
     case ColorRole::PrimaryText:
-        return styleConfig.color.textColor;
+        return config.textColor;
     case ColorRole::ButtonForeground:
-        return styleConfig.color.buttonForeground;
+        return config.buttonForeground;
     case ColorRole::ButtonBackground:
-        return styleConfig.color.buttonBackground;
+        return config.buttonBackground;
     case ColorRole::LabelText:
-        return styleConfig.color.iconLabelText;
+        return config.iconLabelText;
     case ColorRole::ToggleButtonBackground:
-        return styleConfig.color.toggleButtonBackground;
+        return config.toggleButtonBackground;
     case ColorRole::ToggleButtonForeground:
-        return styleConfig.color.toggleButtonForeground;
+        return config.toggleButtonForeground;
     case ColorRole::ToggleButtonIndicatorColor:
-        return styleConfig.color.toggleButtonIndicatorColor;
+        return config.toggleButtonIndicatorColor;
     case ColorRole::IconColor:
-        return styleConfig.color.iconColor;
+        return config.iconColor;
     case ColorRole::ToggleButtonIconColor:
-        return styleConfig.color.toggleButtonIconColor;
+        return config.toggleButtonIconColor;
     default:
         return Qt::white;
     }

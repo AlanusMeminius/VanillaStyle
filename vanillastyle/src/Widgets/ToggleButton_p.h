@@ -1,7 +1,8 @@
 #pragma once
-#include "VanillaStyle/Widgets/ToggleButton.h"
 #include <QPropertyAnimation>
-#include <QtCore/QSizeF>
+#include <QSizeF>
+
+#include "VanillaStyle/Widgets/ToggleButton.h"
 
 namespace Vanilla {
 

@@ -183,15 +183,7 @@ void ToggleButton::mouseReleaseEvent(QMouseEvent* event)
 void ToggleButton::setSize()
 {
     Q_D(ToggleButton);
-
-    if (d->isVertical)
-    {
-        setFixedSize(d->columnWidth, d->rowHeight * d->itemSize);
-    }
-    else
-    {
-        setFixedSize(d->columnWidth * d->itemSize, d->rowHeight);
-    }
+    adjustSize();
     update();
 }
 
@@ -233,11 +225,11 @@ void ToggleButtonPrivate::setColor()
     {
         if (!isCustomIconColor)
         {
-            styleIconColor = customStyle->getCustomColor(ColorRole::ToggleButtonIconColor);
+            styleIconColor = customStyle->getColor(q, ColorRole::ToggleButtonIconColor);
         }
-        handleColor = customStyle->getCustomColor(ColorRole::ToggleButtonIndicatorColor);
-        backgroundColor = customStyle->getCustomColor(ColorRole::ToggleButtonBackground);
-        textColor = customStyle->getCustomColor(ColorRole::PrimaryText);
+        handleColor = customStyle->getColor(q, ColorRole::ToggleButtonIndicatorColor);
+        backgroundColor = customStyle->getColor(q, ColorRole::ToggleButtonBackground);
+        textColor = customStyle->getColor(q, ColorRole::PrimaryText);
     }
 }
 
@@ -269,7 +261,7 @@ void ToggleButtonPrivate::getMaxLenStr(const QStringList& list)
 {
     Q_Q(ToggleButton);
 
-    const auto maxElem = std::max_element(list.begin(), list.end(), [](const QString& a, const QString& b) {
+    const auto maxElem = std::ranges::max_element(list.begin(), list.end(), [](const QString& a, const QString& b) {
         return a.size() < b.size();
     });
     if (maxElem != list.end())

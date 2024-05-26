@@ -16,6 +16,10 @@
 
 namespace Vanilla
 {
+class PatchHelper;
+}
+namespace Vanilla
+{
 class VanillaStylePrivate
 {
 public:
@@ -40,6 +44,7 @@ private:
     std::shared_ptr<ItemViewStyle> itemViewStyle;
     std::shared_ptr<ScrollBarStyle> scrollBarStyle;
 
+    std::shared_ptr<PatchHelper> patchHelper;
     std::unique_ptr<ConfigChangeNotifier> configChangeNotifier = nullptr;
 
 private:

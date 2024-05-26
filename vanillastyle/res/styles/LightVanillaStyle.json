@@ -101,6 +101,18 @@
           "buttonBorderColor": "#FFBB70"
         }
       }
+    },
+    {
+      "enable": true,
+      "widgetType": "Vanilla::ToggleButton",
+      "propertyValue": "CustomToggleButtonPatch",
+      "configPatch": {
+        "color": {
+          "toggleButtonBackground": "#00000000",
+          "toggleButtonForeground": "#FDAF7B",
+          "toggleButtonIndicatorColor": "#98E4FF"
+        }
+      }
     }
   ]
 }
