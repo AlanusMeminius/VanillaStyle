@@ -16,8 +16,6 @@ ToggleButton::ToggleButton(QWidget* parent)
 {
     Q_D(ToggleButton);
     d->init();
-    setFixedHeight(28);
-    setMinimumWidth(300);
 }
 
 ToggleButton::ToggleButton(const QStringList& list, QWidget* parent)

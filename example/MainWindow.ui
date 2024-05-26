@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>744</width>
-    <height>601</height>
+    <height>787</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -182,14 +182,7 @@
      </widget>
     </item>
     <item>
-     <widget class="Vanilla::ToggleButton" name="iconWithText" native="true">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>200</height>
-       </size>
-      </property>
-     </widget>
+     <widget class="Vanilla::ToggleButton" name="iconWithText" native="true"/>
     </item>
     <item>
      <widget class="QWidget" name="widget_5" native="true">
