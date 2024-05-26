@@ -186,11 +186,11 @@ void ToggleButton::setSize()
 
     if (d->isVertical)
     {
-        setFixedHeight(d->rowHeight * d->itemSize);
+        setFixedSize(d->columnWidth, d->rowHeight * d->itemSize);
     }
     else
     {
-        setFixedWidth(d->columnWidth * d->itemSize);
+        setFixedSize(d->columnWidth * d->itemSize, d->rowHeight);
     }
     update();
 }
