@@ -52,6 +52,6 @@ QRect Vanilla::RadioButtonStyle::subElementRect(QStyle::SubElement element, cons
     }
     // SE_RadioButtonContents
     const auto indicatorSize = theme->getSize(SizeRole::IconSize);
-    const auto border = theme->getSize(SizeRole::CheckBoxSpacing);
+    const auto border = theme->getSize(SizeRole::CheckBoxPadding);
     return option->rect.marginsRemoved({indicatorSize + border, 0, 0, 0});
 }

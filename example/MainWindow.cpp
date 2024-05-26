@@ -38,7 +38,10 @@ MainWindow::MainWindow(QWidget* parent)
 
     ui->iconWithText->setIconList(QStringList{":grid.svg", ":list.svg", ":download.svg"});
     ui->iconWithText->setItemList(QStringList{"Default", "Account", "Advance"});
-    ui->iconWithText->setColumnWidth(110);
+    ui->iconWithText->setColumnWidth(120);
+    ui->iconWithText->setVertical();
+    ui->iconWithText->setRowHeight(40);
+    // ui->iconWithText->setHandlePadding(4);
 
     ui->radioButton->setChecked(true);
 
@@ -68,12 +71,12 @@ MainWindow::MainWindow(QWidget* parent)
     connect(ui->pushButton, &QPushButton::clicked, this, &MainWindow::setAutoTheme);
 
     ui->tableWidget->setRowCount(3);
-    ui->tableWidget->setItem(0,0, new QTableWidgetItem("table 1"));
-    ui->tableWidget->setItem(0,1, new QTableWidgetItem("table 1"));
-    ui->tableWidget->setItem(1,0, new QTableWidgetItem("table 1"));
-    ui->tableWidget->setItem(1,1, new QTableWidgetItem("table 1"));
-    ui->tableWidget->setItem(2,0, new QTableWidgetItem("table 1"));
-    ui->tableWidget->setItem(2,1, new QTableWidgetItem("table 1"));
+    ui->tableWidget->setItem(0, 0, new QTableWidgetItem("table 1"));
+    ui->tableWidget->setItem(0, 1, new QTableWidgetItem("table 1"));
+    ui->tableWidget->setItem(1, 0, new QTableWidgetItem("table 1"));
+    ui->tableWidget->setItem(1, 1, new QTableWidgetItem("table 1"));
+    ui->tableWidget->setItem(2, 0, new QTableWidgetItem("table 1"));
+    ui->tableWidget->setItem(2, 1, new QTableWidgetItem("table 1"));
     ui->tableWidget->setShowGrid(false);
 }
 

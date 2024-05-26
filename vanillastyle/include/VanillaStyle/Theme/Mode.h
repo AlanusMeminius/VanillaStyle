@@ -37,6 +37,7 @@ enum class ColorRole
     ProgressBarText,
 
     LineEditOutline,
+    LineEditBackground,
 
     ToggleButtonBackground,
     ToggleButtonForeground,
@@ -81,7 +82,7 @@ enum class SizeRole
 
     MenuItemPadding,
     CheckBoxIndicatorMargin,
-    CheckBoxSpacing,
+    CheckBoxPadding,
     ProgressBarHeight,
     ProgressBarTextMargin,
 

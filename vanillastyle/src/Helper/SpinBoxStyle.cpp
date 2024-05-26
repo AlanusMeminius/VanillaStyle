@@ -4,6 +4,7 @@
 #include "VanillaStyle/Helper/SpinBoxStyle.h"
 
 #include "VanillaStyle/Helper/Common.h"
+#include "VanillaStyle/Helper/Helper.h"
 #include "VanillaStyle/Theme/Theme.h"
 
 namespace Vanilla
@@ -17,10 +18,15 @@ bool SpinBoxStyle::draw(const QStyleOptionComplex* option, QPainter* painter, co
     }
     painter->setRenderHint(QPainter::Antialiasing, true);
 
+    const auto rect = QRectF(opt->rect).adjusted(1, 1, -1, -1);
+    // 画背景
+    const auto bgColor = theme->getColor(opt, ColorRole::LineEditBackground);
+    Helper::renderRoundRect(painter, rect, bgColor, 5);
+
     // 画边框
-    const auto spinBoxRect = opt->rect.adjusted(1, 1, -1, -1);
-    painter->setPen(theme->getColor(opt, ColorRole::LineEditOutline));
-    painter->drawRoundedRect(spinBoxRect, 5, 5);
+    const auto fgColor = theme->getColor(opt, ColorRole::LineEditOutline);
+    Helper::renderRoundBorder(painter, rect, fgColor, 1.5, 5);
+
 
     // 画箭头
     if (opt->buttonSymbols != QAbstractSpinBox::NoButtons)
@@ -74,7 +80,7 @@ QRect SpinBoxStyle::subControlRect(QStyle::ComplexControl control, const QStyleO
         case QStyle::SC_SpinBoxEditField:
             if (opt->buttonSymbols != QAbstractSpinBox::NoButtons)
             {
-                return rect.adjusted(0, 0, -iconSize + padding, 0);
+                return rect.adjusted(1, 1, -iconSize + padding, 0);
             }
             return opt->rect;
 

@@ -36,8 +36,10 @@
     "itemViewEvenRowColor": "#c8c8c8",
     "itemViewOddRowColor": "#dcdcdc",
     "itemViewSelectedColor": "#B3A492",
-    "lineEditFocusOutline": "#87C4FF",
+    "lineEditFocusOutline": "#B4B4B8",
     "lineEditOutline": "#87C4FF",
+    "lineEditFocusBackground": "#F5EEE6",
+    "lineEditBackground": "#F5EEE6",
     "iconLabelText": "#50727B",
     "menuBackground": "#99F5F5F5",
     "menuSeparatorColor": "#CCF5EFE6",
@@ -97,6 +99,18 @@
           "buttonPressedForeground": "#C08B5C",
           "buttonPressedBackground": "#F5EEE6",
           "buttonBorderColor": "#FFBB70"
+        }
+      }
+    },
+    {
+      "enable": true,
+      "widgetType": "Vanilla::ToggleButton",
+      "propertyValue": "CustomToggleButtonPatch",
+      "configPatch": {
+        "color": {
+          "toggleButtonBackground": "#00000000",
+          "toggleButtonForeground": "#FDAF7B",
+          "toggleButtonIndicatorColor": "#98E4FF"
         }
       }
     }

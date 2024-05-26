@@ -32,8 +32,12 @@ public:
 
     void setConfigPath(const QString& path);
     void setMode(Mode mode);
-    QColor getCustomColor(ColorRole role);
-    QFont getCustomFont(TextSizeRole sizeRole);
+
+    const std::shared_ptr<Theme>& getTheme(const QWidget* widget, const std::shared_ptr<Theme>& theme) const;
+    void appendPatch(const QString& patchPath);
+
+    QColor getColor(const QWidget* widget, ColorRole role);
+    int getSize(const QWidget* widget, SizeRole role);
 
 private:
     using ControlHelper = std::function<bool(const QStyleOption*, QPainter*, const std::shared_ptr<Theme>&, const QWidget*)>;
