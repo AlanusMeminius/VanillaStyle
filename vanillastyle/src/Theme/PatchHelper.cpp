@@ -10,11 +10,6 @@
 
 namespace Vanilla
 {
-PatchHelper& PatchHelper::global()
-{
-    static PatchHelper instance;
-    return instance;
-}
 
 void PatchHelper::init(const std::vector<PatchConfig>& patches)
 {

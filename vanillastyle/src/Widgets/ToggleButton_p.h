@@ -1,7 +1,8 @@
 #pragma once
-#include "VanillaStyle/Widgets/ToggleButton.h"
 #include <QPropertyAnimation>
-#include <QtCore/QSizeF>
+#include <QSizeF>
+
+#include "VanillaStyle/Widgets/ToggleButton.h"
 
 namespace Vanilla {
 
@@ -29,6 +30,15 @@ private:
     void checkMode();
     void getMaxLenStr(const QStringList& list);
 
+    [[nodiscard]] int getHandleSize() const
+    {
+        return rowHeight - handlePadding * 2;
+    }
+    [[nodiscard]] int getIconSize() const
+    {
+        return rowHeight - padding * 2;
+    }
+
 private:
     QStringList itemList;
     QStringList iconList;
@@ -37,6 +47,7 @@ private:
     bool m_mouseDown = false;
     bool isCustomIconColor = false;
     bool enableBackground = true;
+    bool isVertical = false;
     int currentIndex = 0;
     int preIndex = 0;
     int offset = 0;
@@ -47,8 +58,8 @@ private:
     int rowHeight = 28;
     int columnWidth = 70;
     int handlePadding = 2;
-    int handleSize = rowHeight - handlePadding * 2;
-    int iconSize = rowHeight - padding * 2;
+    int handleSize = getHandleSize();
+    int iconSize = getIconSize();
 
     QColor handleColor;
     QColor backgroundColor;

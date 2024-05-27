@@ -37,10 +37,10 @@ void SwitchButton::paintEvent(QPaintEvent* event)
     painter.setRenderHint(QPainter::Antialiasing);
     QColor handleColor;
     QColor backgroundColor;
-    if (auto * customStyle = qobject_cast<VanillaStyle*>(style()))
+    if (auto* customStyle = qobject_cast<VanillaStyle*>(style()))
     {
-        handleColor = customStyle->getCustomColor(ColorRole::ButtonForeground);
-        backgroundColor = customStyle->getCustomColor(ColorRole::ButtonBackground);
+        handleColor = customStyle->getColor(this, ColorRole::ButtonForeground);
+        backgroundColor = customStyle->getColor(this, ColorRole::ButtonBackground);
     }
     painter.setPen(Qt::NoPen);
     painter.setBrush(handleColor);
@@ -162,4 +162,4 @@ void SwitchButtonPrivate::startAnimation()
     handleAnimation.setEndValue(isChecked() ? 1. : 0.);
     handleAnimation.start();
 }
-}  // namespace VanillaStyle
+}  // namespace Vanilla

@@ -75,7 +75,7 @@ void VanillaStyle::drawPrimitive(PrimitiveElement pe, const QStyleOption* option
     }
 
     painter->save();
-    if (!(helper && helper(option, painter, d->theme, widget)))
+    if (!(helper && helper(option, painter, getTheme(widget, d->theme), widget)))
     {
         QCommonStyle::drawPrimitive(pe, option, painter, widget);
     }
@@ -136,7 +136,7 @@ void VanillaStyle::drawControl(ControlElement element, const QStyleOption* optio
         break;
     }
     painter->save();
-    if (!(helper && helper(option, painter, PatchHelper::global().getPatchTheme(widget, d->theme), widget)))
+    if (!(helper && helper(option, painter, getTheme(widget, d->theme), widget)))
     {
         QCommonStyle::drawControl(element, option, painter, widget);
     }
@@ -162,7 +162,7 @@ void VanillaStyle::drawComplexControl(ComplexControl complexControl, const QStyl
     }
 
     painter->save();
-    if (!(helper && helper(opt, painter, d->theme, widget)))
+    if (!(helper && helper(opt, painter, getTheme(widget, d->theme), widget)))
     {
         QCommonStyle::drawComplexControl(complexControl, opt, painter, widget);
     }
@@ -181,7 +181,7 @@ int VanillaStyle::pixelMetric(PixelMetric pm, const QStyleOption* option, const 
         return d->theme->getSize(SizeRole::IconSize);
     case PM_RadioButtonLabelSpacing:
     case PM_CheckBoxLabelSpacing:
-        return d->theme->getSize(SizeRole::CheckBoxSpacing);
+        return d->theme->getSize(SizeRole::CheckBoxPadding);
         // Button.
     case PM_ButtonMargin:
         return d->theme->getSize(SizeRole::ButtonTextMargin);
@@ -247,7 +247,7 @@ QRect VanillaStyle::subElementRect(SubElement subElement, const QStyleOption* op
     }
     if (helper)
     {
-        return helper(subElement, option, d->theme, widget);
+        return helper(subElement, option, getTheme(widget, d->theme), widget);
     }
     return QCommonStyle::subElementRect(subElement, option, widget);
 }
@@ -272,7 +272,7 @@ QRect VanillaStyle::subControlRect(ComplexControl control, const QStyleOptionCom
     }
     if (helper)
     {
-        return helper(control, option, subControl, d->theme, widget);
+        return helper(control, option, subControl, getTheme(widget, d->theme), widget);
     }
 
     return QCommonStyle::subControlRect(control, option, subControl, widget);
@@ -340,16 +340,30 @@ void VanillaStyle::setMode(const Mode mode)
     d->updatePalette();
 }
 
-QColor VanillaStyle::getCustomColor(ColorRole role)
+const std::shared_ptr<Theme>& VanillaStyle::getTheme(const QWidget* widget, const std::shared_ptr<Theme>& theme) const
 {
-    Q_D(VanillaStyle);
-    return d->theme->customColor(role);
+    Q_D(const VanillaStyle);
+    return d->patchHelper->getPatchTheme(widget, theme);
 }
 
-QFont VanillaStyle::getCustomFont(TextSizeRole sizeRole)
+void VanillaStyle::appendPatch(const QString& patchPath)
 {
     Q_D(VanillaStyle);
-    return d->theme->getFont(sizeRole);
+    d->patchHelper->appendPatch(patchPath);
+}
+
+QColor VanillaStyle::getColor(const QWidget* widget, ColorRole role)
+{
+    Q_D(VanillaStyle);
+    const auto theme = getTheme(widget, d->theme);
+    return theme->customColor(role);
+}
+
+int VanillaStyle::getSize(const QWidget* widget, SizeRole role)
+{
+    Q_D(VanillaStyle);
+    const auto theme = getTheme(widget, d->theme);
+    return theme->getSize(role);
 }
 
 VanillaStylePrivate::VanillaStylePrivate(VanillaStyle* q)
@@ -365,8 +379,10 @@ VanillaStylePrivate::VanillaStylePrivate(VanillaStyle* q)
     , comboBoxStyle(new ComboBoxStyle())
     , itemViewStyle(new ItemViewStyle())
     , scrollBarStyle(new ScrollBarStyle())
+    , patchHelper(new PatchHelper())
     , q_ptr(q)
 {
+    theme->setPatchHelper(patchHelper);
 }
 
 VanillaStylePrivate::VanillaStylePrivate(VanillaStyle* q, const Mode mode)

@@ -1,7 +1,6 @@
 #include <QApplication>
 #include "VanillaStyle/Style.h"
 #include "VanillaStyle/Style/VanillaStyle.h"
-#include "VanillaStyle/Theme/PatchHelper.h"
 
 #include <QFile>
 #include <iostream>
@@ -36,7 +35,8 @@ void Vanilla::Style::setStyleFromPath(const QString& configPath)
 
 void Vanilla::Style::appendPatch(const QString& patchConfigPath)
 {
-    PatchHelper::global().appendPatch(patchConfigPath);
+    auto *const style = getStyle();
+    style->appendPatch(patchConfigPath);
 }
 
 Vanilla::VanillaStyle* Vanilla::Style::getStyle()

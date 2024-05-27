@@ -11,6 +11,10 @@
 
 namespace Vanilla
 {
+class PatchHelper;
+}
+namespace Vanilla
+{
 class ConfigManager;
 
 
@@ -38,6 +42,7 @@ public:
 
     explicit Theme();
     void setConfig(const QString& configPath);
+    void setPatchHelper(const std::shared_ptr<PatchHelper>& helper);
     void setMode(Mode mode);
 
     void update();
@@ -79,6 +84,7 @@ private:
     QFont fontH6;
 
     std::shared_ptr<ConfigManager> configManager;
+    std::shared_ptr<PatchHelper> patchHelper;
     StyleConfig styleConfig;
 
     std::unordered_map<QString, QString> iconData;
