@@ -24,6 +24,10 @@ public:
     static void renderRoundRect(QPainter* painter, const QRectF& rect, const QColor& color, qreal radius);
     static void renderEllipse(QPainter* painter, const QRectF& rect, const QColor& color);
     static void renderEllipseBorder(QPainter* painter, const QRectF& rect, const QColor& color, qreal border);
+
+    static bool drawCheckBox(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget);
+
+    static void drawCheckBoxIndicator(const QStyleOption* option, const QRectF rect, QPainter* painter, const std::shared_ptr<Theme>& theme);
 };
 
 }  // namespace Vanilla

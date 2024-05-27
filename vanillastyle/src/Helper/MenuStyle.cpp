@@ -14,7 +14,7 @@ bool MenuStyle::drawPrimitive(const QStyleOption* option, QPainter* painter, con
 {
     painter->setRenderHint(QPainter::Antialiasing);
     const auto radius = theme->getSize(SizeRole::NormalRadius);
-    const auto bgColor = theme->getColor(option, ColorRole::MenuBackground); //QColor(245, 245, 245, 210)
+    const auto bgColor = theme->getColor(option, ColorRole::MenuBackground);  // QColor(245, 245, 245, 210)
     const auto border = theme->getSize(SizeRole::ButtonBorder);
     const auto totalRect = option->rect;
     const auto frameRect = totalRect.marginsRemoved({border, border, border, border});
@@ -69,9 +69,60 @@ bool MenuStyle::drawMenuItem(const QStyleOption* option, QPainter* painter, cons
 
         auto availableWidth = fgRect.width() - (hasSubMenu ? arrowWidth + padding : 0);
 
+        const auto menuHasCheckable = opt->menuHasCheckableItems;
+        const auto checkable = opt->checkType != QStyleOptionMenuItem::NotCheckable;
         const auto elements = opt->text.split('\t', Qt::KeepEmptyParts);
         const auto& label = !elements.empty() ? elements.first() : QString("");
         const auto& shortcut = elements.size() > 1 ? elements.at(1) : QString("");
+        const auto iconSize = theme->getSize(SizeRole::IconSize);
+        auto availableX = fgRect.x();
+
+        if (menuHasCheckable || checkable)
+        {
+            const auto checkBoxX = availableX;
+
+            const auto checkBoxY = fgRect.y() + (fgRect.height() - iconSize) / 2;
+            const auto checkboxRect = QRect{
+                QPoint{checkBoxX, checkBoxY},
+                QSize(iconSize, iconSize)
+            };
+
+            auto checkBoxOpt = *option;
+            checkBoxOpt.rect = checkboxRect;
+            Helper::drawCheckBox(&checkBoxOpt, painter, theme, widget);
+            const auto checkBoxWidth = iconSize + padding;
+            availableWidth -= checkBoxWidth;
+            availableX += checkBoxWidth;
+        }
+
+        const auto pixmap = getIconPixmap(opt->icon, QSize(iconSize, iconSize), widget);
+        if (!pixmap.isNull())
+        {
+            const auto colorizedPixmap = getColorizedPixmap(pixmap, widget, fgColor);
+            const auto pixmapPixelRatio = colorizedPixmap.devicePixelRatio();
+            const auto pixmapWidth = pixmapPixelRatio != 0 ? static_cast<int>(static_cast<qreal>(colorizedPixmap.width()) / pixmapPixelRatio) : 0;
+            const auto pixmapHeight = pixmapPixelRatio != 0 ? static_cast<int>(static_cast<qreal>(colorizedPixmap.height()) / pixmapPixelRatio) : 0;
+
+            const auto iconX = availableX;
+            const auto iconY = fgRect.y() + (fgRect.height() - pixmapHeight) / 2;
+            const auto iconRect = QRect{
+                QPoint{iconX, iconY},
+                QSize(pixmapWidth, pixmapHeight)
+            };
+            painter->drawPixmap(iconRect, colorizedPixmap);
+            availableX += (pixmapWidth + padding);
+        }
+        if (!label.isEmpty())
+        {
+            const auto labelWidth = fm.boundingRect(opt->rect, Qt::AlignLeft, label).width();
+            const auto labelRect = QRect{availableX, fgRect.y(), std::min(labelWidth, availableWidth), fgRect.height()};
+            painter->setPen(fgColor);
+            if (!option->state.testFlag(QStyle::State_Enabled))
+            {
+                painter->setPen(Qt::gray);
+            }
+            painter->drawText(labelRect, textFlags, label);
+        }
 
         if (!shortcut.isEmpty())
         {
@@ -82,13 +133,6 @@ bool MenuStyle::drawMenuItem(const QStyleOption* option, QPainter* painter, cons
             painter->setPen(fgColor);
             painter->drawText(shortcutRect, shortcutFlags, shortcut);
             availableWidth -= shortcutWidth;
-        }
-        if (!label.isEmpty())
-        {
-            const auto labelWidth = fm.boundingRect(opt->rect, Qt::AlignLeft, label).width();
-            const auto labelRect = QRect{fgRect.x(), fgRect.y(), std::min(labelWidth, availableWidth), fgRect.height()};
-            painter->setPen(fgColor);
-            painter->drawText(labelRect, textFlags, label);
         }
     }
     return true;
