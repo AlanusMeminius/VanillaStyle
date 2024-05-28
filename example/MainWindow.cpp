@@ -1,5 +1,6 @@
 #include <QTimer>
 #include <QButtonGroup>
+#include <QMenu>
 #include <QShortcut>
 
 #include <QWKCore/styleagent.h>
@@ -125,6 +126,21 @@ void MainWindow::setAutoTheme()
 {
     const auto theme = styleAgent->systemTheme();
     theme == QWK::StyleAgent::SystemTheme::Dark ? setDarkTheme() : setLightTheme();
+}
+
+void MainWindow::contextMenuEvent(QContextMenuEvent* event)
+{
+    if (m_menu == nullptr)
+    {
+        m_menu = new QMenu(this);
+        // createContextMenu();
+        auto* downloadAction = new QAction(QIcon(":/download.svg"), "Download\tCTRL ALT D", this);
+        // auto* downloadShortcut = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_D), this);
+        m_menu->addAction(downloadAction);
+        auto* secondAction = new QAction("placeHolder PlaceHolder\t⌘ D");
+        m_menu->addAction(secondAction);
+    }
+    m_menu->popup(event->globalPos());
 }
 
 void MainWindow::start()

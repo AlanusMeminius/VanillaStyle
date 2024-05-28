@@ -33,6 +33,8 @@ VANILLA_EXPORT QPixmap shadowPixmap(QSize const& size, double borderRadius, doub
 VANILLA_EXPORT void drawUpArrow(const QString& iconPath, QPainter* painter, const QRect& rect);
 VANILLA_EXPORT void drawDownArrow(const QString& iconPath, QPainter* painter, const QRect& rect);
 
+VANILLA_EXPORT std::tuple<QString, QString> splitMenuShortcut(QString const& text);
+
 VANILLA_EXPORT QRect insideMargin(const QRect& rect, int margin);
 VANILLA_EXPORT QRectF insideMargin(const QRectF& rect, int margin);
 VANILLA_EXPORT QRect insideMargin(const QRect& rect, int marginWidth, int marginHeight);

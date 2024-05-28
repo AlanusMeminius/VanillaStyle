@@ -206,16 +206,60 @@ int VanillaStyle::styleHint(StyleHint stylehint, const QStyleOption* option, con
 
 QSize VanillaStyle::sizeFromContents(ContentsType type, const QStyleOption* option, const QSize& contentsSize, const QWidget* widget) const
 {
+    Q_D(const VanillaStyle);
     switch (type)
     {
+    case CT_MenuItem:
+        if (const auto* opt = qstyleoption_cast<const QStyleOptionMenuItem*>(option))
+        {
+            const auto padding = d->theme->getSize(SizeRole::MenuItemPadding);
+            const auto border = d->theme->getSize(SizeRole::NormalBorder);
+            if (opt->menuItemType == QStyleOptionMenuItem::Separator)
+            {
+                const auto size = padding + border;
+                return QSize{size, size};
+            }
+            else if (opt->menuItemType == QStyleOptionMenuItem::Normal || opt->menuItemType == QStyleOptionMenuItem::SubMenu)
+            {
+                const auto iconSize = d->theme->getSize(SizeRole::IconSize);
+                const auto [label, shortcut] = splitMenuShortcut(opt->text);
+                const auto& fm = opt->fontMetrics;
+                const auto labelWidth = fm.boundingRect(opt->rect, Qt::AlignLeft, label).width();
+                const auto keyList = shortcut.split(' ');
+                const auto shortcutWidth = shortcut.length() > 0 ? 2 * padding * static_cast<int>(keyList.size()) : 0;
+                const auto iconW = !opt->icon.isNull() ? iconSize + 2 * padding : 0;
+                const auto hasCheckIcon = opt->menuHasCheckableItems || opt->checkType != QStyleOptionMenuItem::NotCheckable;
+                const auto checkWidth = hasCheckIcon ? iconSize + +2 * padding : 0;
+
+                return {checkWidth + iconW + labelWidth + shortcutWidth, iconSize + 2 * padding};
+            }
+        }
+        return {};
     case CT_MenuBar:
         return contentsSize;
     case CT_ItemViewItem:
         if (const auto* opt = qstyleoption_cast<const QStyleOptionViewItem*>(option))
         {
-            const auto textH = opt->fontMetrics.height();
-            return {contentsSize.width(), textH + 16};
+            const auto& features = opt->features;
+            const auto padding = d->theme->getSize(SizeRole::MenuItemPadding);
+
+            const auto hasIcon = features.testFlag(QStyleOptionViewItem::HasDecoration) && !opt->icon.isNull();
+            const auto& iconSize = hasIcon ? opt->decorationSize : QSize{0, 0};
+
+            const auto hasText = features.testFlag(QStyleOptionViewItem::HasDisplay) && !opt->text.isEmpty();
+            const auto textH = hasText ? opt->fontMetrics.height() : 0;
+
+            const auto hasCheck = features.testFlag(QStyleOptionViewItem::HasCheckIndicator);
+            const auto& checkSize = hasCheck ? iconSize : QSize{0, 0};
+
+            auto font = QFont(widget->font());
+            const auto fm = QFontMetrics(font);
+            const auto textWidth = fm.boundingRect(opt->rect, Qt::AlignLeft, opt->text).width();
+            const auto itemWidth =
+                textWidth + 2 * padding + (iconSize.width() > 0 ? iconSize.width() + padding : 0) + (checkSize.width() > 0 ? checkSize.width() + padding : 0);
+            return {itemWidth, textH + 16};
         }
+        break;
     default:
         break;
     }
