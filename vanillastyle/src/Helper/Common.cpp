@@ -268,6 +268,14 @@ void drawDownArrow(const QString& iconPath, QPainter* painter, const QRect& rect
     renderSvgFromPath(iconPath, painter, rect);
 }
 
+std::tuple<QString, QString> splitMenuShortcut(QString const& text)
+{
+    const auto elements = text.split('\t', Qt::KeepEmptyParts);
+    const auto& label = !elements.empty() ? elements.first() : QString("");
+    const auto& shortcut = elements.size() > 1 ? elements.at(1) : QString("");
+    return {label, shortcut};
+}
+
 QRect insideMargin(const QRect& rect, int margin)
 {
     return insideMargin(rect, margin, margin);

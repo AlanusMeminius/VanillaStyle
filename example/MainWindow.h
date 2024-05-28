@@ -35,6 +35,8 @@ public:
     void decreaseProgress();
 
     Q_SLOT void setAutoTheme();
+protected:
+    void contextMenuEvent(QContextMenuEvent* event) override;
 
 private:
     void installWindowAgent();
@@ -44,6 +46,7 @@ private:
     QTimer* m_timer;
     QWK::WidgetWindowAgent* windowAgent;
     QWK::StyleAgent* styleAgent;
+    QMenu* m_menu = nullptr;
 };
 
 #endif  // MAINWINDOW_H

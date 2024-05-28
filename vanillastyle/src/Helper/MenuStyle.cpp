@@ -71,9 +71,7 @@ bool MenuStyle::drawMenuItem(const QStyleOption* option, QPainter* painter, cons
 
         const auto menuHasCheckable = opt->menuHasCheckableItems;
         const auto checkable = opt->checkType != QStyleOptionMenuItem::NotCheckable;
-        const auto elements = opt->text.split('\t', Qt::KeepEmptyParts);
-        const auto& label = !elements.empty() ? elements.first() : QString("");
-        const auto& shortcut = elements.size() > 1 ? elements.at(1) : QString("");
+        const auto [label, shortcut] = splitMenuShortcut(opt->text);
         const auto iconSize = theme->getSize(SizeRole::IconSize);
         auto availableX = fgRect.x();
 
@@ -110,7 +108,7 @@ bool MenuStyle::drawMenuItem(const QStyleOption* option, QPainter* painter, cons
                 QSize(pixmapWidth, pixmapHeight)
             };
             painter->drawPixmap(iconRect, colorizedPixmap);
-            availableX += (pixmapWidth + padding);
+            availableX += (pixmapWidth + 2 * padding);
         }
         if (!label.isEmpty())
         {
@@ -126,13 +124,24 @@ bool MenuStyle::drawMenuItem(const QStyleOption* option, QPainter* painter, cons
 
         if (!shortcut.isEmpty())
         {
-            const auto shortcutWidth = fm.boundingRect(opt->rect, Qt::AlignRight, shortcut).width();
-            const auto shortcutX = fgRect.x() + fgRect.width() - shortcutWidth;
-            const auto shortcutRect = QRect{shortcutX, fgRect.y(), shortcutWidth, fgRect.height()};
+            auto endX = fgRect.x() + fgRect.width();
+            const auto radius = theme->getSize(SizeRole::NormalRadius);
+            const auto textColor = theme->getColor(opt, ColorRole::LabelText);
             constexpr auto shortcutFlags = Qt::AlignVCenter | Qt::AlignBaseline | Qt::TextSingleLine | Qt::AlignRight | Qt::TextHideMnemonic;
-            painter->setPen(fgColor);
-            painter->drawText(shortcutRect, shortcutFlags, shortcut);
-            availableWidth -= shortcutWidth;
+            const auto keyList = shortcut.split(' ');
+            for (int i = static_cast<int>(keyList.size()) - 1; i >= 0; --i)
+            {
+                constexpr int keyPadding = 2;
+                const auto wordWidth = fm.boundingRect(opt->rect, Qt::AlignRight, keyList.at(i)).width();
+                const auto keyWitdh = wordWidth + 4 * keyPadding;
+                const auto keyRect = QRect{endX - keyWitdh, fgRect.y(), keyWitdh, fgRect.height()};
+                const auto keyBgRect = insideMargin(keyRect, keyPadding, 2 * keyPadding);
+                Helper::renderRoundRect(painter, keyBgRect, Qt::lightGray, radius);
+                painter->setPen(textColor);
+                const auto keyTextRect = insideMargin(keyBgRect, keyPadding);
+                painter->drawText(keyTextRect, shortcutFlags, keyList.at(i));
+                endX -= keyWitdh;
+            }
         }
     }
     return true;
