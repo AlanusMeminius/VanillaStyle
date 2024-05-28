@@ -453,6 +453,11 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
         color = config.menuSeparatorColor;
         break;
     }
+    case ColorRole::MenuShortCutsBackground:
+    {
+        color = config.menuShortCutsBackground;
+        break;
+    }
     case ColorRole::ComboBoxDropDownBackground:
     {
         color = config.comboBoxDropDownBackground;

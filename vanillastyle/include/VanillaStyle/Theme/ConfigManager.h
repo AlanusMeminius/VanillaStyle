@@ -40,8 +40,8 @@ private:
     ErrorCallback errorCallback;
 };
 
-template <typename R, typename C>
-VANILLA_EXPORT R loadConfig(const QString& path, C callback, const ConfigErrorHanler& errorHandler, const Mode mode)
+template<typename C>
+VANILLA_EXPORT nlohmann::json loadConfigJson(const QString& path, C callback, const ConfigErrorHanler& errorHandler, const Mode mode)
 {
     QFile file(path);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -54,13 +54,19 @@ VANILLA_EXPORT R loadConfig(const QString& path, C callback, const ConfigErrorHa
     file.close();
     try
     {
-        return nlohmann::json::parse(jsonStr).get<R>();
+        return nlohmann::json::parse(jsonStr);
     }
     catch (nlohmann::json::parse_error& e)
     {
         errorHandler.handleError(ConfigErrorHanler::ParseError);
         return callback(mode);
     }
+}
+
+template<typename R, typename C>
+VANILLA_EXPORT R loadConfig(const QString& path, C callback, const ConfigErrorHanler& errorHandler, const Mode mode)
+{
+    return loadConfigJson(path, callback, errorHandler, mode).template get<R>();
 }
 
 class VANILLA_EXPORT ConfigManager
@@ -70,6 +76,7 @@ public:
 
     [[nodiscard]] StyleConfig getConfig(const QString& path, Mode mode = Light);
     StyleConfig defaultConfig(Mode mode = Light);
+    nlohmann::json defaultConfigJson(Mode mode = Light);
 
     void setErrorHandler(const ConfigErrorHanler::ErrorCallback& callback)
     {

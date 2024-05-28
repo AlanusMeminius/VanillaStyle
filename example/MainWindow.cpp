@@ -71,7 +71,6 @@ MainWindow::MainWindow(QWidget* parent)
     connect(m_timer, &QTimer::timeout, this, &MainWindow::increaseProgress);
 
     connect(ui->pushButton, &QPushButton::clicked, this, &MainWindow::setAutoTheme);
-
     ui->tableWidget->setRowCount(3);
     ui->tableWidget->setItem(0, 0, new QTableWidgetItem("table 1"));
     ui->tableWidget->setItem(0, 1, new QTableWidgetItem("table 1"));
@@ -135,7 +134,10 @@ void MainWindow::contextMenuEvent(QContextMenuEvent* event)
         m_menu = new QMenu(this);
         // createContextMenu();
         auto* downloadAction = new QAction(QIcon(":/download.svg"), "Download\tCTRL ALT D", this);
-        // auto* downloadShortcut = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_D), this);
+        downloadAction->setCheckable(true);
+        connect(downloadAction, &QAction::triggered, this, [downloadAction](bool checked) {
+            downloadAction->setChecked(checked);
+        });
         m_menu->addAction(downloadAction);
         auto* secondAction = new QAction("placeHolder PlaceHolder\t⌘ D");
         m_menu->addAction(secondAction);

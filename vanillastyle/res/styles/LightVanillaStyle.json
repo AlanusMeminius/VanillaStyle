@@ -43,6 +43,7 @@
     "iconLabelText": "#50727B",
     "menuBackground": "#99F5F5F5",
     "menuSeparatorColor": "#CCF5EFE6",
+    "menuShortCutsBackground": "#CCDDE6ED",
     "comboBoxDropDownBackground": "#CCF5EFE6"
   },
   "size": {

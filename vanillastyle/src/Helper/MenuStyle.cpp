@@ -75,7 +75,7 @@ bool MenuStyle::drawMenuItem(const QStyleOption* option, QPainter* painter, cons
         const auto iconSize = theme->getSize(SizeRole::IconSize);
         auto availableX = fgRect.x();
 
-        if (menuHasCheckable || checkable)
+        if (checkable)
         {
             const auto checkBoxX = availableX;
 
@@ -85,12 +85,21 @@ bool MenuStyle::drawMenuItem(const QStyleOption* option, QPainter* painter, cons
                 QSize(iconSize, iconSize)
             };
 
-            auto checkBoxOpt = *option;
-            checkBoxOpt.rect = checkboxRect;
-            Helper::drawCheckBox(&checkBoxOpt, painter, theme, widget);
+            auto copy = *opt;
+            copy.rect = checkboxRect;
+            Helper::drawCheckBoxHelper(&copy, painter, theme, widget);
+
+            if (copy.checked)
+            {
+                Helper::drawCheckBoxIndicator(&copy, checkboxRect, painter, theme);
+            }
+        }
+        if (menuHasCheckable || checkable)
+        {
             const auto checkBoxWidth = iconSize + padding;
             availableWidth -= checkBoxWidth;
             availableX += checkBoxWidth;
+            availableX += 2 * padding;
         }
 
         const auto pixmap = getIconPixmap(opt->icon, QSize(iconSize, iconSize), widget);
@@ -108,7 +117,8 @@ bool MenuStyle::drawMenuItem(const QStyleOption* option, QPainter* painter, cons
                 QSize(pixmapWidth, pixmapHeight)
             };
             painter->drawPixmap(iconRect, colorizedPixmap);
-            availableX += (pixmapWidth + 2 * padding);
+            availableX += pixmapWidth;
+            availableX += 2 * padding;
         }
         if (!label.isEmpty())
         {
@@ -126,7 +136,7 @@ bool MenuStyle::drawMenuItem(const QStyleOption* option, QPainter* painter, cons
         {
             auto endX = fgRect.x() + fgRect.width();
             const auto radius = theme->getSize(SizeRole::NormalRadius);
-            const auto textColor = theme->getColor(opt, ColorRole::LabelText);
+            const auto shortCutBgColor = theme->getColor(opt, ColorRole::MenuShortCutsBackground);
             constexpr auto shortcutFlags = Qt::AlignVCenter | Qt::AlignBaseline | Qt::TextSingleLine | Qt::AlignRight | Qt::TextHideMnemonic;
             const auto keyList = shortcut.split(' ');
             for (int i = static_cast<int>(keyList.size()) - 1; i >= 0; --i)
@@ -136,8 +146,8 @@ bool MenuStyle::drawMenuItem(const QStyleOption* option, QPainter* painter, cons
                 const auto keyWitdh = wordWidth + 4 * keyPadding;
                 const auto keyRect = QRect{endX - keyWitdh, fgRect.y(), keyWitdh, fgRect.height()};
                 const auto keyBgRect = insideMargin(keyRect, keyPadding, 2 * keyPadding);
-                Helper::renderRoundRect(painter, keyBgRect, Qt::lightGray, radius);
-                painter->setPen(textColor);
+                Helper::renderRoundRect(painter, keyBgRect, shortCutBgColor, radius);
+                painter->setPen(Qt::gray);
                 const auto keyTextRect = insideMargin(keyBgRect, keyPadding);
                 painter->drawText(keyTextRect, shortcutFlags, keyList.at(i));
                 endX -= keyWitdh;
