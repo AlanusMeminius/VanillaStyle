@@ -52,7 +52,8 @@ enum class ColorRole
     ComboBoxDropDownBackground,
     ScrollBarSliderColor,
     MenuBackground,
-    MenuSeparatorColor
+    MenuSeparatorColor,
+    MenuShortCutsBackground,
 };
 
 enum class TextSizeRole

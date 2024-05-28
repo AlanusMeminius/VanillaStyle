@@ -216,7 +216,7 @@ QSize VanillaStyle::sizeFromContents(ContentsType type, const QStyleOption* opti
             const auto border = d->theme->getSize(SizeRole::NormalBorder);
             if (opt->menuItemType == QStyleOptionMenuItem::Separator)
             {
-                const auto size = padding + border;
+                const auto size = border;
                 return QSize{size, size};
             }
             else if (opt->menuItemType == QStyleOptionMenuItem::Normal || opt->menuItemType == QStyleOptionMenuItem::SubMenu)
@@ -231,7 +231,7 @@ QSize VanillaStyle::sizeFromContents(ContentsType type, const QStyleOption* opti
                 const auto hasCheckIcon = opt->menuHasCheckableItems || opt->checkType != QStyleOptionMenuItem::NotCheckable;
                 const auto checkWidth = hasCheckIcon ? iconSize + +2 * padding : 0;
 
-                return {checkWidth + iconW + labelWidth + shortcutWidth, iconSize + 2 * padding};
+                return {checkWidth + iconW + labelWidth + shortcutWidth + 2 * padding, iconSize + 2 * padding};
             }
         }
         return {};
