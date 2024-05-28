@@ -16,10 +16,7 @@ bool ItemViewStyle::draw(const QStyleOption* option, QPainter* painter, const st
         return true;
     }
 
-    if (const bool isDrawItemBackground = widget->property("noBackground").toBool(); !isDrawItemBackground)
-    {
-        drawPrimitive(option, painter, theme, widget);
-    }
+    drawPrimitive(option, painter, theme, widget);
 
     const auto rect = opt->rect;
     if (!opt->text.isEmpty())
@@ -40,27 +37,30 @@ bool ItemViewStyle::draw(const QStyleOption* option, QPainter* painter, const st
 
 void ItemViewStyle::drawPrimitive(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
 {
-    if (const auto* opt = qstyleoption_cast<const QStyleOptionViewItem*>(option))
+    const auto* opt = qstyleoption_cast<const QStyleOptionViewItem*>(option);
+    if (!opt)
     {
-        const auto& rect = QRectF(opt->rect);
-        const auto row = opt->index.row();
-        QColor bgColor;
-        if (row % 2 == 0)
-        {
-            bgColor = theme->getColor(opt, ColorRole::ItemViewEvenRowColor);
-        }
-        else
-        {
-            bgColor = theme->getColor(opt, ColorRole::ItemViewOddRowColor);
-        }
-        if (opt->state.testFlag(QStyle::State_Active) && opt->state.testFlag(QStyle::State_Selected))
-        {
-            bgColor = theme->getColor(option, ColorRole::ItemViewSelectedColor);
-        }
-
-        painter->setRenderHint(QPainter::Antialiasing);
-        const auto radius = theme->getSize(SizeRole::ItemViewRadius);
-        Helper::renderRoundRect(painter, rect.adjusted(1, 3, -1, -3), bgColor, radius);
+        return;
     }
+
+    const auto& rect = QRectF(opt->rect);
+    const auto row = opt->index.row();
+    QColor bgColor;
+    if (row % 2 == 0)
+    {
+        bgColor = theme->getColor(opt, ColorRole::ItemViewEvenRowColor);
+    }
+    else
+    {
+        bgColor = theme->getColor(opt, ColorRole::ItemViewOddRowColor);
+    }
+    if (opt->state.testFlag(QStyle::State_Active) && opt->state.testFlag(QStyle::State_Selected))
+    {
+        bgColor = theme->getColor(option, ColorRole::ItemViewSelectedColor);
+    }
+
+    painter->setRenderHint(QPainter::Antialiasing);
+    const auto radius = theme->getSize(SizeRole::ItemViewRadius);
+    Helper::renderRoundRect(painter, rect.adjusted(1, 3, -1, -3), bgColor, radius);
 }
 }  // namespace Vanilla

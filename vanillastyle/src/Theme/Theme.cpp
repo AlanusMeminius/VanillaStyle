@@ -550,6 +550,11 @@ void Theme::setPatchConfig(const std::string& propertyValue)
     }
 }
 
+std::string Theme::getPatchKey() const
+{
+    return styleConfig.patchKey;
+}
+
 QString Theme::getCachedIcon(const QString& path, QColor color)
 {
     if (iconData.contains(path))
