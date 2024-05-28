@@ -18,9 +18,9 @@ ConfigChangeNotifier::~ConfigChangeNotifier()
     QFileSystemWatcher::disconnect(&watcher, &QFileSystemWatcher::fileChanged, nullptr, nullptr);
 }
 
-QString getPatchProperty(const QWidget* widget)
+QString getPatchProperty(const QWidget* widget, const std::string& patchKey)
 {
-    const auto p = widget->property("_vanillaStyle_Patch");
+    const auto p = widget->property(patchKey.c_str());
     return p.isValid() ? p.toString() : QString();
 }
 

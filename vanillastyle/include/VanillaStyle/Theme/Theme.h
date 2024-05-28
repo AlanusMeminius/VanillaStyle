@@ -68,6 +68,7 @@ public:
     [[nodiscard]] ProgressMode getProgressMode() const;
 
     void setPatchConfig(const std::string& propertyValue);
+    std::string getPatchKey() const;
 
 private:
     QPalette palette;

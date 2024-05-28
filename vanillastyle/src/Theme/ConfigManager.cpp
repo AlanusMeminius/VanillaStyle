@@ -15,6 +15,7 @@ StyleConfig ConfigManager::getConfig(const QString& path, const Mode mode)
     auto defaultJson = defaultConfigJson(mode);
     const auto configJson = loadConfigJson(path, returnDefaultConfigJson, errorHandler, mode);
     defaultJson.merge_patch(configJson);
+    jsonData = defaultJson;
     return defaultJson.get<StyleConfig>();
 }
 

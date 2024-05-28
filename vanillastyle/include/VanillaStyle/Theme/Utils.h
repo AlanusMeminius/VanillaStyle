@@ -17,7 +17,7 @@ struct VANILLA_EXPORT ConfigChangeNotifier
     QFileSystemWatcher watcher;
 };
 
-QString getPatchProperty(const QWidget* widget);
+QString getPatchProperty(const QWidget* widget, const std::string& patchKey);
 
 }
 

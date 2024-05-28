@@ -150,7 +150,7 @@ public:
     int normalRadius{5};
     int smallRadius{3};
     int buttonRadius{4};
-    int itemViewRadius{};
+    int itemViewRadius{8};
 
     int normalBorder{1};
     int buttonBorder{1};
@@ -222,6 +222,7 @@ public:
     Icons icons;
     std::string progressBarMode;
     bool isEnableHotReload = false;
+    std::string patchKey{"_vanillaStyle_Patch"};
     std::vector<PatchConfig> patch;
 
     std::string toString()
