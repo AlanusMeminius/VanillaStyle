@@ -25,3 +25,4 @@ For more details, please see the [documentation](docs/Installation.md)
 ## Special Thanks:
  - [qlementine]((https://github.com/oclero/qlementine)) (I was inspired by this and wanted to create own style)
  - [qwindowkit](https://github.com/stdware/qwindowkit)
+ - [dtkwidget](https://github.com/linuxdeepin/dtkwidget)

@@ -159,6 +159,7 @@ public:
     int normalPadding{5};
     int checkBoxPadding{5};
     int menuItemPadding{5};
+    int menuBorder{1};
     int checkBoxIndicatorMargin{4};
     int progressBarTextMargin{35};
     int progressBarHeight{6};
@@ -220,6 +221,7 @@ public:
     Color color;
     Size size;
     Icons icons;
+    bool iconsColorizeMode;
     std::string progressBarMode;
     bool isEnableHotReload = false;
     std::string patchKey{"_vanillaStyle_Patch"};

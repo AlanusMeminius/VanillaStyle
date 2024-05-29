@@ -129,7 +129,7 @@ void VanillaStyle::drawControl(ControlElement element, const QStyleOption* optio
         helper = createHelper(d->scrollBarStyle, &ScrollBarStyle::drawSubLine);
         break;
     case CE_ToolButtonLabel:
-        helper = createHelper(d->toolButtonStyle,&ToolButtonStyle::drawToolButtonLabel);
+        helper = createHelper(d->toolButtonStyle, &ToolButtonStyle::drawToolButtonLabel);
         break;
     case CE_ScrollBarAddPage:
     case CE_ScrollBarSubPage:
@@ -198,6 +198,8 @@ int VanillaStyle::pixelMetric(PixelMetric pm, const QStyleOption* option, const 
         return 0;
     case PM_ButtonIconSize:
         return d->theme->getSize(SizeRole::IconSize);
+    case PM_MenuPanelWidth:
+        return d->theme->getSize(SizeRole::NormalPadding);
     default:
         break;
     }
@@ -212,61 +214,21 @@ int VanillaStyle::styleHint(StyleHint stylehint, const QStyleOption* option, con
 QSize VanillaStyle::sizeFromContents(ContentsType type, const QStyleOption* option, const QSize& contentsSize, const QWidget* widget) const
 {
     Q_D(const VanillaStyle);
+    SizeFromContents helper{nullptr};
     switch (type)
     {
     case CT_MenuItem:
-        if (const auto* opt = qstyleoption_cast<const QStyleOptionMenuItem*>(option))
-        {
-            const auto padding = d->theme->getSize(SizeRole::MenuItemPadding);
-            const auto border = d->theme->getSize(SizeRole::NormalBorder);
-            if (opt->menuItemType == QStyleOptionMenuItem::Separator)
-            {
-                const auto size = border;
-                return QSize{size, size};
-            }
-            else if (opt->menuItemType == QStyleOptionMenuItem::Normal || opt->menuItemType == QStyleOptionMenuItem::SubMenu)
-            {
-                const auto iconSize = d->theme->getSize(SizeRole::IconSize);
-                const auto [label, shortcut] = splitMenuShortcut(opt->text);
-                const auto& fm = opt->fontMetrics;
-                const auto labelWidth = fm.boundingRect(opt->rect, Qt::AlignLeft, label).width() + padding;
-                const auto keyList = shortcut.split(' ');
-                const auto shortcutWidth = shortcut.length() > 0 ? 2 * padding * static_cast<int>(keyList.size()) : 0;
-                const auto iconW = !opt->icon.isNull() ? iconSize + padding : 0;
-                const auto hasCheckIcon = opt->menuHasCheckableItems || opt->checkType != QStyleOptionMenuItem::NotCheckable;
-                const auto checkWidth = hasCheckIcon ? iconSize + padding : 0;
-
-                return {checkWidth + iconW + labelWidth + shortcutWidth + 2 * padding, iconSize + 2 * padding};
-            }
-        }
-        return {};
-    case CT_MenuBar:
-        return contentsSize;
+        helper = createHelper(d->menuStyle, &MenuStyle::sizeFromContentsForMenuItem);
+        break;
     case CT_ItemViewItem:
-        if (const auto* opt = qstyleoption_cast<const QStyleOptionViewItem*>(option))
-        {
-            const auto& features = opt->features;
-            const auto padding = d->theme->getSize(SizeRole::MenuItemPadding);
-
-            const auto hasIcon = features.testFlag(QStyleOptionViewItem::HasDecoration) && !opt->icon.isNull();
-            const auto& iconSize = hasIcon ? opt->decorationSize : QSize{0, 0};
-
-            const auto hasText = features.testFlag(QStyleOptionViewItem::HasDisplay) && !opt->text.isEmpty();
-            const auto textH = hasText ? opt->fontMetrics.height() : 0;
-
-            const auto hasCheck = features.testFlag(QStyleOptionViewItem::HasCheckIndicator);
-            const auto& checkSize = hasCheck ? iconSize : QSize{0, 0};
-
-            auto font = QFont(widget->font());
-            const auto fm = QFontMetrics(font);
-            const auto textWidth = fm.boundingRect(opt->rect, Qt::AlignLeft, opt->text).width();
-            const auto itemWidth =
-                textWidth + 2 * padding + (iconSize.width() > 0 ? iconSize.width() + padding : 0) + (checkSize.width() > 0 ? checkSize.width() + padding : 0);
-            return {itemWidth, textH + 16};
-        }
+        helper = createHelper(d->itemViewStyle, &ItemViewStyle::sizeFromContentsForItemView);
         break;
     default:
         break;
+    }
+    if (helper)
+    {
+        return helper(type, option, contentsSize, getTheme(widget, d->theme), widget);
     }
     return QCommonStyle::sizeFromContents(type, option, contentsSize, widget);
 }
@@ -334,7 +296,8 @@ void VanillaStyle::polish(QWidget* w)
     QCommonStyle::polish(w);
 
 #ifndef WIN32
-    if (w->inherits("QTipLabel")) {
+    if (w->inherits("QTipLabel"))
+    {
         w->setBackgroundRole(QPalette::NoRole);
         w->setAutoFillBackground(false);
         w->setAttribute(Qt::WA_TranslucentBackground, true);
@@ -346,7 +309,8 @@ void VanillaStyle::polish(QWidget* w)
     {
         w->setAttribute(Qt::WA_Hover);
     }
-    if (w->inherits("QLineEditIconButton")) {
+    if (w->inherits("QLineEditIconButton"))
+    {
         w->installEventFilter(new LineEditButtonEventFilter(qobject_cast<QToolButton*>(w), *this));
     }
     if (auto* itemView = qobject_cast<QAbstractItemView*>(w))
@@ -406,6 +370,12 @@ const std::shared_ptr<Theme>& VanillaStyle::getTheme(const QWidget* widget, cons
 {
     Q_D(const VanillaStyle);
     return d->patchHelper->getPatchTheme(widget, theme);
+}
+
+const std::shared_ptr<Theme>& VanillaStyle::getTheme() const
+{
+    Q_D(const VanillaStyle);
+    return d->theme;
 }
 
 void VanillaStyle::appendPatch(const QString& patchPath)

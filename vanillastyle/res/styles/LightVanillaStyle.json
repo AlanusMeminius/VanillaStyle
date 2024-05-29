@@ -41,7 +41,7 @@
     "lineEditFocusBackground": "#F5EEE6",
     "lineEditBackground": "#F5EEE6",
     "iconLabelText": "#50727B",
-    "menuBackground": "#99F5F5F5",
+    "menuBackground": "#99FFFFFF",
     "menuSeparatorColor": "#CCF5EFE6",
     "menuShortCutsBackground": "#CCDDE6ED",
     "comboBoxDropDownBackground": "#CCF5EFE6"
@@ -68,6 +68,7 @@
     "leftArrow": ":/VanillaStyle/icons/LeftArrow.svg",
     "progressIndicator": ":/VanillaStyle/icons/Plane.svg"
   },
+  "iconsColorizeMode": true,
   "progressBarMode": "mode2",
   "debug": true,
   "patch": [

@@ -50,7 +50,7 @@ bool ButtonStyle::drawPushButtonLabel(const QStyleOption* option, QPainter* pain
 
     const auto fgColor = theme->getColor(option, ColorRole::ButtonForeground);
     const auto pixmap = getIconPixmap(opt->icon, opt->iconSize, widget);
-    const auto colorizedPixmap = getColorizedPixmap(pixmap, widget, fgColor);
+    const auto colorizedPixmap = getColorizedPixmap(pixmap, widget, fgColor, theme->getIconsColorizeMode());
     const auto pixmapPixelRatio = colorizedPixmap.devicePixelRatio();
     const auto iconWidth = colorizedPixmap.isNull() ? 0 : static_cast<int>(colorizedPixmap.width() / pixmapPixelRatio);
     const auto textWidth = opt->fontMetrics.boundingRect(opt->rect, Qt::AlignCenter, opt->text).width();
