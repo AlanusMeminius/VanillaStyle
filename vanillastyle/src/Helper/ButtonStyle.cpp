@@ -49,7 +49,9 @@ bool ButtonStyle::drawPushButtonLabel(const QStyleOption* option, QPainter* pain
     }
 
     const auto fgColor = theme->getColor(option, ColorRole::ButtonForeground);
-    const auto pixmap = getIconPixmap(opt->icon, opt->iconSize, widget);
+
+    auto iconMode = option->state.testFlag(QStyle::State_On) ? QIcon::On : QIcon::Off;
+    const auto pixmap = getIconPixmap(opt->icon, opt->iconSize, widget, QIcon::Normal, iconMode);
     const auto colorizedPixmap = getColorizedPixmap(pixmap, widget, fgColor, theme->getIconsColorizeMode());
     const auto pixmapPixelRatio = colorizedPixmap.devicePixelRatio();
     const auto iconWidth = colorizedPixmap.isNull() ? 0 : static_cast<int>(colorizedPixmap.width() / pixmapPixelRatio);

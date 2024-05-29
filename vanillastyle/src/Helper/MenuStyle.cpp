@@ -139,7 +139,8 @@ bool MenuStyle::drawMenuItem(const QStyleOption* option, QPainter* painter, cons
             availableX += 2 * padding;
         }
 
-        const auto pixmap = getIconPixmap(opt->icon, QSize(iconSize, iconSize), widget);
+        auto iconMode = option->state.testFlag(QStyle::State_On) ? QIcon::On : QIcon::Off;
+        const auto pixmap = getIconPixmap(opt->icon, QSize(iconSize, iconSize), widget, QIcon::Normal, iconMode);
         if (!pixmap.isNull())
         {
             const auto colorizedPixmap = getColorizedPixmap(pixmap, widget, fgColor, theme->getIconsColorizeMode());
