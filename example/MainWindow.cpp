@@ -70,6 +70,11 @@ MainWindow::MainWindow(QWidget* parent)
     connect(ui->stopButton, &QPushButton::clicked, this, &MainWindow::stop);
     connect(m_timer, &QTimer::timeout, this, &MainWindow::increaseProgress);
 
+    const auto testAction = ui->lineEdit->addAction(QIcon(":lineEditAction.svg"),QLineEdit::TrailingPosition);
+    // testAction->icon()
+    // ui->lineEdit.bu
+    ui->lineEdit->addAction(QIcon(":download.svg"),QLineEdit::TrailingPosition);
+    ui->lineEdit->addAction(QIcon(":download.svg"),QLineEdit::LeadingPosition);
     connect(ui->pushButton, &QPushButton::clicked, this, &MainWindow::setAutoTheme);
     ui->tableWidget->setRowCount(3);
     ui->tableWidget->setItem(0, 0, new QTableWidgetItem("table 1"));

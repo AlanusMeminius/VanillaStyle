@@ -86,7 +86,7 @@ bool MenuStyle::drawMenuItem(const QStyleOption* option, QPainter* painter, cons
             };
 
             auto copy = *opt;
-            copy.rect = checkboxRect;
+            copy.rect = checkboxRect.adjusted(1,1,-1,-1);
             Helper::drawCheckBoxHelper(&copy, painter, theme, widget);
 
             if (copy.checked)
