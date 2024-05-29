@@ -65,19 +65,21 @@ QImage switchImageColor(const QPixmap& original, const QColor& color)
     {
         return {};
     }
+    // Convert input QPixmap to QImage, because it is better for fast pixel manipulation.
     const auto imageSize = original.size();
     auto inputImage = original.toImage();
     inputImage = std::move(inputImage).convertToFormat(QImage::Format_ARGB32);
 
+    // Create output QImage with same format and size as input QImage.
     auto outputImage = QImage(imageSize, inputImage.format());
     outputImage.setDevicePixelRatio(inputImage.devicePixelRatioF());
-
     const auto outputRgb = color.rgba();
     const auto outputR = qRed(outputRgb);
     const auto outputG = qGreen(outputRgb);
     const auto outputB = qBlue(outputRgb);
     const auto outputAf = qAlpha(outputRgb) / 255.;
 
+    // Modify the pixels.
     for (auto x = 0; x < imageSize.width(); ++x) {
         for (auto y = 0; y < imageSize.height(); ++y) {
             const auto inputPixel = inputImage.pixel(x, y);
@@ -87,6 +89,7 @@ QImage switchImageColor(const QPixmap& original, const QColor& color)
             outputImage.setPixel(x, y, outputPixel);
         }
     }
+
     return outputImage;
 }
 
@@ -111,7 +114,7 @@ QPixmap getCachedPixmap(QPixmap const& input, QColor const& color)
     if (const auto found = QPixmapCache::find(pixmapKey, &pixmapInCache); !found)
     {
         const auto& newPixmap = switchPixColor(input, color);
-        if (const auto flag = QPixmapCache::insert(pixmapKey, newPixmap))
+        if (const auto flag = QPixmapCache::insert(pixmapKey, newPixmap); flag)
         {
             QPixmapCache::find(pixmapKey, &pixmapInCache);
         }

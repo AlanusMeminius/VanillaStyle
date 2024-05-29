@@ -63,7 +63,6 @@ bool LineEditButtonEventFilter::eventFilter(QObject* watched, QEvent* event)
             return true;
         }
         const auto rect = m_button->rect();
-        const auto bgColor = m_style.getColor(m_button, ColorRole::ButtonBackground);
         const auto fgColor = m_style.getColor(m_button, ColorRole::ButtonForeground);
         const auto iconSize = m_style.getSize(m_button, SizeRole::IconSize);
         const auto opacity = m_button->property(QByteArrayLiteral("opacity")).toDouble();
@@ -74,10 +73,10 @@ bool LineEditButtonEventFilter::eventFilter(QObject* watched, QEvent* event)
 
         QPainter p(m_button);
         p.setOpacity(opacity);
-        p.setPen(Qt::NoPen);
-        p.setBrush(bgColor);
         p.setRenderHint(QPainter::Antialiasing, true);
         p.drawPixmap(iconRect, colorizedPixmap);
+        event->accept();
+        return true;
     }
     return QObject::eventFilter(watched, event);
 }
