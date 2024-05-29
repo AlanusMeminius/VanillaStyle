@@ -202,6 +202,8 @@ int Theme::getSize(const SizeRole sizeRole) const
         return config.progressBarTextMargin;
     case SizeRole::ScrollBarWidth:
         return config.scrollBarWidth;
+    case SizeRole::MenuBorder:
+        return config.menuBorder;
     default:
         return 3;
     }
@@ -564,6 +566,11 @@ QString Theme::getCachedIcon(const QString& path, QColor color)
     const auto svg = switchSvgColor(path, color);
     iconData.emplace(path, svg);
     return svg;
+}
+
+bool Theme::getIconsColorizeMode() const
+{
+    return styleConfig.iconsColorizeMode;
 }
 
 }  // namespace Vanilla

@@ -81,13 +81,14 @@ enum class SizeRole
     ItemViewRadius,
 
     MenuItemPadding,
+    MenuBorder,
     CheckBoxIndicatorMargin,
     CheckBoxPadding,
     ProgressBarHeight,
     ProgressBarTextMargin,
 
     ScrollBarWidth,
-    SmallRadius
+    SmallRadius,
 };
 
 enum class IconRole

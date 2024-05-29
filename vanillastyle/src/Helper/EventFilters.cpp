@@ -1,12 +1,14 @@
-#include "VanillaStyle/Helper/EventFilters.h"
-
-#include "VanillaStyle/Helper/Common.h"
-#include "VanillaStyle/Style/VanillaStyle.h"
-
 #include <QEvent>
 #include <QMenuBar>
 #include <QTimer>
 #include <QToolButton>
+
+#include "VanillaStyle/Helper/EventFilters.h"
+#include "VanillaStyle/Helper/Common.h"
+#include "VanillaStyle/Style/VanillaStyle.h"
+#include "VanillaStyle/Theme/Theme.h"
+
+
 
 namespace Vanilla
 {
@@ -67,7 +69,7 @@ bool LineEditButtonEventFilter::eventFilter(QObject* watched, QEvent* event)
         const auto iconSize = m_style.getSize(m_button, SizeRole::IconSize);
         const auto opacity = m_button->property(QByteArrayLiteral("opacity")).toDouble();
         const auto pixmap = getIconPixmap(m_button->icon(), QSize(iconSize,iconSize), m_button);
-        const auto colorizedPixmap = getColorizedPixmap(pixmap, m_button, fgColor);
+        const auto colorizedPixmap = getColorizedPixmap(pixmap, m_button, fgColor, m_style.getTheme()->getIconsColorizeMode());
 
         const auto iconRect = centerRect(rect, iconSize, iconSize);
 

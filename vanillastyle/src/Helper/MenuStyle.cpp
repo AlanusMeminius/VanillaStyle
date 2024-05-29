@@ -13,14 +13,18 @@ namespace Vanilla
 bool MenuStyle::drawPrimitive(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
 {
     painter->setRenderHint(QPainter::Antialiasing);
+
     const auto radius = theme->getSize(SizeRole::NormalRadius);
     const auto bgColor = theme->getColor(option, ColorRole::MenuBackground);  // QColor(245, 245, 245, 210)
     const auto border = theme->getSize(SizeRole::ButtonBorder);
     const auto totalRect = option->rect;
-    const auto frameRect = totalRect.marginsRemoved({border, border, border, border});
-    painter->setPen(bgColor);
-    painter->setBrush(bgColor);
-    painter->drawRoundedRect(frameRect, radius, radius);
+
+    const auto halfBorderW = border / 2.;
+    const auto bgFrameRect =
+      QRectF(totalRect).marginsRemoved(QMarginsF(halfBorderW, halfBorderW, halfBorderW, halfBorderW));
+    Helper::renderRoundRect(painter,bgFrameRect,bgColor,radius);
+    const auto borderColor = bgColor.darker(110);
+    Helper::renderRoundBorder(painter,bgFrameRect,borderColor,border,radius);
 
     return true;
 }
@@ -35,6 +39,39 @@ void MenuStyle::eventFilter(QMenu* menu) const
     menu->setWindowFlag(Qt::FramelessWindowHint, true);
     menu->setWindowFlag(Qt::NoDropShadowWindowHint, true);
     menu->setProperty("_q_windowsDropShadow", false);
+}
+QSize MenuStyle::sizeFromContentsForMenuItem(QStyle::ContentsType type, const QStyleOption* option, const QSize& contentsSize,
+                                             const std::shared_ptr<Theme>& theme, const QWidget* widget)
+{
+    if (type == QStyle::CT_MenuItem)
+    {
+        if (const auto* opt = qstyleoption_cast<const QStyleOptionMenuItem*>(option))
+        {
+            const auto padding = theme->getSize(SizeRole::MenuItemPadding);
+            const auto border = theme->getSize(SizeRole::NormalBorder);
+            if (opt->menuItemType == QStyleOptionMenuItem::Separator)
+            {
+                const auto size = border;
+                return QSize{size, size};
+            }
+            else if (opt->menuItemType == QStyleOptionMenuItem::Normal || opt->menuItemType == QStyleOptionMenuItem::SubMenu)
+            {
+                const auto iconSize = theme->getSize(SizeRole::IconSize);
+                const auto [label, shortcut] = splitMenuShortcut(opt->text);
+                const auto& fm = opt->fontMetrics;
+                const auto labelWidth = fm.boundingRect(opt->rect, Qt::AlignLeft, label).width() + padding;
+                const auto keyList = shortcut.split(' ');
+                const auto shortcutWidth = shortcut.length() > 0 ? 2 * padding * static_cast<int>(keyList.size()) : 0;
+                const auto iconW = !opt->icon.isNull() ? iconSize + padding : 0;
+                const auto hasCheckIcon = opt->menuHasCheckableItems || opt->checkType != QStyleOptionMenuItem::NotCheckable;
+                const auto checkWidth = hasCheckIcon ? iconSize + padding : 0;
+
+                return {checkWidth + iconW + labelWidth + shortcutWidth + 2 * padding, iconSize + 2 * padding};
+            }
+        }
+        return {};
+    }
+    return {};
 }
 
 bool MenuStyle::drawMenuItem(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
@@ -86,7 +123,7 @@ bool MenuStyle::drawMenuItem(const QStyleOption* option, QPainter* painter, cons
             };
 
             auto copy = *opt;
-            copy.rect = checkboxRect.adjusted(1,1,-1,-1);
+            copy.rect = checkboxRect.adjusted(1, 1, -1, -1);
             Helper::drawCheckBoxHelper(&copy, painter, theme, widget);
 
             if (copy.checked)
@@ -105,7 +142,7 @@ bool MenuStyle::drawMenuItem(const QStyleOption* option, QPainter* painter, cons
         const auto pixmap = getIconPixmap(opt->icon, QSize(iconSize, iconSize), widget);
         if (!pixmap.isNull())
         {
-            const auto colorizedPixmap = getColorizedPixmap(pixmap, widget, fgColor);
+            const auto colorizedPixmap = getColorizedPixmap(pixmap, widget, fgColor, theme->getIconsColorizeMode());
             const auto pixmapPixelRatio = colorizedPixmap.devicePixelRatio();
             const auto pixmapWidth = pixmapPixelRatio != 0 ? static_cast<int>(static_cast<qreal>(colorizedPixmap.width()) / pixmapPixelRatio) : 0;
             const auto pixmapHeight = pixmapPixelRatio != 0 ? static_cast<int>(static_cast<qreal>(colorizedPixmap.height()) / pixmapPixelRatio) : 0;
