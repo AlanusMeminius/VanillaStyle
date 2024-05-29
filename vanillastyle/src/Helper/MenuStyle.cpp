@@ -23,7 +23,7 @@ bool MenuStyle::drawPrimitive(const QStyleOption* option, QPainter* painter, con
     const auto bgFrameRect =
       QRectF(totalRect).marginsRemoved(QMarginsF(halfBorderW, halfBorderW, halfBorderW, halfBorderW));
     Helper::renderRoundRect(painter,bgFrameRect,bgColor,radius);
-    const auto borderColor = bgColor.darker(110);
+    const auto borderColor = bgColor.darker(105);
     Helper::renderRoundBorder(painter,bgFrameRect,borderColor,border,radius);
 
     return true;
