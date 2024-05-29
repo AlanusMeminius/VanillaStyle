@@ -65,27 +65,28 @@ QImage switchImageColor(const QPixmap& original, const QColor& color)
     {
         return {};
     }
+    const auto imageSize = original.size();
     auto inputImage = original.toImage();
-    const auto format = inputImage.hasAlphaChannel() ? QImage::Format_ARGB32_Premultiplied : QImage::Format_RGB32;
-    inputImage = std::move(inputImage).convertToFormat(format);
+    inputImage = std::move(inputImage).convertToFormat(QImage::Format_ARGB32);
 
-    auto outputImage = QImage(inputImage.size(), inputImage.format());
+    auto outputImage = QImage(imageSize, inputImage.format());
     outputImage.setDevicePixelRatio(inputImage.devicePixelRatioF());
 
-    QPainter outputPainter(&outputImage);
-    grayscale(inputImage, outputImage, inputImage.rect());
-    outputPainter.setCompositionMode(QPainter::CompositionMode_Screen);
-    outputPainter.fillRect(inputImage.rect(), color);
-    outputPainter.end();
+    const auto outputRgb = color.rgba();
+    const auto outputR = qRed(outputRgb);
+    const auto outputG = qGreen(outputRgb);
+    const auto outputB = qBlue(outputRgb);
+    const auto outputAf = qAlpha(outputRgb) / 255.;
 
-    if (inputImage.hasAlphaChannel())
-    {
-        Q_ASSERT(outputImage.format() == QImage::Format_ARGB32_Premultiplied);
-        QPainter maskPainter(&outputImage);
-        maskPainter.setCompositionMode(QPainter::CompositionMode_DestinationIn);
-        maskPainter.drawImage(0, 0, inputImage);
+    for (auto x = 0; x < imageSize.width(); ++x) {
+        for (auto y = 0; y < imageSize.height(); ++y) {
+            const auto inputPixel = inputImage.pixel(x, y);
+            const auto inputA = qAlpha(inputPixel);
+            const auto outputA = static_cast<int>(inputA * outputAf);
+            const auto outputPixel = qRgba(outputR, outputG, outputB, outputA);
+            outputImage.setPixel(x, y, outputPixel);
+        }
     }
-
     return outputImage;
 }
 

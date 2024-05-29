@@ -13,6 +13,8 @@
 
 #include "VanillaStyle_p.h"
 #include "VanillaStyle/Style/VanillaStyle.h"
+
+#include "VanillaStyle/Helper/EventFilters.h"
 #include "VanillaStyle/Theme/Theme.h"
 #include "VanillaStyle/Helper/ScrollBarStyle.h"
 #include "VanillaStyle/Theme/PatchHelper.h"
@@ -126,6 +128,9 @@ void VanillaStyle::drawControl(ControlElement element, const QStyleOption* optio
     case CE_ScrollBarSubLine:
         helper = createHelper(d->scrollBarStyle, &ScrollBarStyle::drawSubLine);
         break;
+    case CE_ToolButtonLabel:
+        helper = createHelper(d->toolButtonStyle,&ToolButtonStyle::drawToolButtonLabel);
+        break;
     case CE_ScrollBarAddPage:
     case CE_ScrollBarSubPage:
     case CE_HeaderSection:
@@ -224,12 +229,12 @@ QSize VanillaStyle::sizeFromContents(ContentsType type, const QStyleOption* opti
                 const auto iconSize = d->theme->getSize(SizeRole::IconSize);
                 const auto [label, shortcut] = splitMenuShortcut(opt->text);
                 const auto& fm = opt->fontMetrics;
-                const auto labelWidth = fm.boundingRect(opt->rect, Qt::AlignLeft, label).width();
+                const auto labelWidth = fm.boundingRect(opt->rect, Qt::AlignLeft, label).width() + padding;
                 const auto keyList = shortcut.split(' ');
                 const auto shortcutWidth = shortcut.length() > 0 ? 2 * padding * static_cast<int>(keyList.size()) : 0;
-                const auto iconW = !opt->icon.isNull() ? iconSize + 2 * padding : 0;
+                const auto iconW = !opt->icon.isNull() ? iconSize + padding : 0;
                 const auto hasCheckIcon = opt->menuHasCheckableItems || opt->checkType != QStyleOptionMenuItem::NotCheckable;
-                const auto checkWidth = hasCheckIcon ? iconSize + +2 * padding : 0;
+                const auto checkWidth = hasCheckIcon ? iconSize + padding : 0;
 
                 return {checkWidth + iconW + labelWidth + shortcutWidth + 2 * padding, iconSize + 2 * padding};
             }
@@ -327,9 +332,22 @@ void VanillaStyle::polish(QWidget* w)
     Q_D(VanillaStyle);
 
     QCommonStyle::polish(w);
+
+#ifndef WIN32
+    if (w->inherits("QTipLabel")) {
+        w->setBackgroundRole(QPalette::NoRole);
+        w->setAutoFillBackground(false);
+        w->setAttribute(Qt::WA_TranslucentBackground, true);
+        w->setAttribute(Qt::WA_NoSystemBackground, true);
+        w->setAttribute(Qt::WA_OpaquePaintEvent, false);
+    }
+#endif
     if ((qobject_cast<QPushButton*>(w) != nullptr) || (qobject_cast<QCheckBox*>(w) != nullptr) || (qobject_cast<QRadioButton*>(w) != nullptr))
     {
         w->setAttribute(Qt::WA_Hover);
+    }
+    if (w->inherits("QLineEditIconButton")) {
+        w->installEventFilter(new LineEditButtonEventFilter(qobject_cast<QToolButton*>(w), *this));
     }
     if (auto* itemView = qobject_cast<QAbstractItemView*>(w))
     {
@@ -423,6 +441,7 @@ VanillaStylePrivate::VanillaStylePrivate(VanillaStyle* q)
     , comboBoxStyle(new ComboBoxStyle())
     , itemViewStyle(new ItemViewStyle())
     , scrollBarStyle(new ScrollBarStyle())
+    , toolButtonStyle(new ToolButtonStyle)
     , patchHelper(new PatchHelper())
     , q_ptr(q)
 {
