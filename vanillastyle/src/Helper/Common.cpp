@@ -215,16 +215,16 @@ QString switchSvgColor(const QString& path, const QColor& color)
     return QString::fromStdString(svgString);
 }
 
-QPixmap getIconPixmap(const QIcon& icon, const QSize& iconSize, const QWidget* widget)
+QPixmap getIconPixmap(const QIcon& icon, const QSize& iconSize, const QWidget* widget, QIcon::Mode mode, QIcon::State state)
 {
     if (icon.isNull())
     {
         return {};
     }
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    return icon.pixmap(iconSize);
+    return icon.pixmap(iconSize, mode, state);
 #else
-    return icon.pixmap(iconSize, widget->devicePixelRatio());
+    return icon.pixmap(iconSize, widget->devicePixelRatio(), mode, state);
 #endif
 }
 

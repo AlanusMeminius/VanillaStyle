@@ -67,6 +67,11 @@
          <property name="text">
           <string>Refresh</string>
          </property>
+         <property name="icon">
+          <iconset resource="res/res.qrc">
+           <normaloff>:/close.svg</normaloff>
+           <normalon>:/detail.svg</normalon>:/close.svg</iconset>
+         </property>
         </widget>
        </item>
       </layout>
@@ -126,6 +131,11 @@
          </property>
          <property name="text">
           <string>Stop</string>
+         </property>
+         <property name="icon">
+          <iconset resource="res/res.qrc">
+           <normaloff>:/detail.svg</normaloff>
+           <normalon>:/grid.svg</normalon>:/detail.svg</iconset>
          </property>
         </widget>
        </item>

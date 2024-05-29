@@ -68,7 +68,8 @@ bool LineEditButtonEventFilter::eventFilter(QObject* watched, QEvent* event)
         const auto fgColor = m_style.getColor(m_button, ColorRole::ButtonForeground);
         const auto iconSize = m_style.getSize(m_button, SizeRole::IconSize);
         const auto opacity = m_button->property(QByteArrayLiteral("opacity")).toDouble();
-        const auto pixmap = getIconPixmap(m_button->icon(), QSize(iconSize,iconSize), m_button);
+        const auto iconMode = m_button->isChecked() ? QIcon::On : QIcon::Off;
+        const auto pixmap = getIconPixmap(m_button->icon(), QSize(iconSize, iconSize), m_button, QIcon::Normal, iconMode);
         const auto colorizedPixmap = getColorizedPixmap(pixmap, m_button, fgColor, m_style.getTheme()->getIconsColorizeMode());
 
         const auto iconRect = centerRect(rect, iconSize, iconSize);

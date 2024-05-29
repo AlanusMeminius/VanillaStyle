@@ -20,7 +20,7 @@ VANILLA_EXPORT void renderSvgFromString(const QString& svg, QPainter* painter, c
 
 VANILLA_EXPORT QString switchSvgColor(const QString& path, const QColor& color);
 
-VANILLA_EXPORT QPixmap getIconPixmap(const QIcon& icon, const QSize& iconSize, const QWidget* widget);
+VANILLA_EXPORT QPixmap getIconPixmap(const QIcon& icon, const QSize& iconSize, const QWidget* widget, QIcon::Mode mode, QIcon::State state);
 
 VANILLA_EXPORT QImage blurImage(const QImage& original, double sigma);
 VANILLA_EXPORT QPixmap blurPixmap(QPixmap const& original, double blurRadius, bool extend);
