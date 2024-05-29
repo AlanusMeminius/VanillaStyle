@@ -171,7 +171,7 @@ QPixmap getColorizedPixmap(QPixmap const& input, const QWidget* widget, const QC
     {
         return getCachedPixmap(input, customColor, mode);
     }
-    if (const auto original = checkBoolProperty(widget, "UseOriginalColor"))
+    if (const auto original = checkBoolProperty(widget, "UseOriginalColor"); original)
     {
         return input;
     }
