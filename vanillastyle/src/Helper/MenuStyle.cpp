@@ -118,7 +118,7 @@ bool MenuStyle::drawMenuItem(const QStyleOption* option, QPainter* painter, cons
 
             const auto checkBoxY = fgRect.y() + (fgRect.height() - iconSize) / 2;
             const auto checkboxRect = QRect{
-                QPoint{checkBoxX, checkBoxY},
+                QPoint{checkBoxX-padding, checkBoxY},
                 QSize(iconSize, iconSize)
             };
 
@@ -136,7 +136,6 @@ bool MenuStyle::drawMenuItem(const QStyleOption* option, QPainter* painter, cons
             const auto checkBoxWidth = iconSize + padding;
             availableWidth -= checkBoxWidth;
             availableX += checkBoxWidth;
-            availableX += 2 * padding;
         }
 
         auto iconMode = option->state.testFlag(QStyle::State_On) ? QIcon::On : QIcon::Off;
