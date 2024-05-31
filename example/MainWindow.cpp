@@ -139,6 +139,7 @@ void MainWindow::contextMenuEvent(QContextMenuEvent* event)
     {
         m_menu = new QMenu(this);
         // createContextMenu();
+        m_menu->setProperty("_vanillaStyle_Patch","CheckBoxWithNoBorder");
         auto* downloadAction = new QAction(QIcon(":/download.svg"), "Download\tCTRL ALT D", this);
         downloadAction->setCheckable(true);
         connect(downloadAction, &QAction::triggered, this, [downloadAction](bool checked) {

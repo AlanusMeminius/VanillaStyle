@@ -20,11 +20,10 @@ bool MenuStyle::drawPrimitive(const QStyleOption* option, QPainter* painter, con
     const auto totalRect = option->rect;
 
     const auto halfBorderW = border / 2.;
-    const auto bgFrameRect =
-      QRectF(totalRect).marginsRemoved(QMarginsF(halfBorderW, halfBorderW, halfBorderW, halfBorderW));
-    Helper::renderRoundRect(painter,bgFrameRect,bgColor,radius);
+    const auto bgFrameRect = QRectF(totalRect).marginsRemoved(QMarginsF(halfBorderW, halfBorderW, halfBorderW, halfBorderW));
+    Helper::renderRoundRect(painter, bgFrameRect, bgColor, radius);
     const auto borderColor = bgColor.darker(105);
-    Helper::renderRoundBorder(painter,bgFrameRect,borderColor,border,radius);
+    Helper::renderRoundBorder(painter, bgFrameRect, borderColor, border, radius);
 
     return true;
 }
@@ -40,6 +39,7 @@ void MenuStyle::eventFilter(QMenu* menu) const
     menu->setWindowFlag(Qt::NoDropShadowWindowHint, true);
     menu->setProperty("_q_windowsDropShadow", false);
 }
+
 QSize MenuStyle::sizeFromContentsForMenuItem(QStyle::ContentsType type, const QStyleOption* option, const QSize& contentsSize,
                                              const std::shared_ptr<Theme>& theme, const QWidget* widget)
 {
@@ -54,17 +54,17 @@ QSize MenuStyle::sizeFromContentsForMenuItem(QStyle::ContentsType type, const QS
                 const auto size = border;
                 return QSize{size, size};
             }
-            else if (opt->menuItemType == QStyleOptionMenuItem::Normal || opt->menuItemType == QStyleOptionMenuItem::SubMenu)
+            if (opt->menuItemType == QStyleOptionMenuItem::Normal || opt->menuItemType == QStyleOptionMenuItem::SubMenu)
             {
                 const auto iconSize = theme->getSize(SizeRole::IconSize);
                 const auto [label, shortcut] = splitMenuShortcut(opt->text);
                 const auto& fm = opt->fontMetrics;
                 const auto labelWidth = fm.boundingRect(opt->rect, Qt::AlignLeft, label).width() + padding;
                 const auto keyList = shortcut.split(' ');
-                const auto shortcutWidth = shortcut.length() > 0 ? 2 * padding * static_cast<int>(keyList.size()) : 0;
+                const auto shortcutWidth = shortcut.length() > 0 ? 2 * padding * static_cast<int>(keyList.size()) : padding;
                 const auto iconW = !opt->icon.isNull() ? iconSize + padding : 0;
                 const auto hasCheckIcon = opt->menuHasCheckableItems || opt->checkType != QStyleOptionMenuItem::NotCheckable;
-                const auto checkWidth = hasCheckIcon ? iconSize + padding : 0;
+                const auto checkWidth = hasCheckIcon ? iconSize + 2 * padding : 0;
 
                 return {checkWidth + iconW + labelWidth + shortcutWidth + 2 * padding, iconSize + 2 * padding};
             }
