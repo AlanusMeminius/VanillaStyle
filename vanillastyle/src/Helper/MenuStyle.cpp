@@ -14,7 +14,7 @@ bool MenuStyle::drawPrimitive(const QStyleOption* option, QPainter* painter, con
 {
     painter->setRenderHint(QPainter::Antialiasing);
 
-    const auto radius = theme->getSize(SizeRole::NormalRadius);
+    const auto radius = theme->getSize(SizeRole::MenuRadius);
     const auto bgColor = theme->getColor(option, ColorRole::MenuBackground);  // QColor(245, 245, 245, 210)
     const auto border = theme->getSize(SizeRole::ButtonBorder);
     const auto totalRect = option->rect;

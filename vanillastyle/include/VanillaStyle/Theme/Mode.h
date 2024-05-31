@@ -89,6 +89,8 @@ enum class SizeRole
 
     ScrollBarWidth,
     SmallRadius,
+    BigRadius,
+    MenuRadius,
 };
 
 enum class IconRole

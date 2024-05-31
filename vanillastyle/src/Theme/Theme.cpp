@@ -172,6 +172,8 @@ int Theme::getSize(const SizeRole sizeRole) const
     const auto& config = styleConfig.size;
     switch (sizeRole)
     {
+    case SizeRole::BigRadius:
+        return config.bigRadius;
     case SizeRole::NormalRadius:
         return config.normalRadius;
     case SizeRole::SmallRadius:
@@ -204,6 +206,8 @@ int Theme::getSize(const SizeRole sizeRole) const
         return config.scrollBarWidth;
     case SizeRole::MenuBorder:
         return config.menuBorder;
+    case SizeRole::MenuRadius:
+        return config.menuRadius;
     default:
         return 3;
     }

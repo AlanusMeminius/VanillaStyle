@@ -147,6 +147,7 @@ public:
 
     int iconSize{16};
 
+    int bigRadius{8};
     int normalRadius{5};
     int smallRadius{3};
     int buttonRadius{4};
@@ -160,12 +161,12 @@ public:
     int checkBoxPadding{5};
     int menuItemPadding{5};
     int menuBorder{1};
+    int menuRadius{8};
     int checkBoxIndicatorMargin{4};
     int progressBarTextMargin{35};
     int progressBarHeight{6};
 
     int scrollBarWidth{5};
-    int menuItemRadius{};
 
     std::string toString()
     {
@@ -175,8 +176,7 @@ public:
     }
     NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Size, fontSize, fontH1, fontH2, fontH3, fontH4, fontH5, fontH6, iconSize, normalRadius, smallRadius,
                                                 buttonRadius, itemViewRadius, normalBorder, buttonBorder, checkBoxBorder, normalPadding, checkBoxPadding,
-                                                menuItemPadding, checkBoxIndicatorMargin, progressBarHeight, progressBarTextMargin, scrollBarWidth,
-                                                menuItemRadius);
+                                                menuItemPadding, checkBoxIndicatorMargin, progressBarHeight, progressBarTextMargin, scrollBarWidth, menuRadius);
 };
 
 class Icons : public Basic
