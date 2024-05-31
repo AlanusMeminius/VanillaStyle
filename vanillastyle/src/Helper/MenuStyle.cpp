@@ -61,10 +61,10 @@ QSize MenuStyle::sizeFromContentsForMenuItem(QStyle::ContentsType type, const QS
                 const auto& fm = opt->fontMetrics;
                 const auto labelWidth = fm.boundingRect(opt->rect, Qt::AlignLeft, label).width() + padding;
                 const auto keyList = shortcut.split(' ');
-                const auto shortcutWidth = shortcut.length() > 0 ? 2 * padding * static_cast<int>(keyList.size()) : padding;
+                const auto shortcutWidth = shortcut.length() > 0 ? 2 * padding * static_cast<int>(keyList.size()) : 2 * padding;
                 const auto iconW = !opt->icon.isNull() ? iconSize + padding : 0;
                 const auto hasCheckIcon = opt->menuHasCheckableItems || opt->checkType != QStyleOptionMenuItem::NotCheckable;
-                const auto checkWidth = hasCheckIcon ? iconSize + 2 * padding : 0;
+                const auto checkWidth = hasCheckIcon ? iconSize + padding : 0;
 
                 return {checkWidth + iconW + labelWidth + shortcutWidth + 2 * padding, iconSize + 2 * padding};
             }
