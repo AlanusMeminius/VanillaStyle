@@ -23,8 +23,8 @@ void PatchHelper::appendPatch(const std::vector<PatchConfig>& patches)
     {
         return;
     }
-    std::vector<QString> widgetStrings;
-    std::vector<QString> propertyStrings;
+    std::list<QString> widgetStrings;
+    std::list<QString> propertyStrings;
 
     for (const auto& item : patches)
     {
@@ -71,12 +71,17 @@ const std::shared_ptr<Theme>& PatchHelper::getPatchTheme(const QString& property
 
 const std::shared_ptr<Theme>& PatchHelper::getPatchTheme(const QWidget* widget, const std::shared_ptr<Theme>& originalTheme)
 {
+    if (widget == nullptr)
+    {
+        return originalTheme;
+    }
     const auto className = QString(widget->metaObject()->className());
     if (!widgets.contains(className))
     {
         return originalTheme;
     }
-    const auto propertyValue = getPatchProperty(widget);
+    const auto patchKey = originalTheme->getPatchKey();
+    const auto propertyValue = getPatchProperty(widget, patchKey);
     if (propertyValue.isEmpty())
     {
         return originalTheme;

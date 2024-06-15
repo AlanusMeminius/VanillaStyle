@@ -2,26 +2,24 @@
 #include <QPainter>
 #include <QPainterPath>
 
-#include "VanillaStyle/Helper/ButtonStyle.h"
+#include "VanillaStyle/Helper/ToolButtonStyle.h"
 #include "VanillaStyle/Helper/Common.h"
 #include "VanillaStyle/Helper/Helper.h"
 #include "VanillaStyle/Theme/Theme.h"
 
 namespace Vanilla
 {
-bool ButtonStyle::drawPushButtonBevel(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
+bool ToolButtonStyle::drawToolButton(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget)
 {
-    Q_UNUSED(widget);
-    const auto* optionButton = qstyleoption_cast<const QStyleOptionButton*>(option);
-    if (!optionButton)
+    const auto* opt = qstyleoption_cast<const QStyleOptionToolButton*>(option);
+    if (!opt)
     {
         return true;
     }
     painter->setRenderHints(QPainter::Antialiasing);
-
-    const auto rect = QRectF(optionButton->rect);
-    const auto border = theme->getSize(SizeRole::ButtonBorder);
+    const auto rect = QRectF(opt->rect);
     const auto radius = theme->getSize(SizeRole::ButtonRadius);
+    const auto border = theme->getSize(SizeRole::ButtonBorder);
 
     const auto halfBorder = border / 2.;
     const auto margins = QMarginsF(halfBorder, halfBorder, halfBorder, halfBorder);
@@ -35,21 +33,19 @@ bool ButtonStyle::drawPushButtonBevel(const QStyleOption* option, QPainter* pain
     if (border > 0.1)
     {
         const auto borderColor = theme->getColor(option, ColorRole::ButtonBorderColor);
-        Helper::renderRoundBorder(painter, buttonRect, borderColor, border + 0.5, radius);
+        Helper::renderRoundBorder(painter, buttonRect, borderColor, border, radius);
     }
     return true;
 }
 
-bool ButtonStyle::drawPushButtonLabel(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
+bool ToolButtonStyle::drawToolButtonLabel(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
 {
-    const auto* opt = qstyleoption_cast<const QStyleOptionButton*>(option);
-    if (opt == nullptr)
+    const auto* opt = qstyleoption_cast<const QStyleOptionToolButton*>(option);
+    if (!opt)
     {
         return true;
     }
-
     const auto fgColor = theme->getColor(option, ColorRole::ButtonForeground);
-
     auto iconMode = option->state.testFlag(QStyle::State_On) ? QIcon::On : QIcon::Off;
     const auto pixmap = getIconPixmap(opt->icon, opt->iconSize, widget, QIcon::Normal, iconMode);
     const auto colorizedPixmap = getColorizedPixmap(pixmap, widget, fgColor, theme->getIconsColorizeMode());
@@ -104,5 +100,4 @@ bool ButtonStyle::drawPushButtonLabel(const QStyleOption* option, QPainter* pain
     }
     return true;
 }
-
 }  // namespace Vanilla

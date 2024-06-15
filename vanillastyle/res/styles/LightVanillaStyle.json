@@ -3,7 +3,7 @@
   "author": "Alanus",
   "mode": "light",
   "color": {
-    "backgroundColor": "#CCffffff",
+    "backgroundColor": "#80FFFFFF",
     "primaryTextColor": "#322C2B",
     "textColor": "#0x1890",
     "pressedTextColor": "#344955",
@@ -41,8 +41,9 @@
     "lineEditFocusBackground": "#F5EEE6",
     "lineEditBackground": "#F5EEE6",
     "iconLabelText": "#50727B",
-    "menuBackground": "#99F5F5F5",
+    "menuBackground": "#99FFFFFF",
     "menuSeparatorColor": "#CCF5EFE6",
+    "menuShortCutsBackground": "#CCDDE6ED",
     "comboBoxDropDownBackground": "#CCF5EFE6"
   },
   "size": {
@@ -67,6 +68,7 @@
     "leftArrow": ":/VanillaStyle/icons/LeftArrow.svg",
     "progressIndicator": ":/VanillaStyle/icons/Plane.svg"
   },
+  "iconsColorizeMode": true,
   "progressBarMode": "mode2",
   "debug": true,
   "patch": [
@@ -111,6 +113,27 @@
           "toggleButtonBackground": "#00000000",
           "toggleButtonForeground": "#FDAF7B",
           "toggleButtonIndicatorColor": "#98E4FF"
+        }
+      }
+    },
+    {
+      "enable": true,
+      "widgetType": "QMenu",
+      "propertyValue": "CheckBoxWithNoBorder",
+      "configPatch": {
+        "color": {
+          "checkBoxBackground": "#00FFFFFF",
+          "checkBoxForeground": "#A4907C",
+          "checkBoxCheckedForeground": "#F5EEE6",
+          "checkBoxCheckedBackground": "#008D7B68",
+          "checkBoxHoveredBackground": "#00ffffff",
+          "checkBoxBorderColor": "#03AED2",
+          "menuBackground": "#99FFFFFF",
+          "menuSeparatorColor": "#CCF5EFE6",
+          "menuShortCutsBackground": "#CCDDE6ED"
+        },
+        "size": {
+          "checkBoxBorder": 0
         }
       }
     }

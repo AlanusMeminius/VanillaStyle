@@ -4,6 +4,7 @@
         <file>list.svg</file>
         <file>detail.svg</file>
         <file>download.svg</file>
+        <file>lineEditAction.svg</file>
         <file>close.svg</file>
     </qresource>
 </RCC>

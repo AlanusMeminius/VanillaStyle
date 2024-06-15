@@ -114,6 +114,7 @@ public:
     QColor menuSeparatorColor;
     QColor lineEditFocusBackground;
     QColor lineEditBackground;
+    QColor menuShortCutsBackground;
 
     std::string toString()
     {
@@ -129,7 +130,8 @@ public:
                                                 progressBarBackground, progressBarForeground, progressBarText, toggleButtonBackground, toggleButtonForeground,
                                                 toggleButtonIndicatorColor, toggleButtonIconColor, itemViewEvenRowColor, itemViewOddRowColor,
                                                 itemViewSelectedColor, lineEditFocusOutline, lineEditOutline, comboBoxDropDownBackground, scrollBarSliderColor,
-                                                iconLabelText, menuBackground, menuSeparatorColor, lineEditFocusBackground, lineEditBackground);
+                                                iconLabelText, menuBackground, menuSeparatorColor, lineEditFocusBackground, lineEditBackground,
+                                                menuShortCutsBackground);
 };
 
 class Size : public Basic
@@ -145,10 +147,11 @@ public:
 
     int iconSize{16};
 
+    int bigRadius{8};
     int normalRadius{5};
     int smallRadius{3};
     int buttonRadius{4};
-    int itemViewRadius{};
+    int itemViewRadius{8};
 
     int normalBorder{1};
     int buttonBorder{1};
@@ -157,12 +160,13 @@ public:
     int normalPadding{5};
     int checkBoxPadding{5};
     int menuItemPadding{5};
+    int menuBorder{1};
+    int menuRadius{8};
     int checkBoxIndicatorMargin{4};
     int progressBarTextMargin{35};
     int progressBarHeight{6};
 
     int scrollBarWidth{5};
-    int menuItemRadius{};
 
     std::string toString()
     {
@@ -172,8 +176,7 @@ public:
     }
     NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Size, fontSize, fontH1, fontH2, fontH3, fontH4, fontH5, fontH6, iconSize, normalRadius, smallRadius,
                                                 buttonRadius, itemViewRadius, normalBorder, buttonBorder, checkBoxBorder, normalPadding, checkBoxPadding,
-                                                menuItemPadding, checkBoxIndicatorMargin, progressBarHeight, progressBarTextMargin, scrollBarWidth,
-                                                menuItemRadius);
+                                                menuItemPadding, checkBoxIndicatorMargin, progressBarHeight, progressBarTextMargin, scrollBarWidth, menuRadius);
 };
 
 class Icons : public Basic
@@ -218,8 +221,10 @@ public:
     Color color;
     Size size;
     Icons icons;
+    bool iconsColorizeMode;
     std::string progressBarMode;
     bool isEnableHotReload = false;
+    std::string patchKey{"_vanillaStyle_Patch"};
     std::vector<PatchConfig> patch;
 
     std::string toString()
