@@ -8,7 +8,6 @@
 #include "Theme.h"
 #include "VanillaStyle/vglobal.h"
 
-
 namespace Vanilla
 {
 
@@ -41,7 +40,7 @@ private:
     ErrorCallback errorCallback;
 };
 
-template<typename R, typename C>
+template <typename R, typename C>
 VANILLA_EXPORT R loadConfig(const QString& path, C callback, const ConfigErrorHanler& errorHandler, const Mode mode)
 {
     QFile file(path);

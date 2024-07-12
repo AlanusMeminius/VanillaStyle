@@ -17,7 +17,6 @@ namespace Vanilla
 {
 class ConfigManager;
 
-
 class VANILLA_EXPORT Theme
 {
 public:
@@ -61,7 +60,7 @@ public:
     QColor createColor(StateFlags flags, const QStyleOption* option, ColorRole role) const;
     [[nodiscard]] QColor customColor(ColorRole role) const;
 
-    [[nodiscard]] static QString checkIconFile(const std::string& path) ;
+    [[nodiscard]] static QString checkIconFile(const std::string& path);
     [[nodiscard]] QString getIconPath(IconRole role) const;
     QString getCachedIcon(const QString&, QColor color);
 

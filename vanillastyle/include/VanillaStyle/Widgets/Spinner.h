@@ -23,8 +23,8 @@ public:
 
     void updataPosition();
 
-    signals:
-        void deltaChanged();
+signals:
+    void deltaChanged();
 
 protected:
     void paintEvent(QPaintEvent* event) override;

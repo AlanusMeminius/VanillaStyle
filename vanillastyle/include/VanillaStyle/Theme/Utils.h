@@ -4,7 +4,6 @@
 
 #include "VanillaStyle/Helper/Common.h"
 
-
 namespace Vanilla
 {
 class VanillaStyle;
@@ -19,5 +18,4 @@ struct VANILLA_EXPORT ConfigChangeNotifier
 
 QString getPatchProperty(const QWidget* widget);
 
-}
-
+}  // namespace Vanilla

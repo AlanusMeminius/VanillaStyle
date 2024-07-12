@@ -14,8 +14,8 @@ class PatchConfig;
 class VANILLA_EXPORT PatchHelper
 {
 public:
-    void init(const std::vector<PatchConfig> & patches);
-    void appendPatch(const std::vector<PatchConfig> & patches);
+    void init(const std::vector<PatchConfig>& patches);
+    void appendPatch(const std::vector<PatchConfig>& patches);
     void appendPatch(const QString& patchPath);
 
     void patchTheme(const QString& propertyValue, const std::shared_ptr<Theme>& theme);
@@ -31,7 +31,5 @@ private:
     std::shared_ptr<Theme> defaultTheme = nullptr;
 
     ConfigErrorHanler errorHandler;
-
 };
-}
-
+}  // namespace Vanilla

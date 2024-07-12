@@ -19,4 +19,4 @@ public:
     bool draw(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget = nullptr) const;
     QRect subElementRect(QStyle::SubElement element, const QStyleOption* option, const std::shared_ptr<Theme>& theme, const QWidget* widget) const;
 };
-}  // namespace VanillaStyle
+}  // namespace Vanilla

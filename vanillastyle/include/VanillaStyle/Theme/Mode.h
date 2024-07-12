@@ -8,7 +8,6 @@ enum Mode
     Dark
 };
 
-
 enum class ColorRole
 {
     PrimaryText,
@@ -105,4 +104,4 @@ enum class ProgressMode
     ModeTwo
 };
 
-}
+}  // namespace Vanilla

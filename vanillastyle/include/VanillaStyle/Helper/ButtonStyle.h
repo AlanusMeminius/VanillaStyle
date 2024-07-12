@@ -19,4 +19,4 @@ public:
     bool drawPushButtonLabel(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget = nullptr) const;
 };
 
-}
+}  // namespace Vanilla

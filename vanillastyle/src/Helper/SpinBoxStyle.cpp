@@ -27,7 +27,6 @@ bool SpinBoxStyle::draw(const QStyleOptionComplex* option, QPainter* painter, co
     const auto fgColor = theme->getColor(opt, ColorRole::LineEditOutline);
     Helper::renderRoundBorder(painter, rect, fgColor, 1.5, 5);
 
-
     // 画箭头
     if (opt->buttonSymbols != QAbstractSpinBox::NoButtons)
     {

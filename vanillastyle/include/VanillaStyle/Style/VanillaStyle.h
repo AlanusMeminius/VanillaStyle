@@ -18,7 +18,6 @@ public:
     explicit VanillaStyle(Mode mode);
     ~VanillaStyle();
 
-
     void drawPrimitive(PrimitiveElement pe, const QStyleOption* option, QPainter* painter, const QWidget* widget = nullptr) const override;
     int pixelMetric(PixelMetric pm, const QStyleOption* option = nullptr, const QWidget* widget = nullptr) const override;
     void drawControl(ControlElement element, const QStyleOption* option, QPainter* painter, const QWidget* widget = nullptr) const override;
@@ -47,7 +46,6 @@ private:
 
     template <typename T, typename F>
     auto createHelper(const std::shared_ptr<T>& objectPtr, F fptr) const;
-
 
 private:
     Q_DECLARE_PRIVATE(VanillaStyle);

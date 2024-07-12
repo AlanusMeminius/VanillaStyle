@@ -33,13 +33,12 @@ VANILLA_EXPORT QPixmap shadowPixmap(QSize const& size, double borderRadius, doub
 VANILLA_EXPORT void drawUpArrow(const QString& iconPath, QPainter* painter, const QRect& rect);
 VANILLA_EXPORT void drawDownArrow(const QString& iconPath, QPainter* painter, const QRect& rect);
 
-
 VANILLA_EXPORT QRect insideMargin(const QRect& rect, int margin);
 VANILLA_EXPORT QRectF insideMargin(const QRectF& rect, int margin);
 VANILLA_EXPORT QRect insideMargin(const QRect& rect, int marginWidth, int marginHeight);
 VANILLA_EXPORT QRectF insideMargin(const QRectF& rect, int marginWidth, int marginHeight);
 
-VANILLA_EXPORT QRect centerRect(const QRect& rect, const QSize& size) ;
+VANILLA_EXPORT QRect centerRect(const QRect& rect, const QSize& size);
 
 VANILLA_EXPORT QRect centerRect(const QRect& rect, int width, int height);
 
@@ -47,4 +46,4 @@ VANILLA_EXPORT QRectF centerRectF(const QRectF& rect, double width, double heigh
 
 VANILLA_EXPORT bool checkBoolProperty(const QWidget* widget, const std::string& propertyName);
 VANILLA_EXPORT QColor getQColorProperty(const QWidget* widget, const std::string& propertyName);
-}  // namespace VanillaStyle
+}  // namespace Vanilla

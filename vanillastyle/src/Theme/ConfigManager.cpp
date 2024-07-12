@@ -9,7 +9,9 @@ static QString DarkStyleFilePath = ":/VanillaStyle/styles/DarkVanillaStyle.json"
 
 StyleConfig ConfigManager::getConfig(const QString& path, const Mode mode)
 {
-    auto returnDefaultConfig = [this](const Mode m) { return defaultConfig(m); };
+    auto returnDefaultConfig = [this](const Mode m) {
+        return defaultConfig(m);
+    };
     return loadConfig<StyleConfig>(path, returnDefaultConfig, errorHandler, mode);
 }
 
