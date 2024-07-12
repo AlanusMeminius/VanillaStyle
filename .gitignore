@@ -206,3 +206,7 @@ gen
 /lib/src/.DS_Store
 .DS_Store
 /.cache
+
+build
+install
+.vs

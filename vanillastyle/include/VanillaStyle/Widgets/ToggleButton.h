@@ -20,6 +20,7 @@ public:
     explicit ToggleButton(QWidget* parent = nullptr);
     explicit ToggleButton(const QStringList& list, QWidget* parent = nullptr);
     ~ToggleButton();
+
     [[nodiscard]] QSize sizeHint() const override;
 
     void setItemList(const QStringList& list);
@@ -28,7 +29,12 @@ public:
     void setIconList(const QStringList& list);
     [[nodiscard]] const QStringList& iconList() const;
 
+    void setToolTips(const QStringList& list);
+    [[nodiscard]] const QStringList& toolTips() const;
+
     void setIconColor(const QColor& color);
+
+    [[nodiscard]] int count() const;
 
     void setEnableBackground(bool enable);
     [[nodiscard]] bool enableBackground() const;
@@ -54,6 +60,7 @@ protected:
     void paintEvent(QPaintEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
+    bool event(QEvent* event) override;
 
     ToggleButtonPrivate* d_ptr;
 
