@@ -32,7 +32,6 @@ bool ScrollBarStyle::drawSlider(const QStyleOption* option, QPainter* painter, c
         Helper::renderRoundRect(painter, handleRect, color, radius);
         return true;
     }
-
 }
 
 bool ScrollBarStyle::drawAddLine(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const

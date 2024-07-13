@@ -30,8 +30,9 @@ bool MenuEventFilter::eventFilter(QObject* watchedObject, QEvent* evt)
         // Menus have weird sizing bugs when moving them from this event.
         // We have to wait for the event loop to be processed before setting the final position.
         const auto menuSize = _menu->size();
-        if (menuSize != QSize(0, 0)) {
-            _menu->resize(0, 0); // Hide the menu for now until we can set the position.
+        if (menuSize != QSize(0, 0))
+        {
+            _menu->resize(0, 0);  // Hide the menu for now until we can set the position.
             QTimer::singleShot(0, _menu, [this, menuNewPos, menuSize]() {
                 _menu->move(menuNewPos);
                 _menu->resize(menuSize);
@@ -42,4 +43,4 @@ bool MenuEventFilter::eventFilter(QObject* watchedObject, QEvent* evt)
     return QObject::eventFilter(watchedObject, evt);
 }
 
-}  // namespace VanillaStyle
+}  // namespace Vanilla

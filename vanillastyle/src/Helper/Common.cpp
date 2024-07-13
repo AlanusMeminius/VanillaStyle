@@ -316,7 +316,7 @@ QColor getQColorProperty(const QWidget* widget, const std::string& propertyName)
 {
     if (const auto property = widget->property(propertyName.c_str()); property.isValid())
     {
-        return  property.value<QColor>();
+        return property.value<QColor>();
     }
     return {};
 }

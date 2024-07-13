@@ -7,7 +7,7 @@
 
 void Vanilla::Style::setDefaultTheme(const Mode mode)
 {
-    auto *const style = getStyle();
+    auto* const style = getStyle();
     style->setMode(mode);
     qApp->setStyle(style);
 }
@@ -22,7 +22,7 @@ void Vanilla::Style::setStyleFromPath(const QString& configPath)
 {
     if (QFile::exists(configPath))
     {
-        auto *const style = getStyle();
+        auto* const style = getStyle();
         style->setConfigPath(configPath);
         qApp->setStyle(style);
     }
@@ -35,7 +35,7 @@ void Vanilla::Style::setStyleFromPath(const QString& configPath)
 
 void Vanilla::Style::appendPatch(const QString& patchConfigPath)
 {
-    auto *const style = getStyle();
+    auto* const style = getStyle();
     style->appendPatch(patchConfigPath);
 }
 

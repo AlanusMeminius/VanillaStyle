@@ -33,4 +33,4 @@ private:
     Q_DECLARE_PUBLIC(SwitchButton);
 };
 
-}  // namespace VanillaStyle
+}  // namespace Vanilla

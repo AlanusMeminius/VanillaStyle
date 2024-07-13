@@ -4,11 +4,12 @@
 
 #include "VanillaStyle/Widgets/ToggleButton.h"
 
-namespace Vanilla {
+namespace Vanilla
+{
 
-class ToggleButtonPrivate {
+class ToggleButtonPrivate
+{
 public:
-
     enum ButtonMode
     {
         IconOnly,
@@ -42,6 +43,7 @@ private:
 private:
     QStringList itemList;
     QStringList iconList;
+    QStringList toolTipsList;
     int itemSize = 0;
     ButtonMode mode = IconOnly;
     bool m_mouseDown = false;
@@ -74,4 +76,4 @@ private:
     Q_DECLARE_PUBLIC(ToggleButton);
 };
 
-} // VanillaStyle
+}  // namespace Vanilla

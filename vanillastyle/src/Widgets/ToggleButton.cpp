@@ -7,6 +7,7 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QSvgRenderer>
+#include <QToolTip>
 
 namespace Vanilla
 {
@@ -64,11 +65,29 @@ const QStringList& ToggleButton::iconList() const
     return d->iconList;
 }
 
+void ToggleButton::setToolTips(const QStringList& list)
+{
+    Q_D(ToggleButton);
+    d->toolTipsList = list;
+}
+
+const QStringList& ToggleButton::toolTips() const
+{
+    Q_D(const ToggleButton);
+    return d->toolTipsList;
+}
+
 void ToggleButton::setIconColor(const QColor& color)
 {
     Q_D(ToggleButton);
     d->iconColor = color;
     d->isCustomIconColor = true;
+}
+
+int ToggleButton::count() const
+{
+    Q_D(const ToggleButton);
+    return d->itemList.size();
 }
 
 void ToggleButton::setEnableBackground(bool enable)
@@ -178,6 +197,33 @@ void ToggleButton::mouseReleaseEvent(QMouseEvent* event)
     {
         event->ignore();
     }
+}
+
+bool ToggleButton::event(QEvent* event)
+{
+    Q_D(ToggleButton);
+    switch (event->type())
+    {
+    case QEvent::ToolTip:
+    {
+        auto helpEvent = static_cast<QHelpEvent*>(event);
+        const auto index = d->isVertical ? helpEvent->y() / d->rowHeight : helpEvent->x() / d->columnWidth;
+
+        if (!d->toolTipsList.isEmpty() && (index >= 0 && index < d->toolTipsList.size()))
+        {
+            QToolTip::showText(static_cast<QHelpEvent*>(event)->globalPos(), d->toolTipsList.at(index), this, QRect(), toolTipDuration());
+        }
+        else
+        {
+            QWidget::event(event);
+        }
+        break;
+    }
+    default:
+        return QWidget::event(event);
+    }
+
+    return true;
 }
 
 void ToggleButton::setSize()

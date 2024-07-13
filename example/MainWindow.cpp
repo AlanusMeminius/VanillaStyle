@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget* parent)
 
     ui->progressBar->setValue(0);
     ui->toggleBtnfirst->setIconList(QStringList{":grid.svg", ":list.svg", ":download.svg"});
+    ui->toggleBtnfirst->setToolTips(QStringList{"Default", "Account", "Advance"});
     ui->toggleBtnfirst->setColumnWidth(50);
 
     // ui->toggleBtnSecond->setUseIcon(false);

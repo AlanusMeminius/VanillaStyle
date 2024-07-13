@@ -24,4 +24,4 @@ public:
     int pixelMetric(QStyle::PixelMetric pm, const QStyleOption* option = nullptr, const QWidget* widget = nullptr) const;
 };
 
-}  // namespace VanillaStyle
+}  // namespace Vanilla

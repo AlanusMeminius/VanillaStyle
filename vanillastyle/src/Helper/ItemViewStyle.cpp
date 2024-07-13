@@ -63,4 +63,4 @@ void ItemViewStyle::drawPrimitive(const QStyleOption* option, QPainter* painter,
         Helper::renderRoundRect(painter, rect.adjusted(1, 3, -1, -3), bgColor, radius);
     }
 }
-}  // namespace VanillaStyle
+}  // namespace Vanilla

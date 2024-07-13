@@ -13,7 +13,6 @@ public:
     ~SwitchButton();
     [[nodiscard]] QSize sizeHint() const override;
 
-
     Q_SIGNAL void toggled(bool checked);
     Q_SIGNAL void checked(bool checked);
 

@@ -24,4 +24,4 @@ public:
     void eventFilter(QMenu* obj) const;
 };
 
-}  // namespace VanillaStyle
+}  // namespace Vanilla

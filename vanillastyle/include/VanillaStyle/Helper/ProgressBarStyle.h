@@ -24,4 +24,4 @@ public:
     QRect subElementRect(QStyle::SubElement subElement, const QStyleOption* option, const std::shared_ptr<Theme>& theme, const QWidget* widget) const;
 };
 
-}  // namespace VanillaStyle
+}  // namespace Vanilla
