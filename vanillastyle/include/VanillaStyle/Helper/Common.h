@@ -6,11 +6,12 @@
 namespace Vanilla
 {
 
+VANILLA_EXPORT QImage switchColorWithTint(const QPixmap& original, const QColor&color);
 VANILLA_EXPORT QImage switchImageColor(const QPixmap& original, const QColor& color);
-VANILLA_EXPORT QPixmap switchPixColor(const QPixmap& original, const QColor& color);
+VANILLA_EXPORT QPixmap switchPixColor(const QPixmap& original, const QColor& color, bool mode);
 
-VANILLA_EXPORT QPixmap getCachedPixmap(QPixmap const& input, QColor const& color);
-VANILLA_EXPORT QPixmap getColorizedPixmap(QPixmap const& input, const QWidget* widget, QColor color);
+VANILLA_EXPORT QPixmap getCachedPixmap(QPixmap const& input, QColor const& color, bool mode);
+VANILLA_EXPORT QPixmap getColorizedPixmap(QPixmap const& input, const QWidget* widget, QColor color, bool mode = true);
 
 VANILLA_EXPORT QPixmap renderSvgToPixmap(const QString& path, int size, int ratio);
 
@@ -19,7 +20,7 @@ VANILLA_EXPORT void renderSvgFromString(const QString& svg, QPainter* painter, c
 
 VANILLA_EXPORT QString switchSvgColor(const QString& path, const QColor& color);
 
-VANILLA_EXPORT QPixmap getIconPixmap(const QIcon& icon, const QSize& iconSize, const QWidget* widget);
+VANILLA_EXPORT QPixmap getIconPixmap(const QIcon& icon, const QSize& iconSize, const QWidget* widget, QIcon::Mode mode, QIcon::State state);
 
 VANILLA_EXPORT QImage blurImage(const QImage& original, double sigma);
 VANILLA_EXPORT QPixmap blurPixmap(QPixmap const& original, double blurRadius, bool extend);
@@ -32,6 +33,8 @@ VANILLA_EXPORT QPixmap shadowPixmap(QSize const& size, double borderRadius, doub
 
 VANILLA_EXPORT void drawUpArrow(const QString& iconPath, QPainter* painter, const QRect& rect);
 VANILLA_EXPORT void drawDownArrow(const QString& iconPath, QPainter* painter, const QRect& rect);
+
+VANILLA_EXPORT std::tuple<QString, QString> splitMenuShortcut(QString const& text);
 
 VANILLA_EXPORT QRect insideMargin(const QRect& rect, int margin);
 VANILLA_EXPORT QRectF insideMargin(const QRectF& rect, int margin);

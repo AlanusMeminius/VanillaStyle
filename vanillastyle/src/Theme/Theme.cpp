@@ -172,6 +172,8 @@ int Theme::getSize(const SizeRole sizeRole) const
     const auto& config = styleConfig.size;
     switch (sizeRole)
     {
+    case SizeRole::BigRadius:
+        return config.bigRadius;
     case SizeRole::NormalRadius:
         return config.normalRadius;
     case SizeRole::SmallRadius:
@@ -202,6 +204,10 @@ int Theme::getSize(const SizeRole sizeRole) const
         return config.progressBarTextMargin;
     case SizeRole::ScrollBarWidth:
         return config.scrollBarWidth;
+    case SizeRole::MenuBorder:
+        return config.menuBorder;
+    case SizeRole::MenuRadius:
+        return config.menuRadius;
     default:
         return 3;
     }
@@ -453,6 +459,11 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
         color = config.menuSeparatorColor;
         break;
     }
+    case ColorRole::MenuShortCutsBackground:
+    {
+        color = config.menuShortCutsBackground;
+        break;
+    }
     case ColorRole::ComboBoxDropDownBackground:
     {
         color = config.comboBoxDropDownBackground;
@@ -545,6 +556,11 @@ void Theme::setPatchConfig(const std::string& propertyValue)
     }
 }
 
+std::string Theme::getPatchKey() const
+{
+    return styleConfig.patchKey;
+}
+
 QString Theme::getCachedIcon(const QString& path, QColor color)
 {
     if (iconData.contains(path))
@@ -554,6 +570,11 @@ QString Theme::getCachedIcon(const QString& path, QColor color)
     const auto svg = switchSvgColor(path, color);
     iconData.emplace(path, svg);
     return svg;
+}
+
+bool Theme::getIconsColorizeMode() const
+{
+    return styleConfig.iconsColorizeMode;
 }
 
 }  // namespace Vanilla

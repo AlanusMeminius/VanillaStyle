@@ -14,6 +14,8 @@
 namespace Vanilla
 {
 
+// https://raw.githubusercontent.com/oclero/qlementine/master/lib/src/utils/ImageUtils.cpp
+
 static void grayscale(const QImage& image, QImage& dest, const QRect& rect = QRect())
 {
     QRect destRect = rect;
@@ -58,13 +60,14 @@ static void grayscale(const QImage& image, QImage& dest, const QRect& rect = QRe
         }
     }
 }
-
-QImage switchImageColor(const QPixmap& original, const QColor& color)
+QImage switchColorWithTint(const QPixmap& original, const QColor& color)
 {
     if (original.isNull())
     {
         return {};
     }
+
+    // QImage is made for faster pixel manipulation.
     auto inputImage = original.toImage();
     const auto format = inputImage.hasAlphaChannel() ? QImage::Format_ARGB32_Premultiplied : QImage::Format_RGB32;
     inputImage = std::move(inputImage).convertToFormat(format);
@@ -72,12 +75,14 @@ QImage switchImageColor(const QPixmap& original, const QColor& color)
     auto outputImage = QImage(inputImage.size(), inputImage.format());
     outputImage.setDevicePixelRatio(inputImage.devicePixelRatioF());
 
+    // Convert to gray scale, then apply the color over with a Screen composition mode.
     QPainter outputPainter(&outputImage);
     grayscale(inputImage, outputImage, inputImage.rect());
     outputPainter.setCompositionMode(QPainter::CompositionMode_Screen);
     outputPainter.fillRect(inputImage.rect(), color);
     outputPainter.end();
 
+    // Keep the alpha.
     if (inputImage.hasAlphaChannel())
     {
         Q_ASSERT(outputImage.format() == QImage::Format_ARGB32_Premultiplied);
@@ -85,32 +90,66 @@ QImage switchImageColor(const QPixmap& original, const QColor& color)
         maskPainter.setCompositionMode(QPainter::CompositionMode_DestinationIn);
         maskPainter.drawImage(0, 0, inputImage);
     }
+    return outputImage;
+}
+QImage switchImageColor(const QPixmap& original, const QColor& color)
+{
+    if (original.isNull())
+    {
+        return {};
+    }
+    // Convert input QPixmap to QImage, because it is better for fast pixel manipulation.
+    const auto imageSize = original.size();
+    auto inputImage = original.toImage();
+    inputImage = std::move(inputImage).convertToFormat(QImage::Format_ARGB32);
+
+    // Create output QImage with same format and size as input QImage.
+    auto outputImage = QImage(imageSize, inputImage.format());
+    outputImage.setDevicePixelRatio(inputImage.devicePixelRatioF());
+    const auto outputRgb = color.rgba();
+    const auto outputR = qRed(outputRgb);
+    const auto outputG = qGreen(outputRgb);
+    const auto outputB = qBlue(outputRgb);
+    const auto outputAf = qAlpha(outputRgb) / 255.;
+
+    // Modify the pixels.
+    for (auto x = 0; x < imageSize.width(); ++x)
+    {
+        for (auto y = 0; y < imageSize.height(); ++y)
+        {
+            const auto inputPixel = inputImage.pixel(x, y);
+            const auto inputA = qAlpha(inputPixel);
+            const auto outputA = static_cast<int>(inputA * outputAf);
+            const auto outputPixel = qRgba(outputR, outputG, outputB, outputA);
+            outputImage.setPixel(x, y, outputPixel);
+        }
+    }
 
     return outputImage;
 }
 
-QPixmap switchPixColor(const QPixmap& original, const QColor& color)
+QPixmap switchPixColor(const QPixmap& original, const QColor& color, bool mode)
 {
-    return QPixmap::fromImage(switchImageColor(original, color));
+    return QPixmap::fromImage(mode ? switchColorWithTint(original, color) : switchImageColor(original, color));
 }
 
-static QString getPixmapKey(const QPixmap& pixmap, const QColor color)
+static QString getPixmapKey(const QPixmap& pixmap, const QColor color, bool mode)
 {
-    return QString("%1_%2").arg(pixmap.cacheKey(), color.name().toInt());
+    return QString(mode ? "vanilla_tint_%1_%2" : "vanilla_color_%1_%2").arg(pixmap.cacheKey(), color.name().toInt());
 }
 
-QPixmap getCachedPixmap(QPixmap const& input, QColor const& color)
+QPixmap getCachedPixmap(QPixmap const& input, QColor const& color, bool mode)
 {
     if (input.isNull())
     {
         return {};
     }
-    const auto& pixmapKey = getPixmapKey(input, color);
+    const auto& pixmapKey = getPixmapKey(input, color, mode);
     QPixmap pixmapInCache;
     if (const auto found = QPixmapCache::find(pixmapKey, &pixmapInCache); !found)
     {
-        const auto& newPixmap = switchPixColor(input, color);
-        if (const auto flag = QPixmapCache::insert(pixmapKey, newPixmap))
+        const auto& newPixmap = switchPixColor(input, color, mode);
+        if (const auto flag = QPixmapCache::insert(pixmapKey, newPixmap); flag)
         {
             QPixmapCache::find(pixmapKey, &pixmapInCache);
         }
@@ -122,7 +161,7 @@ QPixmap getCachedPixmap(QPixmap const& input, QColor const& color)
     return pixmapInCache;
 }
 
-QPixmap getColorizedPixmap(QPixmap const& input, const QWidget* widget, const QColor color)
+QPixmap getColorizedPixmap(QPixmap const& input, const QWidget* widget, const QColor color, bool mode)
 {
     if (input.isNull())
     {
@@ -130,9 +169,13 @@ QPixmap getColorizedPixmap(QPixmap const& input, const QWidget* widget, const QC
     }
     if (const auto customColor = getQColorProperty(widget, "CustomIconColor"); customColor.isValid())
     {
-        return getCachedPixmap(input, customColor);
+        return getCachedPixmap(input, customColor, mode);
     }
-    return getCachedPixmap(input, color);
+    if (const auto original = checkBoolProperty(widget, "UseOriginalColor"); original)
+    {
+        return input;
+    }
+    return getCachedPixmap(input, color, mode);
 }
 
 QPixmap renderSvgToPixmap(const QString& path, const int size, const int ratio)
@@ -176,16 +219,16 @@ QString switchSvgColor(const QString& path, const QColor& color)
     return QString::fromStdString(svgString);
 }
 
-QPixmap getIconPixmap(const QIcon& icon, const QSize& iconSize, const QWidget* widget)
+QPixmap getIconPixmap(const QIcon& icon, const QSize& iconSize, const QWidget* widget, QIcon::Mode mode, QIcon::State state)
 {
     if (icon.isNull())
     {
         return {};
     }
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    return icon.pixmap(iconSize);
+    return icon.pixmap(iconSize, mode, state);
 #else
-    return icon.pixmap(iconSize, widget->devicePixelRatio());
+    return icon.pixmap(iconSize, widget->devicePixelRatio(), mode, state);
 #endif
 }
 
@@ -266,6 +309,14 @@ void drawUpArrow(const QString& iconPath, QPainter* painter, const QRect& rect)
 void drawDownArrow(const QString& iconPath, QPainter* painter, const QRect& rect)
 {
     renderSvgFromPath(iconPath, painter, rect);
+}
+
+std::tuple<QString, QString> splitMenuShortcut(QString const& text)
+{
+    const auto elements = text.split('\t', Qt::KeepEmptyParts);
+    const auto& label = !elements.empty() ? elements.first() : QString("");
+    const auto& shortcut = elements.size() > 1 ? elements.at(1) : QString("");
+    return {label, shortcut};
 }
 
 QRect insideMargin(const QRect& rect, int margin)

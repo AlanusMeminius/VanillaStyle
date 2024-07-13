@@ -9,13 +9,22 @@ static QString DarkStyleFilePath = ":/VanillaStyle/styles/DarkVanillaStyle.json"
 
 StyleConfig ConfigManager::getConfig(const QString& path, const Mode mode)
 {
-    auto returnDefaultConfig = [this](const Mode m) {
-        return defaultConfig(m);
+    auto returnDefaultConfigJson = [this](const Mode m) {
+        return defaultConfigJson(m);
     };
-    return loadConfig<StyleConfig>(path, returnDefaultConfig, errorHandler, mode);
+    auto defaultJson = defaultConfigJson(mode);
+    const auto configJson = loadConfigJson(path, returnDefaultConfigJson, errorHandler, mode);
+    defaultJson.merge_patch(configJson);
+    jsonData = defaultJson;
+    return defaultJson.get<StyleConfig>();
 }
 
 StyleConfig ConfigManager::defaultConfig(const Mode mode)
+{
+    return defaultConfigJson(mode).get<StyleConfig>();
+}
+
+nlohmann::json ConfigManager::defaultConfigJson(Mode mode)
 {
     QFile file;
     file.setFileName(mode == Light ? LightStyleFilePath : DarkStyleFilePath);
@@ -26,8 +35,7 @@ StyleConfig ConfigManager::defaultConfig(const Mode mode)
     QTextStream in(&file);
     configJsonStr = in.readAll().toStdString();
     file.close();
-    jsonData = nlohmann::json::parse(configJsonStr);
-    return jsonData.get<StyleConfig>();
+    return nlohmann::json::parse(configJsonStr);
 }
 
 const nlohmann::json& ConfigManager::getJson()

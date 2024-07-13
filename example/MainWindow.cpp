@@ -1,5 +1,6 @@
 #include <QTimer>
 #include <QButtonGroup>
+#include <QMenu>
 #include <QShortcut>
 
 #include <QWKCore/styleagent.h>
@@ -46,6 +47,7 @@ MainWindow::MainWindow(QWidget* parent)
 
     ui->radioButton->setChecked(true);
 
+    ui->pushButton->setCheckable(true);
     // auto spinner = new Vanilla::Spinner(this);
     // ui->verticalLayout->addWidget(spinner);
 
@@ -64,13 +66,17 @@ MainWindow::MainWindow(QWidget* parent)
 
     ui->startButton->setProperty(VANILLA_PATCH_PROPERTY, QVariant("CleanButtonPatch"));
     ui->startButton->setText("");
-    ui->startButton->setIcon(QIcon(":/download.svg"));
+    // ui->startButton->setIcon(QIcon(":/download.svg"));
     connect(ui->startButton, &QPushButton::clicked, this, &MainWindow::start);
     connect(ui->stopButton, &QPushButton::clicked, this, &MainWindow::stop);
     connect(m_timer, &QTimer::timeout, this, &MainWindow::increaseProgress);
 
+    const auto testAction = ui->lineEdit->addAction(QIcon(":lineEditAction.svg"), QLineEdit::TrailingPosition);
+    // testAction->icon()
+    // ui->lineEdit.bu
+    ui->lineEdit->addAction(QIcon(":download.svg"), QLineEdit::TrailingPosition);
+    ui->lineEdit->addAction(QIcon(":download.svg"), QLineEdit::LeadingPosition);
     connect(ui->pushButton, &QPushButton::clicked, this, &MainWindow::setAutoTheme);
-
     ui->tableWidget->setRowCount(3);
     ui->tableWidget->setItem(0, 0, new QTableWidgetItem("table 1"));
     ui->tableWidget->setItem(0, 1, new QTableWidgetItem("table 1"));
@@ -125,6 +131,25 @@ void MainWindow::setAutoTheme()
 {
     const auto theme = styleAgent->systemTheme();
     theme == QWK::StyleAgent::SystemTheme::Dark ? setDarkTheme() : setLightTheme();
+}
+
+void MainWindow::contextMenuEvent(QContextMenuEvent* event)
+{
+    if (m_menu == nullptr)
+    {
+        m_menu = new QMenu(this);
+        // createContextMenu();
+        m_menu->setProperty("_vanillaStyle_Patch","CheckBoxWithNoBorder");
+        auto* downloadAction = new QAction(QIcon(":/download.svg"), "Download\tCTRL ALT D", this);
+        downloadAction->setCheckable(true);
+        connect(downloadAction, &QAction::triggered, this, [downloadAction](bool checked) {
+            downloadAction->setChecked(checked);
+        });
+        m_menu->addAction(downloadAction);
+        auto* secondAction = new QAction("placeHolder PlaceHolder\t⌘ D");
+        m_menu->addAction(secondAction);
+    }
+    m_menu->popup(event->globalPos());
 }
 
 void MainWindow::start()

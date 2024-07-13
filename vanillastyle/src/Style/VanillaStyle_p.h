@@ -12,7 +12,9 @@
 #include "VanillaStyle/Helper/SpinBoxStyle.h"
 #include "VanillaStyle/Helper/LineEditStyle.h"
 #include "VanillaStyle/Helper/ScrollBarStyle.h"
+#include "VanillaStyle/Helper/ToolButtonStyle.h"
 #include "VanillaStyle/Theme/Utils.h"
+
 
 namespace Vanilla
 {
@@ -43,6 +45,7 @@ private:
     std::shared_ptr<ComboBoxStyle> comboBoxStyle;
     std::shared_ptr<ItemViewStyle> itemViewStyle;
     std::shared_ptr<ScrollBarStyle> scrollBarStyle;
+    std::shared_ptr<ToolButtonStyle> toolButtonStyle;
 
     std::shared_ptr<PatchHelper> patchHelper;
     std::unique_ptr<ConfigChangeNotifier> configChangeNotifier = nullptr;
