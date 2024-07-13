@@ -1,13 +1,14 @@
-#include "VanillaStyle/Widgets/ToggleButton.h"
-#include "VanillaStyle/Style/VanillaStyle.h"
-#include "ToggleButton_p.h"
-#include "VanillaStyle/Helper/Common.h"
-
 #include <QMouseEvent>
 #include <QPainter>
 #include <QPainterPath>
 #include <QSvgRenderer>
 #include <QToolTip>
+
+#include "VanillaStyle/Widgets/ToggleButton.h"
+#include "VanillaStyle/Style/VanillaStyle.h"
+#include "VanillaStyle/Theme/Theme.h"
+#include "VanillaStyle/Helper/Common.h"
+#include "ToggleButton_p.h"
 
 namespace Vanilla
 {
@@ -276,6 +277,7 @@ void ToggleButtonPrivate::setColor()
         handleColor = customStyle->getColor(q, ColorRole::ToggleButtonIndicatorColor);
         backgroundColor = customStyle->getColor(q, ColorRole::ToggleButtonBackground);
         textColor = customStyle->getColor(q, ColorRole::PrimaryText);
+        iconsColorizeMode = customStyle->getTheme()->getIconsColorizeMode();
     }
 }
 
@@ -406,7 +408,8 @@ void ToggleButtonPrivate::paintIcon(QPainter* painter, QRect& rect)
     for (const auto& item : iconList)
     {
         const auto pixmap = renderSvgToPixmap(item, iconSize, static_cast<int>(q->devicePixelRatio()));
-        if (const auto colorizedPixmap = getColorizedPixmap(pixmap, q, isCustomIconColor ? iconColor : styleIconColor); !colorizedPixmap.isNull())
+        const auto colorizedPixmap = getColorizedPixmap(pixmap, q, isCustomIconColor ? iconColor : styleIconColor, iconsColorizeMode);
+        if (!colorizedPixmap.isNull())
         {
             painter->drawPixmap(rect, colorizedPixmap);
         }

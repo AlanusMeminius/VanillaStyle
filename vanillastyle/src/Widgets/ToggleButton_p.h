@@ -68,6 +68,7 @@ private:
     QColor textColor;
     QColor iconColor;
     QColor styleIconColor;
+    bool iconsColorizeMode = true;
 
     QPropertyAnimation handleAnimation;
 

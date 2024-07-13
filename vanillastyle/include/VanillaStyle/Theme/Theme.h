@@ -63,10 +63,11 @@ public:
     [[nodiscard]] static QString checkIconFile(const std::string& path);
     [[nodiscard]] QString getIconPath(IconRole role) const;
     QString getCachedIcon(const QString&, QColor color);
-
+    [[nodiscard]] bool getIconsColorizeMode() const;
     [[nodiscard]] ProgressMode getProgressMode() const;
 
     void setPatchConfig(const std::string& propertyValue);
+    [[nodiscard]] std::string getPatchKey() const;
 
 private:
     QPalette palette;

@@ -106,9 +106,14 @@ bool Helper::drawCheckBox(const QStyleOption* option, QPainter* painter, const s
     {
         return true;
     }
+    drawCheckBoxHelper(opt, painter, theme, widget);
+    return true;
+}
 
+void Helper::drawCheckBoxHelper(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget)
+{
     painter->setRenderHints(QPainter::Antialiasing);
-    const auto rect = QRectF(opt->rect);
+    const auto rect = QRectF(option->rect);
     const auto bgColor = theme->getColor(option, ColorRole::CheckBoxBackground);
     const auto borderColor = theme->getColor(option, ColorRole::CheckBoxBorderColor);
     const auto border = theme->getSize(SizeRole::CheckBoxBorder);
@@ -117,18 +122,18 @@ bool Helper::drawCheckBox(const QStyleOption* option, QPainter* painter, const s
     const auto margins = QMarginsF(halfBorder, halfBorder, halfBorder, halfBorder);
     const auto buttonRect = border > 0.1 ? rect.marginsRemoved(margins) : rect;
 
-    Helper::renderRoundRect(painter, buttonRect, bgColor, radius);
+    renderRoundRect(painter, buttonRect, bgColor, radius);
 
     if (border > 0.1)
     {
-        Helper::renderRoundBorder(painter, buttonRect, borderColor, border, radius);
+        renderRoundBorder(painter, buttonRect, borderColor, border, radius);
     }
+
 
     if ((theme->flags(option) & Theme::Checked) == Theme::Checked)
     {
-        Helper::drawCheckBoxIndicator(option, rect, painter, theme);
+        drawCheckBoxIndicator(option, rect, painter, theme);
     }
-    return true;
 }
 
 void Helper::drawCheckBoxIndicator(const QStyleOption* option, const QRectF rect, QPainter* painter, const std::shared_ptr<Theme>& theme)

@@ -13,14 +13,17 @@ namespace Vanilla
 bool MenuStyle::drawPrimitive(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
 {
     painter->setRenderHint(QPainter::Antialiasing);
-    const auto radius = theme->getSize(SizeRole::NormalRadius);
+
+    const auto radius = theme->getSize(SizeRole::MenuRadius);
     const auto bgColor = theme->getColor(option, ColorRole::MenuBackground);  // QColor(245, 245, 245, 210)
     const auto border = theme->getSize(SizeRole::ButtonBorder);
     const auto totalRect = option->rect;
-    const auto frameRect = totalRect.marginsRemoved({border, border, border, border});
-    painter->setPen(bgColor);
-    painter->setBrush(bgColor);
-    painter->drawRoundedRect(frameRect, radius, radius);
+
+    const auto halfBorderW = border / 2.;
+    const auto bgFrameRect = QRectF(totalRect).marginsRemoved(QMarginsF(halfBorderW, halfBorderW, halfBorderW, halfBorderW));
+    Helper::renderRoundRect(painter, bgFrameRect, bgColor, radius);
+    const auto borderColor = bgColor.darker(105);
+    Helper::renderRoundBorder(painter, bgFrameRect, borderColor, border, radius);
 
     return true;
 }
@@ -35,6 +38,40 @@ void MenuStyle::eventFilter(QMenu* menu) const
     menu->setWindowFlag(Qt::FramelessWindowHint, true);
     menu->setWindowFlag(Qt::NoDropShadowWindowHint, true);
     menu->setProperty("_q_windowsDropShadow", false);
+}
+
+QSize MenuStyle::sizeFromContentsForMenuItem(QStyle::ContentsType type, const QStyleOption* option, const QSize& contentsSize,
+                                             const std::shared_ptr<Theme>& theme, const QWidget* widget)
+{
+    if (type == QStyle::CT_MenuItem)
+    {
+        if (const auto* opt = qstyleoption_cast<const QStyleOptionMenuItem*>(option))
+        {
+            const auto padding = theme->getSize(SizeRole::MenuItemPadding);
+            const auto border = theme->getSize(SizeRole::NormalBorder);
+            if (opt->menuItemType == QStyleOptionMenuItem::Separator)
+            {
+                const auto size = border;
+                return QSize{size, size};
+            }
+            if (opt->menuItemType == QStyleOptionMenuItem::Normal || opt->menuItemType == QStyleOptionMenuItem::SubMenu)
+            {
+                const auto iconSize = theme->getSize(SizeRole::IconSize);
+                const auto [label, shortcut] = splitMenuShortcut(opt->text);
+                const auto& fm = opt->fontMetrics;
+                const auto labelWidth = fm.boundingRect(opt->rect, Qt::AlignLeft, label).width() + padding;
+                const auto keyList = shortcut.split(' ');
+                const auto shortcutWidth = shortcut.length() > 0 ? 2 * padding * static_cast<int>(keyList.size()) : 2 * padding;
+                const auto iconW = !opt->icon.isNull() ? iconSize + padding : 0;
+                const auto hasCheckIcon = opt->menuHasCheckableItems || opt->checkType != QStyleOptionMenuItem::NotCheckable;
+                const auto checkWidth = hasCheckIcon ? iconSize + padding : 0;
+
+                return {checkWidth + iconW + labelWidth + shortcutWidth + 2 * padding, iconSize + 2 * padding};
+            }
+        }
+        return {};
+    }
+    return {};
 }
 
 bool MenuStyle::drawMenuItem(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
@@ -71,34 +108,41 @@ bool MenuStyle::drawMenuItem(const QStyleOption* option, QPainter* painter, cons
 
         const auto menuHasCheckable = opt->menuHasCheckableItems;
         const auto checkable = opt->checkType != QStyleOptionMenuItem::NotCheckable;
-        const auto elements = opt->text.split('\t', Qt::KeepEmptyParts);
-        const auto& label = !elements.empty() ? elements.first() : QString("");
-        const auto& shortcut = elements.size() > 1 ? elements.at(1) : QString("");
+        const auto [label, shortcut] = splitMenuShortcut(opt->text);
         const auto iconSize = theme->getSize(SizeRole::IconSize);
         auto availableX = fgRect.x();
 
-        if (menuHasCheckable || checkable)
+        if (checkable)
         {
             const auto checkBoxX = availableX;
 
             const auto checkBoxY = fgRect.y() + (fgRect.height() - iconSize) / 2;
             const auto checkboxRect = QRect{
-                QPoint{checkBoxX, checkBoxY},
+                QPoint{checkBoxX-padding, checkBoxY},
                 QSize(iconSize, iconSize)
             };
 
-            auto checkBoxOpt = *option;
-            checkBoxOpt.rect = checkboxRect;
-            Helper::drawCheckBox(&checkBoxOpt, painter, theme, widget);
+            auto copy = *opt;
+            copy.rect = checkboxRect.adjusted(1, 1, -1, -1);
+            Helper::drawCheckBoxHelper(&copy, painter, theme, widget);
+
+            if (copy.checked)
+            {
+                Helper::drawCheckBoxIndicator(&copy, checkboxRect, painter, theme);
+            }
+        }
+        if (menuHasCheckable || checkable)
+        {
             const auto checkBoxWidth = iconSize + padding;
             availableWidth -= checkBoxWidth;
             availableX += checkBoxWidth;
         }
 
-        const auto pixmap = getIconPixmap(opt->icon, QSize(iconSize, iconSize), widget);
+        auto iconMode = option->state.testFlag(QStyle::State_On) ? QIcon::On : QIcon::Off;
+        const auto pixmap = getIconPixmap(opt->icon, QSize(iconSize, iconSize), widget, QIcon::Normal, iconMode);
         if (!pixmap.isNull())
         {
-            const auto colorizedPixmap = getColorizedPixmap(pixmap, widget, fgColor);
+            const auto colorizedPixmap = getColorizedPixmap(pixmap, widget, fgColor, theme->getIconsColorizeMode());
             const auto pixmapPixelRatio = colorizedPixmap.devicePixelRatio();
             const auto pixmapWidth = pixmapPixelRatio != 0 ? static_cast<int>(static_cast<qreal>(colorizedPixmap.width()) / pixmapPixelRatio) : 0;
             const auto pixmapHeight = pixmapPixelRatio != 0 ? static_cast<int>(static_cast<qreal>(colorizedPixmap.height()) / pixmapPixelRatio) : 0;
@@ -110,7 +154,8 @@ bool MenuStyle::drawMenuItem(const QStyleOption* option, QPainter* painter, cons
                 QSize(pixmapWidth, pixmapHeight)
             };
             painter->drawPixmap(iconRect, colorizedPixmap);
-            availableX += (pixmapWidth + padding);
+            availableX += pixmapWidth;
+            availableX += 2 * padding;
         }
         if (!label.isEmpty())
         {
@@ -126,13 +171,24 @@ bool MenuStyle::drawMenuItem(const QStyleOption* option, QPainter* painter, cons
 
         if (!shortcut.isEmpty())
         {
-            const auto shortcutWidth = fm.boundingRect(opt->rect, Qt::AlignRight, shortcut).width();
-            const auto shortcutX = fgRect.x() + fgRect.width() - shortcutWidth;
-            const auto shortcutRect = QRect{shortcutX, fgRect.y(), shortcutWidth, fgRect.height()};
+            auto endX = fgRect.x() + fgRect.width();
+            const auto radius = theme->getSize(SizeRole::NormalRadius);
+            const auto shortCutBgColor = theme->getColor(opt, ColorRole::MenuShortCutsBackground);
             constexpr auto shortcutFlags = Qt::AlignVCenter | Qt::AlignBaseline | Qt::TextSingleLine | Qt::AlignRight | Qt::TextHideMnemonic;
-            painter->setPen(fgColor);
-            painter->drawText(shortcutRect, shortcutFlags, shortcut);
-            availableWidth -= shortcutWidth;
+            const auto keyList = shortcut.split(' ');
+            for (int i = static_cast<int>(keyList.size()) - 1; i >= 0; --i)
+            {
+                constexpr int keyPadding = 2;
+                const auto wordWidth = fm.boundingRect(opt->rect, Qt::AlignRight, keyList.at(i)).width();
+                const auto keyWitdh = wordWidth + 4 * keyPadding;
+                const auto keyRect = QRect{endX - keyWitdh, fgRect.y(), keyWitdh, fgRect.height()};
+                const auto keyBgRect = insideMargin(keyRect, keyPadding, 2 * keyPadding);
+                Helper::renderRoundRect(painter, keyBgRect, shortCutBgColor, radius);
+                painter->setPen(Qt::gray);
+                const auto keyTextRect = insideMargin(keyBgRect, keyPadding);
+                painter->drawText(keyTextRect, shortcutFlags, keyList.at(i));
+                endX -= keyWitdh;
+            }
         }
     }
     return true;

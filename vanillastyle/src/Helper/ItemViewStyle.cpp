@@ -16,10 +16,7 @@ bool ItemViewStyle::draw(const QStyleOption* option, QPainter* painter, const st
         return true;
     }
 
-    if (const bool isDrawItemBackground = widget->property("noBackground").toBool(); !isDrawItemBackground)
-    {
-        drawPrimitive(option, painter, theme, widget);
-    }
+    drawPrimitive(option, painter, theme, widget);
 
     const auto rect = opt->rect;
     if (!opt->text.isEmpty())
@@ -40,27 +37,61 @@ bool ItemViewStyle::draw(const QStyleOption* option, QPainter* painter, const st
 
 void ItemViewStyle::drawPrimitive(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
 {
-    if (const auto* opt = qstyleoption_cast<const QStyleOptionViewItem*>(option))
+    const auto* opt = qstyleoption_cast<const QStyleOptionViewItem*>(option);
+    if (!opt)
     {
-        const auto& rect = QRectF(opt->rect);
-        const auto row = opt->index.row();
-        QColor bgColor;
-        if (row % 2 == 0)
-        {
-            bgColor = theme->getColor(opt, ColorRole::ItemViewEvenRowColor);
-        }
-        else
-        {
-            bgColor = theme->getColor(opt, ColorRole::ItemViewOddRowColor);
-        }
-        if (opt->state.testFlag(QStyle::State_Active) && opt->state.testFlag(QStyle::State_Selected))
-        {
-            bgColor = theme->getColor(option, ColorRole::ItemViewSelectedColor);
-        }
-
-        painter->setRenderHint(QPainter::Antialiasing);
-        const auto radius = theme->getSize(SizeRole::ItemViewRadius);
-        Helper::renderRoundRect(painter, rect.adjusted(1, 3, -1, -3), bgColor, radius);
+        return;
     }
+
+    const auto& rect = QRectF(opt->rect);
+    const auto row = opt->index.row();
+    QColor bgColor;
+    if (row % 2 == 0)
+    {
+        bgColor = theme->getColor(opt, ColorRole::ItemViewEvenRowColor);
+    }
+    else
+    {
+        bgColor = theme->getColor(opt, ColorRole::ItemViewOddRowColor);
+    }
+    if (opt->state.testFlag(QStyle::State_Active) && opt->state.testFlag(QStyle::State_Selected))
+    {
+        bgColor = theme->getColor(option, ColorRole::ItemViewSelectedColor);
+    }
+
+    painter->setRenderHint(QPainter::Antialiasing);
+    const auto radius = theme->getSize(SizeRole::ItemViewRadius);
+    Helper::renderRoundRect(painter, rect.adjusted(1, 3, -1, -3), bgColor, radius);
+}
+
+QSize ItemViewStyle::sizeFromContentsForItemView(QStyle::ContentsType type, const QStyleOption* option, const QSize& contentsSize,
+                                                 const std::shared_ptr<Theme>& theme, const QWidget* widget)
+{
+    if (type == QStyle::CT_ItemViewItem)
+    {
+        if (const auto* opt = qstyleoption_cast<const QStyleOptionViewItem*>(option))
+        {
+            const auto& features = opt->features;
+            const auto padding = theme->getSize(SizeRole::MenuItemPadding);
+
+            const auto hasIcon = features.testFlag(QStyleOptionViewItem::HasDecoration) && !opt->icon.isNull();
+            const auto& iconSize = hasIcon ? opt->decorationSize : QSize{0, 0};
+
+            const auto hasText = features.testFlag(QStyleOptionViewItem::HasDisplay) && !opt->text.isEmpty();
+            const auto textH = hasText ? opt->fontMetrics.height() : 0;
+
+            const auto hasCheck = features.testFlag(QStyleOptionViewItem::HasCheckIndicator);
+            const auto& checkSize = hasCheck ? iconSize : QSize{0, 0};
+
+            auto font = QFont(widget->font());
+            const auto fm = QFontMetrics(font);
+            const auto textWidth = fm.boundingRect(opt->rect, Qt::AlignLeft, opt->text).width();
+            const auto itemWidth =
+                textWidth + 2 * padding + (iconSize.width() > 0 ? iconSize.width() + padding : 0) + (checkSize.width() > 0 ? checkSize.width() + padding : 0);
+            return {itemWidth, textH + 16};
+        }
+        return {};
+    }
+    return {};
 }
 }  // namespace Vanilla
