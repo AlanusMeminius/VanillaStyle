@@ -25,7 +25,7 @@ private:
     [[nodiscard]] QSize sizeHint() const;
     void setupAnimation();
     void paint(QPainter* painter);
-    void paintIcon(QPainter* painter, QRect& rect);
+    void paintIcon(QPainter* painter, QRectF& rect);
     void paintText(QPainter* painter, QRectF& rect);
     void setColor();
     void checkMode();
