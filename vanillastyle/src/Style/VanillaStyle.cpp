@@ -313,7 +313,15 @@ void VanillaStyle::polish(QWidget* w)
     {
         w->installEventFilter(new LineEditButtonEventFilter(qobject_cast<QToolButton*>(w), *this));
     }
-    if (auto* itemView = qobject_cast<QAbstractItemView*>(w))
+    // if (auto* itemView = qobject_cast<QAbstractItemView*>(w))
+    // {
+    //     itemView->setAutoFillBackground(false);
+    //     itemView->setBackgroundRole(QPalette::NoRole);
+    //     itemView->viewport()->setBackgroundRole(QPalette::NoRole);
+    //     itemView->viewport()->setAutoFillBackground(false);
+    //     itemView->viewport()->setAttribute(Qt::WA_Hover);
+    // }
+    if (auto* itemView = qobject_cast<QAbstractScrollArea*>(w))
     {
         itemView->setAutoFillBackground(false);
         itemView->setBackgroundRole(QPalette::NoRole);
@@ -321,6 +329,7 @@ void VanillaStyle::polish(QWidget* w)
         itemView->viewport()->setAutoFillBackground(false);
         itemView->viewport()->setAttribute(Qt::WA_Hover);
     }
+
     if (const auto* combox = qobject_cast<QComboBox*>(w))
     {
         if (auto* const container = qobject_cast<QWidget*>(combox->children().back()))
@@ -328,8 +337,9 @@ void VanillaStyle::polish(QWidget* w)
             container->setBackgroundRole(QPalette::NoRole);
             container->setWindowFlag(Qt::FramelessWindowHint, true);
             container->setWindowFlag(Qt::NoDropShadowWindowHint, true);
+            container->setAttribute(Qt::WA_TranslucentBackground, false);
             container->setAttribute(Qt::WA_OpaquePaintEvent, false);
-            container->setProperty("_q_windowsDropShadow", false);
+            container->setAttribute(Qt::WA_NoSystemBackground, true);
         }
     }
     if (qobject_cast<QScrollBar*>(w) != nullptr)
