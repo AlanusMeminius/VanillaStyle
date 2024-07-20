@@ -377,7 +377,7 @@ void ToggleButtonPrivate::paint(QPainter* painter)
     {
     case IconOnly:
     {
-        QRect iconRect((columnWidth - iconSize) / 2, (rowHeight - iconSize) / 2, iconSize, iconSize);
+        QRectF iconRect((columnWidth - iconSize) / 2.0, (rowHeight - iconSize) / 2.0, iconSize, iconSize);
         paintIcon(painter, iconRect);
         break;
     }
@@ -390,7 +390,7 @@ void ToggleButtonPrivate::paint(QPainter* painter)
     case IconWithText:
     {
         const auto iconWithTextWidth = iconSize + textWidth + padding;
-        QRect iconRect((columnWidth - iconWithTextWidth) / 2, (rowHeight - iconSize) / 2, iconSize, iconSize);
+        QRectF iconRect((columnWidth - iconWithTextWidth) / 2.0, (rowHeight - iconSize) / 2.0, iconSize, iconSize);
         QRectF textRect(iconRect.right() + 2 * padding, 0, iconWithTextWidth, rowHeight);
         paintIcon(painter, iconRect);
         paintText(painter, textRect);
@@ -401,17 +401,17 @@ void ToggleButtonPrivate::paint(QPainter* painter)
     painter->restore();
 }
 
-void ToggleButtonPrivate::paintIcon(QPainter* painter, QRect& rect)
+void ToggleButtonPrivate::paintIcon(QPainter* painter, QRectF& rect)
 {
     Q_Q(const ToggleButton);
     QSvgRenderer grid;
     for (const auto& item : iconList)
     {
-        const auto pixmap = renderSvgToPixmap(item, iconSize, static_cast<int>(q->devicePixelRatio()));
+        const auto pixmap = renderSvgToPixmap(item, iconSize, q->devicePixelRatio());
         const auto colorizedPixmap = getColorizedPixmap(pixmap, q, isCustomIconColor ? iconColor : styleIconColor, iconsColorizeMode);
         if (!colorizedPixmap.isNull())
         {
-            painter->drawPixmap(rect, colorizedPixmap);
+            painter->drawPixmap(rect, colorizedPixmap, QRectF());
         }
         const auto translatePoint = isVertical ? QPoint(0, rowHeight) : QPoint(columnWidth, 0);
         rect.translate(translatePoint);

@@ -6,14 +6,14 @@
 namespace Vanilla
 {
 
-VANILLA_EXPORT QImage switchColorWithTint(const QPixmap& original, const QColor&color);
+VANILLA_EXPORT QImage switchColorWithTint(const QPixmap& original, const QColor& color);
 VANILLA_EXPORT QImage switchImageColor(const QPixmap& original, const QColor& color);
 VANILLA_EXPORT QPixmap switchPixColor(const QPixmap& original, const QColor& color, bool mode);
 
 VANILLA_EXPORT QPixmap getCachedPixmap(QPixmap const& input, QColor const& color, bool mode);
 VANILLA_EXPORT QPixmap getColorizedPixmap(QPixmap const& input, const QWidget* widget, QColor color, bool mode = true);
 
-VANILLA_EXPORT QPixmap renderSvgToPixmap(const QString& path, int size, int ratio);
+VANILLA_EXPORT QPixmap renderSvgToPixmap(const QString& path, int size, qreal ratio);
 
 VANILLA_EXPORT void renderSvgFromPath(const QString& path, QPainter* painter, const QRectF& rect);
 VANILLA_EXPORT void renderSvgFromString(const QString& svg, QPainter* painter, const QRectF& rect);
