@@ -178,7 +178,7 @@ QPixmap getColorizedPixmap(QPixmap const& input, const QWidget* widget, const QC
     return getCachedPixmap(input, color, mode);
 }
 
-QPixmap renderSvgToPixmap(const QString& path, const int size, const int ratio)
+QPixmap renderSvgToPixmap(const QString& path, const int size, qreal ratio)
 {
     QSvgRenderer renderer(path);
     QPixmap pixmap(size * ratio, size * ratio);
