@@ -9,30 +9,30 @@
     "pressedTextColor": "#344955",
     "hoverTextColor": "#50727B",
     "highlightTextColor": "#322C2B",
-    "indicatorColor": "#008DDA",
+    "indicatorColor": "#A0937D",
     "labelBackground": "#00FFFFFF",
     "labelForeground": "#00FFFFFF",
     "labelBorderColor": "#00FFFFFF",
     "buttonForeground": "#C08B5C",
-    "buttonBackground": "#B4D4FF",
+    "buttonBackground": "#EADBC8",
     "buttonHoveredForeground": "#C08C64",
     "buttonHoveredBackground": "#39A7FF",
     "buttonPressedForeground": "#C08B5C",
     "buttonPressedBackground": "#F5EEE6",
     "buttonBorderColor": "#00FFFFFF",
     "checkBoxBackground": "#00FFFFFF",
-    "checkBoxForeground": "#A4907C",
-    "checkBoxCheckedForeground": "#F5EEE6",
-    "checkBoxCheckedBackground": "#008D7B68",
+    "checkBoxForeground": "#a4907c",
+    "checkBoxCheckedForeground": "#a4907c",
+    "checkBoxCheckedBackground": "#00a4907c",
     "checkBoxHoveredBackground": "#00ffffff",
-    "checkBoxBorderColor": "#03AED2",
+    "checkBoxBorderColor": "#a4907c",
     "checkBoxHoveredBorderColor": "#3876BF",
-    "progressBarBackground": "#B4D4FF",
-    "progressBarForeground": "#86B6F6",
+    "progressBarBackground": "#A0937D",
+    "progressBarForeground": "#939185",
     "progressBarText": "#008DDA",
     "toggleButtonBackground": "#EEEEEE",
     "toggleButtonForeground": "#FDAF7B",
-    "toggleButtonIndicatorColor": "#98E4FF",
+    "toggleButtonIndicatorColor": "#E7D4B5",
     "itemViewEvenRowColor": "#c8c8c8",
     "itemViewOddRowColor": "#dcdcdc",
     "itemViewSelectedColor": "#B3A492",
@@ -44,7 +44,8 @@
     "menuBackground": "#99FFFFFF",
     "menuSeparatorColor": "#CCF5EFE6",
     "menuShortCutsBackground": "#CCDDE6ED",
-    "comboBoxDropDownBackground": "#CCF5EFE6"
+    "comboBoxDropDownBackground": "#CCF5EFE6",
+    "scrollBarSliderColor": "#939185"
   },
   "size": {
     "fontSize": 12,
@@ -72,50 +73,6 @@
   "progressBarMode": "mode2",
   "debug": true,
   "patch": [
-    {
-      "enable": true,
-      "widgetType": "QPushButton",
-      "propertyValue": "CleanButtonPatch",
-      "configPatch": {
-        "color": {
-          "buttonForeground": "#C08B5C",
-          "buttonBackground": "#00000000",
-          "buttonHoveredForeground": "#00000000",
-          "buttonHoveredBackground": "#ACE2E1",
-          "buttonPressedForeground": "#C08B5C",
-          "buttonPressedBackground": "#F5EEE6",
-          "buttonBorderColor": "#00000000"
-        }
-      }
-    },
-    {
-      "enable": true,
-      "widgetType": "QPushButton",
-      "propertyValue": "ButtonWithBorderPatch",
-      "configPatch": {
-        "color": {
-          "buttonForeground": "#C08B5C",
-          "buttonBackground": "#00000000",
-          "buttonHoveredForeground": "#00000000",
-          "buttonHoveredBackground": "#ACE2E1",
-          "buttonPressedForeground": "#C08B5C",
-          "buttonPressedBackground": "#F5EEE6",
-          "buttonBorderColor": "#FFBB70"
-        }
-      }
-    },
-    {
-      "enable": true,
-      "widgetType": "Vanilla::ToggleButton",
-      "propertyValue": "CustomToggleButtonPatch",
-      "configPatch": {
-        "color": {
-          "toggleButtonBackground": "#00000000",
-          "toggleButtonForeground": "#FDAF7B",
-          "toggleButtonIndicatorColor": "#98E4FF"
-        }
-      }
-    },
     {
       "enable": true,
       "widgetType": "QMenu",
