@@ -260,7 +260,13 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
     {
     case ColorRole::PrimaryText:
     {
-        color = config.primaryTextColor;
+        if ((flags & Flag) == Disabled)
+        {
+            color = QColor(Qt::gray);
+        } else
+        {
+            color = config.primaryTextColor;
+        }
         break;
     }
     case ColorRole::LabelText:
