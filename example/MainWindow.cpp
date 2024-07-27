@@ -79,19 +79,20 @@ MainWindow::MainWindow(QWidget* parent)
 
     ui->listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    ui->tableWidget->setRowCount(5); // 设置行数
-    ui->tableWidget->setColumnCount(3); // 设置列数
+    ui->tableWidget->setRowCount(5);     // 设置行数
+    ui->tableWidget->setColumnCount(3);  // 设置列数
 
-    const QStringList headers = { "Item", "Select", "Description" };
+    const QStringList headers = {"Item", "Select", "Description"};
     ui->tableWidget->setHorizontalHeaderLabels(headers);
 
-    for (int row = 0; row < 5; ++row) {
+    for (int row = 0; row < 5; ++row)
+    {
         ui->tableWidget->setItem(row, 0, new QTableWidgetItem(QString("Item %1").arg(row + 1)));
         ui->tableWidget->setItem(row, 2, new QTableWidgetItem("Description here"));
 
-        auto *checkBoxItem = new QTableWidgetItem();
+        auto* checkBoxItem = new QTableWidgetItem();
         checkBoxItem->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
-        checkBoxItem->setCheckState(Qt::Checked); // 初始状态为未选中
+        checkBoxItem->setCheckState(Qt::Checked);  // 初始状态为未选中
         ui->tableWidget->setItem(row, 1, checkBoxItem);
     }
 
