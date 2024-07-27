@@ -263,7 +263,8 @@ QColor Theme::createColor(StateFlags flags, const QStyleOption* option, ColorRol
         if ((flags & Flag) == Disabled)
         {
             color = QColor(Qt::gray);
-        } else
+        }
+        else
         {
             color = config.primaryTextColor;
         }
