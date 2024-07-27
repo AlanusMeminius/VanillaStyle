@@ -16,8 +16,11 @@ bool ItemViewStyle::draw(const QStyleOption* option, QPainter* painter, const st
         return true;
     }
 
-    drawPrimitive(option, painter, theme, widget);
-
+    drawBackground(option, painter, theme, widget);
+    if (opt->features.testFlag(QStyleOptionViewItem::HasCheckIndicator))
+    {
+        drawCheck(opt, painter, theme, widget);
+    }
     const auto rect = opt->rect;
     if (!opt->text.isEmpty())
     {
@@ -35,7 +38,7 @@ bool ItemViewStyle::draw(const QStyleOption* option, QPainter* painter, const st
     return true;
 }
 
-void ItemViewStyle::drawPrimitive(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
+void ItemViewStyle::drawBackground(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
 {
     const auto* opt = qstyleoption_cast<const QStyleOptionViewItem*>(option);
     if (!opt)
@@ -62,6 +65,17 @@ void ItemViewStyle::drawPrimitive(const QStyleOption* option, QPainter* painter,
     painter->setRenderHint(QPainter::Antialiasing);
     const auto radius = theme->getSize(SizeRole::ItemViewRadius);
     Helper::renderRoundRect(painter, rect.adjusted(1, 3, -1, -3), bgColor, radius);
+}
+
+void ItemViewStyle::drawCheck(const QStyleOptionViewItem* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
+{
+    auto optChanged = *option;
+    optChanged.state = option->checkState == Qt::CheckState::Checked ? QStyle::State_On : QStyle::State_Off;
+    const auto padding = theme->getSize(SizeRole::NormalPadding);
+    const auto fgRect = option->rect.marginsRemoved(QMargins{padding, 0, padding, 0});
+    const auto iconSize = theme->getSize(SizeRole::IconSize);
+    optChanged.rect = QRect{fgRect.x(), fgRect.y() + (fgRect.height() - iconSize) / 2, iconSize, iconSize};
+    Helper::drawCheckBoxHelper(&optChanged, painter, theme, widget);
 }
 
 QSize ItemViewStyle::sizeFromContentsForItemView(QStyle::ContentsType type, const QStyleOption* option, const QSize& contentsSize,
