@@ -60,9 +60,6 @@ void VanillaStyle::drawPrimitive(PrimitiveElement pe, const QStyleOption* option
     case PE_PanelItemViewRow:
         helper = createHelper(d->helper, &Helper::emptyControl);
         break;
-    // case PE_IndicatorItemViewItemCheck:
-    //     helper = createHelper(d->itemViewStyle, &ItemViewStyle::drawCheck);
-    //     break;
     case PE_IndicatorRadioButton:
         helper = createHelper(d->radioButtonStyle, &RadioButtonStyle::draw);
         break;
@@ -133,6 +130,9 @@ void VanillaStyle::drawControl(ControlElement element, const QStyleOption* optio
         break;
     case CE_ToolButtonLabel:
         helper = createHelper(d->toolButtonStyle, &ToolButtonStyle::drawToolButtonLabel);
+        break;
+    case CE_Splitter:
+        helper = createHelper(d->helper, &Helper::drawSplitter);
         break;
     case CE_ScrollBarAddPage:
     case CE_ScrollBarSubPage:
@@ -226,6 +226,8 @@ QSize VanillaStyle::sizeFromContents(ContentsType type, const QStyleOption* opti
     case CT_ItemViewItem:
         helper = createHelper(d->itemViewStyle, &ItemViewStyle::sizeFromContentsForItemView);
         break;
+    case CT_Splitter:
+        helper = createHelper(d->helper, &Helper::sizeFromContentsForSplitterHandle);
     default:
         break;
     }
