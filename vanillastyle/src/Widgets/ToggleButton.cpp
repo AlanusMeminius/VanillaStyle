@@ -146,7 +146,6 @@ void ToggleButton::setRowHeight(const int height)
     Q_D(ToggleButton);
     d->rowHeight = height;
     d->handleSize = d->getHandleSize();
-    // d->iconSize = d->getIconSize();
     update();
 }
 
@@ -159,7 +158,11 @@ int ToggleButton::currentIndex() const
 void ToggleButton::setCurrentIndex(int index)
 {
     Q_D(ToggleButton);
-    d->setCurrentIndex(index);
+    if (index != d->currentIndex)
+    {
+        d->setCurrentIndex(index);
+        emit currentItemChanged(index);
+    }
     update();
 }
 
@@ -207,12 +210,12 @@ bool ToggleButton::event(QEvent* event)
     {
     case QEvent::ToolTip:
     {
-        auto helpEvent = static_cast<QHelpEvent*>(event);
+        const auto helpEvent = dynamic_cast<QHelpEvent*>(event);
         const auto index = d->isVertical ? helpEvent->y() / d->rowHeight : helpEvent->x() / d->columnWidth;
 
         if (!d->toolTipsList.isEmpty() && (index >= 0 && index < d->toolTipsList.size()))
         {
-            QToolTip::showText(static_cast<QHelpEvent*>(event)->globalPos(), d->toolTipsList.at(index), this, QRect(), toolTipDuration());
+            QToolTip::showText(dynamic_cast<QHelpEvent*>(event)->globalPos(), d->toolTipsList.at(index), this, QRect(), toolTipDuration());
         }
         else
         {

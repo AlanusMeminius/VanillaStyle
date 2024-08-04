@@ -20,6 +20,10 @@ public:
     bool drawAlignCenterLabel(const QStyleOption*, QPainter*, const std::shared_ptr<Theme>&, const QWidget*) const;
     bool drawAlignLeftLabel(const QStyleOption*, QPainter*, const std::shared_ptr<Theme>&, const QWidget*) const;
 
+    bool drawSplitter(const QStyleOption*, QPainter*, const std::shared_ptr<Theme>&, const QWidget*) const;
+    QSize sizeFromContentsForSplitterHandle(QStyle::ContentsType type, const QStyleOption* option, const QSize& contentsSize,
+                                            const std::shared_ptr<Theme>& theme, const QWidget* widget);
+
     static void renderRoundBorder(QPainter* painter, const QRectF& rect, const QColor& color, qreal border, qreal radius);
     static void renderRoundRect(QPainter* painter, const QRectF& rect, const QColor& color, qreal radius);
     static void renderEllipse(QPainter* painter, const QRectF& rect, const QColor& color);

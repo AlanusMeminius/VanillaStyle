@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>744</width>
-    <height>787</height>
+       <height>841</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -192,29 +192,78 @@
      </widget>
     </item>
     <item>
-     <widget class="Vanilla::ToggleButton" name="iconWithText" native="true">
-      <property name="_vanillaStyle_Patch" stdset="0">
-       <string notr="true">CustomToggleButtonPatch</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QWidget" name="widget_5" native="true">
-      <layout class="QHBoxLayout" name="horizontalLayout_5">
-       <item>
-        <widget class="QLabel" name="label_4">
-         <property name="text">
-          <string>LineEdit:</string>
-         </property>
+        <widget class="QWidget" name="widget_4" native="true">
+            <layout class="QHBoxLayout" name="horizontalLayout_4">
+                <property name="leftMargin">
+                    <number>0</number>
+                </property>
+                <property name="topMargin">
+                    <number>0</number>
+                </property>
+                <property name="rightMargin">
+                    <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                    <number>0</number>
+                </property>
+                <item>
+                    <widget class="Vanilla::ToggleButton" name="iconWithText" native="true">
+                        <property name="_vanillaStyle_Patch" stdset="0">
+                            <string notr="true">CustomToggleButtonPatch</string>
+                        </property>
+                    </widget>
+                </item>
+                <item>
+                    <widget class="QWidget" name="widget_9" native="true">
+                        <property name="minimumSize">
+                            <size>
+                                <width>0</width>
+                                <height>50</height>
+                            </size>
+                        </property>
+                        <layout class="QVBoxLayout" name="verticalLayout_2">
+                            <property name="leftMargin">
+                                <number>0</number>
+                            </property>
+                            <property name="topMargin">
+                                <number>0</number>
+                            </property>
+                            <property name="rightMargin">
+                                <number>0</number>
+                            </property>
+                            <property name="bottomMargin">
+                                <number>0</number>
+                            </property>
+                            <item>
+                                <widget class="QSplitter" name="splitter">
+                                    <property name="orientation">
+                                        <enum>Qt::Vertical</enum>
+                                    </property>
+                                    <widget class="QLabel" name="label_10">
+                                        <property name="text">
+                                            <string>TextLabel</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLabel" name="label_11">
+                                        <property name="text">
+                                            <string>TextLabel</string>
+                                        </property>
+                                    </widget>
+                                </widget>
+                            </item>
+                        </layout>
+                    </widget>
+                </item>
+            </layout>
         </widget>
-       </item>
+    </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
+           <widget class="QWidget" name="widget_5" native="true">
+               <layout class="QHBoxLayout" name="horizontalLayout_5">
+                   <item>
+                       <widget class="QLabel" name="label_4">
+                           <property name="text">
+                               <string>LineEdit:</string>
          </property>
         </widget>
        </item>
@@ -249,15 +298,22 @@
         </widget>
        </item>
       </layout>
+           </widget>
+       </item>
+       <item>
+           <widget class="QLabel" name="label_7">
+               <property name="text">
+                   <string>TextLabel</string>
+               </property>
      </widget>
     </item>
     <item>
      <widget class="QListWidget" name="listWidget">
       <property name="verticalScrollBarPolicy">
-       <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOn</enum>
+          <enum>Qt::ScrollBarAlwaysOn</enum>
       </property>
       <property name="horizontalScrollBarPolicy">
-       <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOn</enum>
+          <enum>Qt::ScrollBarAlwaysOn</enum>
       </property>
       <item>
        <property name="text">

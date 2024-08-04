@@ -34,7 +34,6 @@ MainWindow::MainWindow(QWidget* parent)
     ui->toggleBtnfirst->setToolTips(QStringList{"Default", "Account", "Advance"});
     ui->toggleBtnfirst->setColumnWidth(50);
 
-    // ui->toggleBtnSecond->setUseIcon(false);
     ui->toggleBtnSecond->setItemList(QStringList{"Default", "Account", "Advance"});
     ui->toggleBtnSecond->setColumnWidth(100);
 
@@ -43,13 +42,10 @@ MainWindow::MainWindow(QWidget* parent)
     ui->iconWithText->setColumnWidth(120);
     ui->iconWithText->setVertical();
     ui->iconWithText->setRowHeight(40);
-    // ui->iconWithText->setHandlePadding(4);
 
     ui->radioButton->setChecked(true);
 
     ui->pushButton->setCheckable(true);
-    // auto spinner = new Vanilla::Spinner(this);
-    // ui->verticalLayout->addWidget(spinner);
 
     connect(ui->radioButton, &QRadioButton::toggled, this, &MainWindow::setLightTheme);
     connect(ui->radioButton_2, &QRadioButton::toggled, this, &MainWindow::setDarkTheme);
@@ -66,15 +62,10 @@ MainWindow::MainWindow(QWidget* parent)
 
     ui->startButton->setProperty(VANILLA_PATCH_PROPERTY, QVariant("CleanButtonPatch"));
     ui->startButton->setText("");
-    // ui->startButton->setIcon(QIcon(":/download.svg"));
     connect(ui->startButton, &QPushButton::clicked, this, &MainWindow::start);
     connect(ui->stopButton, &QPushButton::clicked, this, &MainWindow::stop);
     connect(m_timer, &QTimer::timeout, this, &MainWindow::increaseProgress);
 
-    const auto testAction = ui->lineEdit->addAction(QIcon(":lineEditAction.svg"), QLineEdit::TrailingPosition);
-
-    ui->lineEdit->addAction(QIcon(":download.svg"), QLineEdit::TrailingPosition);
-    ui->lineEdit->addAction(QIcon(":download.svg"), QLineEdit::LeadingPosition);
     connect(ui->pushButton, &QPushButton::clicked, this, &MainWindow::setAutoTheme);
 
     ui->listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -95,8 +86,6 @@ MainWindow::MainWindow(QWidget* parent)
         checkBoxItem->setCheckState(Qt::Checked);  // 初始状态为未选中
         ui->tableWidget->setItem(row, 1, checkBoxItem);
     }
-
-    // ui->tableWidget->setShowGrid(false);
 }
 
 MainWindow::~MainWindow()
