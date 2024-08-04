@@ -61,6 +61,25 @@ bool Helper::drawLabel(const QStyleOption* option, QPainter* painter, const std:
     return true;
 }
 
+bool Helper::drawSplitter(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
+{
+    const auto& rect = option->rect;
+    const auto height = theme->getSize(SizeRole::ScrollBarWidth);
+    const auto width = theme->getSize(SizeRole::IconSize);
+    const auto radius = theme->getSize(SizeRole::SmallRadius);
+    const auto center = centerRectF(QRectF(rect), width, height);
+    painter->setRenderHints(QPainter::Antialiasing);
+    renderRoundRect(painter, center, Qt::gray, radius);
+    return true;
+}
+
+QSize Helper::sizeFromContentsForSplitterHandle(QStyle::ContentsType type, const QStyleOption* option, const QSize& contentsSize,
+                                                const std::shared_ptr<Theme>& theme, const QWidget* widget)
+{
+    const auto height = theme->getSize(SizeRole::ScrollBarWidth);
+    return {contentsSize.width(), height};
+}
+
 bool Helper::drawAlignCenterLabel(const QStyleOption* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
 {
     return drawLabel(option, painter, theme, widget, Qt::AlignCenter);
@@ -128,7 +147,6 @@ void Helper::drawCheckBoxHelper(const QStyleOption* option, QPainter* painter, c
     {
         renderRoundBorder(painter, buttonRect, borderColor, border, radius);
     }
-
 
     if ((theme->flags(option) & Theme::Checked) == Theme::Checked)
     {
