@@ -67,9 +67,10 @@ bool Helper::drawSplitter(const QStyleOption* option, QPainter* painter, const s
     const auto height = theme->getSize(SizeRole::ScrollBarWidth);
     const auto width = theme->getSize(SizeRole::IconSize);
     const auto radius = theme->getSize(SizeRole::SmallRadius);
+    const auto color = theme->getColor(option, ColorRole::ButtonForeground);
     const auto center = centerRectF(QRectF(rect), width, height);
     painter->setRenderHints(QPainter::Antialiasing);
-    renderRoundRect(painter, center, Qt::gray, radius);
+    renderRoundRect(painter, center, color, radius);
     return true;
 }
 
