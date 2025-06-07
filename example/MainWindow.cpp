@@ -10,6 +10,7 @@
 
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
+#include "VanillaStyle/Style/Global.h"
 #include "VanillaStyle/Widgets/Spinner.h"
 
 #include "VanillaStyle/Widgets/ToggleButton.h"
@@ -76,12 +77,14 @@ MainWindow::MainWindow(QWidget* parent)
     const QStringList headers = {"Item", "Select", "Description"};
     ui->tableWidget->setHorizontalHeaderLabels(headers);
 
+    ui->tableWidget->setProperty(Vanilla::s_CustomItemViewBackground.c_str(), true);
     for (int row = 0; row < 5; ++row)
     {
         ui->tableWidget->setItem(row, 0, new QTableWidgetItem(QString("Item %1").arg(row + 1)));
         ui->tableWidget->setItem(row, 2, new QTableWidgetItem("Description here"));
 
         auto* checkBoxItem = new QTableWidgetItem();
+        checkBoxItem->setBackground(Qt::darkCyan);
         checkBoxItem->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
         checkBoxItem->setCheckState(Qt::Checked);  // 初始状态为未选中
         ui->tableWidget->setItem(row, 1, checkBoxItem);
