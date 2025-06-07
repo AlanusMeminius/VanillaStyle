@@ -25,42 +25,33 @@ jobs:
         qt_modules: [qtwebengine]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          submodules: true
 
-      - name: Init Submodules
-        shell: bash
+      - uses: lukka/get-cmake@latest
+
+      - name: Install dependencies
         run: |
-          auth_header="$(git config --local --get http.https://github.com/.extraheader)"
-          git submodule sync --recursive
-          git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive
+          xcrun --sdk macosx --show-sdk-path
 
-      - name: Install Dependencies
-        run: |
-          brew install tree
-
-      - name: Install macdeployqtfix
-        run: |
-          git clone https://github.com/tamlok/macdeployqtfix.git macdeployqtfix --depth=1
-        working-directory: ${{runner.workspace}}
-
-      - name: Cache Qt
-        id: cache-qt
-        uses: actions/cache@v1  # not v2!
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@v11
+        id: runvcpkg
         with:
-          path: ../Qt
-          key: ${{ runner.os }}-QtCache-${{ matrix.qt }}
+          vcpkgDirectory: '${{ github.workspace }}/ThirdParty/vcpkg'
+          vcpkgJsonGlob: '${{ github.workspace }}/vcpkg-configuration.json'
 
       - name: Install Qt
-        uses: jurplel/install-qt-action@v3
+        uses: jurplel/install-qt-action@v4
         with:
           version: ${{ matrix.qt }}
+          host: 'mac'
           target: desktop
           modules:  ${{ matrix.qt_modules }}
-          cached: 'true'
+          cache: 'true'
           setup-python: 'false'
-
+      
       - name: Configure CMake
         run: >
           cmake -B ${{ github.workspace }}/build
@@ -75,7 +66,17 @@ jobs:
       - name:  Install Project
         run: cmake --build ${{ github.workspace }}/build --config ${{ matrix.build_type }} --target install --
 
-      # when stable to test
-      # - name: Test
-      #   working-directory: ${{ github.workspace }}/build
-      #   run: ctest --build-config ${{ matrix.build_type }}
+      - name: Archive build logs on failure
+        if: ${{ failure() && (steps.configure.outcome == 'failure' || steps.runvcpkg.outcome == 'failure' || steps.build.outcome == 'failure') }}
+        run: |
+          tar -czvf ${{ github.workspace }}/build.tar.gz -C ${{ github.workspace }}/build/ .
+          tar -czvf ${{ github.workspace }}/vcpkg.tar.gz -C ${{ github.workspace }}/ThirdParty/vcpkg/buildtrees/ .
+
+      - name: Upload build logs artifact
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos_logs
+          path: |
+            ${{ github.workspace }}/build.tar.gz
+            ${{ github.workspace }}/vcpkg.tar.gz
