@@ -214,21 +214,21 @@ void DotFloating::startAnimation()
     {
         if (val)
         {
-            val->start();       
+            val->start();
         }
-    }   
+    }
 }
 
 void DotFloating::resetAnimation()
 {
     stopAnimation();
 
-    for (const auto& item: m_items | std::views::keys)
+    for (const auto& item : m_items | std::views::keys)
     {
         if (item)
         {
             item->setX(0.0f);
-            item->setOpacity(0.0f);       
+            item->setOpacity(0.0f);
         }
     }
     startAnimation();

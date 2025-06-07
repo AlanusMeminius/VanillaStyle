@@ -35,7 +35,7 @@ class DotFloating : public QWidget
 
 public:
     explicit DotFloating(QWidget* parent = nullptr, int radius = 5, const QColor& color = QColor(24, 189, 155),
-                                 const QColor& backgroundColor = Qt::transparent);
+                         const QColor& backgroundColor = Qt::transparent);
     ~DotFloating() override = default;
 
     int radius() const;
@@ -66,9 +66,9 @@ private:
     }
 
 private:
-    int m_radius;            
-    QColor m_color;         
-    QColor m_backgroundColor; 
+    int m_radius;
+    QColor m_color;
+    QColor m_backgroundColor;
 
     QVector<QPair<CircleItem*, QSequentialAnimationGroup*>> m_items;
 };
