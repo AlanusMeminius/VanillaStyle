@@ -2,8 +2,9 @@
 #include <QListWidget>
 
 #include "VanillaStyle/Helper/ItemViewStyle.h"
-
+#include "VanillaStyle/Helper/Common.h"
 #include "VanillaStyle/Helper/Helper.h"
+#include "VanillaStyle/Style/Global.h"
 #include "VanillaStyle/Theme/Theme.h"
 
 namespace Vanilla
@@ -49,17 +50,46 @@ void ItemViewStyle::drawBackground(const QStyleOption* option, QPainter* painter
     const auto& rect = QRectF(opt->rect);
     const auto row = opt->index.row();
     QColor bgColor;
-    if (row % 2 == 0)
+    if (!opt->state.testFlag(QStyle::State_Enabled))
     {
-        bgColor = theme->getColor(opt, ColorRole::ItemViewEvenRowColor);
+        if (row % 2 == 0)
+        {
+            bgColor = theme->getColor(opt, ColorRole::ItemViewEvenRowColor);
+        }
+        else
+        {
+            bgColor = theme->getColor(opt, ColorRole::ItemViewOddRowColor);
+        }
+        bgColor.setAlpha(bgColor.alpha() / 2);
+        bgColor = bgColor.lighter(150);
     }
     else
     {
-        bgColor = theme->getColor(opt, ColorRole::ItemViewOddRowColor);
+        if (row % 2 == 0)
+        {
+            bgColor = theme->getColor(opt, ColorRole::ItemViewEvenRowColor);
+        }
+        else
+        {
+            bgColor = theme->getColor(opt, ColorRole::ItemViewOddRowColor);
+        }
+        if (opt->state.testFlag(QStyle::State_Active) && opt->state.testFlag(QStyle::State_Selected))
+        {
+            bgColor = theme->getColor(option, ColorRole::ItemViewSelectedColor);
+        }
     }
-    if (opt->state.testFlag(QStyle::State_Active) && opt->state.testFlag(QStyle::State_Selected))
+
+    if (checkBoolProperty(widget, s_CustomItemViewBackground))
     {
-        bgColor = theme->getColor(option, ColorRole::ItemViewSelectedColor);
+        const QModelIndex& index = opt->index;
+        if (index.isValid())
+        {
+            const auto backgroundColor = index.data(Qt::BackgroundRole).value<QColor>();
+            if (backgroundColor.isValid())
+            {
+                bgColor = backgroundColor;
+            }
+        }
     }
 
     painter->setRenderHint(QPainter::Antialiasing);
