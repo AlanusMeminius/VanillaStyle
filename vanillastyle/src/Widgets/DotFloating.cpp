@@ -100,8 +100,9 @@ void DotFloating::paintEvent(QPaintEvent* event)
     painter.fillRect(rect(), m_backgroundColor);
     painter.setPen(Qt::NoPen);
 
-    for (const auto& item : m_items | std::views::keys)
+    for (const auto& pair : m_items)
     {
+        const auto& item = pair.first;
         if (!item)
         {
             continue;
@@ -188,9 +189,13 @@ void DotFloating::initAnimations()
         seqAnimation->addAnimation(new QPauseAnimation((5 - index - 1) * 150, this));
     }
 
-    for (const auto& val : m_items | std::views::values)
+    for (const auto& pair : m_items)
     {
-        val->start();
+        const auto& val = pair.second;
+        if (val)
+        {
+            val->start();
+        }
     }
 }
 
@@ -200,8 +205,9 @@ QSize DotFloating::sizeHint() const
 }
 void DotFloating::stopAnimation()
 {
-    for (const auto& val : m_items | std::views::values)
+    for (const auto& pair : m_items)
     {
+        const auto& val = pair.second;
         if (val)
         {
             val->stop();
@@ -210,8 +216,9 @@ void DotFloating::stopAnimation()
 }
 void DotFloating::startAnimation()
 {
-    for (const auto& val : m_items | std::views::values)
+    for (const auto& pair : m_items)
     {
+        const auto& val = pair.second;
         if (val)
         {
             val->start();
@@ -223,8 +230,9 @@ void DotFloating::resetAnimation()
 {
     stopAnimation();
 
-    for (const auto& item : m_items | std::views::keys)
+    for (const auto& pair : m_items)
     {
+        const auto& item = pair.first;
         if (item)
         {
             item->setX(0.0f);
