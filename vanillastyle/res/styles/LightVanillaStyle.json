@@ -46,6 +46,7 @@
     "menuShortCutsBackground": "#CCDDE6ED",
     "comboBoxDropDownBackground": "#CCF5EFE6",
     "scrollBarSliderColor": "#939185"
+
   },
   "size": {
     "fontSize": 12,
@@ -73,6 +74,27 @@
   "progressBarMode": "mode2",
   "debug": true,
   "patch": [
+    {
+      "enable": true,
+      "widgetType": "QMenu",
+      "propertyValue": "CheckBoxWithNoBorder",
+      "configPatch": {
+        "color": {
+          "checkBoxBackground": "#00FFFFFF",
+          "checkBoxForeground": "#A4907C",
+          "checkBoxCheckedForeground": "#F5EEE6",
+          "checkBoxCheckedBackground": "#008D7B68",
+          "checkBoxHoveredBackground": "#00ffffff",
+          "checkBoxBorderColor": "#03AED2",
+          "menuBackground": "#99FFFFFF",
+          "menuSeparatorColor": "#CCF5EFE6",
+          "menuShortCutsBackground": "#CCDDE6ED"
+        },
+        "size": {
+          "checkBoxBorder": 0
+        }
+      }
+    },
     {
       "enable": true,
       "widgetType": "QMenu",

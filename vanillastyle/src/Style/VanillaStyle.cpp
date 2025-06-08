@@ -228,6 +228,7 @@ QSize VanillaStyle::sizeFromContents(ContentsType type, const QStyleOption* opti
         break;
     case CT_Splitter:
         helper = createHelper(d->helper, &Helper::sizeFromContentsForSplitterHandle);
+
     default:
         break;
     }
