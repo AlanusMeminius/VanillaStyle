@@ -63,16 +63,10 @@ MainWindow::MainWindow(QWidget* parent)
 
     ui->startButton->setProperty(VANILLA_PATCH_PROPERTY, QVariant("CleanButtonPatch"));
     ui->startButton->setText("");
-    // ui->startButton->setIcon(QIcon(":/download.svg"));
     connect(ui->startButton, &QPushButton::clicked, this, &MainWindow::start);
     connect(ui->stopButton, &QPushButton::clicked, this, &MainWindow::stop);
     connect(m_timer, &QTimer::timeout, this, &MainWindow::increaseProgress);
 
-    const auto testAction = ui->lineEdit->addAction(QIcon(":lineEditAction.svg"), QLineEdit::TrailingPosition);
-    // testAction->icon()
-    // ui->lineEdit.bu
-    ui->lineEdit->addAction(QIcon(":download.svg"), QLineEdit::TrailingPosition);
-    ui->lineEdit->addAction(QIcon(":download.svg"), QLineEdit::LeadingPosition);
     connect(ui->pushButton, &QPushButton::clicked, this, &MainWindow::setAutoTheme);
 
     ui->listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);

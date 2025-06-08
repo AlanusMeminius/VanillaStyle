@@ -122,55 +122,6 @@ QSize ItemViewStyle::sizeFromContentsForItemView(QStyle::ContentsType type, cons
             const auto hasIcon = features.testFlag(QStyleOptionViewItem::HasDecoration) && !opt->icon.isNull();
             const auto& iconSize = hasIcon ? opt->decorationSize : QSize{0, 0};
 
-    {
-        return;
-    }
-
-    const auto& rect = QRectF(opt->rect);
-    const auto row = opt->index.row();
-    QColor bgColor;
-    if (row % 2 == 0)
-    {
-        bgColor = theme->getColor(opt, ColorRole::ItemViewEvenRowColor);
-    }
-    else
-    {
-        bgColor = theme->getColor(opt, ColorRole::ItemViewOddRowColor);
-    }
-    if (opt->state.testFlag(QStyle::State_Active) && opt->state.testFlag(QStyle::State_Selected))
-    {
-        bgColor = theme->getColor(option, ColorRole::ItemViewSelectedColor);
-    }
-
-    painter->setRenderHint(QPainter::Antialiasing);
-    const auto radius = theme->getSize(SizeRole::ItemViewRadius);
-    Helper::renderRoundRect(painter, rect.adjusted(1, 3, -1, -3), bgColor, radius);
-}
-
-void ItemViewStyle::drawCheck(const QStyleOptionViewItem* option, QPainter* painter, const std::shared_ptr<Theme>& theme, const QWidget* widget) const
-{
-    auto optChanged = *option;
-    optChanged.state = option->checkState == Qt::CheckState::Checked ? QStyle::State_On : QStyle::State_Off;
-    const auto padding = theme->getSize(SizeRole::NormalPadding);
-    const auto fgRect = option->rect.marginsRemoved(QMargins{padding, 0, padding, 0});
-    const auto iconSize = theme->getSize(SizeRole::IconSize);
-    optChanged.rect = QRect{fgRect.x(), fgRect.y() + (fgRect.height() - iconSize) / 2, iconSize, iconSize};
-    Helper::drawCheckBoxHelper(&optChanged, painter, theme, widget);
-}
-
-QSize ItemViewStyle::sizeFromContentsForItemView(QStyle::ContentsType type, const QStyleOption* option, const QSize& contentsSize,
-                                                 const std::shared_ptr<Theme>& theme, const QWidget* widget)
-{
-    if (type == QStyle::CT_ItemViewItem)
-    {
-        if (const auto* opt = qstyleoption_cast<const QStyleOptionViewItem*>(option))
-        {
-            const auto& features = opt->features;
-            const auto padding = theme->getSize(SizeRole::MenuItemPadding);
-
-            const auto hasIcon = features.testFlag(QStyleOptionViewItem::HasDecoration) && !opt->icon.isNull();
-            const auto& iconSize = hasIcon ? opt->decorationSize : QSize{0, 0};
-
             const auto hasText = features.testFlag(QStyleOptionViewItem::HasDisplay) && !opt->text.isEmpty();
             const auto textH = hasText ? opt->fontMetrics.height() : 0;
 
