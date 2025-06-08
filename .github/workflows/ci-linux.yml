@@ -41,13 +41,6 @@ jobs:
           sudo DEBIAN_FRONTEND=noninteractive apt-get update
           sudo DEBIAN_FRONTEND=noninteractive apt-get install -y libfcitx5-qt-dev tree
 
-      - name: Setup vcpkg
-        uses: lukka/run-vcpkg@v11
-        id: runvcpkg
-        with:
-          vcpkgDirectory: '${{ github.workspace }}/ThirdParty/vcpkg'
-          vcpkgJsonGlob: '${{ github.workspace }}/vcpkg-configuration.json'
-
       - name: Install Qt
         uses: jurplel/install-qt-action@v3
         with:

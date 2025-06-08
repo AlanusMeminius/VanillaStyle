@@ -35,13 +35,6 @@ jobs:
         run: |
           xcrun --sdk macosx --show-sdk-path
 
-      - name: Setup vcpkg
-        uses: lukka/run-vcpkg@v11
-        id: runvcpkg
-        with:
-          vcpkgDirectory: '${{ github.workspace }}/ThirdParty/vcpkg'
-          vcpkgJsonGlob: '${{ github.workspace }}/vcpkg-configuration.json'
-
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
