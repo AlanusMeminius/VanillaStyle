@@ -33,24 +33,19 @@ jobs:
 
       - uses: lukka/get-cmake@latest
 
-      - name: Install linuxdeploy
-        uses: miurahr/install-linuxdeploy-action@v1
-        with:
-          plugins: qt appimage
-
-      - name: Install Dependencies
-        run: |
-          sudo DEBIAN_FRONTEND=noninteractive apt-get update
-          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y libfcitx5-qt-dev tree
-
-      - name: Install Qt
+      - name: Install Qt Official Build
         uses: jurplel/install-qt-action@v3
         with:
           version: ${{matrix.qt}}
           target: desktop
-          modules: ${{ matrix.qt_modules }}
+          arch: ${{matrix.arch}}
+          modules: ${{matrix.qt_modules}}
           cache: 'true'
 
+      - name: Install dependencies
+        run: |
+          pip install virtualenv
+      
       - name: Configure CMake
         id: configure
         run: >
