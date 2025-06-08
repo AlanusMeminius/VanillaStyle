@@ -2,7 +2,6 @@
 
 #include "VanillaStyle/Helper/Helper.h"
 #include "VanillaStyle/Theme/Mode.h"
-// #include "VanillaStyle/Theme/Theme.h"
 
 #include <QCommonStyle>
 #include <QPainter>

@@ -131,6 +131,9 @@ void VanillaStyle::drawControl(ControlElement element, const QStyleOption* optio
     case CE_ToolButtonLabel:
         helper = createHelper(d->toolButtonStyle, &ToolButtonStyle::drawToolButtonLabel);
         break;
+    case CE_Splitter:
+        helper = createHelper(d->helper, &Helper::drawSplitter);
+        break;
     case CE_ScrollBarAddPage:
     case CE_ScrollBarSubPage:
     case CE_HeaderSection:
@@ -223,6 +226,9 @@ QSize VanillaStyle::sizeFromContents(ContentsType type, const QStyleOption* opti
     case CT_ItemViewItem:
         helper = createHelper(d->itemViewStyle, &ItemViewStyle::sizeFromContentsForItemView);
         break;
+    case CT_Splitter:
+        helper = createHelper(d->helper, &Helper::sizeFromContentsForSplitterHandle);
+
     default:
         break;
     }
@@ -313,7 +319,7 @@ void VanillaStyle::polish(QWidget* w)
     {
         w->installEventFilter(new LineEditButtonEventFilter(qobject_cast<QToolButton*>(w), *this));
     }
-    if (auto* itemView = qobject_cast<QAbstractItemView*>(w))
+    if (auto* itemView = qobject_cast<QAbstractScrollArea*>(w))
     {
         itemView->setAutoFillBackground(false);
         itemView->setBackgroundRole(QPalette::NoRole);
@@ -321,6 +327,7 @@ void VanillaStyle::polish(QWidget* w)
         itemView->viewport()->setAutoFillBackground(false);
         itemView->viewport()->setAttribute(Qt::WA_Hover);
     }
+
     if (const auto* combox = qobject_cast<QComboBox*>(w))
     {
         if (auto* const container = qobject_cast<QWidget*>(combox->children().back()))
@@ -328,8 +335,9 @@ void VanillaStyle::polish(QWidget* w)
             container->setBackgroundRole(QPalette::NoRole);
             container->setWindowFlag(Qt::FramelessWindowHint, true);
             container->setWindowFlag(Qt::NoDropShadowWindowHint, true);
+            container->setAttribute(Qt::WA_TranslucentBackground, true);
             container->setAttribute(Qt::WA_OpaquePaintEvent, false);
-            container->setProperty("_q_windowsDropShadow", false);
+            container->setAttribute(Qt::WA_NoSystemBackground, true);
         }
     }
     if (qobject_cast<QScrollBar*>(w) != nullptr)

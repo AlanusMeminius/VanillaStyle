@@ -10,6 +10,7 @@
 
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
+#include "VanillaStyle/Style/Global.h"
 #include "VanillaStyle/Widgets/Spinner.h"
 
 #include "VanillaStyle/Widgets/ToggleButton.h"
@@ -34,7 +35,6 @@ MainWindow::MainWindow(QWidget* parent)
     ui->toggleBtnfirst->setToolTips(QStringList{"Default", "Account", "Advance"});
     ui->toggleBtnfirst->setColumnWidth(50);
 
-    // ui->toggleBtnSecond->setUseIcon(false);
     ui->toggleBtnSecond->setItemList(QStringList{"Default", "Account", "Advance"});
     ui->toggleBtnSecond->setColumnWidth(100);
 
@@ -43,13 +43,10 @@ MainWindow::MainWindow(QWidget* parent)
     ui->iconWithText->setColumnWidth(120);
     ui->iconWithText->setVertical();
     ui->iconWithText->setRowHeight(40);
-    // ui->iconWithText->setHandlePadding(4);
 
     ui->radioButton->setChecked(true);
 
     ui->pushButton->setCheckable(true);
-    // auto spinner = new Vanilla::Spinner(this);
-    // ui->verticalLayout->addWidget(spinner);
 
     connect(ui->radioButton, &QRadioButton::toggled, this, &MainWindow::setLightTheme);
     connect(ui->radioButton_2, &QRadioButton::toggled, this, &MainWindow::setDarkTheme);
@@ -77,14 +74,29 @@ MainWindow::MainWindow(QWidget* parent)
     ui->lineEdit->addAction(QIcon(":download.svg"), QLineEdit::TrailingPosition);
     ui->lineEdit->addAction(QIcon(":download.svg"), QLineEdit::LeadingPosition);
     connect(ui->pushButton, &QPushButton::clicked, this, &MainWindow::setAutoTheme);
-    ui->tableWidget->setRowCount(3);
-    ui->tableWidget->setItem(0, 0, new QTableWidgetItem("table 1"));
-    ui->tableWidget->setItem(0, 1, new QTableWidgetItem("table 1"));
-    ui->tableWidget->setItem(1, 0, new QTableWidgetItem("table 1"));
-    ui->tableWidget->setItem(1, 1, new QTableWidgetItem("table 1"));
-    ui->tableWidget->setItem(2, 0, new QTableWidgetItem("table 1"));
-    ui->tableWidget->setItem(2, 1, new QTableWidgetItem("table 1"));
-    ui->tableWidget->setShowGrid(false);
+
+    ui->listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    ui->tableWidget->setRowCount(5);     // 设置行数
+    ui->tableWidget->setColumnCount(3);  // 设置列数
+
+    const QStringList headers = {"Item", "Select", "Description"};
+    ui->tableWidget->setHorizontalHeaderLabels(headers);
+
+    ui->tableWidget->setProperty(Vanilla::s_CustomItemViewBackground.c_str(), true);
+
+    for (int row = 0; row < 5; ++row)
+    {
+        ui->tableWidget->setItem(row, 0, new QTableWidgetItem(QString("Item %1").arg(row + 1)));
+        ui->tableWidget->setItem(row, 2, new QTableWidgetItem("Description here"));
+
+        auto* checkBoxItem = new QTableWidgetItem();
+        checkBoxItem->setBackground(Qt::darkCyan);
+
+        checkBoxItem->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
+        checkBoxItem->setCheckState(Qt::Checked);  // 初始状态为未选中
+        ui->tableWidget->setItem(row, 1, checkBoxItem);
+    }
 }
 
 MainWindow::~MainWindow()
@@ -99,7 +111,7 @@ void MainWindow::setTheme(const bool theme)
 
 void MainWindow::setLightTheme()
 {
-    // Vanilla::Style::setStyleFromName(QStringLiteral("LightVanillaStyle"));
+    // Vanilla::Style::setStyleFromAppDir(QStringLiteral("LightVanillaStyle"));
     const auto filePath = QCoreApplication::applicationDirPath() + "/LightVanillaStyle.json";
     if (QFile(filePath).exists())
     {
