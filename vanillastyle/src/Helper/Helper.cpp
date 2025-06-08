@@ -149,6 +149,7 @@ void Helper::drawCheckBoxHelper(const QStyleOption* option, QPainter* painter, c
         renderRoundBorder(painter, buttonRect, borderColor, border, radius);
     }
 
+
     if ((theme->flags(option) & Theme::Checked) == Theme::Checked)
     {
         drawCheckBoxIndicator(option, rect, painter, theme);

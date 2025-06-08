@@ -27,23 +27,11 @@ jobs:
         qt_modules: [qtwebengine qtwebchannel qtpositioning qtpdf qtimageformats qt5compat]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          submodules: true
 
-      - name: Init Submodules
-        shell: bash
-        run: |
-          auth_header="$(git config --local --get http.https://github.com/.extraheader)"
-          git submodule sync --recursive
-          git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive
-
-      - name: Cache Qt
-        id: cache-qt
-        uses: actions/cache@v1  # not v2!
-        with:
-          path: ../Qt
-          key: ${{runner.os}}-${{matrix.arch}}-QtCache-${{matrix.qt}}
+      - uses: lukka/get-cmake@latest
 
       - name: Install Qt Official Build
         uses: jurplel/install-qt-action@v3
@@ -54,21 +42,43 @@ jobs:
           modules: ${{matrix.qt_modules}}
           cache: 'true'
 
+      - name: Install dependencies
+        run: |
+          pip install virtualenv
+      
       - name: Configure CMake
+        id: configure
         run: >
           cmake -B ${{ github.workspace }}/build
           -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
           -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+          -DCMAKE_INSTALL_PREFIX=${{ matrix.install_path }}
+          -DGIT_BRANCH=${{ github.ref_name }}
           -S ${{ github.workspace }}
 
-      - name:  Build Project
-        run: cmake --build ${{ github.workspace }}/build --config ${{ matrix.build_type }} --parallel --target all_build --
+      - name: Build Project
+        run: cmake --build ${{github.workspace}}/build --config ${{ matrix.build_type }} --parallel
 
-      - name:  Install Project
+      - name: Install Project
         run: cmake --build ${{ github.workspace }}/build --config ${{ matrix.build_type }} --target install --
-
+      
       # when stable to test
       # - name: Test
       #   working-directory: ${{ github.workspace }}/build
       #   run: ctest --build-config ${{ matrix.build_type }}
+
+      - name: Archive build logs on failure
+        if: ${{ failure() && (steps.configure.outcome == 'failure' || steps.runvcpkg.outcome == 'failure') }}
+        run: |
+          tar -czvf ${{ github.workspace }}/build.tar.gz -C ${{ github.workspace }}/build/ .
+          tar -czvf ${{ github.workspace }}/vcpkg.tar.gz -C ${{ github.workspace }}/ThirdParty/vcpkg/buildtrees/ .
+
+      - name: Upload build logs artifact
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux_logs
+          path: |
+            ${{ github.workspace }}/build.tar.gz
+            ${{ github.workspace }}/vcpkg.tar.gz
