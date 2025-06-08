@@ -58,7 +58,7 @@ jobs:
           -S ${{ github.workspace }}
 
       - name: Build Project
-        run: cmake --build ${{ github.workspace }}/build --config ${{ matrix.build_type }} --parallel --target all --
+        run: cmake --build ${{github.workspace}}/build --config ${{ matrix.build_type }} --parallel
 
       - name: Install Project
         run: cmake --build ${{ github.workspace }}/build --config ${{ matrix.build_type }} --target install --
