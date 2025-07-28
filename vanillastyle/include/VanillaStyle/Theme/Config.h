@@ -29,7 +29,7 @@ struct adl_serializer<QColor>
             QString colorString = QString::fromStdString(j.get<std::string>());
             if (colorString.startsWith("#"))
             {
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
                 color = QColor::fromString(colorString);
 #else
                 color = QColor();
